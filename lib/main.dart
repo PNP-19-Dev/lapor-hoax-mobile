@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:laporhoax/home_page.dart';
+import 'package:laporhoax/register_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
       initialRoute: LoginPage.routeName,
       routes: {
         LoginPage.routeName: (context) => LoginPage(),
+        RegisterPage.routeName: (context) => RegisterPage(),
       }
     );
   }

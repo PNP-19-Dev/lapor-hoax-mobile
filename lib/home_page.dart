@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:laporhoax/register_page.dart';
 class LoginPage extends StatelessWidget {
   static String routeName = "/login_page";
 
@@ -15,7 +15,7 @@ class LoginPage extends StatelessWidget {
             right: 10,
             child: Center(
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(33),
                 child: Container(
                   color: Colors.black54,
                   height: 80,
@@ -90,7 +90,24 @@ class LoginPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Text('Masih belum mempunyai akun? daftar disini'),
+                  Wrap(
+                    children: [
+                      Text('Masih belum mempunyai akun?'),
+                      SizedBox(width: 5,),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator
+                        .pushNamed(context, RegisterPage.routeName);
+                          },
+                        child: Text(
+                            'Daftar disini',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
