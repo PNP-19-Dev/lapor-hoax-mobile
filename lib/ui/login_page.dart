@@ -1,10 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:laporhoax/register_page.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
+import 'package:laporhoax/api/google_signin_api.dart';
+import 'package:laporhoax/ui/register_page.dart';
+
 class LoginPage extends StatelessWidget {
   static String routeName = "/login_page";
 
   @override
   Widget build(BuildContext context) {
+    Future signIn() async {
+      final user = await GoogleSignInApi.login();
+
+      if (user == null) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Sign in failed'),
+        ));
+      }
+    }
+
+    Future facebookSignIn() async {
+      final user = await FacebookAuth.instance.login();
+
+      if (user.status == LoginStatus.failed) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Sign in failed'),
+        ));
+      }
+    }
+
     return Scaffold(
       backgroundColor: Color(0xFFBABABA),
       body: Stack(
@@ -36,10 +61,11 @@ class LoginPage extends StatelessWidget {
               padding: const EdgeInsets.only(top: 30, left: 16, right: 16),
               child: Column(
                 children: [
-                  Text('Masuk', style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  )),
+                  Text('Masuk',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      )),
                   TextField(
                     decoration: InputDecoration(
                       icon: Icon(Icons.people_outline),
@@ -65,42 +91,20 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   Center(child: Text('atau')),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            color: Colors.black54,
-                            height: 60,
-                            width: 60,
-                          ),
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            color: Colors.black54,
-                            height: 60,
-                            width: 60,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  SignInButton(Buttons.GoogleDark, onPressed: signIn),
+                  SignInButton(Buttons.Facebook, onPressed: facebookSignIn),
                   Wrap(
                     children: [
                       Text('Masih belum mempunyai akun?'),
-                      SizedBox(width: 5,),
+                      SizedBox(
+                        width: 5,
+                      ),
                       GestureDetector(
                         onTap: () {
-                          Navigator
-                        .pushNamed(context, RegisterPage.routeName);
-                          },
+                          Navigator.pushNamed(context, RegisterPage.routeName);
+                        },
                         child: Text(
-                            'Daftar disini',
+                          'Daftar disini',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),

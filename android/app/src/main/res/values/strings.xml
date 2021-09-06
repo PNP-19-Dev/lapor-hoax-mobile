@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string name="app_name">Lapor Hoax</string>
+    <string name="facebook_app_id">435125601214812</string>
+    <string name="fb_login_protocol_scheme">fb435125601214812</string>
+</resources>

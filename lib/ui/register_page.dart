@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:laporhoax/home_page.dart';
+import 'package:laporhoax/ui/home_page.dart';
 
 class RegisterPage extends StatelessWidget{
   static String routeName = "/register_page";
@@ -92,14 +92,13 @@ class RegisterPage extends StatelessWidget{
                         ),
                     GestureDetector(
                       onTap: () {
-                        Navigator
-                            .pushNamed(context, LoginPage.routeName);
-                      },
-                      child: Text(
-                        'Masuk disini',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                          Navigator.pushNamed(context, HomePage.routeName);
+                        },
+                        child: Text(
+                          'Masuk disini',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
                     ]
                   ),
                         ),
