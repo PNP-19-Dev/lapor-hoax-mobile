@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
-import 'package:laporhoax/api/google_signin_api.dart';
+import 'package:laporhoax/data/api/google_signin_api.dart';
 import 'package:laporhoax/ui/register_page.dart';
 
 class LoginPage extends StatelessWidget {

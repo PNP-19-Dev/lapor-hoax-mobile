@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:laporhoax/ui/history_page.dart';
 import 'package:laporhoax/ui/home_page.dart';
 import 'package:laporhoax/ui/login_page.dart';
 import 'package:laporhoax/ui/register_page.dart';
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
           HomePage.routeName: (context) => HomePage(),
           LoginPage.routeName: (context) => LoginPage(),
           RegisterPage.routeName: (context) => RegisterPage(),
+          HistoryPage.routeName: (context) => HistoryPage(),
         });
   }
 }
