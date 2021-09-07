@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:laporhoax/ui/home_page.dart';
-import 'package:laporhoax/ui/login_page.dart';
-import 'package:laporhoax/ui/register_page.dart';
+import 'package:laporhoax/util/routes.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,14 +9,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Lapor Hoax',
-        theme: ThemeData(primarySwatch: Colors.blue),
-        initialRoute: HomePage.routeName,
-        routes: {
-          HomePage.routeName: (context) => HomePage(),
-          LoginPage.routeName: (context) => LoginPage(),
-          RegisterPage.routeName: (context) => RegisterPage(),
-        });
+      title: 'Lapor Hoax',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: HomePage(),
+      initialRoute: HomePage.routeName,
+      routes: routes,
+    );
   }
 }
-

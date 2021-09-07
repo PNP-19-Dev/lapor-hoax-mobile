@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:laporhoax/ui/login_page.dart';
-import 'package:laporhoax/ui/news_page.dart';
+import 'package:laporhoax/ui/account/login_page.dart';
+import 'package:laporhoax/ui/news/news_page.dart';
+import 'package:laporhoax/ui/report/lapor_page.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home_page';
@@ -16,11 +17,14 @@ class _HomePageState extends State<HomePage> {
   List<BottomNavigationBarItem> _bottomNavBarItems = [
     BottomNavigationBarItem(
         icon: Icon(FontAwesomeIcons.newspaper), label: 'Berita'),
+    BottomNavigationBarItem(
+        icon: Icon(FontAwesomeIcons.plusCircle), label: 'Lapor'),
     BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.user), label: 'Akun'),
   ];
 
   List<Widget> _listWidget = [
     NewsPage(),
+    LaporPage(),
     LoginPage(),
   ];
 
