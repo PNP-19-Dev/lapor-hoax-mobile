@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/ui/report/history_page.dart';
 
 class LaporPage extends StatefulWidget {
@@ -121,8 +122,7 @@ class _LaporPageState extends State<LaporPage> {
                 ),
               ),
               GestureDetector(
-                onTap: () =>
-                    Navigator.pushNamed(context, HistoryPage.routeName),
+                onTap: () => Navigation.intent(HistoryPage.routeName),
                 child: Center(
                     child: Text(
                   'Lihat riwayat pelaporan',
