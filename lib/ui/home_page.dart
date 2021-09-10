@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:laporhoax/ui/account/login_page.dart';
+import 'package:laporhoax/ui/account/account_page.dart';
 import 'package:laporhoax/ui/news/news_page.dart';
 import 'package:laporhoax/ui/report/lapor_page.dart';
 
@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _listWidget = [
     NewsPage(),
     LaporPage(),
-    LoginPage(),
+    AccountPage(),
   ];
 
   void _onBottomNavTapped(int index) {

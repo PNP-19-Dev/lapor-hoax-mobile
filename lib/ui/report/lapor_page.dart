@@ -1,8 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:laporhoax/common/navigation.dart';
+import 'package:laporhoax/provider/preferences_provider.dart';
+import 'package:laporhoax/ui/account/login_page.dart';
 import 'package:laporhoax/ui/report/history_page.dart';
+import 'package:provider/provider.dart';
 
 class LaporPage extends StatefulWidget {
   @override
@@ -35,7 +41,16 @@ class _LaporPageState extends State<LaporPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: Consumer<PreferencesProvider>(builder: (context, provider, child) {
+        if (provider.isLoggedIn) {
+          return lapor();
+        } else
+          return welcome();
+      }),
+    );
+  }
+
+  Widget lapor() => SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
@@ -49,12 +64,12 @@ class _LaporPageState extends State<LaporPage> {
                     Text(
                       'Lapor',
                       style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       'Laporkan hoax, pornography, penipuan digital',
                       style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+                      TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                     ),
                   ],
                 ),
@@ -132,7 +147,71 @@ class _LaporPageState extends State<LaporPage> {
             ],
           ),
         ),
-      ),
+      );
+
+  Widget welcome() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.only(top: 30, left: 15, right: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Lapor',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'Laporkan hoax, pornography, penipuan digital',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 45,
+        ),
+        Container(
+          child: Center(
+            child: Column(
+              children: [
+                SvgPicture.asset(
+                  'assets/illust1.svg',
+                  width: 250,
+                  height: 250,
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Kamu belum login!',
+                  style: GoogleFonts.inter(
+                      fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Silahkan login untuk melanjutkan pelaporan',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.w200,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 25),
+          child: SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigation.intent(LoginPage.routeName);
+              },
+              child: Text('Login'),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
