@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:laporhoax/common/navigation.dart';
+import 'package:laporhoax/common/theme.dart';
 
 class ForgotPassword extends StatelessWidget {
   static String routeName = '/forgot_password';
@@ -36,14 +37,18 @@ class ForgotPassword extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 10),
-                  Text("Lupa Password",
-                      style: Theme.of(context).textTheme.headline4),
+                  Text(
+                    "Lupa Password",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline4!
+                        .apply(color: Colors.black),
+                    textAlign: TextAlign.center,
+                  ),
                   Text(
                     'Masukkan username atau email yang terhubung dengan akunmu!',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w300,
-                    ),
+                    style: Theme.of(context).textTheme.caption,
                   ),
                 ],
               ),
@@ -99,8 +104,54 @@ class ForgotPasswordAction extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 10),
-                  Text('Username',
-                      style: Theme.of(context).textTheme.headline4),
+                  Text(
+                    'Username',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline4!
+                        .apply(color: Colors.black),
+                  ),
+                  Text(
+                    'Pilih kontak yang akan digunakan untuk reset passwordmu',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context)
+                        .textTheme
+                        .caption!
+                        .apply(color: grey200),
+                    softWrap: true,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 40),
+            Container(
+              padding: const EdgeInsets.only(left: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    child: Wrap(
+                      children: [
+                        Icon(Icons.mail),
+                        SizedBox(width: 20),
+                        Text(
+                          'Kirim Email',
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  GestureDetector(
+                    child: Wrap(children: [
+                      Icon(Icons.phone),
+                      SizedBox(width: 20),
+                      Text(
+                        'Kirim SMS',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                    ]),
+                  ),
                 ],
               ),
             ),

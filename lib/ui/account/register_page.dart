@@ -37,8 +37,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     SizedBox(height: 10),
-                    Text("Daftar",
-                        style: Theme.of(context).textTheme.headline4),
+                    Text(
+                      "Daftar",
+                      style: Theme.of(context).textTheme.headline4,
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
               ),

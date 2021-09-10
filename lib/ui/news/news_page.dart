@@ -99,11 +99,10 @@ class _NewsPageState extends State<NewsPage> {
                     SizedBox(
                       width: 10,
                     ),
-                    Text('Halo, user',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        )),
+                    Text(
+                      'Halo, user',
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
                   ],
                 ),
                 Icon(Icons.search),
@@ -112,8 +111,10 @@ class _NewsPageState extends State<NewsPage> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text('Berita Utama',
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20)),
+            child: Text(
+              'Berita Utama',
+              style: Theme.of(context).textTheme.headline6,
+            ),
           ),
           Container(
             height: 300,
@@ -129,11 +130,10 @@ class _NewsPageState extends State<NewsPage> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text('Berita Terbaru',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20,
-                )),
+            child: Text(
+              'Berita Terbaru',
+              style: Theme.of(context).textTheme.headline6,
+            ),
           ),
           Card(
             child: ListTile(

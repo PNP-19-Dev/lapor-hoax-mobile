@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/facebook_signin_api.dart';
@@ -162,21 +161,23 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     SizedBox(height: 10),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         GestureDetector(
                           onTap: signIn,
-                          child: SvgPicture.asset(
-                            'login_google.svg',
-                            width: 40,
-                            height: 40,
+                          child: Image.asset(
+                            'assets/icons/login_google.png',
+                            width: 55,
+                            height: 55,
                           ),
                         ),
                         GestureDetector(
                           onTap: facebookSignIn,
-                          child: SvgPicture.asset(
-                            'login_facebook.svg',
-                            width: 50,
-                            height: 50,
+                          child: Image.asset(
+                            'assets/icons/login_facebook.png',
+                            width: 55,
+                            height: 55,
                           ),
                         ),
                       ],

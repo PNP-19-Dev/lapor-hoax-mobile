@@ -65,9 +65,7 @@ class HistoryPage extends StatelessWidget {
                   SizedBox(width: 10),
                   Text(
                     'Riwayat',
-                    style: TextStyle(
-                      fontSize: 25,
-                    ),
+                    style: Theme.of(context).textTheme.headline5,
                   ),
                 ],
               ),
