@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
     BottomNavigationBarItem(
         icon: Icon(FontAwesomeIcons.newspaper), label: 'Berita'),
     BottomNavigationBarItem(
-        icon: Icon(FontAwesomeIcons.plusCircle), label: 'Lapor'),
+        icon: Icon(Icons.add_circle_outline), label: 'Lapor'),
     BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.user), label: 'Akun'),
   ];
 

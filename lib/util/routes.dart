@@ -9,6 +9,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   HomePage.routeName: (context) => HomePage(),
   LoginPage.routeName: (context) => LoginPage(),
   ForgotPassword.routeName: (context) => ForgotPassword(),
+  ForgotPasswordAction.routeName: (context) => ForgotPasswordAction(),
   RegisterPage.routeName: (context) => RegisterPage(),
   HistoryPage.routeName: (context) => HistoryPage(),
 };

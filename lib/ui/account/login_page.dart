@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/facebook_signin_api.dart';
 import 'package:laporhoax/data/api/google_signin_api.dart';
 import 'package:laporhoax/ui/account/forgot_password_page.dart';
@@ -135,10 +135,53 @@ class _LoginPageState extends State<LoginPage> {
               Center(
                 child: Column(
                   children: [
-                    Text('atau'),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 10, right: 20),
+                            child: Divider(
+                              height: 36,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          'atau',
+                          style: TextStyle(color: grey500),
+                        ),
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 20, right: 10),
+                            child: Divider(
+                              height: 36,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                     SizedBox(height: 10),
-                    SignInButton(Buttons.GoogleDark, onPressed: signIn),
-                    SignInButton(Buttons.Facebook, onPressed: facebookSignIn),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: signIn,
+                          child: Image.asset(
+                            'assets/icons/login_google.png',
+                            width: 55,
+                            height: 55,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: facebookSignIn,
+                          child: Image.asset(
+                            'assets/icons/login_facebook.png',
+                            width: 55,
+                            height: 55,
+                          ),
+                        ),
+                      ],
+                    ),
                     SizedBox(height: 20),
                     Wrap(
                       children: [

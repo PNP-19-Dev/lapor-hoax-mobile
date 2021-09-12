@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:laporhoax/common/navigation.dart';
 
 class HistoryPage extends StatelessWidget {
   static String routeName = '/history_name';
@@ -58,15 +59,13 @@ class HistoryPage extends StatelessWidget {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () => Navigation.back(),
                     child: Icon(Icons.arrow_back),
                   ),
                   SizedBox(width: 10),
                   Text(
                     'Riwayat',
-                    style: TextStyle(
-                      fontSize: 25,
-                    ),
+                    style: Theme.of(context).textTheme.headline5,
                   ),
                 ],
               ),
