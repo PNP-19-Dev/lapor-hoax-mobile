@@ -26,4 +26,14 @@ class PreferencesProvider extends ChangeNotifier {
     _isLoggedIn = await preferencesHelper.isLogin;
     notifyListeners();
   }
+
+  void setSessionData(String data) {
+    preferencesHelper.setSessionData(data);
+    _getSessionData();
+  }
+
+  void setLoginData(bool value) {
+    preferencesHelper.setLogin(value);
+    _getLoginData();
+  }
 }

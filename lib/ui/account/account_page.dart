@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
@@ -39,13 +40,10 @@ class _AccountPageState extends State<AccountPage> {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Row(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Container(
-                  color: Color(0xFF999999),
-                  height: 80,
-                  width: 80,
-                ),
+              SvgPicture.asset(
+                'assets/logo.svg',
+                height: 80,
+                width: 80,
               ),
               SizedBox(width: 16),
               Expanded(
@@ -55,9 +53,17 @@ class _AccountPageState extends State<AccountPage> {
                       fontWeight: FontWeight.w700, fontSize: 20),
                 ),
               ),
-              Icon(
-                Icons.exit_to_app,
-                color: Colors.red,
+              GestureDetector(
+                onTap: () {
+                  var provider =
+                      Provider.of<PreferencesProvider>(context, listen: false);
+                  provider.setSessionData('');
+                  provider.setLoginData(false);
+                },
+                child: Icon(
+                  Icons.exit_to_app,
+                  color: Colors.red,
+                ),
               ),
             ],
           ),
@@ -67,7 +73,7 @@ class _AccountPageState extends State<AccountPage> {
           elevation: 4,
           child: ListTile(
             leading: Icon(Icons.person_outline_rounded),
-            title: Text('Tentang NamaApp'),
+            title: Text('Profil'),
             trailing: Icon(Icons.chevron_right),
           ),
         ),
@@ -134,13 +140,10 @@ class _AccountPageState extends State<AccountPage> {
         Center(
           child: Column(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(33),
-                child: Container(
-                  color: Color(0xFF999999),
-                  height: 80,
-                  width: 80,
-                ),
+              SvgPicture.asset(
+                'assets/logo.svg',
+                height: 80,
+                width: 80,
               ),
               SizedBox(height: 46),
               ListTile(

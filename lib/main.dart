@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart';
@@ -11,27 +8,13 @@ import 'package:laporhoax/data/preferences/preferences_helper.dart';
 import 'package:laporhoax/provider/laporhoax_provider.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
 import 'package:laporhoax/ui/home_page.dart';
-import 'package:laporhoax/util/background_service.dart';
-import 'package:laporhoax/util/notification_helper.dart';
 import 'package:laporhoax/util/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  final NotificationHelper _notificationHelper = NotificationHelper();
-  final BackgroundService _service = BackgroundService();
-
-  _service.initializeIsolate();
-
-  if (Platform.isAndroid) {
-    await AndroidAlarmManager.initialize();
-  }
-
-  await _notificationHelper.initNotifications(flutterLocalNotificationsPlugin);
+void main() {
   runApp(MyApp());
 }
 

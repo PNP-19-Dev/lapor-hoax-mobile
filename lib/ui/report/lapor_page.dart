@@ -11,6 +11,8 @@ import 'package:laporhoax/ui/report/history_page.dart';
 import 'package:provider/provider.dart';
 
 class LaporPage extends StatefulWidget {
+  static String routeName = 'lapor_page';
+
   @override
   _LaporPageState createState() => _LaporPageState();
 }
@@ -40,13 +42,16 @@ class _LaporPageState extends State<LaporPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Consumer<PreferencesProvider>(builder: (context, provider, child) {
-        if (provider.isLoggedIn) {
-          return lapor();
-        } else
-          return welcome();
-      }),
+    return SafeArea(
+      child: Scaffold(
+        body:
+            Consumer<PreferencesProvider>(builder: (context, provider, child) {
+          if (provider.isLoggedIn) {
+            return lapor();
+          } else
+            return welcome();
+        }),
+      ),
     );
   }
 
@@ -57,21 +62,19 @@ class _LaporPageState extends State<LaporPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
+                padding: const EdgeInsets.only(top: 11, left: 15),
+                child: GestureDetector(
+                  child: Icon(Icons.arrow_downward_rounded, size: 32),
+                  onTap: () => Navigation.back(),
+                ),
+              ),
+              Container(
                 padding: const EdgeInsets.only(top: 30, left: 15, right: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Lapor',
-                      style:
-                      TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      'Laporkan hoax, pornography, penipuan digital',
-                      style:
-                      TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
-                    ),
-                  ],
+                child: Center(
+                  child: Text(
+                    'Buat Laporan',
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
               SizedBox(
@@ -154,19 +157,22 @@ class _LaporPageState extends State<LaporPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
+          padding: const EdgeInsets.only(top: 11, left: 15),
+          child: GestureDetector(
+            child: Icon(Icons.arrow_downward_rounded, size: 32),
+            onTap: () => Navigation.back(),
+          ),
+        ),
+        Container(
           padding: const EdgeInsets.only(top: 30, left: 15, right: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Lapor',
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          child: Center(
+            child: Text(
+              'Buat Laporan',
+              style: GoogleFonts.inter(
+                fontSize: 25,
+                fontWeight: FontWeight.w600,
               ),
-              Text(
-                'Laporkan hoax, pornography, penipuan digital',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
-              ),
-            ],
+            ),
           ),
         ),
         SizedBox(
@@ -177,7 +183,7 @@ class _LaporPageState extends State<LaporPage> {
             child: Column(
               children: [
                 SvgPicture.asset(
-                  'assets/illust1.svg',
+                  'assets/not_login.svg',
                   width: 250,
                   height: 250,
                 ),

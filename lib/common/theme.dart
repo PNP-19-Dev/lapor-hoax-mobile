@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 final Color grey200 = Color(0xFFA6A6A6);
 final Color grey500 = Color(0xFF979797);
+final Color orangeBlaze = Color(0xFFF96C00);
 
 final TextTheme myTextTheme = TextTheme(
   headline1: GoogleFonts.inter(
@@ -53,11 +54,9 @@ final TextTheme myTextTheme = TextTheme(
 );
 
 var mainTheme = ThemeData(
-  accentColor: Colors.black,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   textTheme: myTextTheme,
   primaryTextTheme: myTextTheme,
-  accentTextTheme: myTextTheme,
   dividerColor: grey500,
   // outlined button
   outlinedButtonTheme: OutlinedButtonThemeData(
@@ -67,7 +66,7 @@ var mainTheme = ThemeData(
   // elevated button
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      primary: Colors.black,
+      primary: orangeBlaze,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(5),
@@ -77,9 +76,15 @@ var mainTheme = ThemeData(
   ),
   // navigation
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    selectedItemColor: Colors.black,
+    selectedItemColor: Color(0xFFF96C00),
     unselectedItemColor: grey200,
+  ),
+  // floating action button
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: Color(0xFFF96C00),
+    foregroundColor: Color(0xFFFFFFFF),
   ),
 
   inputDecorationTheme: InputDecorationTheme(),
+  colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.black),
 );
