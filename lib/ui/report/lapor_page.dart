@@ -177,7 +177,7 @@ class _LaporPageState extends State<LaporPage> {
             child: Column(
               children: [
                 SvgPicture.asset(
-                  'assets/illust1.svg',
+                  'assets/not_login.svg',
                   width: 250,
                   height: 250,
                 ),

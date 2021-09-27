@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 
@@ -29,8 +30,8 @@ class ForgotPassword extends StatelessWidget {
                   Center(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(33),
-                      child: Container(
-                        color: Color(0xFF999999),
+                      child: SvgPicture.asset(
+                        'asset/logo.svg',
                         height: 80,
                         width: 80,
                       ),
@@ -96,9 +97,8 @@ class ForgotPasswordAction extends StatelessWidget {
               child: Column(
                 children: [
                   ClipRRect(
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey, shape: BoxShape.circle),
+                    child: SvgPicture.asset(
+                      'assets/logo.svg',
                       width: 81,
                       height: 81,
                     ),
