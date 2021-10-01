@@ -20,7 +20,7 @@ class Feed {
   String content;
   String thumbnail;
   String imgpath;
-  DateTime date;
+  String date;
   int view;
   int author;
 
@@ -30,7 +30,7 @@ class Feed {
         content: json["content"],
         thumbnail: json["thumbnail"],
         imgpath: json["imgpath"],
-        date: DateTime.parse(json["date"]),
+        date: json["date"],
         view: json["view"],
         author: json["author"],
       );

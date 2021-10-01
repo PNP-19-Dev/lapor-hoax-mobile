@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
+import 'package:laporhoax/data/model/user_token.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
 import 'package:laporhoax/ui/account/login_page.dart';
 import 'package:provider/provider.dart';
@@ -57,8 +58,7 @@ class _AccountPageState extends State<AccountPage> {
                 onTap: () {
                   var provider =
                       Provider.of<PreferencesProvider>(context, listen: false);
-                  provider.setSessionData('');
-                  provider.setLoginData(false);
+                  provider.setSessionData(UserToken(expiry: null, token: null));
                 },
                 child: Icon(
                   Icons.exit_to_app,

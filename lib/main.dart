@@ -5,7 +5,7 @@ import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/preferences/preferences_helper.dart';
-import 'package:laporhoax/provider/laporhoax_provider.dart';
+import 'package:laporhoax/provider/feed_provider.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
 import 'package:laporhoax/ui/home_page.dart';
 import 'package:laporhoax/util/routes.dart';
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => LaporhoaxProvider(apiservice: LaporhoaxApi(client)),
+          create: (_) => FeedProvider(apiService: LaporhoaxApi(client)),
         ),
         ChangeNotifierProvider(
           create: (_) => PreferencesProvider(

@@ -117,7 +117,7 @@ class ForgotPasswordAction extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .caption!
-                        .apply(color: grey200),
+                        .apply(color: grey400),
                     softWrap: true,
                   ),
                 ],

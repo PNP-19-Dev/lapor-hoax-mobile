@@ -10,12 +10,12 @@ import 'package:laporhoax/data/model/user_status.dart';
 import 'package:laporhoax/data/model/user_token.dart';
 
 class LaporhoaxApi {
-  static final String baseUrl = 'https://laporhoaxpolda.herokuapp.com/';
+  static final String baseUrl = 'https://laporhoaxpolda.herokuapp.com';
   static final String loginEndpoint = 'auth/api/login';
   static final String registerEndpoint = 'auth/api/register';
   static final String reportsEndpoint = 'api/reports';
   static final String feedsEndpoint = 'api/feeds';
-  static final String isActiveEndpoint = 'isacive';
+  static final String isActiveEndpoint = 'isactive';
   static final String verifyOtpEndpoint = 'verifyotp';
 
   final Client client;
@@ -24,6 +24,7 @@ class LaporhoaxApi {
 
   Map<String, String> headers = {
     "Content-Type": "application/json",
+    "Accept": "*/*"
   };
 
   // return token
@@ -34,8 +35,8 @@ class LaporhoaxApi {
           headers: headers,
           body: jsonEncode(
             <String, String>{
-              'username': username,
-              'password': password,
+              "username": username,
+              "password": password,
             },
           ),
         )

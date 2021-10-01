@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-final Color grey200 = Color(0xFFA6A6A6);
+final Color grey200 = Color(0xFFBDBDBD);
+final Color grey300 = Color(0xFFBABABA);
+final Color grey400 = Color(0xFFA6A6A6);
 final Color grey500 = Color(0xFF979797);
+final Color grey600 = Color(0xFF7C7C7C);
+final Color orange200 = Color(0xFFFFE2CC);
 final Color orangeBlaze = Color(0xFFF96C00);
 
 final TextTheme myTextTheme = TextTheme(
@@ -76,13 +80,13 @@ var mainTheme = ThemeData(
   ),
   // navigation
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    selectedItemColor: Color(0xFFF96C00),
-    unselectedItemColor: grey200,
+    selectedItemColor: orangeBlaze,
+    unselectedItemColor: grey400,
   ),
   // floating action button
   floatingActionButtonTheme: FloatingActionButtonThemeData(
-    backgroundColor: Color(0xFFF96C00),
-    foregroundColor: Color(0xFFFFFFFF),
+    backgroundColor: orangeBlaze,
+    foregroundColor: Colors.white,
   ),
 
   inputDecorationTheme: InputDecorationTheme(),

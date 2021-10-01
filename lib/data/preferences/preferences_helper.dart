@@ -1,3 +1,4 @@
+import 'package:laporhoax/data/model/user_token.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesHelper {
@@ -19,14 +20,14 @@ class PreferencesHelper {
     prefs.setBool(DARK_THEME, value);
   }
 
-  Future<String> get sessionData async {
+  Future<List<String>> get sessionData async {
     final prefs = await sharedPreferences;
-    return prefs.getString(SESSION) ?? "";
+    return prefs.getStringList(SESSION) ?? [];
   }
 
-  void setSessionData(String value) async {
+  void setSessionData(UserToken value) async {
     final prefs = await sharedPreferences;
-    prefs.setString(SESSION, value);
+    prefs.setStringList(SESSION, [value.expiry, value.token]);
   }
 
   Future<bool> get isLogin async {

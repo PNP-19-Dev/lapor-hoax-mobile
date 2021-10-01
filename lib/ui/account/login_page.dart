@@ -194,7 +194,6 @@ class _LoginPageState extends State<LoginPage> {
                                   token.then(
                                     (value) {
                                       progress.dismiss();
-                                      provider.setLoginData(true);
                                       provider.setSessionData(value.token);
                                       Navigation.intent(HomePage.routeName);
                                     },
