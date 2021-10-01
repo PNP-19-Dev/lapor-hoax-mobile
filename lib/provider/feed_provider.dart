@@ -3,10 +3,10 @@ import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/feed.dart';
 import 'package:laporhoax/util/result_state.dart';
 
-class LaporhoaxProvider extends ChangeNotifier {
-  final LaporhoaxApi apiservice;
+class FeedProvider extends ChangeNotifier {
+  final LaporhoaxApi apiService;
 
-  LaporhoaxProvider({required this.apiservice}) {
+  FeedProvider({required this.apiService}) {
     _getFeed();
   }
 
@@ -25,7 +25,7 @@ class LaporhoaxProvider extends ChangeNotifier {
     try {
       _state = ResultState.Loading;
       notifyListeners();
-      final feed = await apiservice.getFeeds();
+      final feed = await apiService.getFeeds();
 
       if (feed.isEmpty) {
         _state = ResultState.NoData;
