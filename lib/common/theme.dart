@@ -65,7 +65,14 @@ var mainTheme = ThemeData(
   // outlined button
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
-        primary: Colors.black, onSurface: Colors.black),
+      primary: orangeBlaze,
+      onSurface: orangeBlaze,
+      side: BorderSide(
+        width: 2.0,
+        color: orangeBlaze,
+        style: BorderStyle.solid,
+      ),
+    ),
   ),
   // elevated button
   elevatedButtonTheme: ElevatedButtonThemeData(
@@ -88,7 +95,7 @@ var mainTheme = ThemeData(
     backgroundColor: orangeBlaze,
     foregroundColor: Colors.white,
   ),
-
-  inputDecorationTheme: InputDecorationTheme(),
+  // CheckBox
+  unselectedWidgetColor: orangeBlaze,
   colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.black),
 );

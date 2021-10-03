@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:laporhoax/common/navigation.dart';
+import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
 import 'package:laporhoax/ui/account/login_page.dart';
 import 'package:laporhoax/ui/report/history_page.dart';
@@ -55,6 +55,8 @@ class _LaporPageState extends State<LaporPage> {
     );
   }
 
+  FocusNode _linkFocusNode = new FocusNode();
+
   Widget lapor() => SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -85,7 +87,7 @@ class _LaporPageState extends State<LaporPage> {
                 children: [
                   OutlinedButton(
                     onPressed: getImage,
-                    child: Text('Inp. Gambar'),
+                    child: Text('Gambar'),
                   ),
                   SizedBox(width: 8),
                   Text(_image == null ? 'Sertakan Screenshoot' : _image!.name),
@@ -94,14 +96,20 @@ class _LaporPageState extends State<LaporPage> {
               TextField(
                 keyboardType: TextInputType.url,
                 textInputAction: TextInputAction.done,
+                focusNode: _linkFocusNode,
                 decoration: InputDecoration(
-                    labelText: 'URL / Link (optional)', icon: Icon(Icons.link)),
+                    labelText: 'URL / Link (optional)',
+                    icon: SvgPicture.asset('assets/link_on.svg'),
+                    labelStyle: TextStyle(
+                      color:
+                          _linkFocusNode.hasFocus ? orangeBlaze : Colors.black,
+                    )),
               ),
               DropdownButtonFormField<String>(
                 isExpanded: true,
                 iconSize: 0,
                 decoration: InputDecoration(
-                  icon: Icon(FontAwesomeIcons.borderAll),
+                  icon: SvgPicture.asset('assets/category_alt.svg'),
                   suffixIcon: Icon(Icons.arrow_drop_down),
                 ),
                 hint: Text('Category'),
@@ -118,10 +126,30 @@ class _LaporPageState extends State<LaporPage> {
                   });
                 },
               ),
+              TextField(
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.done,
+                minLines: 5,
+                maxLines: null,
+                decoration: InputDecoration(
+                  labelText: 'Deskripsi laporan ( Opsional )',
+                  alignLabelWithHint: true,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(
+                        style: BorderStyle.solid, color: orangeBlaze),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(style: BorderStyle.solid),
+                  ),
+                ),
+              ),
               Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Checkbox(
+                    activeColor: orangeBlaze,
                     onChanged: (bool? value) {
                       setState(() {
                         anonim = value!;

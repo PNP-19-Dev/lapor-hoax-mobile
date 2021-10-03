@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' show Client;
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/api/facebook_signin_api.dart';
 import 'package:laporhoax/data/api/google_signin_api.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/user_token.dart';
@@ -57,7 +56,8 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
 
-    Future facebookSignIn() async {
+    // ERROR OVERFLOWED!
+    /*Future facebookSignIn() async {
       final user = await FacebookSignInApi.login();
 
       if (user!.status == LoginStatus.failed) {
@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
           content: Text('Sign in failed'),
         ));
       }
-    }
+    }*/
 
     void toast(String message) {
       Fluttertoast.showToast(
@@ -113,16 +113,19 @@ class _LoginPageState extends State<LoginPage> {
                         TextFormField(
                           controller: _usernameController,
                           keyboardType: TextInputType.text,
+                          enableSuggestions: true,
                           autofillHints: [AutofillHints.username],
                           textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
                             hintText: 'Username',
-                            icon: Icon(Icons.person),
+                            icon:
+                                Icon(Icons.person_outline, color: orangeBlaze),
                           ),
                           validator: (value) {
                             if (value!.trim().isEmpty) {
                               return 'Mohon isikan username!';
                             }
+                            return null;
                           },
                         ),
                         SizedBox(height: 10),
@@ -138,7 +141,8 @@ class _LoginPageState extends State<LoginPage> {
                           textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
                             hintText: 'Kata Sandi',
-                            icon: Icon(FontAwesomeIcons.key),
+                            icon:
+                                Icon(FontAwesomeIcons.key, color: orangeBlaze),
                             suffixIcon: IconButton(
                               icon: Icon(_obscureText
                                   ? FontAwesomeIcons.eyeSlash
@@ -154,6 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                             if (value!.trim().isEmpty) {
                               return 'Mohon isikan password!';
                             }
+                            return null;
                           },
                         ),
                         SizedBox(height: 10),
@@ -165,7 +170,10 @@ class _LoginPageState extends State<LoginPage> {
                                   context, ForgotPassword.routeName);
                             },
                             child: Text('Lupa Password ?',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: GoogleFonts.inter(
+                                    color: orangeBlaze,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12),
                                 textAlign: TextAlign.end),
                           ),
                         ),
@@ -176,14 +184,13 @@ class _LoginPageState extends State<LoginPage> {
                             child: ElevatedButton(
                               onPressed: () {
                                 final progress = ProgressHUD.of(context);
-                                progress!.showWithText('Loading...');
-
                                 if (_formKey.currentState!.validate()) {
                                   var username =
                                       _usernameController.text.toString();
                                   var password =
                                       _passwordController.text.toString();
 
+                                  progress!.showWithText('Loading...');
                                   var token = getToken(username, password);
                                   var provider =
                                       Provider.of<PreferencesProvider>(context,
@@ -194,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                                   token.then(
                                     (value) {
                                       progress.dismiss();
-                                      provider.setSessionData(value.token);
+                                      provider.setSessionData(value);
                                       Navigation.intent(HomePage.routeName);
                                     },
                                   ).onError(
@@ -213,62 +220,71 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-                  Center(
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                margin:
-                                    const EdgeInsets.only(left: 10, right: 20),
-                                child: Divider(
-                                  height: 36,
-                                ),
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              margin:
+                                  const EdgeInsets.only(left: 10, right: 20),
+                              child: Divider(
+                                height: 36,
                               ),
                             ),
-                            Text(
-                              'atau',
-                              style: TextStyle(color: grey500),
-                            ),
-                            Expanded(
-                              child: Container(
-                                margin:
-                                    const EdgeInsets.only(left: 20, right: 10),
-                                child: Divider(
-                                  height: 36,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        SignInButton(Buttons.GoogleDark, onPressed: signIn),
-                        SignInButton(Buttons.Facebook,
-                            onPressed: facebookSignIn),
-                        SizedBox(height: 20),
-                        Wrap(
-                          children: [
-                            Text('Masih belum mempunyai akun?'),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, RegisterPage.routeName);
-                              },
-                              child: Text(
-                                'Daftar disini',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                          ),
+                          Text(
+                            'atau',
+                            style: TextStyle(color: grey500),
+                          ),
+                          Expanded(
+                            child: Container(
+                              margin:
+                                  const EdgeInsets.only(left: 20, right: 10),
+                              child: Divider(
+                                height: 36,
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      SignInButton(
+                        Buttons.Google,
+                        text: 'Login dengan Google',
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        onPressed: signIn,
+                      ),
+                      /*SignInButton(
+                        Buttons.FacebookNew,
+                        text: 'Login dengan Facebook',
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        onPressed: facebookSignIn,
+                      ),*/
+                      SizedBox(height: 20),
+                      Wrap(
+                        children: [
+                          Text('Masih belum mempunyai akun?'),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, RegisterPage.routeName);
+                            },
+                            child: Text(
+                              'Daftar disini',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: orangeBlaze,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),
