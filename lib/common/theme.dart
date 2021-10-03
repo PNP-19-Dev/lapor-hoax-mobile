@@ -89,6 +89,11 @@ var mainTheme = ThemeData(
     foregroundColor: Colors.white,
   ),
 
-  inputDecorationTheme: InputDecorationTheme(),
+  inputDecorationTheme: InputDecorationTheme(
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: orangeBlaze),
+    ),
+    focusColor: orangeBlaze,
+  ),
   colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.black),
 );

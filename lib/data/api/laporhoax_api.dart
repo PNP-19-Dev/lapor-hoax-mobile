@@ -6,6 +6,7 @@ import 'package:laporhoax/data/model/otp_status.dart';
 import 'package:laporhoax/data/model/report.dart';
 import 'package:laporhoax/data/model/user.dart';
 import 'package:laporhoax/data/model/user_register.dart';
+import 'package:laporhoax/data/model/user_report.dart';
 import 'package:laporhoax/data/model/user_status.dart';
 import 'package:laporhoax/data/model/user_token.dart';
 
@@ -61,8 +62,10 @@ class LaporhoaxApi {
 
     if (response.statusCode == 200) {
       return UserRegister.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 400) {
+      throw Exception('akun sudah ada!');
     } else {
-      throw Exception('Failed to register : ${response.statusCode}');
+      throw Exception('Gagal untuk mendaftar : ${response.statusCode}');
     }
   }
 
@@ -116,13 +119,13 @@ class LaporhoaxApi {
     }
   }
 
-  Future<Report> getReport() async {
+  Future<List<UserReport>> getReport() async {
     final response = await client.get(
       Uri.parse('$baseUrl/$reportsEndpoint/'),
     );
 
     if (response.statusCode == 200) {
-      return Report.fromJson(jsonDecode(response.body));
+      return userReportsFromJson(response.body);
     } else {
       throw Exception('Failed to load report');
     }

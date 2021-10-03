@@ -1,42 +1,29 @@
 class UserRegister {
-  final response;
-  final email;
-  final name;
-  final noHp;
-  final isActive;
-  final isStaff;
-  final isAdmin;
-  final token;
-
   UserRegister({
-    required this.response,
-    required this.email,
-    required this.name,
-    required this.noHp,
-    required this.isActive,
-    required this.isAdmin,
-    required this.isStaff,
+    required this.user,
     required this.token,
   });
 
-  factory UserRegister.fromJson(Map<String, dynamic> json) => UserRegister(
-        response: json['response'],
-        email: json['email'],
-        name: json['name'],
-        noHp: json['noHp'],
-        isActive: json['is_active'],
-        isStaff: json['is_staff'],
-        isAdmin: json['is_admin'],
-        token: json['token'],
-      );
+  UserData user;
+  String token;
 
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'email': email,
-        'nohp': noHp,
-        'is_active': isActive,
-        'is_staff': isStaff,
-        'is_admin': isAdmin,
-        'token': token,
-      };
+  factory UserRegister.fromJson(Map<String, dynamic> json) => UserRegister(
+        user: UserData.fromJson(json["user"]),
+        token: json["token"],
+      );
+}
+
+class UserData {
+  UserData({
+    required this.username,
+    required this.email,
+  });
+
+  String username;
+  String email;
+
+  factory UserData.fromJson(Map<String, dynamic> json) => UserData(
+        username: json["username"],
+        email: json["email"],
+      );
 }
