@@ -132,13 +132,13 @@ class _NewsPageState extends State<NewsPage> {
       if (provider.state == ResultState.Loading) {
         return Center(child: CircularProgressIndicator());
       } else if (provider.state == ResultState.HasData) {
-        var feeds = provider.feed;
+        var feeds = provider.feeds;
         return ListView.builder(
-          itemCount: provider.feed.length,
+          itemCount: provider.count,
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            var feed = feeds[index];
+            var feed = feeds.results[index];
             return buildCard(
               feed.title,
               feed.thumbnail,
@@ -163,6 +163,7 @@ class _NewsPageState extends State<NewsPage> {
                 'Something Went wrong',
                 style: Theme.of(context).textTheme.bodyText2,
               ),
+              Text('${provider.message}'),
             ],
           ),
         );

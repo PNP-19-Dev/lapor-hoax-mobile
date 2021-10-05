@@ -131,11 +131,16 @@ class LaporhoaxApi {
     }
   }
 
-  Future<List<Feed>> getFeeds() async {
-    final response = await client.get(Uri.parse('$baseUrl/$feedsEndpoint/'));
+  Future<Feeds> getFeeds({String page = ""}) async {
+    var response = await client.get(Uri.parse('$baseUrl/$feedsEndpoint/'));
+
+    if (page.isNotEmpty) {
+      response =
+          await client.get(Uri.parse('$baseUrl/$feedsEndpoint/?page=$page'));
+    }
 
     if (response.statusCode == 200) {
-      return feedFromJson(response.body);
+      return feedsFromJson(response.body);
     } else {
       throw Exception('Failed to load report');
     }
