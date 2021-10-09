@@ -15,6 +15,8 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
+  late PreferencesProvider state;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,8 +27,10 @@ class _AccountPageState extends State<AccountPage> {
             builder: (context, provider, child) {
               if (provider.isLoggedIn) {
                 return onLogin();
-              } else
+              } else {
+                state = provider;
                 return onWelcome();
+              }
             },
           ),
         ),
@@ -58,7 +62,7 @@ class _AccountPageState extends State<AccountPage> {
                 onTap: () {
                   var provider =
                       Provider.of<PreferencesProvider>(context, listen: false);
-                  provider.setSessionData(UserToken(expiry: null, token: null));
+                  provider.setSessionData(UserToken.empty());
                 },
                 child: Icon(
                   Icons.exit_to_app,

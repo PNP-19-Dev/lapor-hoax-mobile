@@ -1,3 +1,4 @@
+import 'package:laporhoax/data/model/user_data.dart';
 import 'package:laporhoax/data/model/user_token.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -6,9 +7,10 @@ class PreferencesHelper {
 
   PreferencesHelper({required this.sharedPreferences});
 
-  static const DARK_THEME = 'DARK_THEME';
+  static const DARK_THEME = 'DARK_THEME'; // coming soon for dark theme
   static const LOGIN = 'LOGIN';
   static const SESSION = 'SESSION';
+  static const DATA = 'DATA';
 
   Future<bool> get isDarkTheme async {
     final prefs = await sharedPreferences;
@@ -27,7 +29,26 @@ class PreferencesHelper {
 
   void setSessionData(UserToken value) async {
     final prefs = await sharedPreferences;
-    prefs.setStringList(SESSION, [value.expiry, value.token]);
+    if (value.expiry != null && value.token != null) {
+      prefs.setStringList(SESSION, [value.expiry!, value.token!]);
+    } else {
+      prefs.setStringList(SESSION, []);
+    }
+  }
+
+  Future<List<String>> get userData async {
+    final prefs = await sharedPreferences;
+    return prefs.getStringList(DATA) ?? [];
+  }
+
+  void setUserData(User data) async {
+    final prefs = await sharedPreferences;
+    if (data.id != -1) {
+      prefs
+          .setStringList(DATA, [data.id.toString(), data.username, data.email]);
+    } else {
+      prefs.setStringList(DATA, []);
+    }
   }
 
   Future<bool> get isLogin async {
