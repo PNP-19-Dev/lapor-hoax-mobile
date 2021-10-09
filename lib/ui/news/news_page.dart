@@ -6,6 +6,7 @@ import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/provider/feed_provider.dart';
+import 'package:laporhoax/ui/news/news_web_view.dart';
 import 'package:laporhoax/ui/report/lapor_page.dart';
 import 'package:laporhoax/util/datetime_helper.dart';
 import 'package:laporhoax/util/result_state.dart';
@@ -28,93 +29,96 @@ class _NewsPageState extends State<NewsPage> {
         fontSize: 16.0);
   }
 
-  Widget buildCard(String title, String imageUrl, String timeStamp) {
+  Widget buildCard(String title, String imageUrl, String timeStamp, String id) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        elevation: 4,
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.8,
-          child: Stack(
-            alignment: Alignment.bottomLeft,
-            fit: StackFit.passthrough,
-            children: [
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                      colors: [Colors.black, Color(0x05000000)],
-                    ),
-                  ),
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 49, bottom: 8, top: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        softWrap: true,
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.access_time,
-                            color: Colors.white,
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            timeStamp + ' WIB',
-                            style: GoogleFonts.inter(
-                              fontSize: 10,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Ink.image(
-                width: double.infinity,
-                image: NetworkImage('${LaporhoaxApi.baseUrl}$imageUrl'),
-                fit: BoxFit.fill,
-              ),
-              Positioned(
-                top: 0,
-                right: 0,
-                child: Padding(
-                  padding: EdgeInsets.all(8),
+      child: GestureDetector(
+        onTap: () => Navigation.intentWithData(NewsWebView.routeName, id),
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 4,
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: Stack(
+              alignment: Alignment.bottomLeft,
+              fit: StackFit.passthrough,
+              children: [
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
                   child: Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white),
-                    child: IconButton(
-                        icon: Icon(
-                          Icons.bookmark_outline,
-                          color: orangeBlaze,
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [Colors.black, Color(0x05000000)],
+                      ),
+                    ),
+                    padding: const EdgeInsets.only(
+                        left: 10, right: 49, bottom: 8, top: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          softWrap: true,
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
-                        onPressed: () {}),
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.access_time,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              timeStamp + ' WIB',
+                              style: GoogleFonts.inter(
+                                fontSize: 10,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+                Ink.image(
+                  width: double.infinity,
+                  image: NetworkImage('${LaporhoaxApi.baseUrl}$imageUrl'),
+                  fit: BoxFit.fill,
+                ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.bookmark_outline,
+                            color: orangeBlaze,
+                          ),
+                          onPressed: () {}),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -132,17 +136,18 @@ class _NewsPageState extends State<NewsPage> {
       if (provider.state == ResultState.Loading) {
         return Center(child: CircularProgressIndicator());
       } else if (provider.state == ResultState.HasData) {
-        var feeds = provider.feed;
+        var feeds = provider.feeds;
         return ListView.builder(
-          itemCount: provider.feed.length,
+          itemCount: provider.count,
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            var feed = feeds[index];
+            var feed = feeds.results[index];
             return buildCard(
               feed.title,
               feed.thumbnail,
-              DateTimeHelper.formattedDate(feed.date),
+              DateTimeHelper.formattedDateTime(feed.date),
+              feed.id.toString(),
             );
           },
         );
@@ -163,6 +168,7 @@ class _NewsPageState extends State<NewsPage> {
                 'Something Went wrong',
                 style: Theme.of(context).textTheme.bodyText2,
               ),
+              Text('${provider.message}'),
             ],
           ),
         );

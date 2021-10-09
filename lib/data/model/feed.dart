@@ -1,7 +1,23 @@
-import 'dart:convert';
+class Feeds {
+  Feeds({
+    required this.count,
+    required this.next,
+    required this.previous,
+    required this.results,
+  });
 
-List<Feed> feedFromJson(String str) =>
-    List<Feed>.from(json.decode(str).map((x) => Feed.fromJson(x)));
+  int count;
+  String? next;
+  String? previous;
+  List<Feed> results;
+
+  factory Feeds.fromJson(Map<String, dynamic> json) => Feeds(
+        count: json["count"],
+        next: json["next"],
+        previous: json["previous"],
+        results: List<Feed>.from(json["results"].map((x) => Feed.fromJson(x))),
+      );
+}
 
 class Feed {
   Feed({
@@ -9,7 +25,6 @@ class Feed {
     required this.title,
     required this.content,
     required this.thumbnail,
-    required this.imgpath,
     required this.date,
     required this.view,
     required this.author,
@@ -19,7 +34,6 @@ class Feed {
   String title;
   String content;
   String thumbnail;
-  String imgpath;
   String date;
   int view;
   int author;
@@ -29,7 +43,6 @@ class Feed {
         title: json["title"],
         content: json["content"],
         thumbnail: json["thumbnail"],
-        imgpath: json["imgpath"],
         date: json["date"],
         view: json["view"],
         author: json["author"],

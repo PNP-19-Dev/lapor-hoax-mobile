@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:laporhoax/common/navigation.dart';
+import 'package:laporhoax/common/theme.dart';
+import 'package:laporhoax/data/model/report.dart';
+import 'package:laporhoax/data/model/token_id.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
 import 'package:laporhoax/ui/account/login_page.dart';
 import 'package:laporhoax/ui/report/history_page.dart';
+import 'package:laporhoax/ui/report/on_loading_report.dart';
 import 'package:provider/provider.dart';
 
 class LaporPage extends StatefulWidget {
@@ -18,9 +21,12 @@ class LaporPage extends StatefulWidget {
 }
 
 class _LaporPageState extends State<LaporPage> {
-  var selectedCategory;
-  bool anonim = false;
+  var _selectedCategory;
+  bool _anonim = false;
   XFile? _image;
+
+  var _urlController = TextEditingController();
+  var _descController = TextEditingController();
 
   Future getImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -55,6 +61,8 @@ class _LaporPageState extends State<LaporPage> {
     );
   }
 
+  FocusNode _linkFocusNode = new FocusNode();
+
   Widget lapor() => SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -62,9 +70,9 @@ class _LaporPageState extends State<LaporPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.only(top: 11, left: 15),
+                padding: const EdgeInsets.only(top: 11),
                 child: GestureDetector(
-                  child: Icon(Icons.arrow_downward_rounded, size: 32),
+                  child: Icon(Icons.arrow_back, size: 32),
                   onTap: () => Navigation.back(),
                 ),
               ),
@@ -85,7 +93,7 @@ class _LaporPageState extends State<LaporPage> {
                 children: [
                   OutlinedButton(
                     onPressed: getImage,
-                    child: Text('Inp. Gambar'),
+                    child: Text('Gambar'),
                   ),
                   SizedBox(width: 8),
                   Text(_image == null ? 'Sertakan Screenshoot' : _image!.name),
@@ -94,18 +102,25 @@ class _LaporPageState extends State<LaporPage> {
               TextField(
                 keyboardType: TextInputType.url,
                 textInputAction: TextInputAction.done,
+                controller: _urlController,
+                focusNode: _linkFocusNode,
                 decoration: InputDecoration(
-                    labelText: 'URL / Link (optional)', icon: Icon(Icons.link)),
+                    labelText: 'URL / Link (optional)',
+                    icon: SvgPicture.asset('assets/link_on.svg'),
+                    labelStyle: TextStyle(
+                      color:
+                          _linkFocusNode.hasFocus ? orangeBlaze : Colors.black,
+                    )),
               ),
               DropdownButtonFormField<String>(
                 isExpanded: true,
                 iconSize: 0,
                 decoration: InputDecoration(
-                  icon: Icon(FontAwesomeIcons.borderAll),
+                  icon: SvgPicture.asset('assets/category_alt.svg'),
                   suffixIcon: Icon(Icons.arrow_drop_down),
                 ),
                 hint: Text('Category'),
-                value: selectedCategory,
+                value: _selectedCategory,
                 items: categories.map((value) {
                   return DropdownMenuItem<String>(
                     child: Text(value),
@@ -114,20 +129,41 @@ class _LaporPageState extends State<LaporPage> {
                 }).toList(),
                 onChanged: (v) {
                   setState(() {
-                    selectedCategory = v!;
+                    _selectedCategory = v!;
                   });
                 },
+              ),
+              TextField(
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.done,
+                controller: _descController,
+                minLines: 5,
+                maxLines: null,
+                decoration: InputDecoration(
+                  labelText: 'Deskripsi laporan ( Opsional )',
+                  alignLabelWithHint: true,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(
+                        style: BorderStyle.solid, color: orangeBlaze),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(style: BorderStyle.solid),
+                  ),
+                ),
               ),
               Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Checkbox(
+                    activeColor: orangeBlaze,
                     onChanged: (bool? value) {
                       setState(() {
-                        anonim = value!;
+                        _anonim = value!;
                       });
                     },
-                    value: anonim,
+                    value: _anonim,
                   ),
                   Text('Lapor Secara Anonim'),
                 ],
@@ -135,18 +171,47 @@ class _LaporPageState extends State<LaporPage> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    var data = Provider.of<PreferencesProvider>(context,
+                        listen: false);
+                    int id = data.userData.id;
+                    String url = _urlController.text.toString();
+                    String desc = _descController.text.toString();
+                    XFile img = _image!;
+                    String category = _selectedCategory;
+                    bool isAnonym = _anonim;
+
+                    var report = Report(
+                      user: id,
+                      url: url,
+                      description: desc,
+                      category: category,
+                      isAnonym: isAnonym,
+                      img: img,
+                    );
+
+                    Navigation.intentWithData(
+                        OnLoadingReport.routeName, report);
+                  },
                   child: Text('Lapor'),
                 ),
               ),
-              GestureDetector(
-                onTap: () => Navigation.intent(HistoryPage.routeName),
-                child: Center(
-                    child: Text(
-                  'Lihat riwayat pelaporan',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                )),
-              ),
+              Consumer<PreferencesProvider>(
+                  builder: (context, provider, child) {
+                return GestureDetector(
+                  onTap: () => Navigation.intentWithData(
+                      HistoryPage.routeName,
+                      TokenId(
+                        token: provider.loginData.token!,
+                        id: provider.userData.id.toString(),
+                      )),
+                  child: Center(
+                      child: Text(
+                    'Lihat riwayat pelaporan',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )),
+                );
+              }),
             ],
           ),
         ),
@@ -157,9 +222,9 @@ class _LaporPageState extends State<LaporPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.only(top: 11, left: 15),
+          padding: const EdgeInsets.only(top: 11),
           child: GestureDetector(
-            child: Icon(Icons.arrow_downward_rounded, size: 32),
+            child: Icon(Icons.arrow_back, size: 32),
             onTap: () => Navigation.back(),
           ),
         ),

@@ -11,13 +11,15 @@ class FeedProvider extends ChangeNotifier {
   }
 
   String _message = '';
-
-  late List<Feed> _feed;
+  int _count = 0;
+  late Feeds _feeds;
   late ResultState _state;
 
-  List<Feed> get feed => _feed;
+  Feeds get feeds => _feeds;
 
   String get message => _message;
+
+  int get count => _count;
 
   ResultState get state => _state;
 
@@ -26,15 +28,37 @@ class FeedProvider extends ChangeNotifier {
       _state = ResultState.Loading;
       notifyListeners();
       final feed = await apiService.getFeeds();
-
-      if (feed.isEmpty) {
+      if (feed.results.isEmpty) {
         _state = ResultState.NoData;
         notifyListeners();
         return _message = 'Empty Data';
       } else {
         _state = ResultState.HasData;
         notifyListeners();
-        return _feed = feed;
+        _count = feed.count;
+        return _feeds = feed;
+      }
+    } catch (e) {
+      _state = ResultState.Error;
+      notifyListeners();
+      return _message = 'Error ---> $e';
+    }
+  }
+
+  Future<dynamic> updateFeed(String page) async {
+    try {
+      _state = ResultState.Loading;
+      notifyListeners();
+      final feed = await apiService.getFeeds(page: page);
+
+      if (feed.results.isEmpty) {
+        _state = ResultState.NoData;
+        notifyListeners();
+        return _message = 'Empty Data';
+      } else {
+        _state = ResultState.HasData;
+        notifyListeners();
+        return _feeds = feed;
       }
     } catch (e) {
       _state = ResultState.Error;

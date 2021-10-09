@@ -1,6 +1,6 @@
 class UserToken {
-  final token;
-  final expiry;
+  String? token;
+  String? expiry;
 
   UserToken({required this.token, required this.expiry});
 
@@ -9,8 +9,7 @@ class UserToken {
         token: json["token"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "token": token,
-        "expiry": expiry,
-      };
+  static empty() {
+    return UserToken(token: null, expiry: null);
+  }
 }
