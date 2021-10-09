@@ -1,6 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:http/http.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
@@ -22,11 +22,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final client = Client();
+    final dio = Dio();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => FeedProvider(apiService: LaporhoaxApi(client)),
+          create: (_) => FeedProvider(apiService: LaporhoaxApi(dio)),
         ),
         ChangeNotifierProvider(
           create: (_) => PreferencesProvider(

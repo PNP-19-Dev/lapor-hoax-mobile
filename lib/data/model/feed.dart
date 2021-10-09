@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-Feeds feedsFromJson(String str) => Feeds.fromJson(json.decode(str));
-
 class Feeds {
   Feeds({
     required this.count,

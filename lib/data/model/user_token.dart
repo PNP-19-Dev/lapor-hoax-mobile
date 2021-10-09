@@ -1,6 +1,6 @@
 class UserToken {
-  final token;
-  final expiry;
+  String? token;
+  String? expiry;
 
   UserToken({required this.token, required this.expiry});
 
@@ -8,4 +8,8 @@ class UserToken {
         expiry: json["expiry"],
         token: json["token"],
       );
+
+  static empty() {
+    return UserToken(token: null, expiry: null);
+  }
 }

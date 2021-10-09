@@ -6,6 +6,7 @@ import 'package:laporhoax/data/model/user_token.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
 import 'package:laporhoax/ui/account/login_page.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 class AccountPage extends StatefulWidget {
   static String routeName = "/login_page";
@@ -15,6 +16,8 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
+  late PreferencesProvider state;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,9 +27,11 @@ class _AccountPageState extends State<AccountPage> {
           child: Consumer<PreferencesProvider>(
             builder: (context, provider, child) {
               if (provider.isLoggedIn) {
-                return onLogin();
-              } else
+                return onLogin(provider.userData.username);
+              } else {
+                state = provider;
                 return onWelcome();
+              }
             },
           ),
         ),
@@ -34,7 +39,7 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  Widget onLogin() {
+  Widget onLogin(String username) {
     return Column(
       children: [
         Padding(
@@ -49,7 +54,8 @@ class _AccountPageState extends State<AccountPage> {
               SizedBox(width: 16),
               Expanded(
                 child: Text(
-                  'Nama User',
+                  username,
+                  textAlign: TextAlign.start,
                   style: GoogleFonts.inter(
                       fontWeight: FontWeight.w700, fontSize: 20),
                 ),
@@ -58,7 +64,7 @@ class _AccountPageState extends State<AccountPage> {
                 onTap: () {
                   var provider =
                       Provider.of<PreferencesProvider>(context, listen: false);
-                  provider.setSessionData(UserToken(expiry: null, token: null));
+                  provider.setSessionData(UserToken.empty());
                 },
                 child: Icon(
                   Icons.exit_to_app,
@@ -97,16 +103,28 @@ class _AccountPageState extends State<AccountPage> {
           elevation: 4,
           child: ListTile(
             leading: Icon(Icons.info_outline),
-            title: Text('Tentang NamaApp'),
+            title: Text('Tentang Laporhoax'),
             trailing: Icon(Icons.chevron_right),
+            onTap: () => showAboutDialog(
+              context: context,
+              applicationIcon: SvgPicture.asset('assets/logo.svg', width: 50),
+              applicationName: 'LaporHoax',
+              applicationVersion: 'v1.0-alpha',
+              children: [
+                Text(
+                    'Aplikasi ini hasil kerjasama POLDA SUMBAR dengan beberapa stackholder terkait.'),
+              ],
+            ),
           ),
         ),
         Card(
           elevation: 4,
           child: ListTile(
             leading: Icon(Icons.share_rounded),
-            title: Text('Bagikan NamaApp'),
+            title: Text('Bagikan Laporhoax'),
             trailing: Icon(Icons.chevron_right),
+            onTap: () => Share.share(
+                'Ayo berantas hoaks bersama LaporHoax! di https://example.com'),
           ),
         ),
         SizedBox(height: 20),
@@ -175,16 +193,28 @@ class _AccountPageState extends State<AccountPage> {
           elevation: 4,
           child: ListTile(
             leading: Icon(Icons.info_outline),
-            title: Text('Tentang NamaApp'),
+            title: Text('Tentang Laporhoax'),
             trailing: Icon(Icons.chevron_right),
+            onTap: () => showAboutDialog(
+              context: context,
+              applicationIcon: SvgPicture.asset('assets/logo.svg'),
+              applicationName: 'LaporHoax',
+              applicationVersion: 'v1.0-alpha',
+              children: [
+                Text(
+                    'Aplikasi ini hasil kerjasama POLDA SUMBAR dengan beberapa stackholder terkait.'),
+              ],
+            ),
           ),
         ),
         Card(
           elevation: 4,
           child: ListTile(
             leading: Icon(Icons.share_rounded),
-            title: Text('Bagikan NamaApp'),
+            title: Text('Bagikan LaporHoax'),
             trailing: Icon(Icons.chevron_right),
+            onTap: () => Share.share(
+                'Ayo berantas hoaks bersama LaporHoax! di https://example.com'),
           ),
         ),
         SizedBox(height: 20),

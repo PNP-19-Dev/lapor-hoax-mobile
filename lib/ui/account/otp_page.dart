@@ -1,7 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/otp_status.dart';
@@ -22,7 +22,7 @@ class _OtpPageState extends State<OtpPage> {
 
   @override
   Widget build(BuildContext context) {
-    var client = Client();
+    var client = Dio();
     var api = LaporhoaxApi(client);
 
     Future<OtpStatus> verifyUser(String email, String otp) async {

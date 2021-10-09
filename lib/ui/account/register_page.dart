@@ -1,14 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
-import 'package:laporhoax/data/model/user.dart';
+import 'package:laporhoax/data/model/user_login.dart';
 import 'package:laporhoax/data/model/user_register.dart';
 
 import 'otp_page.dart';
@@ -30,10 +30,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    var client = Client();
+    var client = Dio();
     var api = LaporhoaxApi(client);
 
-    Future<UserRegister> getResponse(User user) async {
+    Future<UserRegister> getResponse(UserLogin user) async {
       return await api.postRegister(user);
     }
 
@@ -93,7 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           decoration: InputDecoration(
                             hintText: 'Username',
                             icon:
-                                Icon(Icons.person_outline, color: orangeBlaze),
+                            Icon(Icons.person_outline, color: orangeBlaze),
                           ),
                           validator: (value) {
                             if (value!.trim().isEmpty) {
@@ -113,7 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           decoration: InputDecoration(
                             hintText: 'Email',
                             icon:
-                                Icon(Icons.email_outlined, color: orangeBlaze),
+                            Icon(Icons.email_outlined, color: orangeBlaze),
                           ),
                           validator: (value) {
                             if (value!.trim().isEmpty) {
@@ -140,7 +140,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           decoration: InputDecoration(
                             hintText: 'Kata Sandi',
                             icon:
-                                Icon(FontAwesomeIcons.key, color: orangeBlaze),
+                            Icon(FontAwesomeIcons.key, color: orangeBlaze),
                             suffixIcon: IconButton(
                               icon: Icon(_obscureText
                                   ? FontAwesomeIcons.eyeSlash
@@ -174,7 +174,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           decoration: InputDecoration(
                             hintText: 'Masukkan ulang Kata Sandi',
                             icon:
-                                Icon(FontAwesomeIcons.key, color: orangeBlaze),
+                            Icon(FontAwesomeIcons.key, color: orangeBlaze),
                             suffixIcon: IconButton(
                               icon: Icon(_obscureText
                                   ? FontAwesomeIcons.eyeSlash
@@ -207,14 +207,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
                                 if (_formKey.currentState!.validate()) {
                                   var username =
-                                      _usernameController.text.toString();
+                                  _usernameController.text.toString();
                                   var email = _emailController.text.toString();
                                   var password =
-                                      _passwordController.text.toString();
+                                  _passwordController.text.toString();
 
                                   progress!.showWithText('Loading...');
 
-                                  var userData = User(
+                                  var userData = UserLogin(
                                     name: username,
                                     email: email,
                                     password: password,

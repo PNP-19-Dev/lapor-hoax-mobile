@@ -6,8 +6,14 @@ final Color grey300 = Color(0xFFBABABA);
 final Color grey400 = Color(0xFFA6A6A6);
 final Color grey500 = Color(0xFF979797);
 final Color grey600 = Color(0xFF7C7C7C);
+final Color grey700 = Color(0xFF595959);
 final Color orange200 = Color(0xFFFFE2CC);
 final Color orangeBlaze = Color(0xFFF96C00);
+final Color failure = Color(0xFFFF3333);
+final Color success = Color(0xFF4BB543);
+
+final ButtonStyle redElevatedButton =
+    ElevatedButton.styleFrom(onPrimary: Colors.white, primary: Colors.red);
 
 final TextTheme myTextTheme = TextTheme(
   headline1: GoogleFonts.inter(

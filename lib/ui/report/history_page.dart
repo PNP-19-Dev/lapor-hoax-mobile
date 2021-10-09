@@ -1,141 +1,96 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:laporhoax/common/navigation.dart';
+import 'package:laporhoax/common/theme.dart';
+import 'package:laporhoax/data/api/laporhoax_api.dart';
+import 'package:laporhoax/data/model/token_id.dart';
+import 'package:laporhoax/data/model/user_report.dart';
+import 'package:laporhoax/util/widget/item_test.dart';
 
-class HistoryPage extends StatelessWidget {
-  static String routeName = '/history_name';
+class HistoryPage extends StatefulWidget {
+  static const routeName = '/history_page';
+
+  final TokenId tokenId;
+
+  HistoryPage({required this.tokenId});
+
+  @override
+  State<HistoryPage> createState() => _HistoryPageState();
+}
+
+class _HistoryPageState extends State<HistoryPage> {
+  late Future<UserReport> _reports;
+
+  Future<UserReport> fetchReports(String token, String id) async {
+    final client = Dio();
+    final api = LaporhoaxApi(client);
+    return api.getReport(token, id);
+  }
+
+  @override
+  initState() {
+    super.initState();
+    _reports = fetchReports(widget.tokenId.token, widget.tokenId.id);
+  }
 
   @override
   Widget build(BuildContext context) {
-    void showPrompt(BuildContext context) => showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return SimpleDialog(
-              insetPadding: const EdgeInsets.symmetric(horizontal: 16),
-              children: [
-                Center(
-                    child:
-                        Text('Jenis Kategori', style: TextStyle(fontSize: 18))),
-                Text('URL'),
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () => Navigation.back(),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+        ),
+        title: Text(
+          'Riwayat',
+          style: Theme.of(context).textTheme.headline5,
+        ),
+      ),
+      body: FutureBuilder(
+        future: _reports,
+        builder: (context, AsyncSnapshot<UserReport> snapshot) {
+          var state = snapshot.connectionState;
+          if (state != ConnectionState.done) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: snapshot.data!.results.length,
+                itemBuilder: (context, index) {
+                  var report = snapshot.data?.results[index];
+                  return ItemList(report: report!);
+                },
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Text(
-                        'Belum Ditindak',
-                        style: TextStyle(
-                          color: Color(0xFFFF3333),
-                          fontWeight: FontWeight.w700,
-                          fontSize: 13,
-                        ),
-                      ),
+                    Icon(
+                      Icons.error,
+                      size: 30,
+                      color: grey200,
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(FontAwesomeIcons.trash),
+                    Text(
+                      'Something Went wrong',
+                      style: Theme.of(context).textTheme.bodyText2,
                     ),
+                    Text('${snapshot.error}'),
                   ],
                 ),
-              ],
-            );
-          },
-        );
-
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () => Navigation.back(),
-                    child: Icon(Icons.arrow_back),
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    'Riwayat',
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                ],
-              ),
-            ),
-            ListView(
-              shrinkWrap: true,
-              children: [
-                GestureDetector(
-                  onTap: () => showPrompt(context),
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 18, horizontal: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Icon(Icons.link),
-                          SizedBox(width: 15),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Kategori Laporan'),
-                                Text('12:15 WIB | 13 Agus 2021')
-                              ],
-                            ),
-                          ),
-                          Text(
-                            'Belum Ditindak',
-                            style: TextStyle(
-                                color: Color(0xFFFF3333),
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 18, horizontal: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Icon(Icons.image),
-                        SizedBox(width: 15),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Kategori Laporan'),
-                              Text('12:15 WIB | 13 Agus 2021')
-                            ],
-                          ),
-                        ),
-                        Text(
-                          'Sudah Ditindak',
-                          style: TextStyle(
-                              color: Color(0xFF4BB543),
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+              );
+            } else {
+              return Center(child: Text('Empty List'));
+            }
+          }
+        },
       ),
     );
   }
