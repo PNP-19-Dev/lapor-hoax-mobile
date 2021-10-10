@@ -13,6 +13,8 @@ import 'package:laporhoax/util/result_state.dart';
 import 'package:provider/provider.dart';
 
 class NewsPage extends StatefulWidget {
+  static const String pageName = 'Berita';
+
   @override
   _NewsPageState createState() => _NewsPageState();
 }

@@ -4,12 +4,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/data/model/user_token.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
+import 'package:laporhoax/ui/account/account_profile.dart';
 import 'package:laporhoax/ui/account/login_page.dart';
+import 'package:laporhoax/ui/report/history_page.dart';
+import 'package:laporhoax/ui/settings/settings_page.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 class AccountPage extends StatefulWidget {
-  static String routeName = "/login_page";
+  static const String pageName = 'Akun';
 
   @override
   _AccountPageState createState() => _AccountPageState();
@@ -81,6 +84,7 @@ class _AccountPageState extends State<AccountPage> {
             leading: Icon(Icons.person_outline_rounded),
             title: Text('Profil'),
             trailing: Icon(Icons.chevron_right),
+            onTap: () => Navigation.intent(AccountProfile.routeName),
           ),
         ),
         Card(
@@ -89,6 +93,7 @@ class _AccountPageState extends State<AccountPage> {
             leading: Icon(Icons.history),
             title: Text('Riwayat Pelaporan'),
             trailing: Icon(Icons.chevron_right),
+            onTap: () => Navigation.intent(HistoryPage.routeName),
           ),
         ),
         Card(
@@ -97,6 +102,7 @@ class _AccountPageState extends State<AccountPage> {
             leading: Icon(Icons.settings),
             title: Text('Pengaturan'),
             trailing: Icon(Icons.chevron_right),
+            onTap: () => Navigation.intent(SettingsPage.routeName),
           ),
         ),
         Card(
@@ -181,9 +187,7 @@ class _AccountPageState extends State<AccountPage> {
             width: double.infinity,
             height: 42,
             child: ElevatedButton(
-              onPressed: () {
-                Navigation.intent(LoginPage.routeName);
-              },
+              onPressed: () => Navigation.intent(LoginPage.routeName),
               child: Text('Login Sekarang'),
             ),
           ),
@@ -230,7 +234,7 @@ class _AccountPageState extends State<AccountPage> {
             ),
             Text(' | '),
             Text(
-              'Kebijakan Pribadi',
+              'Kebijakan Privasi',
               style: GoogleFonts.inter(
                 fontWeight: FontWeight.w700,
                 fontSize: 14,
