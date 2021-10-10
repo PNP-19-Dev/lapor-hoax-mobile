@@ -52,6 +52,19 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mockito: ^5.0.16
+  build_runner: ^2.1.1
+  flutter_app_name: ^0.1.0
+  flutter_native_splash: ^1.1.8+4
+  flutter_launcher_icons: 0.9.0
+
+flutter_app_name:
+  name: "Lapor Hoax"
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/logo.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
