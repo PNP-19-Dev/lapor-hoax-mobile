@@ -25,14 +25,17 @@ class LaporPage extends StatefulWidget {
 
 class _LaporPageState extends State<LaporPage> {
   var _selectedCategory;
-  bool _anonim = false;
+  bool _anonym = false;
   XFile? _image;
 
   var _urlController = TextEditingController();
   var _descController = TextEditingController();
 
   Future getImage() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final image = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 85,
+    );
 
     setState(() {
       _image = image;
@@ -167,10 +170,10 @@ class _LaporPageState extends State<LaporPage> {
                         activeColor: orangeBlaze,
                         onChanged: (bool? value) {
                           setState(() {
-                            _anonim = value!;
+                            _anonym = value!;
                           });
                         },
-                        value: _anonim,
+                        value: _anonym,
                       ),
                       Text('Lapor Secara Anonim'),
                     ],
@@ -186,7 +189,7 @@ class _LaporPageState extends State<LaporPage> {
                         String desc = _descController.text.toString();
                         XFile img = _image!;
                         String category = _selectedCategory;
-                        bool isAnonym = _anonim;
+                        bool isAnonym = _anonym;
 
                         var report = Report(
                           user: id,

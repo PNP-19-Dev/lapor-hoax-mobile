@@ -59,7 +59,7 @@ class LaporhoaxApi {
     }
   }
 
-  Future<dynamic> postRegister(UserLogin user) async {
+  Future<UserRegister> postRegister(UserLogin user) async {
     final response = await dio.post(
       '/$registerEndpoint/',
       options: Options(contentType: Headers.jsonContentType),
@@ -155,7 +155,7 @@ class LaporhoaxApi {
 
   Future<UserReport> getReport(String token, String id) async {
     final response = await dio.get(
-      '/$reportsEndpoint/user/$id/?page=4',
+      '/$reportsEndpoint/user/$id/',
       options: Options(headers: {
         HttpHeaders.authorizationHeader: "Token $token",
       }),
