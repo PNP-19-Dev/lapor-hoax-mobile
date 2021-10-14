@@ -8,7 +8,7 @@ import 'package:laporhoax/data/model/user_report.dart';
 import 'package:laporhoax/util/widget/item_test.dart';
 
 class HistoryPage extends StatefulWidget {
-  static String routeName = '/history_name';
+  static const routeName = '/history_page';
 
   final TokenId tokenId;
 
@@ -51,17 +51,17 @@ class _HistoryPageState extends State<HistoryPage> {
           style: Theme.of(context).textTheme.headline5,
         ),
       ),
-      body: FutureBuilder<UserReport>(
+      body: FutureBuilder(
         future: _reports,
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot<UserReport> snapshot) {
           var state = snapshot.connectionState;
           if (state != ConnectionState.done) {
-            return Expanded(child: Center(child: CircularProgressIndicator()));
+            return Center(child: CircularProgressIndicator());
           } else {
             if (snapshot.hasData) {
               return ListView.builder(
-                itemCount: snapshot.data!.results.length,
                 shrinkWrap: true,
+                itemCount: snapshot.data!.results.length,
                 itemBuilder: (context, index) {
                   var report = snapshot.data?.results[index];
                   return ItemList(report: report!);

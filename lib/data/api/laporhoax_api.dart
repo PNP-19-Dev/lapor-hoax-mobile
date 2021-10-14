@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:laporhoax/data/model/category.dart';
 import 'package:laporhoax/data/model/feed.dart';
 import 'package:laporhoax/data/model/otp_status.dart';
 import 'package:laporhoax/data/model/report.dart';
@@ -17,7 +18,8 @@ class LaporhoaxApi {
   static final String loginEndpoint = 'auth/api/login';
   static final String registerEndpoint = 'auth/api/register';
   static final String getUserEndpint = 'auth/api/users/get';
-  static final String reportsEndpoint = 'api/reports/user';
+  static final String reportsEndpoint = 'api/reports';
+  static final String reportCatEndpoint = 'api/reports/cat';
   static final String feedsEndpoint = 'api/feeds';
   static final String isActiveEndpoint = 'isactive';
   static final String verifyOtpEndpoint = 'verifyotp';
@@ -26,16 +28,14 @@ class LaporhoaxApi {
 
   LaporhoaxApi(this.dio) {
     dio.options.baseUrl = baseUrl;
+    dio.options.validateStatus = (int? status) {
+      return status != null && status > 0;
+    };
     dio.options.headers = <String, String>{
       HttpHeaders.acceptHeader: '*/*',
       HttpHeaders.acceptEncodingHeader: 'gzip, deflate, br'
     };
   }
-
-  Map<String, String> headers = {
-    "Content-Type": "application/json",
-    "Accept": "*/*"
-  };
 
   // return token
   Future<UserToken> postLogin(String username, String password) async {
@@ -61,7 +61,7 @@ class LaporhoaxApi {
     }
   }
 
-  Future<dynamic> postRegister(UserLogin user) async {
+  Future<UserRegister> postRegister(UserLogin user) async {
     final response = await dio.post(
       '/$registerEndpoint/',
       options: Options(contentType: Headers.jsonContentType),
@@ -74,6 +74,16 @@ class LaporhoaxApi {
       throw Exception('akun sudah ada!');
     } else {
       throw Exception('Gagal untuk mendaftar : ${response.statusCode}');
+    }
+  }
+
+  Future<List<Category>> getCategory() async {
+    final response = await dio.get('/$reportCatEndpoint');
+
+    if (response.statusCode == 200) {
+      return categoryFromJson(response.data);
+    } else {
+      throw Exception('gagal mendapatkan kategori');
     }
   }
 
@@ -123,23 +133,24 @@ class LaporhoaxApi {
 
     if (response.statusCode == 200) {
       // return on list, but still only 1 entry
-      return List<User>.from(
-          json.decode(response.data).map((x) => User.fromJson(x)));
+      return List<User>.from(response.data.map((x) => User.fromJson(x)));
     } else {
       throw Exception('Failed to retrieve user data ${response.statusCode}');
     }
   }
 
-  Future<UserReport> postReport(String token, Report report) async {
+  Future<ReportItem> postReport(String token, Report report) async {
     var formData = FormData.fromMap({
-      'user': report.user,
-      'url': report.url,
+      'user': report.user.toString(),
+      'url': '"${report.url}"',
       'category': report.category,
+      'isAnonym': report.isAnonym.toString(),
       'description': report.description,
-      'img': MultipartFile.fromFile(report.img.path, filename: report.img.name)
+      'img': await MultipartFile.fromFile(report.img.path,
+          filename: report.img.name)
     });
 
-    final response = await dio.post('/$reportsEndpoint',
+    final response = await dio.post('/$reportsEndpoint/',
         data: formData,
         options: Options(
           headers: {
@@ -148,15 +159,15 @@ class LaporhoaxApi {
         ));
 
     if (response.statusCode == 201) {
-      return UserReport.fromJson(jsonDecode(response.data));
+      return ReportItem.fromJson(response.data);
     } else {
-      throw Exception('Failed to register');
+      throw Exception('Failed to post report ${response.statusCode}');
     }
   }
 
   Future<UserReport> getReport(String token, String id) async {
     final response = await dio.get(
-      '/$reportsEndpoint/$id',
+      '/$reportsEndpoint/user/$id/',
       options: Options(headers: {
         HttpHeaders.authorizationHeader: "Token $token",
       }),

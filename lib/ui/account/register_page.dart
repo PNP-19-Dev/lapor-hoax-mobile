@@ -11,7 +11,7 @@ import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/user_login.dart';
 import 'package:laporhoax/data/model/user_register.dart';
 
-import 'otp_page.dart';
+import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   static String routeName = "/register_page";
@@ -207,10 +207,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
                                 if (_formKey.currentState!.validate()) {
                                   var username =
-                                  _usernameController.text.toString();
+                                      _usernameController.text.toString();
                                   var email = _emailController.text.toString();
                                   var password =
-                                  _passwordController.text.toString();
+                                      _passwordController.text.toString();
 
                                   progress!.showWithText('Loading...');
 
@@ -220,14 +220,13 @@ class _RegisterPageState extends State<RegisterPage> {
                                     password: password,
                                   );
                                   var response = getResponse(userData);
-                                  // var provider = Provider.of<PreferencesProvider>(context, listen: false);
 
                                   print('loading...');
                                   response.then((value) {
                                     progress.dismiss();
                                     print(value);
-                                    Navigation.intentWithData(
-                                        OtpPage.routeName, email);
+                                    toast('Akun terdaftar! Silakan Login');
+                                    Navigation.intent(LoginPage.routeName);
                                   }).onError((error, stackTrace) {
                                     progress.dismiss();
                                     toast('$error');

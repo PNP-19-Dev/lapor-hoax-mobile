@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:laporhoax/data/model/report.dart';
 import 'package:laporhoax/data/model/token_id.dart';
 import 'package:laporhoax/data/model/user_report.dart';
+import 'package:laporhoax/ui/account/account_profile.dart';
 import 'package:laporhoax/ui/account/forgot_password_page.dart';
 import 'package:laporhoax/ui/account/login_page.dart';
 import 'package:laporhoax/ui/account/otp_page.dart';
@@ -12,6 +12,7 @@ import 'package:laporhoax/ui/report/detail_report_page.dart';
 import 'package:laporhoax/ui/report/history_page.dart';
 import 'package:laporhoax/ui/report/lapor_page.dart';
 import 'package:laporhoax/ui/report/on_loading_report.dart';
+import 'package:laporhoax/ui/settings/settings_page.dart';
 
 Map<String, Widget Function(BuildContext)> routes = {
   HomePage.routeName: (context) => HomePage(),
@@ -19,6 +20,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   ForgotPassword.routeName: (context) => ForgotPassword(),
   ForgotPasswordAction.routeName: (context) => ForgotPasswordAction(),
   RegisterPage.routeName: (context) => RegisterPage(),
+  AccountProfile.routeName: (context) => AccountProfile(),
   HistoryPage.routeName: (context) => HistoryPage(
         tokenId: ModalRoute.of(context)?.settings.arguments as TokenId,
       ),
@@ -26,14 +28,14 @@ Map<String, Widget Function(BuildContext)> routes = {
         email: ModalRoute.of(context)?.settings.arguments as String,
       ),
   LaporPage.routeName: (context) => LaporPage(),
-  OnLoadingReport.routeName: (context) => OnLoadingReport(
-        report: ModalRoute.of(context)?.settings.arguments as Report,
+  OnSuccessReport.routeName: (context) => OnSuccessReport(
+        reportItem: ModalRoute.of(context)?.settings.arguments as ReportItem,
       ),
-  OnSuccessReport.routeName: (context) => OnSuccessReport(),
   OnFailureReport.routeName: (context) => OnFailureReport(),
   DetailReportPage.routeName: (context) => DetailReportPage(
-        report: ModalRoute.of(context)?.settings.arguments as ReportItem,
+        reportItem: ModalRoute.of(context)?.settings.arguments as ReportItem,
       ),
   NewsWebView.routeName: (context) =>
       NewsWebView(id: ModalRoute.of(context)?.settings.arguments as String),
+  SettingsPage.routeName: (context) => SettingsPage(),
 };

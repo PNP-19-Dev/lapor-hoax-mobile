@@ -17,8 +17,9 @@ class _HomePageState extends State<HomePage> {
 
   List<BottomNavigationBarItem> _bottomNavBarItems = [
     BottomNavigationBarItem(
-        icon: Icon(FontAwesomeIcons.newspaper), label: 'Berita'),
-    BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.user), label: 'Akun'),
+        icon: Icon(FontAwesomeIcons.newspaper), label: NewsPage.pageName),
+    BottomNavigationBarItem(
+        icon: Icon(FontAwesomeIcons.user), label: AccountPage.pageName),
   ];
 
   List<Widget> _listWidget = [

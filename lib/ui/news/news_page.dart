@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/provider/feed_provider.dart';
 import 'package:laporhoax/ui/news/news_web_view.dart';
 import 'package:laporhoax/ui/report/lapor_page.dart';
@@ -13,6 +12,8 @@ import 'package:laporhoax/util/result_state.dart';
 import 'package:provider/provider.dart';
 
 class NewsPage extends StatefulWidget {
+  static const String pageName = 'Berita';
+
   @override
   _NewsPageState createState() => _NewsPageState();
 }
@@ -96,7 +97,7 @@ class _NewsPageState extends State<NewsPage> {
                 ),
                 Ink.image(
                   width: double.infinity,
-                  image: NetworkImage('${LaporhoaxApi.baseUrl}$imageUrl'),
+                  image: NetworkImage('$imageUrl'),
                   fit: BoxFit.fill,
                 ),
                 Positioned(

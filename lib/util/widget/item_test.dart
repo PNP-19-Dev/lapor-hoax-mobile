@@ -10,16 +10,18 @@ class ItemList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, DetailReportPage.routeName,
-          arguments: report),
-      child: Card(
-          child: ListTile(
+    return Card(
+      child: ListTile(
         title: Text('${report.category}'),
         subtitle: Text(
             '${DateTimeHelper.formattedDate(report.dateReported.toString())}'),
         trailing: Text('${report.status}'),
-      )),
+        onTap: () {
+          print('tapped!');
+          Navigator.pushNamed(context, DetailReportPage.routeName,
+              arguments: report);
+        },
+      ),
     );
   }
 }

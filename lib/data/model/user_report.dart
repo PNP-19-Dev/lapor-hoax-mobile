@@ -12,7 +12,7 @@ class UserReport {
   });
 
   int count;
-  String next;
+  String? next;
   String? previous;
   List<ReportItem> results;
 
@@ -38,13 +38,13 @@ class ReportItem {
     required this.verdict,
     required this.verdictDesc,
     required this.verdictDate,
-    // required this.imgB64,
+    required this.imgB64,
     required this.user,
     required this.verdictJudge,
   });
 
   int id;
-  String url;
+  String? url;
   String img;
   String category;
   String status;
@@ -52,10 +52,9 @@ class ReportItem {
   DateTime dateReported;
   String description;
   String? verdict;
-  String verdictDesc;
+  String? verdictDesc;
   DateTime? verdictDate;
-
-  // dynamic imgB64;
+  String? imgB64;
   int user;
   int? verdictJudge;
 
@@ -73,7 +72,7 @@ class ReportItem {
         verdictDate: json["verdictDate"] == null
             ? null
             : DateTime.parse(json["verdictDate"]),
-        // imgB64: json["img_b64"],
+        imgB64: json["img_b64"],
         user: json["user"],
         verdictJudge: json["verdictJudge"],
       );
