@@ -113,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Username',
+                        Text('Email',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                         TextFormField(
                           controller: _usernameController,
@@ -122,13 +122,13 @@ class _LoginPageState extends State<LoginPage> {
                           autofillHints: [AutofillHints.username],
                           textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
-                            hintText: 'Username',
+                            hintText: 'Email',
                             icon:
-                            Icon(Icons.person_outline, color: orangeBlaze),
+                                Icon(Icons.person_outline, color: orangeBlaze),
                           ),
                           validator: (value) {
                             if (value!.trim().isEmpty) {
-                              return 'Mohon isikan username!';
+                              return 'Mohon isikan alamat email anda!';
                             }
                             return null;
                           },

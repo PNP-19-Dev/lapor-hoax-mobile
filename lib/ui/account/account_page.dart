@@ -7,7 +7,6 @@ import 'package:laporhoax/provider/preferences_provider.dart';
 import 'package:laporhoax/ui/account/account_profile.dart';
 import 'package:laporhoax/ui/account/login_page.dart';
 import 'package:laporhoax/ui/report/history_page.dart';
-import 'package:laporhoax/ui/settings/settings_page.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
@@ -94,15 +93,6 @@ class _AccountPageState extends State<AccountPage> {
             title: Text('Riwayat Pelaporan'),
             trailing: Icon(Icons.chevron_right),
             onTap: () => Navigation.intent(HistoryPage.routeName),
-          ),
-        ),
-        Card(
-          elevation: 4,
-          child: ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Pengaturan'),
-            trailing: Icon(Icons.chevron_right),
-            onTap: () => Navigation.intent(SettingsPage.routeName),
           ),
         ),
         Card(

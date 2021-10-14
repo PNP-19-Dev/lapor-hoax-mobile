@@ -48,6 +48,10 @@ dependencies:
   flutter_svg: ^0.22.0
   share: ^2.0.4
   fluttertoast: ^8.0.8
+  url_launcher: ^6.0.12
+  sqflite: ^2.0.0+3
+  firebase_core: ^1.7.0
+  firebase_messaging: ^10.0.8
 
 dev_dependencies:
   flutter_test:

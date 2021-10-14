@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:laporhoax/data/model/category.dart';
 import 'package:laporhoax/data/model/feed.dart';
 import 'package:laporhoax/data/model/otp_status.dart';
 import 'package:laporhoax/data/model/report.dart';
@@ -18,6 +19,7 @@ class LaporhoaxApi {
   static final String registerEndpoint = 'auth/api/register';
   static final String getUserEndpint = 'auth/api/users/get';
   static final String reportsEndpoint = 'api/reports';
+  static final String reportCatEndpoint = 'api/reports/cat';
   static final String feedsEndpoint = 'api/feeds';
   static final String isActiveEndpoint = 'isactive';
   static final String verifyOtpEndpoint = 'verifyotp';
@@ -72,6 +74,16 @@ class LaporhoaxApi {
       throw Exception('akun sudah ada!');
     } else {
       throw Exception('Gagal untuk mendaftar : ${response.statusCode}');
+    }
+  }
+
+  Future<List<Category>> getCategory() async {
+    final response = await dio.get('/$reportCatEndpoint');
+
+    if (response.statusCode == 200) {
+      return categoryFromJson(response.data);
+    } else {
+      throw Exception('gagal mendapatkan kategori');
     }
   }
 

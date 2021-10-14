@@ -44,7 +44,7 @@ class ReportItem {
   });
 
   int id;
-  String url;
+  String? url;
   String img;
   String category;
   String status;

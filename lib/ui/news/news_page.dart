@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/provider/feed_provider.dart';
 import 'package:laporhoax/ui/news/news_web_view.dart';
 import 'package:laporhoax/ui/report/lapor_page.dart';
@@ -32,6 +31,7 @@ class _NewsPageState extends State<NewsPage> {
   }
 
   Widget buildCard(String title, String imageUrl, String timeStamp, String id) {
+    print('$imageUrl}');
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
       child: GestureDetector(
@@ -98,7 +98,7 @@ class _NewsPageState extends State<NewsPage> {
                 ),
                 Ink.image(
                   width: double.infinity,
-                  image: NetworkImage('${LaporhoaxApi.baseUrl}$imageUrl'),
+                  image: NetworkImage('$imageUrl'),
                   fit: BoxFit.fill,
                 ),
                 Positioned(

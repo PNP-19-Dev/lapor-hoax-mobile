@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
+import 'package:laporhoax/data/model/category.dart';
 import 'package:laporhoax/data/model/report.dart';
 import 'package:laporhoax/data/model/token_id.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
@@ -27,9 +28,16 @@ class _LaporPageState extends State<LaporPage> {
   var _selectedCategory;
   bool _anonym = false;
   XFile? _image;
+  var dio = Dio();
 
   var _urlController = TextEditingController();
   var _descController = TextEditingController();
+
+  Future<List<Category>> fetchCategory() async {
+    var api = LaporhoaxApi(dio);
+    var response = await api.getCategory();
+    return response;
+  }
 
   Future getImage() async {
     final image = await ImagePicker().pickImage(
@@ -43,10 +51,13 @@ class _LaporPageState extends State<LaporPage> {
   }
 
   List categories = [
-    "Hoax",
-    "SARA",
-    "Ujaran Kebencian",
+    "Pilih Kategori",
   ];
+
+  @override
+  initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -200,9 +211,7 @@ class _LaporPageState extends State<LaporPage> {
                           img: img,
                         );
 
-                        var dio = Dio();
                         var api = LaporhoaxApi(dio);
-
                         var progress = ProgressHUD.of(context);
                         var result =
                             api.postReport(data.loginData.token!, report);
