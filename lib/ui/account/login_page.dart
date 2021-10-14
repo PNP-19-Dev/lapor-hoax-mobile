@@ -98,8 +98,8 @@ class _LoginPageState extends State<LoginPage> {
                   Center(
                     child: Column(
                       children: [
-                        SvgPicture.asset(
-                          'assets/logo.svg',
+                        Image.asset(
+                          'assets/icons/logo_new.png',
                           height: 80,
                           width: 80,
                         ),
@@ -184,46 +184,62 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(16.0),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                final progress = ProgressHUD.of(context);
-                                if (_formKey.currentState!.validate()) {
-                                  var username =
-                                      _usernameController.text.toString();
-                                  var password =
-                                      _passwordController.text.toString();
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, RegisterPage.routeName);
+                                },
+                                child: Text(
+                                  'Daftar Akun',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: orangeBlaze,
+                                  ),
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  final progress = ProgressHUD.of(context);
+                                  if (_formKey.currentState!.validate()) {
+                                    var username =
+                                        _usernameController.text.toString();
+                                    var password =
+                                        _passwordController.text.toString();
 
-                                  progress!.showWithText('Loading...');
-                                  var token = getToken(username, password);
-                                  var data = getData(username);
-                                  var provider =
-                                      Provider.of<PreferencesProvider>(context,
-                                          listen: false);
+                                    progress!.showWithText('Loading...');
+                                    var token = getToken(username, password);
+                                    var data = getData(username);
+                                    var provider =
+                                        Provider.of<PreferencesProvider>(
+                                            context,
+                                            listen: false);
 
-                                  print('loading...');
+                                    print('loading...');
 
-                                  data.then((value) =>
-                                      provider.setUserData(value.first));
+                                    data.then((value) =>
+                                        provider.setUserData(value.first));
 
-                                  token.then(
-                                    (value) {
-                                      progress.dismiss();
-                                      provider.setSessionData(value);
-                                      Navigation.intent(HomePage.routeName);
-                                    },
-                                  ).onError(
-                                    (error, stackTrace) {
-                                      progress.dismiss();
-                                      toast('$error');
-                                      print(error);
-                                    },
-                                  );
-                                }
-                              },
-                              child: Text('Login'),
-                            ),
+                                    token.then(
+                                      (value) {
+                                        progress.dismiss();
+                                        provider.setSessionData(value);
+                                        Navigation.intent(HomePage.routeName);
+                                      },
+                                    ).onError(
+                                      (error, stackTrace) {
+                                        progress.dismiss();
+                                        toast('$error');
+                                        print(error);
+                                      },
+                                    );
+                                  }
+                                },
+                                child: Text('Login'),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -265,34 +281,12 @@ class _LoginPageState extends State<LoginPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         onPressed: signIn,
                       ),
-                      /*SignInButton(
+/*                      SignInButton(
                         Buttons.FacebookNew,
                         text: 'Login dengan Facebook',
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         onPressed: facebookSignIn,
                       ),*/
-                      SizedBox(height: 20),
-                      Wrap(
-                        children: [
-                          Text('Masih belum mempunyai akun?'),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, RegisterPage.routeName);
-                            },
-                            child: Text(
-                              'Daftar disini',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: orangeBlaze,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                     ],
                   ),
                 ],

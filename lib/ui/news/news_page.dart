@@ -90,7 +90,7 @@ class _NewsPageState extends State<NewsPage> {
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
               )),
-          leading: Image.asset('assets/icons/logo_new.png', width: 100),
+          leading: Image.asset('assets/icons/logo_new.png', width: 60),
           actions: [
             IconButton(
               onPressed: () {},

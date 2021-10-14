@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/data/model/user_token.dart';
@@ -49,8 +48,8 @@ class _AccountPageState extends State<AccountPage> {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Row(
             children: [
-              SvgPicture.asset(
-                'assets/logo.svg',
+              Image.asset(
+                'assets/icons/logo_new.png',
                 height: 80,
                 width: 80,
               ),
@@ -180,8 +179,8 @@ class _AccountPageState extends State<AccountPage> {
         Center(
           child: Column(
             children: [
-              SvgPicture.asset(
-                'assets/logo.svg',
+              Image.asset(
+                'assets/icons/logo_new.png',
                 height: 80,
                 width: 80,
               ),
