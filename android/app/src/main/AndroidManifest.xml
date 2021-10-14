@@ -5,7 +5,7 @@
 
     <application
         android:icon="@mipmap/launcher_icon"
-        android:label="Lapor Hoax">
+        android:label="LAPOR HOAX">
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

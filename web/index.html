@@ -5,6 +5,13 @@
             srcset="splash/img/dark-1x.png 1x, splash/img/dark-2x.png 2x, splash/img/dark-3x.png 3x">
     <img class="center" src="splash/img/light-1x.png"/>
 </picture>
+<picture id="splash">
+    <source media="(prefers-color-scheme: light) or (prefers-color-scheme: no-preference)"
+            srcset="splash/img/light-1x.png 1x, splash/img/light-2x.png 2x, splash/img/light-3x.png 3x">
+    <source media="(prefers-color-scheme: dark)"
+            srcset="splash/img/dark-1x.png 1x, splash/img/dark-2x.png 2x, splash/img/dark-3x.png 3x">
+    <img class="center" src="splash/img/light-1x.png"/>
+</picture>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,6 +39,7 @@
 
     <title>laporhoax</title>
     <link href="manifest.json" rel="manifest">
+    <link href="splash/style.css" rel="stylesheet" type="text/css">
     <link href="splash/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>

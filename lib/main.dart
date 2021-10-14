@@ -4,7 +4,9 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
+import 'package:laporhoax/data/db/database_helper.dart';
 import 'package:laporhoax/data/preferences/preferences_helper.dart';
+import 'package:laporhoax/provider/database_provider.dart';
 import 'package:laporhoax/provider/feed_provider.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
 import 'package:laporhoax/ui/home_page.dart';
@@ -27,6 +29,11 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => FeedProvider(apiService: LaporhoaxApi(dio)),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => DatabaseProvider(
+            databaseHelper: DatabaseHelper(),
+          ),
         ),
         ChangeNotifierProvider(
           create: (_) => PreferencesProvider(

@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -60,8 +59,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   Center(
                     child: Column(
                       children: [
-                        SvgPicture.asset(
-                          'assets/logo.svg',
+                        Image.asset(
+                          'assets/icons/logo_new.png',
                           height: 80,
                           width: 80,
                         ),
@@ -196,67 +195,60 @@ class _RegisterPageState extends State<RegisterPage> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.all(16.0),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                final progress = ProgressHUD.of(context);
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'Masuk disini',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: orangeBlaze),
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  final progress = ProgressHUD.of(context);
 
-                                if (_formKey.currentState!.validate()) {
-                                  var username =
-                                      _usernameController.text.toString();
-                                  var email = _emailController.text.toString();
-                                  var password =
-                                      _passwordController.text.toString();
+                                  if (_formKey.currentState!.validate()) {
+                                    var username =
+                                        _usernameController.text.toString();
+                                    var email =
+                                        _emailController.text.toString();
+                                    var password =
+                                        _passwordController.text.toString();
 
-                                  progress!.showWithText('Loading...');
+                                    progress!.showWithText('Loading...');
 
-                                  var userData = UserLogin(
-                                    name: username,
-                                    email: email,
-                                    password: password,
-                                  );
-                                  var response = getResponse(userData);
+                                    var userData = UserLogin(
+                                      name: username,
+                                      email: email,
+                                      password: password,
+                                    );
+                                    var response = getResponse(userData);
 
-                                  print('loading...');
-                                  response.then((value) {
-                                    progress.dismiss();
-                                    print(value);
-                                    toast('Akun terdaftar! Silakan Login');
-                                    Navigation.intent(LoginPage.routeName);
-                                  }).onError((error, stackTrace) {
-                                    progress.dismiss();
-                                    toast('$error');
-                                    print('$error');
-                                  });
-                                }
-                              },
-                              child: Text('Daftar'),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Center(
-                    child: Wrap(
-                      children: [
-                        Text('Sudah mempunyai akun?'),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            'Masuk disini',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: orangeBlaze),
+                                    print('loading...');
+                                    response.then((value) {
+                                      progress.dismiss();
+                                      print(value);
+                                      toast('Akun terdaftar! Silakan Login');
+                                      Navigation.intent(LoginPage.routeName);
+                                    }).onError((error, stackTrace) {
+                                      progress.dismiss();
+                                      toast('$error');
+                                      print('$error');
+                                    });
+                                  }
+                                },
+                                child: Text('Selanjutnya'),
+                              ),
+                            ],
                           ),
                         ),
                       ],
