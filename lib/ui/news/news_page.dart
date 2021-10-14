@@ -31,7 +31,6 @@ class _NewsPageState extends State<NewsPage> {
   }
 
   Widget buildCard(String title, String imageUrl, String timeStamp, String id) {
-    print('$imageUrl}');
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
       child: GestureDetector(
