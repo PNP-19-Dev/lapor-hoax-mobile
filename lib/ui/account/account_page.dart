@@ -6,6 +6,7 @@ import 'package:laporhoax/data/model/user_token.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
 import 'package:laporhoax/ui/account/account_profile.dart';
 import 'package:laporhoax/ui/account/login_page.dart';
+import 'package:laporhoax/ui/news/saved_news.dart';
 import 'package:laporhoax/ui/report/history_page.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -98,17 +99,42 @@ class _AccountPageState extends State<AccountPage> {
         Card(
           elevation: 4,
           child: ListTile(
+            leading: Icon(Icons.bookmark_outline),
+            title: Text('Berita Tersimpan'),
+            trailing: Icon(Icons.chevron_right),
+            onTap: () => Navigation.intent(SavedNews.routeName),
+          ),
+        ),
+        Card(
+          elevation: 4,
+          child: ListTile(
             leading: Icon(Icons.info_outline),
             title: Text('Tentang Laporhoax'),
             trailing: Icon(Icons.chevron_right),
             onTap: () => showAboutDialog(
               context: context,
-              applicationIcon: SvgPicture.asset('assets/logo.svg', width: 50),
-              applicationName: 'LaporHoax',
+              applicationIcon:
+                  Image.asset('assets/icons/logo_new.png', width: 50),
+              applicationName: 'LAPOR HOAX',
               applicationVersion: 'v1.0-alpha',
               children: [
                 Text(
-                    'Aplikasi ini hasil kerjasama POLDA SUMBAR dengan beberapa stackholder terkait.'),
+                    'Aplikasi pelaporan hoax yang ditangani langsung oleh pihak yang berwewenang'),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/icons/pnp_logo.png',
+                      width: 50,
+                    ),
+                    Image.asset(
+                      'assets/icons/polda_sumbar_logo.png',
+                      width: 50,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -191,12 +217,28 @@ class _AccountPageState extends State<AccountPage> {
             trailing: Icon(Icons.chevron_right),
             onTap: () => showAboutDialog(
               context: context,
-              applicationIcon: SvgPicture.asset('assets/logo.svg'),
-              applicationName: 'LaporHoax',
+              applicationIcon:
+                  Image.asset('assets/icons/logo_new.png', width: 50),
+              applicationName: 'LAPOR HOAX',
               applicationVersion: 'v1.0-alpha',
               children: [
                 Text(
-                    'Aplikasi ini hasil kerjasama POLDA SUMBAR dengan beberapa stackholder terkait.'),
+                    'Aplikasi pelaporan hoax yang ditangani langsung oleh pihak yang berwewenang'),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/icons/pnp_logo.png',
+                      width: 50,
+                    ),
+                    Image.asset(
+                      'assets/icons/polda_sumbar_logo.png',
+                      width: 50,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

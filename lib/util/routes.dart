@@ -4,15 +4,14 @@ import 'package:laporhoax/data/model/user_report.dart';
 import 'package:laporhoax/ui/account/account_profile.dart';
 import 'package:laporhoax/ui/account/forgot_password_page.dart';
 import 'package:laporhoax/ui/account/login_page.dart';
-import 'package:laporhoax/ui/account/otp_page.dart';
 import 'package:laporhoax/ui/account/register_page.dart';
 import 'package:laporhoax/ui/home_page.dart';
 import 'package:laporhoax/ui/news/news_web_view.dart';
+import 'package:laporhoax/ui/news/saved_news.dart';
 import 'package:laporhoax/ui/report/detail_report_page.dart';
 import 'package:laporhoax/ui/report/history_page.dart';
 import 'package:laporhoax/ui/report/lapor_page.dart';
 import 'package:laporhoax/ui/report/on_loading_report.dart';
-import 'package:laporhoax/ui/settings/settings_page.dart';
 
 Map<String, Widget Function(BuildContext)> routes = {
   HomePage.routeName: (context) => HomePage(),
@@ -24,9 +23,6 @@ Map<String, Widget Function(BuildContext)> routes = {
   HistoryPage.routeName: (context) => HistoryPage(
         tokenId: ModalRoute.of(context)?.settings.arguments as TokenId,
       ),
-  OtpPage.routeName: (context) => OtpPage(
-        email: ModalRoute.of(context)?.settings.arguments as String,
-      ),
   LaporPage.routeName: (context) => LaporPage(),
   OnSuccessReport.routeName: (context) => OnSuccessReport(
         reportItem: ModalRoute.of(context)?.settings.arguments as ReportItem,
@@ -37,5 +33,5 @@ Map<String, Widget Function(BuildContext)> routes = {
       ),
   NewsWebView.routeName: (context) =>
       NewsWebView(id: ModalRoute.of(context)?.settings.arguments as String),
-  SettingsPage.routeName: (context) => SettingsPage(),
+  SavedNews.routeName: (context) => SavedNews(),
 };

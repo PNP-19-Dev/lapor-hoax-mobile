@@ -32,11 +32,11 @@ class Feed {
 
   int id;
   String title;
-  String content;
+  String? content;
   String thumbnail;
   String date;
-  int view;
-  int author;
+  int? view;
+  int? author;
 
   factory Feed.fromJson(Map<String, dynamic> json) => Feed(
         id: json["id"],
@@ -47,4 +47,11 @@ class Feed {
         view: json["view"],
         author: json["author"],
       );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "title": title,
+        "thumbnail": thumbnail,
+        "date": date,
+      };
 }
