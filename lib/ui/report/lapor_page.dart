@@ -33,10 +33,28 @@ class _LaporPageState extends State<LaporPage> {
   var _urlController = TextEditingController();
   var _descController = TextEditingController();
 
-  Future<List<Category>> fetchCategory() async {
-    var api = LaporhoaxApi(dio);
-    var response = await api.getCategory();
-    return response;
+  void getCategories() async {
+    final dio = Dio();
+    final api = LaporhoaxApi(dio);
+    final response = await api.getCategory();
+    var listData = response;
+    print('data : $listData');
+    setState(() {
+      _categories = listData;
+    });
+  }
+
+  List<Category> _categories = [];
+
+  Future getPhoto() async {
+    final image = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+      imageQuality: 85,
+    );
+
+    setState(() {
+      _image = image;
+    });
   }
 
   Future getImage() async {
@@ -50,13 +68,10 @@ class _LaporPageState extends State<LaporPage> {
     });
   }
 
-  List categories = [
-    "Pilih Kategori",
-  ];
-
   @override
   initState() {
     super.initState();
+    getCategories();
   }
 
   @override
@@ -76,6 +91,7 @@ class _LaporPageState extends State<LaporPage> {
   }
 
   FocusNode _linkFocusNode = new FocusNode();
+  final _formKey = GlobalKey<FormState>();
 
   Widget lapor() => ProgressHUD(
         child: Builder(
@@ -106,129 +122,156 @@ class _LaporPageState extends State<LaporPage> {
                   SizedBox(
                     height: 45,
                   ),
-                  Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      OutlinedButton(
-                        onPressed: getImage,
-                        child: Text('Gambar'),
-                      ),
-                      SizedBox(width: 8),
-                      Text(_image == null
-                          ? 'Sertakan Screenshoot'
-                          : _image!.name),
-                    ],
-                  ),
-                  TextField(
-                    keyboardType: TextInputType.url,
-                    textInputAction: TextInputAction.done,
-                    controller: _urlController,
-                    focusNode: _linkFocusNode,
-                    decoration: InputDecoration(
-                        labelText: 'URL / Link (optional)',
-                        icon: SvgPicture.asset('assets/link_on.svg'),
-                        labelStyle: TextStyle(
-                          color: _linkFocusNode.hasFocus
-                              ? orangeBlaze
-                              : Colors.black,
-                        )),
-                  ),
-                  DropdownButtonFormField<String>(
-                    isExpanded: true,
-                    iconSize: 0,
-                    decoration: InputDecoration(
-                      icon: SvgPicture.asset('assets/category_alt.svg'),
-                      suffixIcon: Icon(Icons.arrow_drop_down),
-                    ),
-                    hint: Text('Category'),
-                    value: _selectedCategory,
-                    items: categories.map((value) {
-                      return DropdownMenuItem<String>(
-                        child: Text(value),
-                        value: value,
-                      );
-                    }).toList(),
-                    onChanged: (v) {
-                      setState(() {
-                        _selectedCategory = v!;
-                      });
-                    },
-                  ),
-                  TextField(
-                    keyboardType: TextInputType.multiline,
-                    textInputAction: TextInputAction.done,
-                    controller: _descController,
-                    minLines: 5,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                      labelText: 'Deskripsi laporan ( Opsional )',
-                      alignLabelWithHint: true,
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(
-                            style: BorderStyle.solid, color: orangeBlaze),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(style: BorderStyle.solid),
-                      ),
-                    ),
-                  ),
-                  Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      Checkbox(
-                        activeColor: orangeBlaze,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _anonym = value!;
-                          });
-                        },
-                        value: _anonym,
-                      ),
-                      Text('Lapor Secara Anonim'),
-                    ],
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        var data = Provider.of<PreferencesProvider>(context,
-                            listen: false);
-                        int id = data.userData.id;
-                        String url = _urlController.text.toString();
-                        String desc = _descController.text.toString();
-                        XFile img = _image!;
-                        String category = _selectedCategory;
-                        bool isAnonym = _anonym;
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: orangeBlaze,
+                              child: IconButton(
+                                onPressed: getImage,
+                                icon: Icon(Icons.image),
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            CircleAvatar(
+                              backgroundColor: orangeBlaze,
+                              child: IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.camera_alt),
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Flexible(
+                              child: Text(
+                                _image == null
+                                    ? 'Sertakan Screenshoot'
+                                    : _image!.name,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        TextField(
+                          keyboardType: TextInputType.url,
+                          textInputAction: TextInputAction.done,
+                          controller: _urlController,
+                          focusNode: _linkFocusNode,
+                          decoration: InputDecoration(
+                              labelText: 'URL / Link (optional)',
+                              icon: SvgPicture.asset('assets/link_on.svg'),
+                              labelStyle: TextStyle(
+                                color: _linkFocusNode.hasFocus
+                                    ? orangeBlaze
+                                    : Colors.black,
+                              )),
+                        ),
+                        DropdownButtonFormField<String>(
+                          isExpanded: true,
+                          iconSize: 0,
+                          decoration: InputDecoration(
+                            icon: SvgPicture.asset('assets/category_alt.svg'),
+                            suffixIcon: Icon(Icons.arrow_drop_down),
+                          ),
+                          hint: Text('Category'),
+                          value: _selectedCategory,
+                          items: _categories.map((value) {
+                            return DropdownMenuItem<String>(
+                              child: Text(value.name),
+                              value: value.name,
+                            );
+                          }).toList(),
+                          onChanged: (v) {
+                            setState(() {
+                              _selectedCategory = v!;
+                            });
+                          },
+                        ),
+                        TextField(
+                          keyboardType: TextInputType.multiline,
+                          textInputAction: TextInputAction.done,
+                          controller: _descController,
+                          minLines: 5,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            labelText: 'Deskripsi laporan ( Opsional )',
+                            alignLabelWithHint: true,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(
+                                  style: BorderStyle.solid, color: orangeBlaze),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(style: BorderStyle.solid),
+                            ),
+                          ),
+                        ),
+                        Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Checkbox(
+                              activeColor: orangeBlaze,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _anonym = value!;
+                                });
+                              },
+                              value: _anonym,
+                            ),
+                            Text('Lapor Secara Anonim'),
+                          ],
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                var data = Provider.of<PreferencesProvider>(
+                                    context,
+                                    listen: false);
+                                int id = data.userData.id;
+                                String url = _urlController.text.toString();
+                                String desc = _descController.text.toString();
+                                XFile img = _image!;
+                                String category = _selectedCategory;
+                                bool isAnonym = _anonym;
 
-                        var report = Report(
-                          user: id,
-                          url: url,
-                          description: desc,
-                          category: category,
-                          isAnonym: isAnonym,
-                          img: img,
-                        );
+                                var report = Report(
+                                  user: id,
+                                  url: url,
+                                  description: desc,
+                                  category: category,
+                                  isAnonym: isAnonym,
+                                  img: img,
+                                );
 
-                        var api = LaporhoaxApi(dio);
-                        var progress = ProgressHUD.of(context);
-                        var result =
-                            api.postReport(data.loginData.token!, report);
-                        progress!.showWithText('Laporanmu sedang diupload!');
+                                var api = LaporhoaxApi(dio);
+                                var progress = ProgressHUD.of(context);
+                                var result = api.postReport(
+                                    data.loginData.token!, report);
+                                progress!
+                                    .showWithText('Laporanmu sedang diupload!');
 
-                        result.then((value) {
-                          print('Report Status : ${value.status}');
-                          progress.dismiss();
-                          Navigation.intentWithData(
-                              OnSuccessReport.routeName, value);
-                        }).onError((error, stackTrace) {
-                          print(error);
-                          progress.dismiss();
-                          Navigation.intent(OnFailureReport.routeName);
-                        });
-                      },
-                      child: Text('Lapor'),
+                                result.then((value) {
+                                  print('Report Status : ${value.status}');
+                                  progress.dismiss();
+                                  Navigation.intentWithData(
+                                      OnSuccessReport.routeName, value);
+                                }).onError((error, stackTrace) {
+                                  print(error);
+                                  progress.dismiss();
+                                  Navigation.intent(OnFailureReport.routeName);
+                                });
+                              }
+                            },
+                            child: Text('Lapor'),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Consumer<PreferencesProvider>(
