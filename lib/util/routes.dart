@@ -5,6 +5,7 @@ import 'package:laporhoax/ui/account/account_profile.dart';
 import 'package:laporhoax/ui/account/forgot_password_page.dart';
 import 'package:laporhoax/ui/account/login_page.dart';
 import 'package:laporhoax/ui/account/register_page.dart';
+import 'package:laporhoax/ui/account/user_challenge.dart';
 import 'package:laporhoax/ui/home_page.dart';
 import 'package:laporhoax/ui/news/news_web_view.dart';
 import 'package:laporhoax/ui/news/saved_news.dart';
@@ -19,6 +20,9 @@ Map<String, Widget Function(BuildContext)> routes = {
   ForgotPassword.routeName: (context) => ForgotPassword(),
   ForgotPasswordAction.routeName: (context) => ForgotPasswordAction(),
   RegisterPage.routeName: (context) => RegisterPage(),
+  UserChallenge.routeName: (context) => UserChallenge(
+        id: ModalRoute.of(context)?.settings.arguments as String,
+      ),
   AccountProfile.routeName: (context) => AccountProfile(),
   HistoryPage.routeName: (context) => HistoryPage(
         tokenId: ModalRoute.of(context)?.settings.arguments as TokenId,

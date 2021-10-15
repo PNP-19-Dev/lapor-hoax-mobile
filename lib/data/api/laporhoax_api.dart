@@ -3,11 +3,13 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:laporhoax/data/model/category.dart';
+import 'package:laporhoax/data/model/challenge.dart';
 import 'package:laporhoax/data/model/feed.dart';
 import 'package:laporhoax/data/model/otp_status.dart';
 import 'package:laporhoax/data/model/report.dart';
 import 'package:laporhoax/data/model/user_data.dart';
 import 'package:laporhoax/data/model/user_login.dart';
+import 'package:laporhoax/data/model/user_question.dart';
 import 'package:laporhoax/data/model/user_register.dart';
 import 'package:laporhoax/data/model/user_report.dart';
 import 'package:laporhoax/data/model/user_status.dart';
@@ -18,6 +20,7 @@ class LaporhoaxApi {
   static final String loginEndpoint = 'auth/api/login';
   static final String registerEndpoint = 'auth/api/register';
   static final String getUserEndpint = 'auth/api/users/get';
+  static final String questionEndpoint = 'auth/api/question';
   static final String reportsEndpoint = 'api/reports';
   static final String reportCatEndpoint = 'api/reports/cat';
   static final String feedsEndpoint = 'api/feeds';
@@ -197,12 +200,36 @@ class LaporhoaxApi {
   }
 
   Future<Feed> getFeedById(String id) async {
-    final response = await dio.get('$baseUrl/$feedsEndpoint/$id');
+    final response = await dio.get('$feedsEndpoint/$id');
 
     if (response.statusCode == 200) {
       return Feed.fromJson(jsonDecode(response.data));
     } else {
       throw Exception('Failed to load feed by id');
+    }
+  }
+
+  Future<Question> getQuestions() async {
+    final response = await dio.get('$questionEndpoint');
+
+    if (response.statusCode == 200) {
+      return Question.fromJson(jsonDecode(response.data));
+    } else {
+      throw Exception('failed to get category');
+    }
+  }
+
+  Future postSecurityQNA(String id, Challenge result) async {
+    final response = await dio.post(
+      '$questionEndpoint',
+      options: Options(contentType: Headers.jsonContentType),
+      data: result.toJson(),
+    );
+
+    if (response.statusCode == 200) {
+      return "Success";
+    } else {
+      throw Exception('failed to post questions');
     }
   }
 }
