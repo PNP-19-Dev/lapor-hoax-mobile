@@ -1,74 +1,112 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
+import 'package:laporhoax/data/model/user_question.dart';
 
-class ForgotPassword extends StatelessWidget {
+class ForgotPassword extends StatefulWidget {
   static String routeName = '/forgot_password';
 
   @override
+  _ForgotPasswordState createState() => _ForgotPasswordState();
+}
+
+class _ForgotPasswordState extends State<ForgotPassword> {
+  @override
   Widget build(BuildContext context) {
-    var _inputUser = TextEditingController();
+    final _formKey = GlobalKey<FormState>();
+    var _inputQuestion = TextEditingController();
+    var _inputAnswer = TextEditingController();
+    final dio = Dio();
+    List<QuestionResult> _q1 = [];
+
+    @override
+    initState() {
+      super.initState();
+    }
 
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
+        title: Text('Pertanyaan Rahasia'),
+      ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: GestureDetector(
-                onTap: () => Navigation.back(),
-                child: Icon(Icons.arrow_back),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Pertanyaan',
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15,
+                ),
               ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(top: 40),
-              child: Column(
+              TextFormField(
+                controller: _inputQuestion,
+                enabled: false,
+                decoration: InputDecoration(
+                  hintText: 'Pertanyaan',
+                  icon: Image.asset(
+                    'assets/icons/question.png',
+                    width: 24,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Jawaban',
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15,
+                ),
+              ),
+              TextFormField(
+                controller: _inputAnswer,
+                textInputAction: TextInputAction.done,
+                decoration: InputDecoration(
+                  hintText: 'Masukkan Jawabanmu',
+                  icon: Image.asset(
+                    'assets/icons/ans.png',
+                    width: 24,
+                  ),
+                ),
+                validator: (value) {
+                  if (value!.trim().isEmpty) {
+                    return 'Kamu belum memasukkan jawabannya';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Ganti Pertanyaan?',
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15,
+                  color: orangeBlaze,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(33),
-                      child: SvgPicture.asset(
-                        'asset/logo.svg',
-                        height: 80,
-                        width: 80,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "Lupa Password",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline4!
-                        .apply(color: Colors.black),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    'Masukkan username atau email yang terhubung dengan akunmu!',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.caption,
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {}
+                    },
+                    child: Text('Selanjutnya'),
                   ),
                 ],
               ),
-            ),
-            TextFormField(
-              controller: _inputUser,
-              textInputAction: TextInputAction.done,
-              autofillHints: [AutofillHints.email, AutofillHints.username],
-              decoration: InputDecoration(hintText: 'Username / Email'),
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () =>
-                    Navigation.intent(ForgotPasswordAction.routeName),
-                child: Text('Next'),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

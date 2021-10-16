@@ -16,7 +16,6 @@ class DetailReportPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('${reportItem.img}');
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -26,7 +25,7 @@ class DetailReportPage extends StatelessWidget {
           IconButton(
             onPressed: () => Share.share(
                 'Ini klarifikasi oleh pihak ahli: ${reportItem.verdictDesc}'),
-            icon: SvgPicture.asset('assets/share.svg'),
+            icon: SvgPicture.asset('assets/icons/share.svg'),
           ),
         ],
       ),
@@ -69,11 +68,11 @@ class DetailReportPage extends StatelessWidget {
               ),
               width: double.infinity,
               child: Text(
-                "${reportItem.verdictDesc ?? '--- Belum ada feedback, ditunggu ya ! ---'}",
+                "${reportItem.verdictDesc!.isEmpty ? '--- Belum ada feedback, ditunggu ya ! ---' : reportItem.verdictDesc}",
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.w400,
                   fontSize: 14,
-                  color: grey700,
+                  color: Colors.black,
                 ),
                 textAlign: TextAlign.justify,
               ),

@@ -60,14 +60,17 @@ class _HistoryPageState extends State<HistoryPage> {
             return Center(child: CircularProgressIndicator());
           } else {
             if (snapshot.hasData) {
+              var data = snapshot.data!.results;
               return ListView.builder(
                 shrinkWrap: true,
-                itemCount: snapshot.data!.results.length,
+                itemCount: data.length,
+                scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
                   var report = snapshot.data!.results[index];
                   return DismissibleWidget<ReportItem>(
-                    report.status,
+                    key: Key(report.id.toString()),
                     item: report,
+                    onDismiss: () {},
                     child: ReportListItem(report: report),
                   );
                 },

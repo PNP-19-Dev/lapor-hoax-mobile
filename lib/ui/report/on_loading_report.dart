@@ -24,7 +24,7 @@ class OnSuccessReport extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SvgPicture.asset('assets/success.svg', width: 100),
+              SvgPicture.asset('assets/icons/success.svg', width: 100),
               SizedBox(height: 30),
               Text('Selamat !',
                   style: GoogleFonts.inter(
@@ -77,7 +77,7 @@ class OnFailureReport extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SvgPicture.asset('assets/fail.svg', width: 100),
+            SvgPicture.asset('assets/icons/fail.svg', width: 100),
             SizedBox(height: 25),
             Text('Oops...!',
                 style: GoogleFonts.inter(

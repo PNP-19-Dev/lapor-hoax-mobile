@@ -6,10 +6,10 @@ import 'package:laporhoax/data/model/user_token.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
 import 'package:laporhoax/ui/account/account_profile.dart';
 import 'package:laporhoax/ui/account/login_page.dart';
-import 'package:laporhoax/ui/account/privacy_policy.dart';
-import 'package:laporhoax/ui/account/terms_of_service.dart';
+import 'package:laporhoax/ui/account/static_page_viewer.dart';
 import 'package:laporhoax/ui/news/saved_news.dart';
 import 'package:laporhoax/ui/report/history_page.dart';
+import 'package:laporhoax/util/static_data_web.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
@@ -119,7 +119,7 @@ class _AccountPageState extends State<AccountPage> {
             onTap: () => showAboutDialog(
               context: context,
               applicationIcon:
-              Image.asset('assets/icons/logo_new.png', width: 50),
+                  Image.asset('assets/icons/logo_new.png', width: 50),
               applicationName: 'LAPOR HOAX',
               applicationVersion: 'v1.0-alpha',
               children: [
@@ -159,23 +159,39 @@ class _AccountPageState extends State<AccountPage> {
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             GestureDetector(
-              onTap: () => Navigation.intent(TermsOfService.routeName),
-              child: Text(
-                'Syarat Penggunaan',
-                style: GoogleFonts.inter(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14,
+              onTap: () => Navigation.intentWithData(
+                StaticPageViewer.routeName,
+                StaticDataWeb(
+                  fileName: 'terms_of_service',
+                  title: 'Syarat Penggunaan',
+                ),
+              ),
+              child: Container(
+                child: Text(
+                  'Syarat Penggunaan',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                  ),
                 ),
               ),
             ),
             Text(' | '),
             GestureDetector(
-              onTap: () => Navigation.intent(PrivacyPolicy.routeName),
-              child: Text(
-                'Kebijakan Privasi',
-                style: GoogleFonts.inter(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14,
+              onTap: () => Navigation.intentWithData(
+                StaticPageViewer.routeName,
+                StaticDataWeb(
+                  fileName: 'privacy_policy',
+                  title: 'Kebijakan Privasi',
+                ),
+              ),
+              child: Container(
+                child: Text(
+                  'Kebijakan Privasi',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                  ),
                 ),
               ),
             ),
@@ -270,7 +286,13 @@ class _AccountPageState extends State<AccountPage> {
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             GestureDetector(
-              onTap: () => Navigation.intent(TermsOfService.routeName),
+              onTap: () => Navigation.intentWithData(
+                StaticPageViewer.routeName,
+                StaticDataWeb(
+                  fileName: 'terms_of_service',
+                  title: 'Syarat Penggunaan',
+                ),
+              ),
               child: Container(
                 child: Text(
                   'Syarat Penggunaan',
@@ -283,7 +305,13 @@ class _AccountPageState extends State<AccountPage> {
             ),
             Text(' | '),
             GestureDetector(
-              onTap: () => Navigation.intent(PrivacyPolicy.routeName),
+              onTap: () => Navigation.intentWithData(
+                StaticPageViewer.routeName,
+                StaticDataWeb(
+                  fileName: 'privacy_policy',
+                  title: 'Kebijakan Privasi',
+                ),
+              ),
               child: Container(
                 child: Text(
                   'Kebijakan Privasi',

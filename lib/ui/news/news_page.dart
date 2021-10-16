@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/provider/feed_provider.dart';
+import 'package:laporhoax/ui/account/tutorial.dart';
 import 'package:laporhoax/ui/report/lapor_page.dart';
 import 'package:laporhoax/util/result_state.dart';
 import 'package:laporhoax/util/widget/item_feed.dart';
@@ -139,7 +140,8 @@ class _NewsPageState extends State<NewsPage> {
                             ),
                             SizedBox(width: 5),
                             OutlinedButton(
-                              onPressed: () {},
+                              onPressed: () =>
+                                  Navigation.intent(Tutorial.routeName),
                               child: Text('Tutorial'),
                             ),
                           ],
@@ -147,7 +149,7 @@ class _NewsPageState extends State<NewsPage> {
                       ],
                     ),
                     SvgPicture.asset(
-                      'assets/reporting_illust.svg',
+                      'assets/illustration/reporting_illust.svg',
                       width: 120,
                     ),
                   ],

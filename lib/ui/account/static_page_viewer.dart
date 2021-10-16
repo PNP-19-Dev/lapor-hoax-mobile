@@ -2,23 +2,30 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:laporhoax/util/static_data_web.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class TermsOfService extends StatefulWidget {
+class StaticPageViewer extends StatefulWidget {
   static const String routeName = '/terms_of_service';
 
+  final StaticDataWeb data;
+
+  StaticPageViewer({required this.data});
+
   @override
-  _TermsOfServiceState createState() => _TermsOfServiceState();
+  _StaticPageViewerState createState() => _StaticPageViewerState();
 }
 
-class _TermsOfServiceState extends State<TermsOfService> {
+class _StaticPageViewerState extends State<StaticPageViewer> {
   late WebViewController _controller;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Syarat Penggunaan'),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          title: Text(widget.data.title),
         ),
         body: WebView(
           initialUrl: 'about:blank',
@@ -30,8 +37,8 @@ class _TermsOfServiceState extends State<TermsOfService> {
   }
 
   _loadHtmlFromAssets() async {
-    String fileText =
-        await rootBundle.loadString('assets/document/terms_of_service.html');
+    String fileText = await rootBundle
+        .loadString('assets/document/${widget.data.fileName}.html');
     _controller.loadUrl(Uri.dataFromString(fileText,
             mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
         .toString());

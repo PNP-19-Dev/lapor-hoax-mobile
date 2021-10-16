@@ -161,7 +161,8 @@ class _LaporPageState extends State<LaporPage> {
                           focusNode: _linkFocusNode,
                           decoration: InputDecoration(
                               labelText: 'URL / Link (optional)',
-                              icon: SvgPicture.asset('assets/link_on.svg'),
+                              icon:
+                                  SvgPicture.asset('assets/icons/link_on.svg'),
                               labelStyle: TextStyle(
                                 color: _linkFocusNode.hasFocus
                                     ? orangeBlaze
@@ -172,7 +173,8 @@ class _LaporPageState extends State<LaporPage> {
                           isExpanded: true,
                           iconSize: 0,
                           decoration: InputDecoration(
-                            icon: SvgPicture.asset('assets/category_alt.svg'),
+                            icon: SvgPicture.asset(
+                                'assets/icons/category_alt.svg'),
                             suffixIcon: Icon(Icons.arrow_drop_down),
                           ),
                           hint: Text('Category'),
@@ -327,7 +329,7 @@ class _LaporPageState extends State<LaporPage> {
             child: Column(
               children: [
                 SvgPicture.asset(
-                  'assets/not_login.svg',
+                  'assets/illustration/not_login.svg',
                   width: 250,
                   height: 250,
                 ),

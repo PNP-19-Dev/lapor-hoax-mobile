@@ -1,30 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:laporhoax/util/widget/toast.dart';
 
 class DismissibleWidget<T> extends StatelessWidget {
   final T item;
-  final String message;
   final Widget child;
+  final Function() onDismiss;
 
-  const DismissibleWidget(
-    this.message, {
+  const DismissibleWidget({
+    Key? key,
     required this.item,
     required this.child,
-  });
+    required this.onDismiss,
+  }) : super(key: key);
+
+  void _showSnackBar(BuildContext context, String text) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(text)));
+  }
 
   @override
   Widget build(BuildContext context) => Slidable(
-        actionPane: SlidableBehindActionPane(),
+        key: key,
+        dismissal: SlidableDismissal(
+          child: SlidableDrawerDismissal(),
+          onDismissed: (actionType) {
+            _showSnackBar(context, 'Deleted');
+          },
+        ),
         actionExtentRatio: 0.25,
+        actionPane: SlidableBehindActionPane(),
         child: child,
         secondaryActions: [
           IconSlideAction(
             caption: 'Hapus',
             color: Colors.red,
             icon: Icons.delete,
-            onTap: () => toast('status $message'),
-          )
+            onTap: () => _showSnackBar(context, "Hello"),
+          ),
         ],
       );
 }

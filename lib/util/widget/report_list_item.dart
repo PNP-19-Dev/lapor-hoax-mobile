@@ -38,7 +38,7 @@ class ReportListItem extends StatelessWidget {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       SvgPicture.asset(
-                        'assets/modified_date.svg',
+                        'assets/icons/modified_date.svg',
                         height: 13,
                       ),
                       SizedBox(width: 2),

@@ -5,14 +5,12 @@ import 'package:dio/dio.dart';
 import 'package:laporhoax/data/model/category.dart';
 import 'package:laporhoax/data/model/challenge.dart';
 import 'package:laporhoax/data/model/feed.dart';
-import 'package:laporhoax/data/model/otp_status.dart';
 import 'package:laporhoax/data/model/report.dart';
 import 'package:laporhoax/data/model/user_data.dart';
 import 'package:laporhoax/data/model/user_login.dart';
 import 'package:laporhoax/data/model/user_question.dart';
 import 'package:laporhoax/data/model/user_register.dart';
 import 'package:laporhoax/data/model/user_report.dart';
-import 'package:laporhoax/data/model/user_status.dart';
 import 'package:laporhoax/data/model/user_token.dart';
 
 class LaporhoaxApi {
@@ -90,42 +88,6 @@ class LaporhoaxApi {
     }
   }
 
-  // return status
-  Future<UserStatus> isActive(String key) async {
-    final response = await dio.post(
-      '/$isActiveEndpoint/',
-      options: Options(contentType: Headers.jsonContentType),
-      data: jsonEncode(<String, String>{
-        'key': key,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.data);
-    } else {
-      throw Exception('Failed to validate');
-    }
-  }
-
-  Future<OtpStatus> verifyOtp(String email, String otp) async {
-    final response = await dio.post(
-      '/$verifyOtpEndpoint/',
-      options: Options(contentType: Headers.jsonContentType),
-      data: jsonEncode(
-        <String, String>{
-          'email': email,
-          'otp': otp,
-        },
-      ),
-    );
-
-    if (response.statusCode == 200) {
-      return OtpStatus.fromJson(jsonDecode(response.data));
-    } else {
-      throw Exception('Failed to verify');
-    }
-  }
-
   Future<List<User>> getUserData(String email) async {
     final response = await dio.get(
       '/$getUserEndpint',
@@ -180,7 +142,23 @@ class LaporhoaxApi {
       return UserReport.fromJson(response.data);
     } else {
       print('${response.statusCode}');
-      throw Exception('Failed to load report ${response.data}');
+      throw Exception('Failed to load report ${response.statusCode}');
+    }
+  }
+
+  Future<String> deleteReport(String token, String id) async {
+    final response = await dio.delete(
+      '/$reportsEndpoint/user/$id/',
+      options: Options(headers: {
+        HttpHeaders.authorizationHeader: "Token $token",
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      return 'Success';
+    } else {
+      print('${response.statusCode}');
+      throw Exception('Failed to delete report ${response.statusCode}');
     }
   }
 
