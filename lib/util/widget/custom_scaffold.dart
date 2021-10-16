@@ -3,7 +3,6 @@ import 'package:laporhoax/common/navigation.dart';
 
 class CustomScaffold extends StatelessWidget {
   final Widget body;
-
   CustomScaffold({required this.body});
 
   Widget _buildShortAppBar(BuildContext context) {

@@ -18,13 +18,13 @@ class DatabaseHelper {
     var db = openDatabase(
       '$path/laporhoax.db',
       onCreate: (db, version) async {
-        await db.execute('''
-        CREATE TABLE $_tblNews (
-        id TEXT PRIMARY KEY,
+        await db.execute('''CREATE TABLE $_tblNews (
+        id INTEGER PRIMARY KEY,
         title TEXT,
         thumbnail TEXT,
-        date TEXT,
-        )''');
+        date TEXT
+        )
+        ''');
       },
       version: 1,
     );

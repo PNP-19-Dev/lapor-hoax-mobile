@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -147,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                             hintText: 'Kata Sandi',
                             icon:
-                            Icon(FontAwesomeIcons.key, color: orangeBlaze),
+                                Icon(FontAwesomeIcons.key, color: orangeBlaze),
                             suffixIcon: IconButton(
                               icon: Icon(_obscureText
                                   ? FontAwesomeIcons.eyeSlash
@@ -253,7 +251,7 @@ class _LoginPageState extends State<LoginPage> {
                           Expanded(
                             child: Container(
                               margin:
-                              const EdgeInsets.only(left: 10, right: 20),
+                                  const EdgeInsets.only(left: 10, right: 20),
                               child: Divider(
                                 height: 36,
                               ),
@@ -266,7 +264,7 @@ class _LoginPageState extends State<LoginPage> {
                           Expanded(
                             child: Container(
                               margin:
-                              const EdgeInsets.only(left: 20, right: 10),
+                                  const EdgeInsets.only(left: 20, right: 10),
                               child: Divider(
                                 height: 36,
                               ),
@@ -275,12 +273,12 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                       SizedBox(height: 10),
-                      SignInButton(
+                      /*SignInButton(
                         Buttons.Google,
                         text: 'Login dengan Google',
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         onPressed: signIn,
-                      ),
+                      ),*/
 /*                      SignInButton(
                         Buttons.FacebookNew,
                         text: 'Login dengan Facebook',

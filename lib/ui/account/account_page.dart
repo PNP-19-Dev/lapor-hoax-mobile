@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
+import 'package:laporhoax/data/model/token_id.dart';
 import 'package:laporhoax/data/model/user_token.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
 import 'package:laporhoax/ui/account/account_profile.dart';
 import 'package:laporhoax/ui/account/login_page.dart';
+import 'package:laporhoax/ui/account/privacy_policy.dart';
+import 'package:laporhoax/ui/account/terms_of_service.dart';
 import 'package:laporhoax/ui/news/saved_news.dart';
 import 'package:laporhoax/ui/report/history_page.dart';
 import 'package:provider/provider.dart';
@@ -42,6 +45,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Widget onLogin(String username) {
+    var provider = Provider.of<PreferencesProvider>(context, listen: false);
     return Column(
       children: [
         Padding(
@@ -63,11 +67,7 @@ class _AccountPageState extends State<AccountPage> {
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  var provider =
-                      Provider.of<PreferencesProvider>(context, listen: false);
-                  provider.setSessionData(UserToken.empty());
-                },
+                onTap: () => provider.setSessionData(UserToken.empty()),
                 child: Icon(
                   Icons.exit_to_app,
                   color: Colors.red,
@@ -92,7 +92,13 @@ class _AccountPageState extends State<AccountPage> {
             leading: Icon(Icons.history),
             title: Text('Riwayat Pelaporan'),
             trailing: Icon(Icons.chevron_right),
-            onTap: () => Navigation.intent(HistoryPage.routeName),
+            onTap: () => Navigation.intentWithData(
+              HistoryPage.routeName,
+              TokenId(
+                token: provider.loginData.token!,
+                id: provider.userData.id.toString(),
+              ),
+            ),
           ),
         ),
         Card(
@@ -113,7 +119,7 @@ class _AccountPageState extends State<AccountPage> {
             onTap: () => showAboutDialog(
               context: context,
               applicationIcon:
-                  Image.asset('assets/icons/logo_new.png', width: 50),
+              Image.asset('assets/icons/logo_new.png', width: 50),
               applicationName: 'LAPOR HOAX',
               applicationVersion: 'v1.0-alpha',
               children: [
@@ -152,19 +158,25 @@ class _AccountPageState extends State<AccountPage> {
         Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            Text(
-              'Syarat Penggunaan',
-              style: GoogleFonts.inter(
-                fontWeight: FontWeight.w700,
-                fontSize: 14,
+            GestureDetector(
+              onTap: () => Navigation.intent(TermsOfService.routeName),
+              child: Text(
+                'Syarat Penggunaan',
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                ),
               ),
             ),
             Text(' | '),
-            Text(
-              'Kebijakan Pribadi',
-              style: GoogleFonts.inter(
-                fontWeight: FontWeight.w700,
-                fontSize: 14,
+            GestureDetector(
+              onTap: () => Navigation.intent(PrivacyPolicy.routeName),
+              child: Text(
+                'Kebijakan Privasi',
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                ),
               ),
             ),
           ],
@@ -185,14 +197,6 @@ class _AccountPageState extends State<AccountPage> {
                 width: 80,
               ),
               SizedBox(height: 46),
-              ListTile(
-                leading: Icon(Icons.history),
-                title: Text('Riwayat Pelaporan'),
-                subtitle: Text(
-                    'Menyimpan semua laporan yang telah kamu laporkan dan melacak hasilnya'),
-                onTap: () {},
-              ),
-              SizedBox(height: 58),
             ],
           ),
         ),
@@ -207,7 +211,7 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ),
         ),
-        SizedBox(height: 30),
+        SizedBox(height: 20),
         Card(
           elevation: 4,
           child: ListTile(
@@ -245,6 +249,15 @@ class _AccountPageState extends State<AccountPage> {
         Card(
           elevation: 4,
           child: ListTile(
+            leading: Icon(Icons.bookmark_outline),
+            title: Text('Berita Tersimpan'),
+            trailing: Icon(Icons.chevron_right),
+            onTap: () => Navigation.intent(SavedNews.routeName),
+          ),
+        ),
+        Card(
+          elevation: 4,
+          child: ListTile(
             leading: Icon(Icons.share_rounded),
             title: Text('Bagikan LaporHoax'),
             trailing: Icon(Icons.chevron_right),
@@ -256,19 +269,29 @@ class _AccountPageState extends State<AccountPage> {
         Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            Text(
-              'Syarat Penggunaan',
-              style: GoogleFonts.inter(
-                fontWeight: FontWeight.w700,
-                fontSize: 14,
+            GestureDetector(
+              onTap: () => Navigation.intent(TermsOfService.routeName),
+              child: Container(
+                child: Text(
+                  'Syarat Penggunaan',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                  ),
+                ),
               ),
             ),
             Text(' | '),
-            Text(
-              'Kebijakan Privasi',
-              style: GoogleFonts.inter(
-                fontWeight: FontWeight.w700,
-                fontSize: 14,
+            GestureDetector(
+              onTap: () => Navigation.intent(PrivacyPolicy.routeName),
+              child: Container(
+                child: Text(
+                  'Kebijakan Privasi',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                  ),
+                ),
               ),
             ),
           ],

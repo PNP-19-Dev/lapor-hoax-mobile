@@ -220,8 +220,8 @@ class LaporhoaxApi {
   }
 
   Future postSecurityQNA(String id, Challenge result) async {
-    final response = await dio.post(
-      '$questionEndpoint',
+    final response = await dio.put(
+      '$questionEndpoint/user/$id',
       options: Options(contentType: Headers.jsonContentType),
       data: result.toJson(),
     );

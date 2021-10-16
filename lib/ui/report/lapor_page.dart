@@ -38,7 +38,6 @@ class _LaporPageState extends State<LaporPage> {
     final api = LaporhoaxApi(dio);
     final response = await api.getCategory();
     var listData = response;
-    print('data : $listData');
     setState(() {
       _categories = listData;
     });

@@ -12,7 +12,6 @@ class NewsWebView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('id : $id');
     return CustomScaffold(
       body: WebView(
         initialUrl: '${LaporhoaxApi.baseUrl}/news/$id',

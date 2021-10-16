@@ -148,6 +148,7 @@ class _NewsPageState extends State<NewsPage> {
                     ),
                     SvgPicture.asset(
                       'assets/reporting_illust.svg',
+                      width: 120,
                     ),
                   ],
                 ),

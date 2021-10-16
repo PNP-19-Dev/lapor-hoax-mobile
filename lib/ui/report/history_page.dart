@@ -5,7 +5,8 @@ import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/token_id.dart';
 import 'package:laporhoax/data/model/user_report.dart';
-import 'package:laporhoax/util/widget/item_test.dart';
+import 'package:laporhoax/util/widget/dismissible_widget.dart';
+import 'package:laporhoax/util/widget/report_list_item.dart';
 
 class HistoryPage extends StatefulWidget {
   static const routeName = '/history_page';
@@ -63,8 +64,12 @@ class _HistoryPageState extends State<HistoryPage> {
                 shrinkWrap: true,
                 itemCount: snapshot.data!.results.length,
                 itemBuilder: (context, index) {
-                  var report = snapshot.data?.results[index];
-                  return ItemList(report: report!);
+                  var report = snapshot.data!.results[index];
+                  return DismissibleWidget<ReportItem>(
+                    report.status,
+                    item: report,
+                    child: ReportListItem(report: report),
+                  );
                 },
               );
             } else if (snapshot.hasError) {
