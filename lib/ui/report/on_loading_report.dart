@@ -5,7 +5,7 @@ import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/model/user_report.dart';
 import 'package:laporhoax/ui/report/detail_report_page.dart';
-import 'package:laporhoax/ui/report/lapor_page.dart';
+import 'package:laporhoax/ui/report/report_page.dart';
 
 class OnSuccessReport extends StatelessWidget {
   static String routeName = '/success';
@@ -45,7 +45,7 @@ class OnSuccessReport extends StatelessWidget {
                       fontWeight: FontWeight.w400, fontSize: 20)),
               SizedBox(height: 25),
               ElevatedButton(
-                onPressed: () => Navigation.intent(LaporPage.routeName),
+                onPressed: () => Navigation.intent(ReportPage.routeName),
                 child: Text('Lapor lagi yuk !'),
               ),
               SizedBox(height: 20),
@@ -96,7 +96,7 @@ class OnFailureReport extends StatelessWidget {
                     fontWeight: FontWeight.w400, fontSize: 12)),
             SizedBox(height: 25),
             ElevatedButton(
-              onPressed: () => Navigation.intent(LaporPage.routeName),
+              onPressed: () => Navigation.intent(ReportPage.routeName),
               style: redElevatedButton,
               child: Text('Ulang Pelaporan'),
             ),

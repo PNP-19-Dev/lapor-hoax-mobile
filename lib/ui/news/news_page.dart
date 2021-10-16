@@ -1,12 +1,12 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/provider/feed_provider.dart';
 import 'package:laporhoax/ui/account/tutorial.dart';
-import 'package:laporhoax/ui/report/lapor_page.dart';
+import 'package:laporhoax/ui/report/report_page.dart';
 import 'package:laporhoax/util/result_state.dart';
 import 'package:laporhoax/util/widget/item_feed.dart';
 import 'package:provider/provider.dart';
@@ -45,9 +45,9 @@ class _NewsPageState extends State<NewsPage> {
         var feeds = provider.feeds;
         return SliverGrid(
           gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
           delegate: SliverChildBuilderDelegate(
-            (_, index) {
+                (_, index) {
               var feed = feeds.results[index];
               return Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -91,10 +91,16 @@ class _NewsPageState extends State<NewsPage> {
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
               )),
-          leading: Image.asset('assets/icons/logo_new.png', width: 60),
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset('assets/icons/logo_new.png', width: 60),
+          ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () async {
+                String? token = await FirebaseMessaging.instance.getToken();
+                print('FIREBASE token: $token');
+              },
               icon: Icon(
                 Icons.notifications_none,
                 color: orangeBlaze,
@@ -111,7 +117,7 @@ class _NewsPageState extends State<NewsPage> {
               child: Container(
                 width: double.infinity,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                 child: Row(
                   children: [
                     Column(
@@ -135,7 +141,7 @@ class _NewsPageState extends State<NewsPage> {
                           children: [
                             ElevatedButton(
                               onPressed: () =>
-                                  Navigation.intent(LaporPage.routeName),
+                                  Navigation.intent(ReportPage.routeName),
                               child: Text('Lapor yuk!'),
                             ),
                             SizedBox(width: 5),
@@ -148,10 +154,10 @@ class _NewsPageState extends State<NewsPage> {
                         ),
                       ],
                     ),
-                    SvgPicture.asset(
-                      'assets/illustration/reporting_illust.svg',
-                      width: 120,
-                    ),
+                    // SvgPicture.asset(
+                    //   'assets/illustration/reporting_illust.svg',
+                    //   width: 120,
+                    // ),
                   ],
                 ),
               ),

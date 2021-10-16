@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/ui/account/account_page.dart';
 import 'package:laporhoax/ui/news/news_page.dart';
-import 'package:laporhoax/ui/report/lapor_page.dart';
+import 'package:laporhoax/ui/report/report_page.dart';
 
 import '../main.dart';
 
@@ -18,11 +18,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final FirebaseMessaging messaging = FirebaseMessaging.instance;
   int _bottomNavIndex = 0;
 
   _HomePageState() {
-    messaging.getToken().then((value) => print('token: $value'));
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
@@ -82,7 +80,7 @@ class _HomePageState extends State<HomePage> {
           child: Icon(Icons.add),
           tooltip: 'Tambah Laporan',
           onPressed: () {
-            Navigation.intent(LaporPage.routeName);
+            Navigation.intent(ReportPage.routeName);
           },
         ),
       ),

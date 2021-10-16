@@ -17,14 +17,14 @@ import 'package:laporhoax/ui/report/history_page.dart';
 import 'package:laporhoax/ui/report/on_loading_report.dart';
 import 'package:provider/provider.dart';
 
-class LaporPage extends StatefulWidget {
+class ReportPage extends StatefulWidget {
   static const routeName = '/lapor_page';
 
   @override
-  _LaporPageState createState() => _LaporPageState();
+  _ReportPageState createState() => _ReportPageState();
 }
 
-class _LaporPageState extends State<LaporPage> {
+class _ReportPageState extends State<ReportPage> {
   var _selectedCategory;
   bool _anonym = false;
   XFile? _image;

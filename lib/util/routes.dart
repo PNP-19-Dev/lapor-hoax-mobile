@@ -13,8 +13,8 @@ import 'package:laporhoax/ui/news/news_web_view.dart';
 import 'package:laporhoax/ui/news/saved_news.dart';
 import 'package:laporhoax/ui/report/detail_report_page.dart';
 import 'package:laporhoax/ui/report/history_page.dart';
-import 'package:laporhoax/ui/report/lapor_page.dart';
 import 'package:laporhoax/ui/report/on_loading_report.dart';
+import 'package:laporhoax/ui/report/report_page.dart';
 import 'package:laporhoax/util/static_data_web.dart';
 
 Map<String, Widget Function(BuildContext)> routes = {
@@ -30,7 +30,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   HistoryPage.routeName: (context) => HistoryPage(
         tokenId: ModalRoute.of(context)?.settings.arguments as TokenId,
       ),
-  LaporPage.routeName: (context) => LaporPage(),
+  ReportPage.routeName: (context) => ReportPage(),
   OnSuccessReport.routeName: (context) => OnSuccessReport(
         reportItem: ModalRoute.of(context)?.settings.arguments as ReportItem,
       ),

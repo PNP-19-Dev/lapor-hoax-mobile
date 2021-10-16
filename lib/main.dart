@@ -20,6 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print('Handling a background message ${message.messageId}');
+  print('MESSAGE: ${message.data}');
 }
 
 late AndroidNotificationChannel channel;

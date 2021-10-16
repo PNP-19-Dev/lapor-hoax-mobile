@@ -26,15 +26,16 @@ class ItemFeed extends StatelessWidget {
         ),
         elevation: 4,
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.8,
+          width: MediaQuery.of(context).size.width * 0.5,
           child: Stack(
             alignment: Alignment.bottomLeft,
             fit: StackFit.passthrough,
             children: [
               Positioned(
-                bottom: 0,
+                top: 0,
                 left: 0,
                 right: 0,
+                bottom: 0,
                 child: Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -45,38 +46,43 @@ class ItemFeed extends StatelessWidget {
                   ),
                   padding: const EdgeInsets.only(
                       left: 10, right: 49, bottom: 8, top: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        feed.title,
-                        softWrap: true,
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.access_time,
-                            color: Colors.white,
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            DateTimeHelper.formattedDate(feed.date),
-                            style: GoogleFonts.inter(
-                              fontSize: 10,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                ),
+              ),
+              Positioned(
+                left: 10,
+                right: 0,
+                bottom: 35,
+                child: Text(
+                  feed.title,
+                  softWrap: true,
+                  overflow: TextOverflow.clip,
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
+                ),
+              ),
+              Positioned(
+                bottom: 8,
+                left: 8,
+                right: 0,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.access_time,
+                      color: Colors.white,
+                    ),
+                    SizedBox(width: 4),
+                    Text(
+                      DateTimeHelper.formattedDate(feed.date),
+                      style: GoogleFonts.inter(
+                        fontSize: 10,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Ink.image(
