@@ -1,11 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="ac.id.pnp.laporhoax">
+    package="ac.id.pnp.laporhoax">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:icon="@mipmap/launcher_icon"
-        android:label="LAPOR HOAX">
+        android:label="LAPOR HOAX"
+        android:usesCleartextTraffic="true">
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
