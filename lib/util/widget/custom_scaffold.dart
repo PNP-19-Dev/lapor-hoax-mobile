@@ -3,7 +3,9 @@ import 'package:laporhoax/common/navigation.dart';
 
 class CustomScaffold extends StatelessWidget {
   final Widget body;
-  CustomScaffold({required this.body});
+  List<Widget>? children;
+
+  CustomScaffold({required this.body, this.children});
 
   Widget _buildShortAppBar(BuildContext context) {
     return Card(
@@ -23,6 +25,9 @@ class CustomScaffold extends StatelessWidget {
               'Berita',
               style: Theme.of(context).textTheme.headline6,
             ),
+          ),
+          Row(
+            children: children ?? [],
           ),
         ],
       ),
