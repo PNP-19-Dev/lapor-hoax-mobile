@@ -35,10 +35,10 @@ class ReportItem {
     required this.isAnonym,
     required this.dateReported,
     required this.description,
+    required this.prosesDate,
     required this.verdict,
     required this.verdictDesc,
     required this.verdictDate,
-    required this.imgB64,
     required this.user,
     required this.verdictJudge,
   });
@@ -49,12 +49,12 @@ class ReportItem {
   String category;
   String status;
   bool isAnonym;
-  DateTime dateReported;
+  String dateReported;
   String description;
+  String? prosesDate;
   String? verdict;
   String? verdictDesc;
-  DateTime? verdictDate;
-  String? imgB64;
+  String? verdictDate;
   int user;
   int? verdictJudge;
 
@@ -65,16 +65,15 @@ class ReportItem {
         category: json["category"],
         status: json["status"],
         isAnonym: json["isAnonym"],
-        dateReported: DateTime.parse(json["dateReported"]),
+        dateReported: json["dateReported"],
         description: json["description"],
+        prosesDate: json["prosesDate"],
         verdict: json["verdict"],
         verdictDesc: json["verdictDesc"],
-        verdictDate: json["verdictDate"] == null
-            ? null
-            : DateTime.parse(json["verdictDate"]),
-        imgB64: json["img_b64"],
+        verdictDate: json["verdictDate"],
         user: json["user"],
         verdictJudge: json["verdictJudge"],
       );
 }
+
 

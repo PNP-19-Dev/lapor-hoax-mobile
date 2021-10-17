@@ -5,12 +5,14 @@ class DismissibleWidget<T> extends StatelessWidget {
   final T item;
   final Widget child;
   final Function() onDismiss;
+  final bool status;
 
   const DismissibleWidget({
     Key? key,
     required this.item,
     required this.child,
     required this.onDismiss,
+    this.status = false,
   }) : super(key: key);
 
   void _showSnackBar(BuildContext context, String text) {
@@ -26,6 +28,9 @@ class DismissibleWidget<T> extends StatelessWidget {
           child: SlidableDrawerDismissal(),
           onDismissed: (actionType) {
             _showSnackBar(context, 'Deleted');
+          },
+          onWillDismiss: (actionType) {
+            return status;
           },
         ),
         actionExtentRatio: 0.25,

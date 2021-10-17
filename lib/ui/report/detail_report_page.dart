@@ -46,11 +46,11 @@ class DetailReportPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child:
-                  Text('Keputusan : ${reportItem.verdictJudge ?? "Menunggu"}',
-                      style: GoogleFonts.inter(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      )),
+                  Text('Keputusan : ${reportItem.verdict ?? "Menunggu"}',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  )),
             ),
             SizedBox(height: 2),
             Padding(

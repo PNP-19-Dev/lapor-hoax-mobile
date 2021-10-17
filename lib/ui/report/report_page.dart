@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -28,14 +27,12 @@ class _ReportPageState extends State<ReportPage> {
   var _selectedCategory;
   bool _anonym = false;
   XFile? _image;
-  var dio = Dio();
 
   var _urlController = TextEditingController();
   var _descController = TextEditingController();
+  final api = LaporhoaxApi();
 
   void getCategories() async {
-    final dio = Dio();
-    final api = LaporhoaxApi(dio);
     final response = await api.getCategory();
     var listData = response;
     setState(() {
@@ -139,7 +136,7 @@ class _ReportPageState extends State<ReportPage> {
                             CircleAvatar(
                               backgroundColor: orangeBlaze,
                               child: IconButton(
-                                onPressed: () {},
+                                onPressed: getPhoto,
                                 icon: Icon(Icons.camera_alt),
                               ),
                             ),
@@ -250,7 +247,6 @@ class _ReportPageState extends State<ReportPage> {
                                   img: img,
                                 );
 
-                                var api = LaporhoaxApi(dio);
                                 var progress = ProgressHUD.of(context);
                                 var result = api.postReport(
                                     data.loginData.token!, report);
@@ -284,11 +280,13 @@ class _ReportPageState extends State<ReportPage> {
                             token: provider.loginData.token!,
                             id: provider.userData.id.toString(),
                           )),
-                      child: Center(
-                          child: Text(
-                        'Lihat riwayat pelaporan',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
+                      child: Container(
+                        child: Center(
+                            child: Text(
+                          'Lihat riwayat pelaporan',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
+                      ),
                     );
                   }),
                 ],

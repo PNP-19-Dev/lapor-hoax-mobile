@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:laporhoax/common/navigation.dart';
@@ -27,14 +26,13 @@ class _UserChallengeState extends State<UserChallenge> {
   var _ans1 = TextEditingController();
   var _ans2 = TextEditingController();
   var _ans3 = TextEditingController();
-  final dio = Dio();
 
   List<QuestionResult> _q1 = [];
   List<QuestionResult> _q2 = [];
   List<QuestionResult> _q3 = [];
+  final api = LaporhoaxApi();
 
   void getQuestions() async {
-    final api = LaporhoaxApi(dio);
     final response = await api.getQuestions();
     var listData = response;
     setState(() {
@@ -185,7 +183,6 @@ class _UserChallengeState extends State<UserChallenge> {
                       ans3: ans3,
                     );
 
-                    var api = LaporhoaxApi(dio);
                     var progress = ProgressHUD.of(context);
                     var result = api.postSecurityQNA(widget.id, challenge);
                     progress!.showWithText('Memeriksa pertanyaan');

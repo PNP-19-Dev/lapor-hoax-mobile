@@ -3,24 +3,19 @@ import 'package:laporhoax/data/model/user_token.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesHelper {
-  final Future<SharedPreferences> sharedPreferences;
+  late final Future<SharedPreferences> sharedPreferences;
+  static PreferencesHelper? _instance;
 
-  PreferencesHelper({required this.sharedPreferences});
+  PreferencesHelper.getInstance() {
+    _instance = this;
+    sharedPreferences = SharedPreferences.getInstance();
+  }
 
-  static const DARK_THEME = 'DARK_THEME'; // coming soon for dark theme
+  factory PreferencesHelper() => _instance ?? PreferencesHelper.getInstance();
+
   static const LOGIN = 'LOGIN';
   static const SESSION = 'SESSION';
   static const DATA = 'DATA';
-
-  Future<bool> get isDarkTheme async {
-    final prefs = await sharedPreferences;
-    return prefs.getBool(DARK_THEME) ?? false;
-  }
-
-  void setDarkTheme(bool value) async {
-    final prefs = await sharedPreferences;
-    prefs.setBool(DARK_THEME, value);
-  }
 
   Future<List<String>> get sessionData async {
     final prefs = await sharedPreferences;

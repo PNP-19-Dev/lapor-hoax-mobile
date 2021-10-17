@@ -1,12 +1,14 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:laporhoax/common/navigation.dart';
-import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/token_id.dart';
 import 'package:laporhoax/data/model/user_report.dart';
-import 'package:laporhoax/util/widget/dismissible_widget.dart';
+import 'package:laporhoax/provider/reports_provider.dart';
+import 'package:laporhoax/util/result_state.dart';
 import 'package:laporhoax/util/widget/report_list_item.dart';
+import 'package:laporhoax/util/widget/toast.dart';
+import 'package:provider/provider.dart';
 
 class HistoryPage extends StatefulWidget {
   static const routeName = '/history_page';
@@ -16,22 +18,99 @@ class HistoryPage extends StatefulWidget {
   HistoryPage({required this.tokenId});
 
   @override
-  State<HistoryPage> createState() => _HistoryPageState();
+  _HistoryPageState createState() => _HistoryPageState();
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  late Future<UserReport> _reports;
-
-  Future<UserReport> fetchReports(String token, String id) async {
-    final client = Dio();
-    final api = LaporhoaxApi(client);
-    return api.getReport(token, id);
+  void _showSnackBar(BuildContext context, String text) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(text)));
   }
 
-  @override
-  initState() {
-    super.initState();
-    _reports = fetchReports(widget.tokenId.token, widget.tokenId.id);
+  Widget _getSlidable(
+      BuildContext context, int index, List<ReportItem> reports) {
+    final report = reports[index];
+    var provider = Provider.of<ReportsProvider>(
+      context,
+      listen: false,
+    );
+
+    return Slidable(
+      key: Key(report.id.toString()),
+      direction: Axis.horizontal,
+      dismissal: SlidableDismissal(
+        child: SlidableDrawerDismissal(),
+        onDismissed: (actionType) {
+          setState(() {
+            // remove item pada report
+            provider.deleteReport(report.id.toString()).then((value) {
+              _showSnackBar(context, 'Delete $value');
+              reports.removeAt(index);
+            }).onError((error, stackTrace) {
+              _showSnackBar(context, 'Delete fail');
+            });
+          });
+        },
+        onWillDismiss: (actionType) {
+          return report.status.toLowerCase() == 'belum diproses';
+        },
+      ),
+      actionPane: SlidableBehindActionPane(),
+      actionExtentRatio: 0.25,
+      child: ReportListItem(report: report),
+      secondaryActions: [
+        IconSlideAction(
+          caption: 'Hapus',
+          color: Colors.red,
+          icon: Icons.delete,
+          onTap: () => _showSnackBar(context, "Hello"),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildReportItem() {
+    return Consumer<ReportsProvider>(builder: (context, provider, widget) {
+      if (provider.state == ResultState.Loading) {
+        return Center(child: CircularProgressIndicator());
+      } else if (provider.state == ResultState.HasData) {
+        var reports = provider.reports.results;
+        return ListView.builder(
+          itemCount: provider.count,
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          itemBuilder: (context, index) {
+            return _getSlidable(context, index, reports);
+          },
+        );
+      } else if (provider.state == ResultState.NoData) {
+        return Center(child: Text(provider.message));
+      } else {
+        toast('Terjadi Masalah');
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error,
+                size: 30,
+                color: Color(0xFFBDBDBD),
+              ),
+              Text(
+                'Terjadi masalah ${provider.message}',
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+              /*Text(
+                'Token: ${provider.token} \nId: ${provider.id}',
+                style: Theme.of(context).textTheme.bodyText2,
+              ),*/
+            ],
+          ),
+        );
+      }
+    });
   }
 
   @override
@@ -52,53 +131,12 @@ class _HistoryPageState extends State<HistoryPage> {
           style: Theme.of(context).textTheme.headline5,
         ),
       ),
-      body: FutureBuilder(
-        future: _reports,
-        builder: (context, AsyncSnapshot<UserReport> snapshot) {
-          var state = snapshot.connectionState;
-          if (state != ConnectionState.done) {
-            return Center(child: CircularProgressIndicator());
-          } else {
-            if (snapshot.hasData) {
-              var data = snapshot.data!.results;
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: data.length,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context, index) {
-                  var report = snapshot.data!.results[index];
-                  return DismissibleWidget<ReportItem>(
-                    key: Key(report.id.toString()),
-                    item: report,
-                    onDismiss: () {},
-                    child: ReportListItem(report: report),
-                  );
-                },
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.error,
-                      size: 30,
-                      color: grey200,
-                    ),
-                    Text(
-                      'Something Went wrong',
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                    Text('${snapshot.error}'),
-                  ],
-                ),
-              );
-            } else {
-              return Center(child: Text('Empty List'));
-            }
-          }
-        },
+      body: Container(
+        child: ChangeNotifierProvider<ReportsProvider>(
+          create: (_) =>
+              ReportsProvider(api: LaporhoaxApi(), tokenId: widget.tokenId),
+          child: _buildReportItem(),
+        ),
       ),
     );
   }

@@ -1,14 +1,19 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/feed.dart';
 import 'package:laporhoax/util/result_state.dart';
 
 class FeedProvider extends ChangeNotifier {
-  final LaporhoaxApi apiService;
+  static FeedProvider? _instance;
+  late final LaporhoaxApi _apiService;
 
-  FeedProvider({required this.apiService}) {
+  FeedProvider.internal() {
+    _instance = this;
+    _apiService = LaporhoaxApi();
     _getFeed();
   }
+
+  factory FeedProvider() => _instance ?? FeedProvider.internal();
 
   String _message = '';
   int _count = 0;
@@ -27,7 +32,7 @@ class FeedProvider extends ChangeNotifier {
     try {
       _state = ResultState.Loading;
       notifyListeners();
-      final feed = await apiService.getFeeds();
+      final feed = await _apiService.getFeeds();
       if (feed.results.isEmpty) {
         _state = ResultState.NoData;
         notifyListeners();
@@ -49,7 +54,7 @@ class FeedProvider extends ChangeNotifier {
     try {
       _state = ResultState.Loading;
       notifyListeners();
-      final feed = await apiService.getFeeds(page: page);
+      final feed = await _apiService.getFeeds(page: page);
 
       if (feed.results.isEmpty) {
         _state = ResultState.NoData;

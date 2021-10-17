@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -28,8 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    var client = Dio();
-    var api = LaporhoaxApi(client);
+    var api = LaporhoaxApi();
 
     Future<UserRegister> getResponse(UserLogin user) async {
       return await api.postRegister(user);

@@ -24,23 +24,29 @@ class LaporhoaxApi {
   static final String feedsEndpoint = 'api/feeds';
   static final String isActiveEndpoint = 'isactive';
   static final String verifyOtpEndpoint = 'verifyotp';
+  static LaporhoaxApi? _instance;
 
-  final Dio dio;
+  late final Dio _dio;
 
-  LaporhoaxApi(this.dio) {
-    dio.options.baseUrl = baseUrl;
-    dio.options.validateStatus = (int? status) {
+  LaporhoaxApi._internal() {
+    _instance = this;
+    _dio = Dio();
+
+    _dio.options.baseUrl = baseUrl;
+    _dio.options.validateStatus = (int? status) {
       return status != null && status > 0;
     };
-    dio.options.headers = <String, String>{
+    _dio.options.headers = <String, String>{
       HttpHeaders.acceptHeader: '*/*',
       HttpHeaders.acceptEncodingHeader: 'gzip, deflate, br'
     };
   }
 
+  factory LaporhoaxApi() => _instance ?? LaporhoaxApi._internal();
+
   // return token
   Future<UserToken> postLogin(String username, String password) async {
-    final response = await dio
+    final response = await _dio
         .post(
           '/$loginEndpoint/',
           options: Options(contentType: Headers.jsonContentType),
@@ -63,7 +69,7 @@ class LaporhoaxApi {
   }
 
   Future<UserRegister> postRegister(UserLogin user) async {
-    final response = await dio.post(
+    final response = await _dio.post(
       '/$registerEndpoint/',
       options: Options(contentType: Headers.jsonContentType),
       data: user.toJson(),
@@ -79,7 +85,7 @@ class LaporhoaxApi {
   }
 
   Future<List<Category>> getCategory() async {
-    final response = await dio.get('/$reportCatEndpoint');
+    final response = await _dio.get('/$reportCatEndpoint');
 
     if (response.statusCode == 200) {
       return categoryFromJson(response.data);
@@ -89,7 +95,7 @@ class LaporhoaxApi {
   }
 
   Future<List<User>> getUserData(String email) async {
-    final response = await dio.get(
+    final response = await _dio.get(
       '/$getUserEndpint',
       options: Options(headers: <String, String>{
         "email": email,
@@ -104,6 +110,23 @@ class LaporhoaxApi {
     }
   }
 
+  Future<UserReport> getReport(String token, String id) async {
+    final response = await _dio.get(
+      '/$reportsEndpoint/user/$id/',
+      options: Options(headers: {
+        HttpHeaders.authorizationHeader: "Token $token",
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('${response.data}');
+      return UserReport.fromJson(response.data);
+    } else {
+      print('${response.statusCode}');
+      throw Exception('Failed to load report ${response.statusCode}');
+    }
+  }
+
   Future<ReportItem> postReport(String token, Report report) async {
     var formData = FormData.fromMap({
       'user': report.user.toString(),
@@ -115,7 +138,7 @@ class LaporhoaxApi {
           filename: report.img.name)
     });
 
-    final response = await dio.post('/$reportsEndpoint/',
+    final response = await _dio.post('/$reportsEndpoint/',
         data: formData,
         options: Options(
           headers: {
@@ -130,32 +153,16 @@ class LaporhoaxApi {
     }
   }
 
-  Future<UserReport> getReport(String token, String id) async {
-    final response = await dio.get(
-      '/$reportsEndpoint/user/$id/',
-      options: Options(headers: {
-        HttpHeaders.authorizationHeader: "Token $token",
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      return UserReport.fromJson(response.data);
-    } else {
-      print('${response.statusCode}');
-      throw Exception('Failed to load report ${response.statusCode}');
-    }
-  }
-
-  Future<String> deleteReport(String token, String id) async {
-    final response = await dio.delete(
-      '/$reportsEndpoint/user/$id/',
+  Future<String> deleteReport(String token, String reportId) async {
+    final response = await _dio.delete(
+      '/$reportsEndpoint/$reportId/',
       options: Options(headers: {
         HttpHeaders.authorizationHeader: "Token $token",
       }),
     );
 
     if (response.statusCode == 201) {
-      return 'Success';
+      return 'success';
     } else {
       print('${response.statusCode}');
       throw Exception('Failed to delete report ${response.statusCode}');
@@ -163,10 +170,10 @@ class LaporhoaxApi {
   }
 
   Future<Feeds> getFeeds({String page = ""}) async {
-    var response = await dio.get('$baseUrl/$feedsEndpoint/');
+    var response = await _dio.get('$baseUrl/$feedsEndpoint/');
 
     if (page.isNotEmpty) {
-      response = await dio
+      response = await _dio
           .get('$baseUrl/$feedsEndpoint', queryParameters: {'page': page});
     }
 
@@ -178,7 +185,7 @@ class LaporhoaxApi {
   }
 
   Future<Feed> getFeedById(String id) async {
-    final response = await dio.get('$feedsEndpoint/$id');
+    final response = await _dio.get('$feedsEndpoint/$id');
 
     if (response.statusCode == 200) {
       return Feed.fromJson(jsonDecode(response.data));
@@ -188,7 +195,7 @@ class LaporhoaxApi {
   }
 
   Future<Question> getQuestions() async {
-    final response = await dio.get('$questionEndpoint');
+    final response = await _dio.get('$questionEndpoint');
 
     if (response.statusCode == 200) {
       return Question.fromJson(jsonDecode(response.data));
@@ -198,7 +205,7 @@ class LaporhoaxApi {
   }
 
   Future postSecurityQNA(String id, Challenge result) async {
-    final response = await dio.put(
+    final response = await _dio.put(
       '$questionEndpoint/user/$id',
       options: Options(contentType: Headers.jsonContentType),
       data: result.toJson(),

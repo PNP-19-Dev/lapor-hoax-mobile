@@ -1,6 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
@@ -9,6 +8,7 @@ import 'package:laporhoax/ui/account/tutorial.dart';
 import 'package:laporhoax/ui/report/report_page.dart';
 import 'package:laporhoax/util/result_state.dart';
 import 'package:laporhoax/util/widget/item_feed.dart';
+import 'package:laporhoax/util/widget/toast.dart';
 import 'package:provider/provider.dart';
 
 class NewsPage extends StatefulWidget {
@@ -19,22 +19,6 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
-  toast(String message) {
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0);
-  }
-
-  String truncateWithEllipsis(int cutoff, String myString) {
-    return (myString.length <= cutoff)
-        ? myString
-        : '${myString.substring(0, cutoff)}...';
-  }
 
   Widget _buildFeedItem() {
     return Consumer<FeedProvider>(builder: (context, provider, widget) {
