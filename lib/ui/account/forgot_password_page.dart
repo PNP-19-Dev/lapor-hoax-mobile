@@ -6,9 +6,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/api/laporhoax_api.dart';
+import 'package:laporhoax/data/model/challenge.dart';
 import 'package:laporhoax/data/model/user_data.dart';
 import 'package:laporhoax/provider/list_providers.dart';
+import 'package:laporhoax/util/route/challenge_arguments.dart';
 import 'package:laporhoax/util/widget/toast.dart';
 import 'package:provider/provider.dart';
 
@@ -115,14 +116,24 @@ class _ForgotPasswordSectionOneState extends State<ForgotPasswordSectionOne> {
                                         provider
                                             .getUserData(_inputEmail.text)
                                             .then((value) {
-                                          progress.dismiss();
-                                          Navigation.intentWithData(
-                                              ForgotPasswordSectionTwo
-                                                  .routeName,
-                                              value);
+                                          User user = value;
+                                          String id = value.id.toString();
+
+                                          provider
+                                              .getUserQuestion(id)
+                                              .then((value) {
+                                            progress.dismiss();
+                                            Navigation.intentWithData(
+                                                ForgotPasswordSectionTwo
+                                                    .routeName,
+                                                ChallengeArguments(
+                                                    user, value));
+                                          }).onError((error, stackTrace) {
+                                            toast('Error $error');
+                                          });
                                         }).onError((error, stackTrace) {
                                           progress.dismiss();
-                                          toast('Error');
+                                          toast('Error $error');
                                         });
                                       }
                                     },
@@ -149,15 +160,15 @@ class _ForgotPasswordSectionOneState extends State<ForgotPasswordSectionOne> {
 class ForgotPasswordSectionTwo extends StatefulWidget {
   static String routeName = '/forgot_password2';
   final User user;
+  final Challenge challenge;
 
-  ForgotPasswordSectionTwo({required this.user});
+  ForgotPasswordSectionTwo({required this.user, required this.challenge});
 
   @override
   _ForgotPasswordSectionTwo createState() => _ForgotPasswordSectionTwo();
 }
 
 class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
-  final _formKey = GlobalKey<FormState>();
   var _inputQuestion = TextEditingController();
   var _inputAnswer = TextEditingController();
   var question = 'value';
@@ -165,17 +176,15 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
   List<String> userAnswer = [];
   List<int> index = [];
 
-  void getAnsAndIndex() async {
-    final api = LaporhoaxApi();
-    final response = await api.getUserQuestions(widget.user.id.toString());
+  void getAnsAndIndex() {
     userAnswer.clear();
-    userAnswer.add(response.ans1 ?? '');
-    userAnswer.add(response.ans2 ?? '');
-    userAnswer.add(response.ans3 ?? '');
+    userAnswer.add(widget.challenge.ans1 ?? '');
+    userAnswer.add(widget.challenge.ans2 ?? '');
+    userAnswer.add(widget.challenge.ans3 ?? '');
     index.clear();
-    index.add(response.quest1 ?? 1);
-    index.add(response.quest2 ?? 1);
-    index.add(response.quest3 ?? 1);
+    index.add(widget.challenge.quest1 ?? 1);
+    index.add(widget.challenge.quest2 ?? 1);
+    index.add(widget.challenge.quest3 ?? 1);
 
     print('index: ${index.length}');
   }
@@ -204,93 +213,92 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
               left: 16,
               right: 16,
             ),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Pertanyaan',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
-                    ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Pertanyaan',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
                   ),
-                  Consumer<ListProviders>(builder: (context, provider, child) {
-                    questionMap = provider.questionToMap();
+                ),
+                Consumer<ListProviders>(builder: (context, provider, child) {
+                  questionMap = provider.questionToMap();
 
-                    _inputQuestion.text =
-                        questionMap[index.isNotEmpty ? index[0] : 1] as String;
-                    return TextFormField(
-                      initialValue: question,
-                      enabled: false,
-                      decoration: InputDecoration(
-                        hintText: 'Pertanyaan',
-                        icon: Image.asset(
-                          'assets/icons/question.png',
-                          width: 24,
-                        ),
-                      ),
-                    );
-                  }),
-                  SizedBox(height: 20),
-                  Text(
-                    'Jawaban',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
-                    ),
-                  ),
-                  TextFormField(
-                    controller: _inputAnswer,
-                    textInputAction: TextInputAction.done,
+                  _inputQuestion.text =
+                      questionMap[index.isNotEmpty ? index[0] : 1] as String;
+
+                  return TextField(
+                    controller: _inputQuestion,
+                    enabled: false,
                     decoration: InputDecoration(
-                      hintText: 'Masukkan Jawabanmu',
+                      hintText: 'Pertanyaan',
                       icon: Image.asset(
-                        'assets/icons/ans.png',
+                        'assets/icons/question.png',
                         width: 24,
                       ),
                     ),
-                    validator: (value) {
-                      if (value!.trim().isEmpty) {
-                        return 'Kamu belum memasukkan jawabannya';
-                      }
-                      return null;
-                    },
+                  );
+                }),
+                SizedBox(height: 20),
+                Text(
+                  'Jawaban',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
                   ),
-                  SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: () {
-                      var random = Random();
-                      var nilaiRandom = random.nextInt(3);
-                      setState(() {
-                        question = questionMap[index[nilaiRandom]] as String;
-                      });
-                    },
-                    child: Container(
-                      child: Text(
-                        'Ganti Pertanyaan?',
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 15,
-                          color: orangeBlaze,
-                        ),
+                ),
+                TextField(
+                  controller: _inputAnswer,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    hintText: 'Masukkan Jawabanmu',
+                    icon: Image.asset(
+                      'assets/icons/ans.png',
+                      width: 24,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () {
+                    var random = Random();
+                    var nilaiRandom = random.nextInt(3);
+                    int nilai = index[nilaiRandom];
+                    print(nilai);
+                    var _newValue = questionMap[nilai] as String;
+
+                    _inputQuestion.value = TextEditingValue(
+                      text: _newValue,
+                      selection: TextSelection.fromPosition(
+                        TextPosition(offset: _newValue.length),
+                      ),
+                    );
+
+                    print(_inputQuestion.value);
+                  },
+                  child: Container(
+                    child: Text(
+                      'Ganti Pertanyaan?',
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15,
+                        color: orangeBlaze,
                       ),
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {}
-                        },
-                        child: Text('Selanjutnya'),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: Text('Selanjutnya'),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),

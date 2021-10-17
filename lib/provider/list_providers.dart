@@ -75,12 +75,7 @@ class ListProviders extends ChangeNotifier {
       var response = await _api.getUserQuestions(id);
       _state = ResultState.HasData;
       notifyListeners();
-      _userAns.add(response.ans1 ?? "");
-      _userAns.add(response.ans2 ?? "");
-      _userAns.add(response.ans3 ?? "");
-      _index.add(response.quest1 ?? 0);
-      _index.add(response.quest2 ?? 0);
-      _index.add(response.quest3 ?? 0);
+      return response;
     } catch (e) {
       _state = ResultState.Error;
       notifyListeners();

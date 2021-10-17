@@ -12,7 +12,7 @@ import 'package:laporhoax/provider/feed_provider.dart';
 import 'package:laporhoax/provider/list_providers.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
 import 'package:laporhoax/ui/home_page.dart';
-import 'package:laporhoax/util/routes.dart';
+import 'package:laporhoax/util/route/routes.dart';
 import 'package:provider/provider.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

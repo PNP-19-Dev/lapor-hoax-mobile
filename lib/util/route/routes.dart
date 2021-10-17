@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:laporhoax/data/model/feed.dart';
 import 'package:laporhoax/data/model/token_id.dart';
-import 'package:laporhoax/data/model/user_data.dart';
 import 'package:laporhoax/data/model/user_report.dart';
 import 'package:laporhoax/ui/account/account_profile.dart';
 import 'package:laporhoax/ui/account/forgot_password_page.dart';
@@ -18,15 +17,21 @@ import 'package:laporhoax/ui/report/detail_report_page.dart';
 import 'package:laporhoax/ui/report/history_page.dart';
 import 'package:laporhoax/ui/report/on_loading_report.dart';
 import 'package:laporhoax/ui/report/report_page.dart';
+import 'package:laporhoax/util/route/challenge_arguments.dart';
 import 'package:laporhoax/util/static_data_web.dart';
 
 Map<String, Widget Function(BuildContext)> routes = {
   HomePage.routeName: (context) => HomePage(),
   LoginPage.routeName: (context) => LoginPage(),
   ForgotPasswordSectionOne.routeName: (context) => ForgotPasswordSectionOne(),
-  ForgotPasswordSectionTwo.routeName: (context) => ForgotPasswordSectionTwo(
-        user: ModalRoute.of(context)?.settings.arguments as User,
-      ),
+  ForgotPasswordSectionTwo.routeName: (context) {
+    ChallengeArguments args =
+        ModalRoute.of(context)?.settings.arguments as ChallengeArguments;
+    return ForgotPasswordSectionTwo(
+      user: args.user,
+      challenge: args.challenge,
+    );
+  },
   PasswordChangePage.routeName: (context) => PasswordChangePage(),
   RegisterPage.routeName: (context) => RegisterPage(),
   UserChallenge.routeName: (context) => UserChallenge(
