@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,8 +8,7 @@ import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/user_login.dart';
 import 'package:laporhoax/data/model/user_register.dart';
-
-import 'login_page.dart';
+import 'package:laporhoax/ui/account/user_challenge.dart';
 
 class RegisterPage extends StatefulWidget {
   static String routeName = "/register_page";
@@ -29,8 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    var client = Dio();
-    var api = LaporhoaxApi(client);
+    var api = LaporhoaxApi();
 
     Future<UserRegister> getResponse(UserLogin user) async {
       return await api.postRegister(user);
@@ -92,7 +89,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           decoration: InputDecoration(
                             hintText: 'Username',
                             icon:
-                            Icon(Icons.person_outline, color: orangeBlaze),
+                                Icon(Icons.person_outline, color: orangeBlaze),
                           ),
                           validator: (value) {
                             if (value!.trim().isEmpty) {
@@ -112,7 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           decoration: InputDecoration(
                             hintText: 'Email',
                             icon:
-                            Icon(Icons.email_outlined, color: orangeBlaze),
+                                Icon(Icons.email_outlined, color: orangeBlaze),
                           ),
                           validator: (value) {
                             if (value!.trim().isEmpty) {
@@ -139,7 +136,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           decoration: InputDecoration(
                             hintText: 'Kata Sandi',
                             icon:
-                            Icon(FontAwesomeIcons.key, color: orangeBlaze),
+                                Icon(FontAwesomeIcons.key, color: orangeBlaze),
                             suffixIcon: IconButton(
                               icon: Icon(_obscureText
                                   ? FontAwesomeIcons.eyeSlash
@@ -173,7 +170,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           decoration: InputDecoration(
                             hintText: 'Masukkan ulang Kata Sandi',
                             icon:
-                            Icon(FontAwesomeIcons.key, color: orangeBlaze),
+                                Icon(FontAwesomeIcons.key, color: orangeBlaze),
                             suffixIcon: IconButton(
                               icon: Icon(_obscureText
                                   ? FontAwesomeIcons.eyeSlash
@@ -238,7 +235,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                       progress.dismiss();
                                       print(value);
                                       toast('Akun terdaftar! Silakan Login');
-                                      Navigation.intent(LoginPage.routeName);
+                                      Navigation.intentWithData(
+                                          UserChallenge.routeName,
+                                          value.user.id);
                                     }).onError((error, stackTrace) {
                                       progress.dismiss();
                                       toast('$error');

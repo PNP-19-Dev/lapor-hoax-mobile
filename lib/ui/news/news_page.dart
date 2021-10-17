@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/provider/feed_provider.dart';
-import 'package:laporhoax/ui/report/lapor_page.dart';
+import 'package:laporhoax/ui/account/tutorial.dart';
+import 'package:laporhoax/ui/report/report_page.dart';
 import 'package:laporhoax/util/result_state.dart';
 import 'package:laporhoax/util/widget/item_feed.dart';
+import 'package:laporhoax/util/widget/toast.dart';
 import 'package:provider/provider.dart';
 
 class NewsPage extends StatefulWidget {
@@ -18,22 +19,6 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
-  toast(String message) {
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0);
-  }
-
-  String truncateWithEllipsis(int cutoff, String myString) {
-    return (myString.length <= cutoff)
-        ? myString
-        : '${myString.substring(0, cutoff)}...';
-  }
 
   Widget _buildFeedItem() {
     return Consumer<FeedProvider>(builder: (context, provider, widget) {
@@ -44,9 +29,9 @@ class _NewsPageState extends State<NewsPage> {
         var feeds = provider.feeds;
         return SliverGrid(
           gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
           delegate: SliverChildBuilderDelegate(
-            (_, index) {
+                (_, index) {
               var feed = feeds.results[index];
               return Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -90,7 +75,10 @@ class _NewsPageState extends State<NewsPage> {
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
               )),
-          leading: Image.asset('assets/icons/logo_new.png', width: 60),
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset('assets/icons/logo_new.png', width: 60),
+          ),
           actions: [
             IconButton(
               onPressed: () {},
@@ -103,7 +91,7 @@ class _NewsPageState extends State<NewsPage> {
         ),
         SliverToBoxAdapter(
           child: Container(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
             child: Card(
               borderOnForeground: true,
               color: orange200,
@@ -112,6 +100,7 @@ class _NewsPageState extends State<NewsPage> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,36 +110,36 @@ class _NewsPageState extends State<NewsPage> {
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
                             )),
-                        Text(
-                          'Kalo kamu nemuin hoax, kasi tau \nkami lewat tombol di bawah ini ya!',
-                          style: GoogleFonts.inter(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: grey600,
-                          ),
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () =>
-                                  Navigation.intent(LaporPage.routeName),
-                              child: Text('Lapor yuk!'),
-                            ),
-                            SizedBox(width: 5),
-                            OutlinedButton(
-                              onPressed: () {},
-                              child: Text('Tutorial'),
-                            ),
-                          ],
+                        ElevatedButton(
+                          onPressed: () =>
+                              Navigation.intent(ReportPage.routeName),
+                          child: Text('Lapor yuk!'),
                         ),
                       ],
                     ),
                     SvgPicture.asset(
-                      'assets/reporting_illust.svg',
+                      'assets/illustration/reporting_illust.svg',
+                      width: 120,
                     ),
                   ],
                 ),
+              ),
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Card(
+              child: ListTile(
+                onTap: () => Navigation.intent(Tutorial.routeName),
+                leading: Icon(Icons.menu_book_sharp),
+                title: Text('Tutorial Penggunaan',
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                    )),
+                trailing: Icon(Icons.chevron_right),
               ),
             ),
           ),

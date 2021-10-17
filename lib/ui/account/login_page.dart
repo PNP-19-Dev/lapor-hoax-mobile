@@ -1,14 +1,10 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/api/google_signin_api.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/user_data.dart';
 import 'package:laporhoax/data/model/user_token.dart';
@@ -32,8 +28,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    var client = Dio();
-    var api = LaporhoaxApi(client);
+    var api = LaporhoaxApi();
 
     Future<UserToken> getToken(String username, String password) async {
       return await api.postLogin(username, password);
@@ -42,35 +37,6 @@ class _LoginPageState extends State<LoginPage> {
     Future<List<User>> getData(String username) async {
       return await api.getUserData(username);
     }
-
-    Future signIn() async {
-      final user = await GoogleSignInApi.login();
-
-      if (user != null) {
-        var header = await user.authHeaders;
-        var authentication = user.authentication.toString();
-        print("HEADERS $header");
-        print("Auth $authentication}");
-        print("User ID ${user.id}");
-      }
-
-      if (user == null) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Sign in failed'),
-        ));
-      }
-    }
-
-    // ERROR OVERFLOWED!
-    /*Future facebookSignIn() async {
-      final user = await FacebookSignInApi.login();
-
-      if (user!.status == LoginStatus.failed) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Sign in failed'),
-        ));
-      }
-    }*/
 
     void toast(String message) {
       Fluttertoast.showToast(
@@ -147,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                             hintText: 'Kata Sandi',
                             icon:
-                            Icon(FontAwesomeIcons.key, color: orangeBlaze),
+                                Icon(FontAwesomeIcons.key, color: orangeBlaze),
                             suffixIcon: IconButton(
                               icon: Icon(_obscureText
                                   ? FontAwesomeIcons.eyeSlash
@@ -172,14 +138,16 @@ class _LoginPageState extends State<LoginPage> {
                           child: GestureDetector(
                             onTap: () {
                               Navigator.pushNamed(
-                                  context, ForgotPassword.routeName);
+                                  context, ForgotPasswordSectionOne.routeName);
                             },
-                            child: Text('Lupa Password ?',
-                                style: GoogleFonts.inter(
-                                    color: orangeBlaze,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12),
-                                textAlign: TextAlign.end),
+                            child: Container(
+                              child: Text('Lupa Password ?',
+                                  style: GoogleFonts.inter(
+                                      color: orangeBlaze,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12),
+                                  textAlign: TextAlign.end),
+                            ),
                           ),
                         ),
                         Padding(
@@ -218,14 +186,15 @@ class _LoginPageState extends State<LoginPage> {
                                             listen: false);
 
                                     print('loading...');
-
-                                    data.then((value) =>
-                                        provider.setUserData(value.first));
+                                    data.then((value) {
+                                      provider.setUserData(value.first);
+                                    });
 
                                     token.then(
                                       (value) {
                                         progress.dismiss();
                                         provider.setSessionData(value);
+                                        // reportProviderInit.token = value.token;
                                         Navigation.intent(HomePage.routeName);
                                       },
                                     ).onError(
@@ -245,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-                  Column(
+                  /*Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Row(
@@ -253,7 +222,7 @@ class _LoginPageState extends State<LoginPage> {
                           Expanded(
                             child: Container(
                               margin:
-                              const EdgeInsets.only(left: 10, right: 20),
+                                  const EdgeInsets.only(left: 10, right: 20),
                               child: Divider(
                                 height: 36,
                               ),
@@ -266,7 +235,7 @@ class _LoginPageState extends State<LoginPage> {
                           Expanded(
                             child: Container(
                               margin:
-                              const EdgeInsets.only(left: 20, right: 10),
+                                  const EdgeInsets.only(left: 20, right: 10),
                               child: Divider(
                                 height: 36,
                               ),
@@ -281,14 +250,14 @@ class _LoginPageState extends State<LoginPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         onPressed: signIn,
                       ),
-/*                      SignInButton(
+                      SignInButton(
                         Buttons.FacebookNew,
                         text: 'Login dengan Facebook',
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         onPressed: facebookSignIn,
-                      ),*/
+                      ),
                     ],
-                  ),
+                  ),*/
                 ],
               ),
             ),

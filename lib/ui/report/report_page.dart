@@ -1,6 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,67 +11,44 @@ import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/category.dart';
 import 'package:laporhoax/data/model/report.dart';
 import 'package:laporhoax/data/model/token_id.dart';
+import 'package:laporhoax/provider/list_providers.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
 import 'package:laporhoax/ui/account/login_page.dart';
 import 'package:laporhoax/ui/report/history_page.dart';
 import 'package:laporhoax/ui/report/on_loading_report.dart';
+import 'package:laporhoax/util/widget/toast.dart';
 import 'package:provider/provider.dart';
 
-class LaporPage extends StatefulWidget {
+class ReportPage extends StatefulWidget {
   static const routeName = '/lapor_page';
 
   @override
-  _LaporPageState createState() => _LaporPageState();
+  _ReportPageState createState() => _ReportPageState();
 }
 
-class _LaporPageState extends State<LaporPage> {
+class _ReportPageState extends State<ReportPage> {
   var _selectedCategory;
   bool _anonym = false;
   XFile? _image;
-  var dio = Dio();
+  List<Category> _categories = [];
 
   var _urlController = TextEditingController();
   var _descController = TextEditingController();
+  final api = LaporhoaxApi();
 
-  void getCategories() async {
-    final dio = Dio();
-    final api = LaporhoaxApi(dio);
-    final response = await api.getCategory();
-    var listData = response;
-    print('data : $listData');
-    setState(() {
-      _categories = listData;
-    });
-  }
+  Future getImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(
+        source: source,
+        imageQuality: 85,
+      );
 
-  List<Category> _categories = [];
-
-  Future getPhoto() async {
-    final image = await ImagePicker().pickImage(
-      source: ImageSource.camera,
-      imageQuality: 85,
-    );
-
-    setState(() {
-      _image = image;
-    });
-  }
-
-  Future getImage() async {
-    final image = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 85,
-    );
-
-    setState(() {
-      _image = image;
-    });
-  }
-
-  @override
-  initState() {
-    super.initState();
-    getCategories();
+      if (image == null) return;
+      final imageTemporary = XFile(image.path);
+      setState(() => this._image = imageTemporary);
+    } on PlatformException catch (e) {
+      print('failed to pick image: $e');
+    }
   }
 
   @override
@@ -94,8 +71,9 @@ class _LaporPageState extends State<LaporPage> {
   final _formKey = GlobalKey<FormState>();
 
   Widget lapor() => ProgressHUD(
-        child: Builder(
-          builder: (context) => SingleChildScrollView(
+        child: Builder(builder: (context) {
+          var progress = ProgressHUD.of(context);
+          return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
@@ -132,7 +110,8 @@ class _LaporPageState extends State<LaporPage> {
                             CircleAvatar(
                               backgroundColor: orangeBlaze,
                               child: IconButton(
-                                onPressed: getImage,
+                                onPressed: () async =>
+                                    getImage(ImageSource.gallery),
                                 icon: Icon(Icons.image),
                               ),
                             ),
@@ -140,7 +119,8 @@ class _LaporPageState extends State<LaporPage> {
                             CircleAvatar(
                               backgroundColor: orangeBlaze,
                               child: IconButton(
-                                onPressed: () {},
+                                onPressed: () async =>
+                                    getImage(ImageSource.camera),
                                 icon: Icon(Icons.camera_alt),
                               ),
                             ),
@@ -149,7 +129,7 @@ class _LaporPageState extends State<LaporPage> {
                               child: Text(
                                 _image == null
                                     ? 'Sertakan Screenshoot'
-                                    : _image!.name,
+                                    : _image!.path,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -162,32 +142,44 @@ class _LaporPageState extends State<LaporPage> {
                           focusNode: _linkFocusNode,
                           decoration: InputDecoration(
                               labelText: 'URL / Link (optional)',
-                              icon: SvgPicture.asset('assets/link_on.svg'),
+                              icon:
+                                  SvgPicture.asset('assets/icons/link_on.svg'),
                               labelStyle: TextStyle(
                                 color: _linkFocusNode.hasFocus
                                     ? orangeBlaze
                                     : Colors.black,
                               )),
                         ),
-                        DropdownButtonFormField<String>(
-                          isExpanded: true,
-                          iconSize: 0,
-                          decoration: InputDecoration(
-                            icon: SvgPicture.asset('assets/category_alt.svg'),
-                            suffixIcon: Icon(Icons.arrow_drop_down),
-                          ),
-                          hint: Text('Category'),
-                          value: _selectedCategory,
-                          items: _categories.map((value) {
-                            return DropdownMenuItem<String>(
-                              child: Text(value.name),
-                              value: value.name,
+                        Consumer<ListProviders>(
+                          builder: (context, provider, widget) {
+                            _categories = provider.categoryList;
+                            return DropdownButtonFormField<String>(
+                              isExpanded: true,
+                              iconSize: 0,
+                              decoration: InputDecoration(
+                                icon: SvgPicture.asset(
+                                    'assets/icons/category_alt.svg'),
+                                suffixIcon: Icon(Icons.arrow_drop_down),
+                              ),
+                              hint: Text('Category'),
+                              value: _selectedCategory,
+                              items: _categories.map((value) {
+                                return DropdownMenuItem<String>(
+                                  child: Text(value.name),
+                                  value: value.name,
+                                );
+                              }).toList(),
+                              onChanged: (v) {
+                                setState(() {
+                                  _selectedCategory = v!;
+                                });
+                              },
+                              onTap: () {
+                                if (_categories.isEmpty) {
+                                  toast('Mengambil data kategori...');
+                                }
+                              },
                             );
-                          }).toList(),
-                          onChanged: (v) {
-                            setState(() {
-                              _selectedCategory = v!;
-                            });
                           },
                         ),
                         TextField(
@@ -249,8 +241,6 @@ class _LaporPageState extends State<LaporPage> {
                                   img: img,
                                 );
 
-                                var api = LaporhoaxApi(dio);
-                                var progress = ProgressHUD.of(context);
                                 var result = api.postReport(
                                     data.loginData.token!, report);
                                 progress!
@@ -283,18 +273,20 @@ class _LaporPageState extends State<LaporPage> {
                             token: provider.loginData.token!,
                             id: provider.userData.id.toString(),
                           )),
-                      child: Center(
-                          child: Text(
-                        'Lihat riwayat pelaporan',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
+                      child: Container(
+                        child: Center(
+                            child: Text(
+                          'Lihat riwayat pelaporan',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
+                      ),
                     );
                   }),
                 ],
               ),
             ),
-          ),
-        ),
+          );
+        }),
       );
 
   Widget welcome() {
@@ -328,7 +320,7 @@ class _LaporPageState extends State<LaporPage> {
             child: Column(
               children: [
                 SvgPicture.asset(
-                  'assets/not_login.svg',
+                  'assets/illustration/not_login.svg',
                   width: 250,
                   height: 250,
                 ),
