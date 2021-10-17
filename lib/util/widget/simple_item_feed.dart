@@ -15,7 +15,7 @@ class SimpleItemFeed extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigation.intentWithData(NewsWebView.routeName, feed.id);
+        Navigation.intentWithData(NewsWebView.routeName, feed);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
@@ -50,7 +50,7 @@ class SimpleItemFeed extends StatelessWidget {
                       if (loadingProgress == null) return child;
                       return Center(
                         child: CircularProgressIndicator(
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                             value: loadingProgress.expectedTotalBytes != null
                                 ? loadingProgress.cumulativeBytesLoaded /
                                     loadingProgress.expectedTotalBytes!

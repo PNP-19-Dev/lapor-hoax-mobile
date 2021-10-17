@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,10 +11,12 @@ import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/category.dart';
 import 'package:laporhoax/data/model/report.dart';
 import 'package:laporhoax/data/model/token_id.dart';
+import 'package:laporhoax/provider/list_providers.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
 import 'package:laporhoax/ui/account/login_page.dart';
 import 'package:laporhoax/ui/report/history_page.dart';
 import 'package:laporhoax/ui/report/on_loading_report.dart';
+import 'package:laporhoax/util/widget/toast.dart';
 import 'package:provider/provider.dart';
 
 class ReportPage extends StatefulWidget {
@@ -27,47 +30,25 @@ class _ReportPageState extends State<ReportPage> {
   var _selectedCategory;
   bool _anonym = false;
   XFile? _image;
+  List<Category> _categories = [];
 
   var _urlController = TextEditingController();
   var _descController = TextEditingController();
   final api = LaporhoaxApi();
 
-  void getCategories() async {
-    final response = await api.getCategory();
-    var listData = response;
-    setState(() {
-      _categories = listData;
-    });
-  }
+  Future getImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(
+        source: source,
+        imageQuality: 85,
+      );
 
-  List<Category> _categories = [];
-
-  Future getPhoto() async {
-    final image = await ImagePicker().pickImage(
-      source: ImageSource.camera,
-      imageQuality: 85,
-    );
-
-    setState(() {
-      _image = image;
-    });
-  }
-
-  Future getImage() async {
-    final image = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 85,
-    );
-
-    setState(() {
-      _image = image;
-    });
-  }
-
-  @override
-  initState() {
-    super.initState();
-    getCategories();
+      if (image == null) return;
+      final imageTemporary = XFile(image.path);
+      setState(() => this._image = imageTemporary);
+    } on PlatformException catch (e) {
+      print('failed to pick image: $e');
+    }
   }
 
   @override
@@ -90,8 +71,9 @@ class _ReportPageState extends State<ReportPage> {
   final _formKey = GlobalKey<FormState>();
 
   Widget lapor() => ProgressHUD(
-        child: Builder(
-          builder: (context) => SingleChildScrollView(
+        child: Builder(builder: (context) {
+          var progress = ProgressHUD.of(context);
+          return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
@@ -128,7 +110,8 @@ class _ReportPageState extends State<ReportPage> {
                             CircleAvatar(
                               backgroundColor: orangeBlaze,
                               child: IconButton(
-                                onPressed: getImage,
+                                onPressed: () async =>
+                                    getImage(ImageSource.gallery),
                                 icon: Icon(Icons.image),
                               ),
                             ),
@@ -136,7 +119,8 @@ class _ReportPageState extends State<ReportPage> {
                             CircleAvatar(
                               backgroundColor: orangeBlaze,
                               child: IconButton(
-                                onPressed: getPhoto,
+                                onPressed: () async =>
+                                    getImage(ImageSource.camera),
                                 icon: Icon(Icons.camera_alt),
                               ),
                             ),
@@ -145,7 +129,7 @@ class _ReportPageState extends State<ReportPage> {
                               child: Text(
                                 _image == null
                                     ? 'Sertakan Screenshoot'
-                                    : _image!.name,
+                                    : _image!.path,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -166,26 +150,36 @@ class _ReportPageState extends State<ReportPage> {
                                     : Colors.black,
                               )),
                         ),
-                        DropdownButtonFormField<String>(
-                          isExpanded: true,
-                          iconSize: 0,
-                          decoration: InputDecoration(
-                            icon: SvgPicture.asset(
-                                'assets/icons/category_alt.svg'),
-                            suffixIcon: Icon(Icons.arrow_drop_down),
-                          ),
-                          hint: Text('Category'),
-                          value: _selectedCategory,
-                          items: _categories.map((value) {
-                            return DropdownMenuItem<String>(
-                              child: Text(value.name),
-                              value: value.name,
+                        Consumer<ListProviders>(
+                          builder: (context, provider, widget) {
+                            _categories = provider.categoryList;
+                            return DropdownButtonFormField<String>(
+                              isExpanded: true,
+                              iconSize: 0,
+                              decoration: InputDecoration(
+                                icon: SvgPicture.asset(
+                                    'assets/icons/category_alt.svg'),
+                                suffixIcon: Icon(Icons.arrow_drop_down),
+                              ),
+                              hint: Text('Category'),
+                              value: _selectedCategory,
+                              items: _categories.map((value) {
+                                return DropdownMenuItem<String>(
+                                  child: Text(value.name),
+                                  value: value.name,
+                                );
+                              }).toList(),
+                              onChanged: (v) {
+                                setState(() {
+                                  _selectedCategory = v!;
+                                });
+                              },
+                              onTap: () {
+                                if (_categories.isEmpty) {
+                                  toast('Mengambil data kategori...');
+                                }
+                              },
                             );
-                          }).toList(),
-                          onChanged: (v) {
-                            setState(() {
-                              _selectedCategory = v!;
-                            });
                           },
                         ),
                         TextField(
@@ -247,7 +241,6 @@ class _ReportPageState extends State<ReportPage> {
                                   img: img,
                                 );
 
-                                var progress = ProgressHUD.of(context);
                                 var result = api.postReport(
                                     data.loginData.token!, report);
                                 progress!
@@ -292,8 +285,8 @@ class _ReportPageState extends State<ReportPage> {
                 ],
               ),
             ),
-          ),
-        ),
+          );
+        }),
       );
 
   Widget welcome() {

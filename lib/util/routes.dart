@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:laporhoax/data/model/feed.dart';
 import 'package:laporhoax/data/model/token_id.dart';
+import 'package:laporhoax/data/model/user_data.dart';
 import 'package:laporhoax/data/model/user_report.dart';
 import 'package:laporhoax/ui/account/account_profile.dart';
 import 'package:laporhoax/ui/account/forgot_password_page.dart';
 import 'package:laporhoax/ui/account/login_page.dart';
+import 'package:laporhoax/ui/account/password_change_page.dart';
 import 'package:laporhoax/ui/account/register_page.dart';
 import 'package:laporhoax/ui/account/static_page_viewer.dart';
 import 'package:laporhoax/ui/account/tutorial.dart';
@@ -20,11 +23,14 @@ import 'package:laporhoax/util/static_data_web.dart';
 Map<String, Widget Function(BuildContext)> routes = {
   HomePage.routeName: (context) => HomePage(),
   LoginPage.routeName: (context) => LoginPage(),
-  ForgotPassword.routeName: (context) => ForgotPassword(),
-  ForgotPasswordAction.routeName: (context) => ForgotPasswordAction(),
+  ForgotPasswordSectionOne.routeName: (context) => ForgotPasswordSectionOne(),
+  ForgotPasswordSectionTwo.routeName: (context) => ForgotPasswordSectionTwo(
+        user: ModalRoute.of(context)?.settings.arguments as User,
+      ),
+  PasswordChangePage.routeName: (context) => PasswordChangePage(),
   RegisterPage.routeName: (context) => RegisterPage(),
   UserChallenge.routeName: (context) => UserChallenge(
-        id: ModalRoute.of(context)?.settings.arguments as String,
+        id: ModalRoute.of(context)?.settings.arguments as int,
       ),
   AccountProfile.routeName: (context) => AccountProfile(),
   HistoryPage.routeName: (context) => HistoryPage(
@@ -39,7 +45,7 @@ Map<String, Widget Function(BuildContext)> routes = {
         reportItem: ModalRoute.of(context)?.settings.arguments as ReportItem,
       ),
   NewsWebView.routeName: (context) =>
-      NewsWebView(id: ModalRoute.of(context)?.settings.arguments as String),
+      NewsWebView(feed: ModalRoute.of(context)?.settings.arguments as Feed),
   SavedNews.routeName: (context) => SavedNews(),
   StaticPageViewer.routeName: (context) => StaticPageViewer(
         data: ModalRoute.of(context)?.settings.arguments as StaticDataWeb,

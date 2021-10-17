@@ -9,6 +9,7 @@ import 'package:laporhoax/data/db/database_helper.dart';
 import 'package:laporhoax/data/preferences/preferences_helper.dart';
 import 'package:laporhoax/provider/database_provider.dart';
 import 'package:laporhoax/provider/feed_provider.dart';
+import 'package:laporhoax/provider/list_providers.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
 import 'package:laporhoax/ui/home_page.dart';
 import 'package:laporhoax/util/routes.dart';
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => FeedProvider()),
+        ChangeNotifierProvider(create: (_) => ListProviders()),
         ChangeNotifierProvider(
           create: (_) => DatabaseProvider(
             databaseHelper: DatabaseHelper(),

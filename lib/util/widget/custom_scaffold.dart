@@ -3,7 +3,7 @@ import 'package:laporhoax/common/navigation.dart';
 
 class CustomScaffold extends StatelessWidget {
   final Widget body;
-  List<Widget>? children;
+  final List<Widget>? children;
 
   CustomScaffold({required this.body, this.children});
 
@@ -19,15 +19,17 @@ class CustomScaffold extends StatelessWidget {
               Navigation.back();
             },
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
+          Container(
+            padding: const EdgeInsets.only(right: 2.0),
             child: Text(
               'Berita',
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
-          Row(
-            children: children ?? [],
+          Container(
+            child: Row(
+              children: children ?? [],
+            ),
           ),
         ],
       ),

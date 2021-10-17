@@ -16,6 +16,8 @@ class DetailReportPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var verdictDesc = reportItem.verdictDesc ?? "";
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -46,7 +48,7 @@ class DetailReportPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child:
-                  Text('Keputusan : ${reportItem.verdict ?? "Menunggu"}',
+              Text('Keputusan : ${reportItem.verdict ?? "Menunggu"}',
                   style: GoogleFonts.inter(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -68,7 +70,7 @@ class DetailReportPage extends StatelessWidget {
               ),
               width: double.infinity,
               child: Text(
-                "${reportItem.verdictDesc!.isEmpty ? '--- Belum ada feedback, ditunggu ya ! ---' : reportItem.verdictDesc}",
+                "${verdictDesc.isEmpty ? '--- Belum ada feedback, ditunggu ya ! ---' : verdictDesc}",
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.w400,
                   fontSize: 14,

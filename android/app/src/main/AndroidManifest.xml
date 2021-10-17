@@ -6,6 +6,7 @@
     <application
         android:icon="@mipmap/launcher_icon"
         android:label="LAPOR HOAX"
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
 
         <meta-data

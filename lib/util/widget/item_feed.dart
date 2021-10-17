@@ -17,8 +17,7 @@ class ItemFeed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () =>
-          Navigation.intentWithData(NewsWebView.routeName, feed.id.toString()),
+      onTap: () => Navigation.intentWithData(NewsWebView.routeName, feed),
       child: Card(
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(

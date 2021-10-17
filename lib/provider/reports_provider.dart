@@ -6,6 +6,7 @@ import 'package:laporhoax/util/result_state.dart';
 
 class ReportsProvider extends ChangeNotifier {
   final LaporhoaxApi api;
+
   final TokenId tokenId;
 
   ReportsProvider({required this.api, required this.tokenId}) {

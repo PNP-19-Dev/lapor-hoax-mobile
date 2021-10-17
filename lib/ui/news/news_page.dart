@@ -1,5 +1,5 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
@@ -81,10 +81,7 @@ class _NewsPageState extends State<NewsPage> {
           ),
           actions: [
             IconButton(
-              onPressed: () async {
-                String? token = await FirebaseMessaging.instance.getToken();
-                print('FIREBASE token: $token');
-              },
+              onPressed: () {},
               icon: Icon(
                 Icons.notifications_none,
                 color: orangeBlaze,
@@ -94,15 +91,16 @@ class _NewsPageState extends State<NewsPage> {
         ),
         SliverToBoxAdapter(
           child: Container(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
             child: Card(
               borderOnForeground: true,
               color: orange200,
               child: Container(
                 width: double.infinity,
                 padding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,38 +110,36 @@ class _NewsPageState extends State<NewsPage> {
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
                             )),
-                        Text(
-                          'Kalo kamu nemuin hoax, kasi tau \nkami lewat tombol di bawah ini ya!',
-                          style: GoogleFonts.inter(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: grey600,
-                          ),
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () =>
-                                  Navigation.intent(ReportPage.routeName),
-                              child: Text('Lapor yuk!'),
-                            ),
-                            SizedBox(width: 5),
-                            OutlinedButton(
-                              onPressed: () =>
-                                  Navigation.intent(Tutorial.routeName),
-                              child: Text('Tutorial'),
-                            ),
-                          ],
+                        ElevatedButton(
+                          onPressed: () =>
+                              Navigation.intent(ReportPage.routeName),
+                          child: Text('Lapor yuk!'),
                         ),
                       ],
                     ),
-                    // SvgPicture.asset(
-                    //   'assets/illustration/reporting_illust.svg',
-                    //   width: 120,
-                    // ),
+                    SvgPicture.asset(
+                      'assets/illustration/reporting_illust.svg',
+                      width: 120,
+                    ),
                   ],
                 ),
+              ),
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Card(
+              child: ListTile(
+                onTap: () => Navigation.intent(Tutorial.routeName),
+                leading: Icon(Icons.menu_book_sharp),
+                title: Text('Tutorial Penggunaan',
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                    )),
+                trailing: Icon(Icons.chevron_right),
               ),
             ),
           ),

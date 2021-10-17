@@ -9,7 +9,6 @@ import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/user_data.dart';
 import 'package:laporhoax/data/model/user_token.dart';
 import 'package:laporhoax/provider/preferences_provider.dart';
-import 'package:laporhoax/provider/reports_provider.dart';
 import 'package:laporhoax/ui/account/forgot_password_page.dart';
 import 'package:laporhoax/ui/account/register_page.dart';
 import 'package:laporhoax/ui/home_page.dart';
@@ -139,14 +138,16 @@ class _LoginPageState extends State<LoginPage> {
                           child: GestureDetector(
                             onTap: () {
                               Navigator.pushNamed(
-                                  context, ForgotPassword.routeName);
+                                  context, ForgotPasswordSectionOne.routeName);
                             },
-                            child: Text('Lupa Password ?',
-                                style: GoogleFonts.inter(
-                                    color: orangeBlaze,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12),
-                                textAlign: TextAlign.end),
+                            child: Container(
+                              child: Text('Lupa Password ?',
+                                  style: GoogleFonts.inter(
+                                      color: orangeBlaze,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12),
+                                  textAlign: TextAlign.end),
+                            ),
                           ),
                         ),
                         Padding(
@@ -184,17 +185,9 @@ class _LoginPageState extends State<LoginPage> {
                                             context,
                                             listen: false);
 
-                                    var reportProviderInit =
-                                        Provider.of<ReportsProvider>(
-                                      context,
-                                      listen: false,
-                                    );
-
                                     print('loading...');
-
                                     data.then((value) {
                                       provider.setUserData(value.first);
-                                      // reportProviderInit.id = value.first.id.toString();
                                     });
 
                                     token.then(
@@ -221,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-                  Column(
+                  /*Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Row(
@@ -251,20 +244,20 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                       SizedBox(height: 10),
-                      /*SignInButton(
+                      SignInButton(
                         Buttons.Google,
                         text: 'Login dengan Google',
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         onPressed: signIn,
-                      ),*/
-/*                      SignInButton(
+                      ),
+                      SignInButton(
                         Buttons.FacebookNew,
                         text: 'Login dengan Facebook',
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         onPressed: facebookSignIn,
-                      ),*/
+                      ),
                     ],
-                  ),
+                  ),*/
                 ],
               ),
             ),

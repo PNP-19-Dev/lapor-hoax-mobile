@@ -19,6 +19,10 @@ class LaporhoaxApi {
   static final String registerEndpoint = 'auth/api/register';
   static final String getUserEndpint = 'auth/api/users/get';
   static final String questionEndpoint = 'auth/api/question';
+  static final String firebaseTokenEndpoint = 'auth/api/fcmToken';
+  static final String passwordChangeEndpoint = 'auth/api/change-password';
+  static final String passwordResetEndpoint = 'auth/api/reset';
+
   static final String reportsEndpoint = 'api/reports';
   static final String reportCatEndpoint = 'api/reports/cat';
   static final String feedsEndpoint = 'api/feeds';
@@ -135,7 +139,7 @@ class LaporhoaxApi {
       'isAnonym': report.isAnonym.toString(),
       'description': report.description,
       'img': await MultipartFile.fromFile(report.img.path,
-          filename: report.img.name)
+          filename: report.img.name),
     });
 
     final response = await _dio.post('/$reportsEndpoint/',
@@ -156,9 +160,11 @@ class LaporhoaxApi {
   Future<String> deleteReport(String token, String reportId) async {
     final response = await _dio.delete(
       '/$reportsEndpoint/$reportId/',
-      options: Options(headers: {
-        HttpHeaders.authorizationHeader: "Token $token",
-      }),
+      options: Options(
+        headers: {
+          HttpHeaders.authorizationHeader: "Token $token",
+        },
+      ),
     );
 
     if (response.statusCode == 201) {
@@ -170,22 +176,22 @@ class LaporhoaxApi {
   }
 
   Future<Feeds> getFeeds({String page = ""}) async {
-    var response = await _dio.get('$baseUrl/$feedsEndpoint/');
+    var response = await _dio.get('/$feedsEndpoint/');
 
     if (page.isNotEmpty) {
-      response = await _dio
-          .get('$baseUrl/$feedsEndpoint', queryParameters: {'page': page});
+      response =
+          await _dio.get('/$feedsEndpoint/', queryParameters: {'page': page});
     }
 
     if (response.statusCode == 200) {
       return Feeds.fromJson(response.data);
     } else {
-      throw Exception('Failed to load report');
+      throw Exception('Failed to load feeds!');
     }
   }
 
   Future<Feed> getFeedById(String id) async {
-    final response = await _dio.get('$feedsEndpoint/$id');
+    final response = await _dio.get('/$feedsEndpoint/$id');
 
     if (response.statusCode == 200) {
       return Feed.fromJson(jsonDecode(response.data));
@@ -195,26 +201,92 @@ class LaporhoaxApi {
   }
 
   Future<Question> getQuestions() async {
-    final response = await _dio.get('$questionEndpoint');
+    final response = await _dio.get('/$questionEndpoint');
 
     if (response.statusCode == 200) {
-      return Question.fromJson(jsonDecode(response.data));
+      return Question.fromJson(response.data);
     } else {
-      throw Exception('failed to get category');
+      throw Exception('failed to get user security question');
     }
   }
 
-  Future postSecurityQNA(String id, Challenge result) async {
-    final response = await _dio.put(
-      '$questionEndpoint/user/$id',
+  Future<Challenge> getUserQuestions(String id) async {
+    final response = await _dio.get('/$questionEndpoint/user/$id');
+
+    if (response.statusCode == 200) {
+      return Challenge.fromJson(response.data);
+    } else {
+      throw Exception(
+          'failed to get user security question ${response.statusCode}');
+    }
+  }
+
+  Future postSecurityQNA(Challenge result) async {
+    final response = await _dio
+        .post(
+          '/$questionEndpoint/user/',
+          options: Options(contentType: Headers.jsonContentType),
+          data: result.toJson(),
+        )
+        .onError(
+            (error, stackTrace) => throw Exception('Something went Wrong'));
+
+    if (response.statusCode == 200) {
+      return "Success";
+    } else {
+      throw Exception('failed to post questions ${response.statusCode}');
+    }
+  }
+
+  Future postFcmToken(String user, String fcmToken) async {
+    final response = await _dio.post(
+      '/$firebaseTokenEndpoint',
       options: Options(contentType: Headers.jsonContentType),
-      data: result.toJson(),
+      data: <String, String>{
+        'user': user,
+        'token': fcmToken,
+      },
     );
 
     if (response.statusCode == 200) {
       return "Success";
     } else {
-      throw Exception('failed to post questions');
+      throw Exception('failed to post token ${response.statusCode}');
+    }
+  }
+
+  Future<String> postChangePassword(
+      String oldPass, String newPass, String token) async {
+    final response = await _dio.post('/$passwordChangeEndpoint/',
+        options: Options(
+          contentType: Headers.jsonContentType,
+          headers: {HttpHeaders.authorizationHeader: "Token $token"},
+        ),
+        data: <String, String>{
+          "old_password": oldPass,
+          "new_password": newPass,
+        });
+
+    if (response.statusCode == 200) {
+      return 'Success';
+    } else {
+      throw Exception('failed to change new password');
+    }
+  }
+
+  Future<String> getPasswordReset(String email, String token) async {
+    final response = await _dio.get(
+      '/$passwordResetEndpoint/$email',
+      options: Options(
+        contentType: Headers.jsonContentType,
+        headers: {HttpHeaders.authorizationHeader: "Token $token"},
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      return 'Success';
+    } else {
+      throw Exception('failed to reset password');
     }
   }
 }
