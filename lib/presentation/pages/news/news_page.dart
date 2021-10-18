@@ -3,12 +3,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/provider/feed_provider.dart';
-import 'package:laporhoax/ui/account/tutorial.dart';
-import 'package:laporhoax/ui/report/report_page.dart';
+import 'package:laporhoax/presentation/pages/account/tutorial.dart';
+import 'package:laporhoax/presentation/pages/report/report_page.dart';
+import 'package:laporhoax/presentation/provider/feed_provider.dart';
+import 'package:laporhoax/presentation/widget/item_feed.dart';
+import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:laporhoax/util/result_state.dart';
-import 'package:laporhoax/util/widget/item_feed.dart';
-import 'package:laporhoax/util/widget/toast.dart';
 import 'package:provider/provider.dart';
 
 class NewsPage extends StatefulWidget {

@@ -8,10 +8,10 @@ import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/user_data.dart';
 import 'package:laporhoax/data/model/user_token.dart';
-import 'package:laporhoax/provider/preferences_provider.dart';
-import 'package:laporhoax/ui/account/forgot_password_page.dart';
-import 'package:laporhoax/ui/account/register_page.dart';
-import 'package:laporhoax/ui/home_page.dart';
+import 'package:laporhoax/presentation/pages/account/forgot_password_page.dart';
+import 'package:laporhoax/presentation/pages/account/register_page.dart';
+import 'package:laporhoax/presentation/pages/home_page.dart';
+import 'package:laporhoax/presentation/provider/preferences_provider.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -194,7 +194,6 @@ class _LoginPageState extends State<LoginPage> {
                                       (value) {
                                         progress.dismiss();
                                         provider.setSessionData(value);
-                                        // reportProviderInit.token = value.token;
                                         Navigation.intent(HomePage.routeName);
                                       },
                                     ).onError(
@@ -214,50 +213,6 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-                  /*Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.only(left: 10, right: 20),
-                              child: Divider(
-                                height: 36,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            'atau',
-                            style: TextStyle(color: grey500),
-                          ),
-                          Expanded(
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.only(left: 20, right: 10),
-                              child: Divider(
-                                height: 36,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      SignInButton(
-                        Buttons.Google,
-                        text: 'Login dengan Google',
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        onPressed: signIn,
-                      ),
-                      SignInButton(
-                        Buttons.FacebookNew,
-                        text: 'Login dengan Facebook',
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        onPressed: facebookSignIn,
-                      ),
-                    ],
-                  ),*/
                 ],
               ),
             ),

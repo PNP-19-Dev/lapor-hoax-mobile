@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
-import 'package:laporhoax/provider/preferences_provider.dart';
-import 'package:laporhoax/ui/account/password_change_page.dart';
-import 'package:laporhoax/ui/account/user_challenge.dart';
-import 'package:laporhoax/util/widget/toast.dart';
+import 'package:laporhoax/presentation/pages/account/password_change_page.dart';
+import 'package:laporhoax/presentation/pages/account/user_challenge.dart';
+import 'package:laporhoax/presentation/provider/preferences_provider.dart';
+import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
 class AccountProfile extends StatefulWidget {

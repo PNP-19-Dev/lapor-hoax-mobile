@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:laporhoax/provider/database_provider.dart';
+import 'package:laporhoax/presentation/provider/database_provider.dart';
+import 'package:laporhoax/presentation/widget/simple_item_feed.dart';
 import 'package:laporhoax/util/result_state.dart';
-import 'package:laporhoax/util/widget/simple_item_feed.dart';
 import 'package:provider/provider.dart';
 
 class SavedNews extends StatefulWidget {

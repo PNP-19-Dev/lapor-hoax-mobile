@@ -3,15 +3,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/data/model/token_id.dart';
 import 'package:laporhoax/data/model/user_token.dart';
-import 'package:laporhoax/provider/preferences_provider.dart';
-import 'package:laporhoax/ui/account/account_profile.dart';
-import 'package:laporhoax/ui/account/login_page.dart';
-import 'package:laporhoax/ui/account/static_page_viewer.dart';
-import 'package:laporhoax/ui/news/saved_news.dart';
-import 'package:laporhoax/ui/report/history_page.dart';
+import 'package:laporhoax/presentation/pages/account/static_page_viewer.dart';
+import 'package:laporhoax/presentation/pages/news/saved_news.dart';
+import 'package:laporhoax/presentation/pages/report/history_page.dart';
+import 'package:laporhoax/presentation/provider/preferences_provider.dart';
 import 'package:laporhoax/util/static_data_web.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
+
+import 'account_profile.dart';
+import 'login_page.dart';
 
 class AccountPage extends StatefulWidget {
   static const String pageName = 'Akun';

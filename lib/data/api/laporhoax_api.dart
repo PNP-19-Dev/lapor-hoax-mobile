@@ -138,8 +138,7 @@ class LaporhoaxApi {
       'category': report.category,
       'isAnonym': report.isAnonym.toString(),
       'description': report.description,
-      'img': await MultipartFile.fromFile(report.img.path,
-          filename: report.img.name),
+      'img': await MultipartFile.fromFile(report.img.path),
     });
 
     final response = await _dio.post('/$reportsEndpoint/',

@@ -4,8 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/model/user_report.dart';
-import 'package:laporhoax/ui/report/detail_report_page.dart';
-import 'package:laporhoax/ui/report/report_page.dart';
+import 'package:laporhoax/presentation/pages/report/report_page.dart';
+
+import 'detail_report_page.dart';
 
 class OnSuccessReport extends StatelessWidget {
   static String routeName = '/success';

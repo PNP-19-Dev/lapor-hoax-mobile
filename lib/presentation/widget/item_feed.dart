@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/model/feed.dart';
-import 'package:laporhoax/provider/database_provider.dart';
-import 'package:laporhoax/ui/news/news_web_view.dart';
+import 'package:laporhoax/presentation/pages/news/news_web_view.dart';
+import 'package:laporhoax/presentation/provider/database_provider.dart';
 import 'package:laporhoax/util/datetime_helper.dart';
 import 'package:provider/provider.dart';
 

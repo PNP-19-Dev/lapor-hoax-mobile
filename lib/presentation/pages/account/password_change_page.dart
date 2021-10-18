@@ -4,8 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
-import 'package:laporhoax/provider/preferences_provider.dart';
-import 'package:laporhoax/util/widget/toast.dart';
+import 'package:laporhoax/presentation/provider/preferences_provider.dart';
+import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
 class PasswordChangePage extends StatefulWidget {

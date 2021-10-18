@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/feed.dart';
-import 'package:laporhoax/util/widget/custom_scaffold.dart';
-import 'package:laporhoax/util/widget/item_feed.dart';
+import 'package:laporhoax/presentation/widget/custom_scaffold.dart';
+import 'package:laporhoax/presentation/widget/item_feed.dart';
 import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
