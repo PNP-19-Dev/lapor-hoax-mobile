@@ -11,13 +11,14 @@ import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/category.dart';
 import 'package:laporhoax/data/model/report.dart';
 import 'package:laporhoax/data/model/token_id.dart';
-import 'package:laporhoax/provider/list_providers.dart';
-import 'package:laporhoax/provider/preferences_provider.dart';
-import 'package:laporhoax/ui/account/login_page.dart';
-import 'package:laporhoax/ui/report/history_page.dart';
-import 'package:laporhoax/ui/report/on_loading_report.dart';
-import 'package:laporhoax/util/widget/toast.dart';
+import 'package:laporhoax/presentation/pages/account/login_page.dart';
+import 'package:laporhoax/presentation/provider/list_providers.dart';
+import 'package:laporhoax/presentation/provider/preferences_provider.dart';
+import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
+
+import 'history_page.dart';
+import 'on_loading_report.dart';
 
 class ReportPage extends StatefulWidget {
   static const routeName = '/lapor_page';

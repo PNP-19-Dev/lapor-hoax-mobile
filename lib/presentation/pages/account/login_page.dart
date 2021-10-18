@@ -8,10 +8,10 @@ import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/user_data.dart';
 import 'package:laporhoax/data/model/user_token.dart';
-import 'package:laporhoax/provider/preferences_provider.dart';
-import 'package:laporhoax/ui/account/forgot_password_page.dart';
-import 'package:laporhoax/ui/account/register_page.dart';
-import 'package:laporhoax/ui/home_page.dart';
+import 'package:laporhoax/presentation/pages/account/forgot_password_page.dart';
+import 'package:laporhoax/presentation/pages/account/register_page.dart';
+import 'package:laporhoax/presentation/pages/home_page.dart';
+import 'package:laporhoax/presentation/provider/preferences_provider.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -194,7 +194,6 @@ class _LoginPageState extends State<LoginPage> {
                                       (value) {
                                         progress.dismiss();
                                         provider.setSessionData(value);
-                                        // reportProviderInit.token = value.token;
                                         Navigation.intent(HomePage.routeName);
                                       },
                                     ).onError(

@@ -8,7 +8,7 @@ import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/user_login.dart';
 import 'package:laporhoax/data/model/user_register.dart';
-import 'package:laporhoax/ui/account/user_challenge.dart';
+import 'package:laporhoax/presentation/pages/account/user_challenge.dart';
 
 class RegisterPage extends StatefulWidget {
   static String routeName = "/register_page";

@@ -7,11 +7,11 @@ import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/db/database_helper.dart';
 import 'package:laporhoax/data/preferences/preferences_helper.dart';
-import 'package:laporhoax/provider/database_provider.dart';
-import 'package:laporhoax/provider/feed_provider.dart';
-import 'package:laporhoax/provider/list_providers.dart';
-import 'package:laporhoax/provider/preferences_provider.dart';
-import 'package:laporhoax/ui/home_page.dart';
+import 'package:laporhoax/presentation/pages/home_page.dart';
+import 'package:laporhoax/presentation/provider/database_provider.dart';
+import 'package:laporhoax/presentation/provider/feed_provider.dart';
+import 'package:laporhoax/presentation/provider/list_providers.dart';
+import 'package:laporhoax/presentation/provider/preferences_provider.dart';
 import 'package:laporhoax/util/route/routes.dart';
 import 'package:provider/provider.dart';
 
