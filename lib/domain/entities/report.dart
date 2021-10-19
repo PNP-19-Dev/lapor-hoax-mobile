@@ -1,32 +1,7 @@
-import 'dart:convert';
+import 'package:equatable/equatable.dart';
 
-UserReport userReportFromJson(String str) =>
-    UserReport.fromJson(json.decode(str));
-
-class UserReport {
-  UserReport({
-    required this.count,
-    required this.next,
-    required this.previous,
-    required this.results,
-  });
-
-  int count;
-  String? next;
-  String? previous;
-  List<ReportItem> results;
-
-  factory UserReport.fromJson(Map<String, dynamic> json) => UserReport(
-        count: json["count"],
-        next: json["next"],
-        previous: json["previous"],
-        results: List<ReportItem>.from(
-            json["results"].map((x) => ReportItem.fromJson(x))),
-      );
-}
-
-class ReportItem {
-  ReportItem({
+class Report extends Equatable {
+  Report({
     required this.id,
     required this.url,
     required this.img,
@@ -58,7 +33,7 @@ class ReportItem {
   int user;
   int? verdictJudge;
 
-  factory ReportItem.fromJson(Map<String, dynamic> json) => ReportItem(
+  factory Report.fromJson(Map<String, dynamic> json) => Report(
         id: json["id"],
         url: json["url"],
         img: json["img"],
@@ -74,6 +49,22 @@ class ReportItem {
         user: json["user"],
         verdictJudge: json["verdictJudge"],
       );
+
+  @override
+  List<Object?> get props => [
+        id,
+        url,
+        img,
+        category,
+        status,
+        isAnonym,
+        dateReported,
+        description,
+        prosesDate,
+        verdict,
+        verdictDesc,
+        verdictDate,
+        user,
+        verdictJudge
+      ];
 }
-
-

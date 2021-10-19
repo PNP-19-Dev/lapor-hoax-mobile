@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
-import 'package:laporhoax/presentation/provider/preferences_provider.dart';
+import 'package:laporhoax/presentation/provider/preferences_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
@@ -82,7 +82,7 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
         child: Builder(
           builder: (context) => Container(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Consumer<PreferencesProvider>(
+            child: Consumer<PreferencesNotifier>(
               builder: (context, provider, widget) {
                 return Form(
                   key: _formKey,

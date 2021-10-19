@@ -2,18 +2,52 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:laporhoax/data/model/challenge.dart';
-import 'package:laporhoax/data/model/feed_model.dart';
-import 'package:laporhoax/data/model/report_request.dart';
-import 'package:laporhoax/data/model/report_response.dart';
-import 'package:laporhoax/data/model/user_data.dart';
-import 'package:laporhoax/data/model/user_login.dart';
-import 'package:laporhoax/data/model/user_question.dart';
-import 'package:laporhoax/data/model/user_register.dart';
-import 'package:laporhoax/data/model/user_token.dart';
+import 'package:laporhoax/common/exception.dart';
 import 'package:laporhoax/data/models/category.dart';
+import 'package:laporhoax/data/models/challenge.dart';
+import 'package:laporhoax/data/models/feed_model.dart';
+import 'package:laporhoax/data/models/feed_response.dart';
+import 'package:laporhoax/data/models/report_model.dart';
+import 'package:laporhoax/data/models/report_request.dart';
+import 'package:laporhoax/data/models/report_response.dart';
+import 'package:laporhoax/data/models/user_data.dart';
+import 'package:laporhoax/data/models/user_login.dart';
+import 'package:laporhoax/data/models/user_question.dart';
+import 'package:laporhoax/data/models/user_register.dart';
+import 'package:laporhoax/data/models/user_token.dart';
 
-class LaporhoaxApi {
+abstract class RemoteDataSource {
+  Future<UserToken> postLogin(String username, String password);
+
+  Future<UserRegister> postRegister(UserLogin user);
+
+  Future<List<Category>> getCategory();
+
+  Future<List<User>> getUserData(String email);
+
+  Future<List<ReportModel>> getReport(String token, String id);
+
+  Future<ReportModel> postReport(String token, ReportRequest report);
+
+  Future<String> deleteReport(String token, ReportModel report);
+
+  Future<List<FeedModel>> getFeeds();
+
+  Future<Question> getQuestions();
+
+  Future<Challenge> getUserQuestions(String id);
+
+  Future postSecurityQNA(Challenge result);
+
+  Future postFcmToken(String user, String fcmToken);
+
+  Future<String> postChangePassword(
+      String oldPass, String newPass, String token);
+
+  Future<String> getPasswordReset(String email, String token);
+}
+
+class RemoteDataSourceImpl implements RemoteDataSource {
   static final String baseUrl = 'https://laporhoaxpolda.herokuapp.com';
   static final String loginEndpoint = 'auth/api/login';
   static final String registerEndpoint = 'auth/api/register';
@@ -28,78 +62,71 @@ class LaporhoaxApi {
   static final String feedsEndpoint = 'api/feeds';
   static final String isActiveEndpoint = 'isactive';
   static final String verifyOtpEndpoint = 'verifyotp';
-  static LaporhoaxApi? _instance;
 
-  late final Dio _dio;
+  final Dio dio;
 
-  LaporhoaxApi._internal() {
-    _instance = this;
-    _dio = Dio();
-
-    _dio.options.baseUrl = baseUrl;
-    _dio.options.validateStatus = (int? status) {
+  RemoteDataSourceImpl({required this.dio}) {
+    dio.options.baseUrl = baseUrl;
+    dio.options.validateStatus = (int? status) {
       return status != null && status > 0;
     };
-    _dio.options.headers = <String, String>{
+    dio.options.headers = <String, String>{
       HttpHeaders.acceptHeader: '*/*',
       HttpHeaders.acceptEncodingHeader: 'gzip, deflate, br'
     };
   }
 
-  factory LaporhoaxApi() => _instance ?? LaporhoaxApi._internal();
-
-  // return token
+  @override
   Future<UserToken> postLogin(String username, String password) async {
-    final response = await _dio
-        .post(
-          '/$loginEndpoint/',
-          options: Options(contentType: Headers.jsonContentType),
-          data: jsonEncode(
-            <String, String>{
-              "username": username,
-              "password": password,
-            },
-          ),
-        )
-        .onError((error, stackTrace) => throw Exception('No Internet'));
+    final response = await dio.post(
+      '/$loginEndpoint/',
+      options: Options(contentType: Headers.jsonContentType),
+      data: jsonEncode(
+        <String, String>{
+          "username": username,
+          "password": password,
+        },
+      ),
+    );
 
     if (response.statusCode == 200) {
       print(response.data);
       return UserToken.fromJson(response.data);
     } else {
-      print('Response : ${response.statusCode}');
-      throw Exception('\nStatus: ${response.data} (${response.statusCode})');
+      throw ServerException();
     }
   }
 
+  @override
   Future<UserRegister> postRegister(UserLogin user) async {
-    final response = await _dio.post(
+    final response = await dio.post(
       '/$registerEndpoint/',
       options: Options(contentType: Headers.jsonContentType),
       data: user.toJson(),
     );
 
     if (response.statusCode == 200) {
+      print(response.data);
       return UserRegister.fromJson(response.data);
-    } else if (response.statusCode == 400) {
-      throw Exception('akun sudah ada!');
     } else {
-      throw Exception('Gagal untuk mendaftar : ${response.statusCode}');
+      throw ServerException();
     }
   }
 
+  @override
   Future<List<Category>> getCategory() async {
-    final response = await _dio.get('/$reportCatEndpoint');
+    final response = await dio.get('/$reportCatEndpoint');
 
     if (response.statusCode == 200) {
       return categoryFromJson(response.data);
     } else {
-      throw Exception('gagal mendapatkan kategori');
+      throw ServerException();
     }
   }
 
+  @override
   Future<List<User>> getUserData(String email) async {
-    final response = await _dio.get(
+    final response = await dio.get(
       '/$getUserEndpint',
       options: Options(headers: <String, String>{
         "email": email,
@@ -110,12 +137,13 @@ class LaporhoaxApi {
       // return on list, but still only 1 entry
       return List<User>.from(response.data.map((x) => User.fromJson(x)));
     } else {
-      throw Exception('Failed to retrieve user data ${response.statusCode}');
+      throw ServerException();
     }
   }
 
-  Future<UserReport> getReport(String token, String id) async {
-    final response = await _dio.get(
+  @override
+  Future<List<ReportModel>> getReport(String token, String id) async {
+    final response = await dio.get(
       '/$reportsEndpoint/user/$id/',
       options: Options(headers: {
         HttpHeaders.authorizationHeader: "Token $token",
@@ -124,14 +152,15 @@ class LaporhoaxApi {
 
     if (response.statusCode == 200) {
       print('${response.data}');
-      return UserReport.fromJson(response.data);
+      return UserReport.fromJson(response.data).reportList;
     } else {
       print('${response.statusCode}');
-      throw Exception('Failed to load report ${response.statusCode}');
+      throw ServerException();
     }
   }
 
-  Future<ReportItem> postReport(String token, Report report) async {
+  @override
+  Future<ReportModel> postReport(String token, ReportRequest report) async {
     var formData = FormData.fromMap({
       'user': report.user.toString(),
       'url': '"${report.url}"',
@@ -142,7 +171,7 @@ class LaporhoaxApi {
           filename: report.img.name),
     });
 
-    final response = await _dio.post('/$reportsEndpoint/',
+    final response = await dio.post('/$reportsEndpoint/',
         data: formData,
         options: Options(
           headers: {
@@ -151,15 +180,16 @@ class LaporhoaxApi {
         ));
 
     if (response.statusCode == 201) {
-      return ReportItem.fromJson(response.data);
+      return ReportModel.fromJson(response.data);
     } else {
-      throw Exception('Failed to post report ${response.statusCode}');
+      throw ServerException();
     }
   }
 
-  Future<String> deleteReport(String token, String reportId) async {
-    final response = await _dio.delete(
-      '/$reportsEndpoint/$reportId/',
+  @override
+  Future<String> deleteReport(String token, ReportModel report) async {
+    final response = await dio.delete(
+      '/$reportsEndpoint/${report.id}/',
       options: Options(
         headers: {
           HttpHeaders.authorizationHeader: "Token $token",
@@ -171,75 +201,61 @@ class LaporhoaxApi {
       return 'success';
     } else {
       print('${response.statusCode}');
-      throw Exception('Failed to delete report ${response.statusCode}');
+      throw ServerException();
     }
   }
 
-  Future<Feeds> getFeeds({String page = ""}) async {
-    var response = await _dio.get('/$feedsEndpoint/');
-
-    if (page.isNotEmpty) {
-      response =
-          await _dio.get('/$feedsEndpoint/', queryParameters: {'page': page});
-    }
+  @override
+  Future<List<FeedModel>> getFeeds() async {
+    final response = await dio.get('/$feedsEndpoint/');
 
     if (response.statusCode == 200) {
-      return Feeds.fromJson(response.data);
+      return FeedResponse.fromJson(response.data).feedList;
     } else {
-      throw Exception('Failed to load feeds!');
+      throw ServerException();
     }
   }
 
-  Future<FeedModel> getFeedById(String id) async {
-    final response = await _dio.get('/$feedsEndpoint/$id');
-
-    if (response.statusCode == 200) {
-      return FeedModel.fromJson(jsonDecode(response.data));
-    } else {
-      throw Exception('Failed to load feed by id');
-    }
-  }
-
+  @override
   Future<Question> getQuestions() async {
-    final response = await _dio.get('/$questionEndpoint');
+    final response = await dio.get('/$questionEndpoint');
 
     if (response.statusCode == 200) {
       return Question.fromJson(response.data);
     } else {
-      throw Exception('failed to get user security question');
+      throw ServerException();
     }
   }
 
+  @override
   Future<Challenge> getUserQuestions(String id) async {
-    final response = await _dio.get('/$questionEndpoint/user/$id');
+    final response = await dio.get('/$questionEndpoint/user/$id');
 
     if (response.statusCode == 200) {
       return Challenge.fromJson(response.data);
     } else {
-      throw Exception(
-          'failed to get user security question ${response.statusCode}');
+      throw ServerException();
     }
   }
 
+  @override
   Future postSecurityQNA(Challenge result) async {
-    final response = await _dio
-        .post(
-          '/$questionEndpoint/user/',
-          options: Options(contentType: Headers.jsonContentType),
-          data: result.toJson(),
-        )
-        .onError(
-            (error, stackTrace) => throw Exception('Something went Wrong'));
+    final response = await dio.post(
+      '/$questionEndpoint/user/',
+      options: Options(contentType: Headers.jsonContentType),
+      data: result.toJson(),
+    );
 
     if (response.statusCode == 200) {
       return "Success";
     } else {
-      throw Exception('failed to post questions ${response.statusCode}');
+      throw ServerException();
     }
   }
 
+  @override
   Future postFcmToken(String user, String fcmToken) async {
-    final response = await _dio.post(
+    final response = await dio.post(
       '/$firebaseTokenEndpoint',
       options: Options(contentType: Headers.jsonContentType),
       data: <String, String>{
@@ -251,13 +267,14 @@ class LaporhoaxApi {
     if (response.statusCode == 200) {
       return "Success";
     } else {
-      throw Exception('failed to post token ${response.statusCode}');
+      throw ServerException();
     }
   }
 
+  @override
   Future<String> postChangePassword(
       String oldPass, String newPass, String token) async {
-    final response = await _dio.post('/$passwordChangeEndpoint/',
+    final response = await dio.post('/$passwordChangeEndpoint/',
         options: Options(
           contentType: Headers.jsonContentType,
           headers: {HttpHeaders.authorizationHeader: "Token $token"},
@@ -270,12 +287,13 @@ class LaporhoaxApi {
     if (response.statusCode == 200) {
       return 'Success';
     } else {
-      throw Exception('failed to change new password');
+      throw ServerException();
     }
   }
 
+  @override
   Future<String> getPasswordReset(String email, String token) async {
-    final response = await _dio.get(
+    final response = await dio.get(
       '/$passwordResetEndpoint/$email',
       options: Options(
         contentType: Headers.jsonContentType,
@@ -286,7 +304,7 @@ class LaporhoaxApi {
     if (response.statusCode == 200) {
       return 'Success';
     } else {
-      throw Exception('failed to reset password');
+      throw ServerException();
     }
   }
 }

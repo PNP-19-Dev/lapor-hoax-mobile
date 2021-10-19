@@ -11,7 +11,7 @@ import 'package:laporhoax/data/model/user_token.dart';
 import 'package:laporhoax/presentation/pages/account/forgot_password_page.dart';
 import 'package:laporhoax/presentation/pages/account/register_page.dart';
 import 'package:laporhoax/presentation/pages/home_page.dart';
-import 'package:laporhoax/presentation/provider/preferences_provider.dart';
+import 'package:laporhoax/presentation/provider/preferences_notifier.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -181,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                                     var token = getToken(username, password);
                                     var data = getData(username);
                                     var provider =
-                                        Provider.of<PreferencesProvider>(
+                                    Provider.of<PreferencesNotifier>(
                                             context,
                                             listen: false);
 

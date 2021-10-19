@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:laporhoax/common/result_state.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
-import 'package:laporhoax/data/model/category.dart';
 import 'package:laporhoax/data/model/user_data.dart';
 import 'package:laporhoax/data/model/user_question.dart';
-import 'package:laporhoax/util/result_state.dart';
+import 'package:laporhoax/data/models/category.dart';
 
 class ListProviders extends ChangeNotifier {
   static ListProviders? _instance;

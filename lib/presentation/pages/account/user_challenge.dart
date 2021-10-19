@@ -3,7 +3,7 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
-import 'package:laporhoax/data/model/challenge.dart';
+import 'package:laporhoax/data/models/challenge.dart';
 import 'package:laporhoax/data/model/user_question.dart';
 import 'package:laporhoax/presentation/provider/list_providers.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';

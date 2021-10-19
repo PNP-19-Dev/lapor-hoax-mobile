@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:laporhoax/common/navigation.dart';
+import 'package:laporhoax/common/result_state.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
+import 'package:laporhoax/data/model/report_response.dart';
 import 'package:laporhoax/data/model/token_id.dart';
-import 'package:laporhoax/data/model/user_report.dart';
 import 'package:laporhoax/presentation/provider/reports_provider.dart';
 import 'package:laporhoax/presentation/widget/report_list_item.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
-import 'package:laporhoax/util/result_state.dart';
 import 'package:provider/provider.dart';
 
 class HistoryPage extends StatefulWidget {

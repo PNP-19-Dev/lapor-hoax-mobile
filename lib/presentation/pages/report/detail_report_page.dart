@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/model/user_report.dart';
+import 'package:laporhoax/data/model/report_response.dart';
 import 'package:laporhoax/util/datetime_helper.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:laporhoax/common/result_state.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
+import 'package:laporhoax/data/model/report_response.dart';
 import 'package:laporhoax/data/model/token_id.dart';
-import 'package:laporhoax/data/model/user_report.dart';
-import 'package:laporhoax/util/result_state.dart';
 
 class ReportsProvider extends ChangeNotifier {
   final LaporhoaxApi api;

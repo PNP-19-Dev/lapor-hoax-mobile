@@ -9,11 +9,11 @@ import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/category.dart';
-import 'package:laporhoax/data/model/report.dart';
+import 'package:laporhoax/data/model/report_request.dart';
 import 'package:laporhoax/data/model/token_id.dart';
 import 'package:laporhoax/presentation/pages/account/login_page.dart';
 import 'package:laporhoax/presentation/provider/list_providers.dart';
-import 'package:laporhoax/presentation/provider/preferences_provider.dart';
+import 'package:laporhoax/presentation/provider/preferences_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
@@ -56,7 +56,7 @@ class _ReportPageState extends State<ReportPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Consumer<PreferencesProvider>(
+        body: Consumer<PreferencesNotifier>(
           builder: (context, provider, child) {
             if (provider.isLoggedIn) {
               return lapor();
@@ -223,7 +223,7 @@ class _ReportPageState extends State<ReportPage> {
                           child: ElevatedButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                var data = Provider.of<PreferencesProvider>(
+                                var data = Provider.of<PreferencesNotifier>(
                                     context,
                                     listen: false);
                                 int id = data.userData.id;
@@ -265,7 +265,7 @@ class _ReportPageState extends State<ReportPage> {
                       ],
                     ),
                   ),
-                  Consumer<PreferencesProvider>(
+                  Consumer<PreferencesNotifier>(
                       builder: (context, provider, child) {
                     return GestureDetector(
                       onTap: () => Navigation.intentWithData(

@@ -1,7 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 
-class Report {
-  Report({
+class ReportRequest extends Equatable {
+  ReportRequest({
     required this.user,
     required this.url,
     required this.category,
@@ -10,12 +11,12 @@ class Report {
     required this.img,
   });
 
-  int user;
-  String url;
-  String category;
-  bool isAnonym;
-  String description;
-  XFile img;
+  final int user;
+  final String url;
+  final String category;
+  final bool isAnonym;
+  final String description;
+  final XFile img;
 
   Map<String, dynamic> toJson() => {
         "user": user,
@@ -25,4 +26,14 @@ class Report {
         "report": description,
         "img": img,
       };
+
+  @override
+  List<Object?> get props => [
+        user,
+        url,
+        category,
+        isAnonym,
+        description,
+        img,
+      ];
 }

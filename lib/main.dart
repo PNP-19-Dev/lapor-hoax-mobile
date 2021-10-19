@@ -5,13 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/db/database_helper.dart';
-import 'package:laporhoax/data/preferences/preferences_helper.dart';
+import 'package:laporhoax/injection.dart' as di;
 import 'package:laporhoax/presentation/pages/home_page.dart';
-import 'package:laporhoax/presentation/provider/database_provider.dart';
-import 'package:laporhoax/presentation/provider/feed_provider.dart';
-import 'package:laporhoax/presentation/provider/list_providers.dart';
-import 'package:laporhoax/presentation/provider/preferences_provider.dart';
+import 'package:laporhoax/presentation/provider/feed_notifier.dart';
+import 'package:laporhoax/presentation/provider/saved_feed_notifier.dart';
 import 'package:laporhoax/util/route/routes.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +23,7 @@ late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  di.init();
   await Firebase.initializeApp();
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -61,17 +59,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => FeedProvider()),
-        ChangeNotifierProvider(create: (_) => ListProviders()),
         ChangeNotifierProvider(
-          create: (_) => DatabaseProvider(
-            databaseHelper: DatabaseHelper(),
-          ),
+          create: (_) => di.locator<FeedNotifier>(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<SavedFeedNotifier>(),
+        ),
+        /*ChangeNotifierProvider(create: (_) => ListProviders()),
         ChangeNotifierProvider(
           create: (_) =>
-              PreferencesProvider(preferencesHelper: PreferencesHelper()),
-        ),
+              PreferencesNotifier(preferencesHelper: PreferencesHelper()),
+        ),*/
       ],
       child: MaterialApp(
         title: 'Lapor Hoax',

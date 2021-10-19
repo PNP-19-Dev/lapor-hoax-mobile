@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:laporhoax/data/model/user_data.dart';
-import 'package:laporhoax/data/model/user_token.dart';
-import 'package:laporhoax/data/preferences/preferences_helper.dart';
+import 'package:laporhoax/data/datasources/preferences/preferences_helper.dart';
+import 'package:laporhoax/data/models/user_data.dart';
+import 'package:laporhoax/data/models/user_token.dart';
 import 'package:laporhoax/util/datetime_helper.dart';
 
-class PreferencesProvider extends ChangeNotifier {
+class PreferencesNotifier extends ChangeNotifier {
   PreferencesHelper preferencesHelper;
 
-  PreferencesProvider({required this.preferencesHelper}) {
+  PreferencesNotifier({required this.preferencesHelper}) {
     _getSessionData();
     _getUserData();
     _getLoginData();

@@ -5,7 +5,7 @@ import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/presentation/pages/account/password_change_page.dart';
 import 'package:laporhoax/presentation/pages/account/user_challenge.dart';
-import 'package:laporhoax/presentation/provider/preferences_provider.dart';
+import 'package:laporhoax/presentation/provider/preferences_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
@@ -51,7 +51,7 @@ class _AccountProfileState extends State<AccountProfile> {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Consumer<PreferencesProvider>(
+              child: Consumer<PreferencesNotifier>(
                 builder: (context, provider, widget) {
                   var userData = provider.userData;
 

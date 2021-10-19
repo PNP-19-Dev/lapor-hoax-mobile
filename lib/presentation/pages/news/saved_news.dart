@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:laporhoax/presentation/provider/database_provider.dart';
+import 'package:laporhoax/common/state_enum.dart';
+import 'package:laporhoax/presentation/provider/saved_feed_notifier.dart';
 import 'package:laporhoax/presentation/widget/simple_item_feed.dart';
-import 'package:laporhoax/util/result_state.dart';
 import 'package:provider/provider.dart';
 
 class SavedNews extends StatefulWidget {
@@ -13,31 +13,33 @@ class SavedNews extends StatefulWidget {
 
 class _SavedNewsState extends State<SavedNews> {
   @override
-  void dispose() {
-    super.dispose();
+  void initState() {
+    super.initState();
+    Future.microtask(() =>
+        Provider.of<SavedFeedNotifier>(context, listen: false).fetchFeeds());
   }
 
   Widget _buildNewsItem() {
-    return Consumer<DatabaseProvider>(builder: (context, provider, child) {
-      if (provider.state == ResultState.HasData) {
+    return Consumer<SavedFeedNotifier>(builder: (context, provider, child) {
+      if (provider.feedState == RequestState.Loading) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      } else if (provider.feedState == RequestState.Loaded) {
         return Expanded(
           child: SingleChildScrollView(
             child: ListView.builder(
-                itemCount: provider.news.length,
+                itemCount: provider.feeds.length,
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
-                  var news = provider.news[index];
-                  return Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                    child: SimpleItemFeed(feed: news),
-                  );
+                  var news = provider.feeds[index];
+                  return SimpleItemFeed(feed: news);
                 }),
           ),
         );
       } else {
-        return Expanded(child: Center(child: Text(provider.message)));
+        return Center(child: Text(provider.message));
       }
     });
   }
@@ -50,10 +52,9 @@ class _SavedNewsState extends State<SavedNews> {
         foregroundColor: Colors.black,
         title: Text('Berita yang tersimpan'),
       ),
-      body: Column(
-        children: [
-          _buildNewsItem(),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: _buildNewsItem(),
       ),
     );
   }
