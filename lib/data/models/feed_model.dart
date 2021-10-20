@@ -40,7 +40,7 @@ class FeedModel extends Equatable {
         "author": author
       };
 
-  FeedModel entity() => FeedModel(
+  Feed entity() => Feed(
         id: id,
         title: title,
         content: content,

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:laporhoax/common/failure.dart';
-import 'package:laporhoax/data/models/user_data.dart';
+import 'package:laporhoax/domain/entities/User.dart';
 import 'package:laporhoax/domain/repositories/repository.dart';
 
 class GetUser {
@@ -8,7 +8,7 @@ class GetUser {
 
   GetUser(this.repository);
 
-  Future<Either<Failure, List<User>>> execute(String email) {
+  Future<Either<Failure, User>> execute(String email) {
     return repository.getUser(email);
   }
 }

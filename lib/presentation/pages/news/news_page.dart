@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/models/feed_model.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/presentation/pages/account/tutorial.dart';
 import 'package:laporhoax/presentation/pages/report/report_page.dart';
@@ -161,7 +160,7 @@ class _NewsPageState extends State<NewsPage> {
 }
 
 class FeedList extends StatelessWidget {
-  final List<FeedModel> feeds;
+  final List<Feed> feeds;
   final bool isSavedFeed;
 
   FeedList(this.feeds, this.isSavedFeed);

@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/model/challenge.dart';
-import 'package:laporhoax/data/model/user_data.dart';
+import 'package:laporhoax/data/model/user_response.dart';
 import 'package:laporhoax/presentation/provider/list_providers.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:laporhoax/util/route/challenge_arguments.dart';

@@ -12,7 +12,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 class NewsWebView extends StatelessWidget {
   static const routeName = '/news_web_view';
 
-  final FeedModel feed;
+  final Feed feed;
 
   const NewsWebView({required this.feed});
 

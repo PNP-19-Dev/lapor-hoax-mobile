@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:laporhoax/data/model/feed_model.dart';
-import 'package:laporhoax/data/model/report_response.dart';
-import 'package:laporhoax/data/model/token_id.dart';
+import 'package:laporhoax/data/models/token_id.dart';
+import 'package:laporhoax/domain/entities/feed.dart';
+import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/presentation/pages/account/account_profile.dart';
 import 'package:laporhoax/presentation/pages/account/forgot_password_page.dart';
 import 'package:laporhoax/presentation/pages/account/login_page.dart';
@@ -43,14 +43,14 @@ Map<String, Widget Function(BuildContext)> routes = {
       ),
   ReportPage.routeName: (context) => ReportPage(),
   OnSuccessReport.routeName: (context) => OnSuccessReport(
-        reportItem: ModalRoute.of(context)?.settings.arguments as ReportItem,
+        reportItem: ModalRoute.of(context)?.settings.arguments as Report,
       ),
   OnFailureReport.routeName: (context) => OnFailureReport(),
   DetailReportPage.routeName: (context) => DetailReportPage(
-        reportItem: ModalRoute.of(context)?.settings.arguments as ReportItem,
+        reportItem: ModalRoute.of(context)?.settings.arguments as Report,
       ),
-  NewsWebView.routeName: (context) => NewsWebView(
-      feed: ModalRoute.of(context)?.settings.arguments as FeedModel),
+  NewsWebView.routeName: (context) =>
+      NewsWebView(feed: ModalRoute.of(context)?.settings.arguments as Feed),
   SavedNews.routeName: (context) => SavedNews(),
   StaticPageViewer.routeName: (context) => StaticPageViewer(
         data: ModalRoute.of(context)?.settings.arguments as StaticDataWeb,

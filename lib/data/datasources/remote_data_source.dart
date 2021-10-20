@@ -10,11 +10,11 @@ import 'package:laporhoax/data/models/feed_response.dart';
 import 'package:laporhoax/data/models/report_model.dart';
 import 'package:laporhoax/data/models/report_request.dart';
 import 'package:laporhoax/data/models/report_response.dart';
-import 'package:laporhoax/data/models/user_data.dart';
 import 'package:laporhoax/data/models/user_login.dart';
 import 'package:laporhoax/data/models/user_question.dart';
 import 'package:laporhoax/data/models/user_register.dart';
 import 'package:laporhoax/data/models/user_token.dart';
+import 'package:laporhoax/domain/entities/User.dart';
 
 abstract class RemoteDataSource {
   Future<UserToken> postLogin(String username, String password);

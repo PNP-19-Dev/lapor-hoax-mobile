@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:laporhoax/common/state_enum.dart';
-import 'package:laporhoax/data/models/feed_model.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/domain/usecases/get_feed_save_status.dart';
 import 'package:laporhoax/domain/usecases/get_feeds.dart';
@@ -12,9 +11,9 @@ class FeedNotifier extends ChangeNotifier {
   static const feedSavedMessage = 'Berita Telah Disimpan';
   static const feedRemovedMessage = 'Berita Telah Dihapus';
 
-  List<FeedModel> _feeds = [];
+  List<Feed> _feeds = [];
 
-  List<FeedModel> get feeds => _feeds;
+  List<Feed> get feeds => _feeds;
 
   RequestState _feedState = RequestState.Empty;
 

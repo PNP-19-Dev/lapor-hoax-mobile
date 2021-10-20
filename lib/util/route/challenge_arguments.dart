@@ -1,5 +1,5 @@
-import 'package:laporhoax/data/model/challenge.dart';
-import 'package:laporhoax/data/model/user_data.dart';
+import 'package:laporhoax/data/models/challenge.dart';
+import 'package:laporhoax/domain/entities/User.dart';
 
 class ChallengeArguments {
   final User user;
