@@ -5,7 +5,15 @@ import 'package:laporhoax/data/datasources/local_data_source.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
 import 'package:laporhoax/data/repositories/repository_impl.dart';
 import 'package:laporhoax/domain/repositories/repository.dart';
+import 'package:laporhoax/domain/usecases/get_categories.dart';
+import 'package:laporhoax/domain/usecases/get_feed_save_status.dart';
 import 'package:laporhoax/domain/usecases/get_feeds.dart';
+import 'package:laporhoax/domain/usecases/get_reports.dart';
+import 'package:laporhoax/domain/usecases/get_user.dart';
+import 'package:laporhoax/domain/usecases/post_login.dart';
+import 'package:laporhoax/domain/usecases/post_register.dart';
+import 'package:laporhoax/domain/usecases/post_report.dart';
+import 'package:laporhoax/domain/usecases/post_user_challenge.dart';
 import 'package:laporhoax/domain/usecases/save_feed.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
 import 'package:laporhoax/presentation/provider/preferences_notifier.dart';
@@ -38,10 +46,18 @@ void init() {
   );
 
   // use case
+  locator.registerLazySingleton(() => GetCategories(locator()));
+  locator.registerLazySingleton(() => GetFeedSaveStatus(locator()));
   locator.registerLazySingleton(() => GetFeeds(locator()));
-  locator.registerLazySingleton(() => SaveFeed(locator()));
-  locator.registerLazySingleton(() => RemoveFeed(locator()));
+  locator.registerLazySingleton(() => GetReports(locator()));
   locator.registerLazySingleton(() => GetSavedFeeds(locator()));
+  locator.registerLazySingleton(() => GetUser(locator()));
+  locator.registerLazySingleton(() => PostLogin(locator()));
+  locator.registerLazySingleton(() => PostRegister(locator()));
+  locator.registerLazySingleton(() => PostReport(locator()));
+  locator.registerLazySingleton(() => PostUserChallenge(locator()));
+  locator.registerLazySingleton(() => RemoveFeed(locator()));
+  locator.registerLazySingleton(() => SaveFeed(locator()));
 
   // repository
   locator.registerLazySingleton<Repository>(
