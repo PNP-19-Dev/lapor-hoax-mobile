@@ -12,6 +12,8 @@ import 'package:laporhoax/data/model/user_question.dart';
 import 'package:laporhoax/data/model/user_register.dart';
 import 'package:laporhoax/data/model/user_token.dart';
 import 'package:laporhoax/data/models/category.dart';
+import 'package:laporhoax/data/models/challenge.dart';
+import 'package:laporhoax/domain/entities/report.dart';
 
 class LaporhoaxApi {
   static final String baseUrl = 'https://laporhoaxpolda.herokuapp.com';
