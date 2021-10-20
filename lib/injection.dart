@@ -5,6 +5,7 @@ import 'package:laporhoax/data/datasources/local_data_source.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
 import 'package:laporhoax/data/repositories/repository_impl.dart';
 import 'package:laporhoax/domain/repositories/repository.dart';
+import 'package:laporhoax/domain/usecases/delete_report.dart';
 import 'package:laporhoax/domain/usecases/get_categories.dart';
 import 'package:laporhoax/domain/usecases/get_feed_save_status.dart';
 import 'package:laporhoax/domain/usecases/get_feeds.dart';
@@ -17,7 +18,7 @@ import 'package:laporhoax/domain/usecases/post_user_challenge.dart';
 import 'package:laporhoax/domain/usecases/save_feed.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
 import 'package:laporhoax/presentation/provider/preferences_notifier.dart';
-import 'package:laporhoax/presentation/provider/report_provider.dart';
+import 'package:laporhoax/presentation/provider/report_notifier.dart';
 import 'package:laporhoax/presentation/provider/saved_feed_notifier.dart';
 
 import 'data/datasources/preferences/preferences_helper.dart';
@@ -42,15 +43,19 @@ void init() {
       saveFeed: locator(),
     ),
   );
-  locator.registerFactory(() => ReportNotifier(
-        getReports: locator(),
-        postReport: locator(),
-      ));
+  locator.registerFactory(
+    () => ReportNotifier(
+      getReports: locator(),
+      postReport: locator(),
+      deleteReport: locator(),
+    ),
+  );
   locator.registerFactory(
     () => SavedFeedNotifier(getFeeds: locator()),
   );
 
   // use case
+  locator.registerLazySingleton(() => DeleteReport(locator()));
   locator.registerLazySingleton(() => GetCategories(locator()));
   locator.registerLazySingleton(() => GetFeedSaveStatus(locator()));
   locator.registerLazySingleton(() => GetFeeds(locator()));

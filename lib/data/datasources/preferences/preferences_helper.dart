@@ -1,5 +1,5 @@
 import 'package:laporhoax/data/models/user_token.dart';
-import 'package:laporhoax/domain/entities/User.dart';
+import 'package:laporhoax/domain/entities/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesHelper {

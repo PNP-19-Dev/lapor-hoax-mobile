@@ -5,15 +5,16 @@ import 'package:laporhoax/common/exception.dart';
 import 'package:laporhoax/common/failure.dart';
 import 'package:laporhoax/data/datasources/local_data_source.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
-import 'package:laporhoax/data/models/category.dart';
-import 'package:laporhoax/data/models/challenge.dart';
 import 'package:laporhoax/data/models/feed_table.dart';
 import 'package:laporhoax/data/models/report_request.dart';
-import 'package:laporhoax/data/models/user_register.dart';
+import 'package:laporhoax/data/models/user_question_model.dart';
+import 'package:laporhoax/data/models/user_response.dart';
 import 'package:laporhoax/data/models/user_token.dart';
-import 'package:laporhoax/domain/entities/User.dart';
+import 'package:laporhoax/domain/entities/category.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/domain/entities/report.dart';
+import 'package:laporhoax/domain/entities/user.dart';
+import 'package:laporhoax/domain/entities/user_question.dart';
 import 'package:laporhoax/domain/repositories/repository.dart';
 
 class RepositoryImpl implements Repository {
@@ -75,7 +76,7 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, List<Category>>> getCategories() async {
     try {
       final result = await remoteDataSource.getCategory();
-      return Right(result);
+      return Right(result.map((e) => e.toEntity()).toList());
     } on ServerException {
       return Left(ServerFailure(""));
     } on SocketException {
@@ -109,15 +110,28 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, UserToken>> postLogin() {
-    // TODO: implement postLogin
-    throw UnimplementedError();
+  Future<Either<Failure, UserToken>> postLogin(
+      String username, String password) async {
+    try {
+      final result = await remoteDataSource.postLogin(username, password);
+      return Right(result);
+    } on ServerException {
+      return Left(ServerFailure(""));
+    } on SocketException {
+      return Left(ConnectionFailure("Failed to connect to the network"));
+    }
   }
 
   @override
   Future<Either<Failure, UserRegister>> postRegister() {
-    // TODO: implement postRegister
-    throw UnimplementedError();
+    try {
+      final result = await remoteDataSource.postRegister(user);
+      return Right(result);
+    } on ServerException {
+      return Left(ServerFailure(""));
+    } on SocketException {
+      return Left(ConnectionFailure("Failed to connect to the network"));
+    }
   }
 
   @override
@@ -128,7 +142,8 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, Challenge>> postUserChallenge(Challenge challenge) {
+  Future<Either<Failure, UserQuestion>> postUserChallenge(
+      UserQuestionModel challenge) {
     // TODO: implement postUserChallenge
     throw UnimplementedError();
   }

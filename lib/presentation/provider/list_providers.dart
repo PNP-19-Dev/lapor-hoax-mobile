@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:laporhoax/common/result_state.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
-import 'package:laporhoax/data/model/user_question.dart';
+import 'package:laporhoax/data/model/question_response.dart';
 import 'package:laporhoax/data/model/user_response.dart';
-import 'package:laporhoax/data/models/category.dart';
+import 'package:laporhoax/data/models/category_model.dart';
 
 class ListProviders extends ChangeNotifier {
   static ListProviders? _instance;
   late final LaporhoaxApi _api;
   List<QuestionResult> _questionList = [];
-  List<Category> _categoryList = [];
+  List<CategoryModel> _categoryList = [];
   List<String> _userAns = [];
   List<int> _index = [];
   late ResultState _state;
@@ -30,7 +30,7 @@ class ListProviders extends ChangeNotifier {
 
   List<QuestionResult> get questionList => _questionList;
 
-  List<Category> get categoryList => _categoryList;
+  List<CategoryModel> get categoryList => _categoryList;
 
   ResultState get state => _state;
 

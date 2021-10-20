@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:laporhoax/common/failure.dart';
-import 'package:laporhoax/data/models/user_register.dart';
+import 'package:laporhoax/data/models/user_response.dart';
 import 'package:laporhoax/domain/repositories/repository.dart';
 
 class PostRegister {

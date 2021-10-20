@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:laporhoax/domain/entities/User.dart';
 
-class User extends Equatable {
-  User({
+class UserModel extends Equatable {
+  UserModel({
     required this.id,
     required this.username,
     required this.email,
@@ -11,7 +12,7 @@ class User extends Equatable {
   final String username;
   final String email;
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["id"],
         username: json["username"],
         email: json["email"],
@@ -23,8 +24,8 @@ class User extends Equatable {
         "email": email,
       };
 
+  User toEntity() => User(id: id, username: username, email: email);
+
   @override
   List<Object?> get props => [id, username, email];
-
-  static User empty() => User(id: -1, username: '', email: '');
 }

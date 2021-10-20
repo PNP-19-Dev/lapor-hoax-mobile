@@ -3,25 +3,26 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:laporhoax/common/exception.dart';
-import 'package:laporhoax/data/models/category.dart';
-import 'package:laporhoax/data/models/challenge.dart';
+import 'package:laporhoax/data/models/category_model.dart';
 import 'package:laporhoax/data/models/feed_model.dart';
 import 'package:laporhoax/data/models/feed_response.dart';
+import 'package:laporhoax/data/models/question_model.dart';
+import 'package:laporhoax/data/models/question_response.dart';
+import 'package:laporhoax/data/models/register_model.dart';
 import 'package:laporhoax/data/models/report_model.dart';
 import 'package:laporhoax/data/models/report_request.dart';
 import 'package:laporhoax/data/models/report_response.dart';
-import 'package:laporhoax/data/models/user_login.dart';
-import 'package:laporhoax/data/models/user_question.dart';
-import 'package:laporhoax/data/models/user_register.dart';
+import 'package:laporhoax/data/models/user_question_model.dart';
+import 'package:laporhoax/data/models/user_response.dart';
 import 'package:laporhoax/data/models/user_token.dart';
-import 'package:laporhoax/domain/entities/User.dart';
+import 'package:laporhoax/domain/entities/user.dart';
 
 abstract class RemoteDataSource {
   Future<UserToken> postLogin(String username, String password);
 
   Future<UserRegister> postRegister(UserLogin user);
 
-  Future<List<Category>> getCategory();
+  Future<List<CategoryModel>> getCategory();
 
   Future<List<User>> getUserData(String email);
 
@@ -33,11 +34,11 @@ abstract class RemoteDataSource {
 
   Future<List<FeedModel>> getFeeds();
 
-  Future<Question> getQuestions();
+  Future<List<QuestionModel>> getQuestions();
 
-  Future<Challenge> getUserQuestions(String id);
+  Future<UserQuestionModel> getUserQuestions(String id);
 
-  Future postSecurityQNA(Challenge result);
+  Future postSecurityQNA(UserQuestionModel result);
 
   Future postFcmToken(String user, String fcmToken);
 
@@ -98,7 +99,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<UserRegister> postRegister(UserLogin user) async {
+  Future<UserResponse> postRegister(RegisterModel user) async {
     final response = await dio.post(
       '/$registerEndpoint/',
       options: Options(contentType: Headers.jsonContentType),
@@ -107,18 +108,19 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
     if (response.statusCode == 200) {
       print(response.data);
-      return UserRegister.fromJson(response.data);
+      return UserResponse.fromJson(response.data);
     } else {
       throw ServerException();
     }
   }
 
   @override
-  Future<List<Category>> getCategory() async {
+  Future<List<CategoryModel>> getCategory() async {
     final response = await dio.get('/$reportCatEndpoint');
 
     if (response.statusCode == 200) {
-      return categoryFromJson(response.data);
+      return List<CategoryModel>.from(
+          (response.data).map((x) => CategoryModel.fromJson(x)));
     } else {
       throw ServerException();
     }
@@ -217,29 +219,29 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<Question> getQuestions() async {
+  Future<List<QuestionModel>> getQuestions() async {
     final response = await dio.get('/$questionEndpoint');
 
     if (response.statusCode == 200) {
-      return Question.fromJson(response.data);
+      return QuestionResponse.fromJson(response.data).questionList;
     } else {
       throw ServerException();
     }
   }
 
   @override
-  Future<Challenge> getUserQuestions(String id) async {
+  Future<UserQuestionModel> getUserQuestions(String id) async {
     final response = await dio.get('/$questionEndpoint/user/$id');
 
     if (response.statusCode == 200) {
-      return Challenge.fromJson(response.data);
+      return UserQuestionModel.fromJson(response.data);
     } else {
       throw ServerException();
     }
   }
 
   @override
-  Future postSecurityQNA(Challenge result) async {
+  Future postSecurityQNA(UserQuestionModel result) async {
     final response = await dio.post(
       '/$questionEndpoint/user/',
       options: Options(contentType: Headers.jsonContentType),

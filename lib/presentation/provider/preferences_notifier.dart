@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:laporhoax/data/datasources/preferences/preferences_helper.dart';
 import 'package:laporhoax/data/models/user_token.dart';
-import 'package:laporhoax/domain/entities/User.dart';
+import 'package:laporhoax/domain/entities/user.dart';
 import 'package:laporhoax/util/datetime_helper.dart';
 
 class PreferencesNotifier extends ChangeNotifier {

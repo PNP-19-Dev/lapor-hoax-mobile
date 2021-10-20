@@ -3,8 +3,7 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
-import 'package:laporhoax/data/models/challenge.dart';
-import 'package:laporhoax/data/model/user_question.dart';
+import 'package:laporhoax/data/models/user_question_model.dart';
 import 'package:laporhoax/presentation/provider/list_providers.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
@@ -239,7 +238,7 @@ class _UserChallengeState extends State<UserChallenge> {
                           String ans3 = _ans3.text;
 
                           print('userID ${widget.id}');
-                          var challenge = Challenge(
+                          var challenge = UserQuestionModel(
                             user: widget.id.toString(),
                             quest1: question1,
                             quest2: question2,

@@ -1,20 +1,24 @@
 import 'package:dartz/dartz.dart';
 import 'package:laporhoax/common/failure.dart';
-import 'package:laporhoax/data/models/category.dart';
-import 'package:laporhoax/data/models/challenge.dart';
+import 'package:laporhoax/data/models/category_model.dart';
 import 'package:laporhoax/data/models/report_request.dart';
-import 'package:laporhoax/data/models/user_register.dart';
+import 'package:laporhoax/data/models/user_question_model.dart';
+import 'package:laporhoax/data/models/user_response.dart';
 import 'package:laporhoax/data/models/user_token.dart';
-import 'package:laporhoax/domain/entities/User.dart';
+import 'package:laporhoax/domain/entities/category.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/domain/entities/report.dart';
+import 'package:laporhoax/domain/entities/user.dart';
+import 'package:laporhoax/domain/entities/user_question.dart';
 
 abstract class Repository {
-  Future<Either<Failure, UserToken>> postLogin();
+  Future<Either<Failure, UserToken>> postLogin(
+      String username, String password);
 
-  Future<Either<Failure, UserRegister>> postRegister();
+  Future<Either<Failure, UserRegister>> postRegister(UserLogin user);
 
-  Future<Either<Failure, Challenge>> postUserChallenge(Challenge challenge);
+  Future<Either<Failure, UserQuestion>> postUserChallenge(
+      UserQuestion challenge);
 
   Future<Either<Failure, List<Category>>> getCategories();
 

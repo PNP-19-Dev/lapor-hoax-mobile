@@ -26,15 +26,7 @@ class Feed extends Equatable {
   int? view;
   int? author;
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "title": title,
-        "thumbnail": thumbnail,
-        "date": date,
-      };
-
   @override
-  // TODO: implement props
   List<Object?> get props => [
         id,
         title,

@@ -2,17 +2,17 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:laporhoax/data/model/challenge.dart';
 import 'package:laporhoax/data/model/feed_model.dart';
+import 'package:laporhoax/data/model/question_response.dart';
+import 'package:laporhoax/data/model/register_model.dart';
 import 'package:laporhoax/data/model/report_request.dart';
 import 'package:laporhoax/data/model/report_response.dart';
-import 'package:laporhoax/data/model/user_login.dart';
-import 'package:laporhoax/data/model/user_question.dart';
-import 'package:laporhoax/data/model/user_register.dart';
+import 'package:laporhoax/data/model/user_question_model.dart';
+import 'package:laporhoax/data/model/user_response.dart';
 import 'package:laporhoax/data/model/user_response.dart';
 import 'package:laporhoax/data/model/user_token.dart';
-import 'package:laporhoax/data/models/category.dart';
-import 'package:laporhoax/data/models/challenge.dart';
+import 'package:laporhoax/data/models/category_model.dart';
+import 'package:laporhoax/data/models/user_question_model.dart';
 import 'package:laporhoax/domain/entities/report.dart';
 
 class LaporhoaxApi {
@@ -90,7 +90,7 @@ class LaporhoaxApi {
     }
   }
 
-  Future<List<Category>> getCategory() async {
+  Future<List<CategoryModel>> getCategory() async {
     final response = await _dio.get('/$reportCatEndpoint');
 
     if (response.statusCode == 200) {
@@ -212,18 +212,18 @@ class LaporhoaxApi {
     }
   }
 
-  Future<Challenge> getUserQuestions(String id) async {
+  Future<UserQuestionModel> getUserQuestions(String id) async {
     final response = await _dio.get('/$questionEndpoint/user/$id');
 
     if (response.statusCode == 200) {
-      return Challenge.fromJson(response.data);
+      return UserQuestionModel.fromJson(response.data);
     } else {
       throw Exception(
           'failed to get user security question ${response.statusCode}');
     }
   }
 
-  Future postSecurityQNA(Challenge result) async {
+  Future postSecurityQNA(UserQuestionModel result) async {
     final response = await _dio
         .post(
           '/$questionEndpoint/user/',

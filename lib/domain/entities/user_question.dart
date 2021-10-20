@@ -1,13 +1,15 @@
-class Challenge {
-  String user;
-  int? quest1;
-  int? quest2;
-  int? quest3;
-  String? ans1;
-  String? ans2;
-  String? ans3;
+import 'package:equatable/equatable.dart';
 
-  Challenge(
+class UserQuestion extends Equatable {
+  final String user;
+  final int? quest1;
+  final int? quest2;
+  final int? quest3;
+  final String? ans1;
+  final String? ans2;
+  final String? ans3;
+
+  UserQuestion(
       {required this.user,
       required this.quest1,
       required this.quest2,
@@ -16,7 +18,7 @@ class Challenge {
       required this.ans2,
       required this.ans3});
 
-  factory Challenge.fromJson(Map<String, dynamic> json) => Challenge(
+  factory UserQuestion.fromJson(Map<String, dynamic> json) => UserQuestion(
         user: json['user'],
         quest1: json['quest1'],
         quest2: json['quest2'],
@@ -35,4 +37,7 @@ class Challenge {
         "quest2": quest2,
         "quest3": quest3,
       };
+
+  @override
+  List<Object?> get props => [user, ans1, ans2, ans3, quest1, quest2, quest3];
 }

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+// ignore: must_be_immutable
 class Report extends Equatable {
   Report({
     required this.id,
@@ -18,37 +19,28 @@ class Report extends Equatable {
     required this.verdictJudge,
   });
 
+  Report.shortInformation({
+    required this.id,
+    required this.category,
+    required this.status,
+    required this.verdict,
+    required this.dateReported,
+  });
+
   int id;
   String? url;
-  String img;
-  String category;
-  String status;
-  bool isAnonym;
-  String dateReported;
-  String description;
+  String? img;
+  String? category;
+  String? status;
+  bool? isAnonym;
+  String? dateReported;
+  String? description;
   String? prosesDate;
   String? verdict;
   String? verdictDesc;
   String? verdictDate;
-  int user;
+  int? user;
   int? verdictJudge;
-
-  factory Report.fromJson(Map<String, dynamic> json) => Report(
-        id: json["id"],
-        url: json["url"],
-        img: json["img"],
-        category: json["category"],
-        status: json["status"],
-        isAnonym: json["isAnonym"],
-        dateReported: json["dateReported"],
-        description: json["description"],
-        prosesDate: json["prosesDate"],
-        verdict: json["verdict"],
-        verdictDesc: json["verdictDesc"],
-        verdictDate: json["verdictDate"],
-        user: json["user"],
-        verdictJudge: json["verdictJudge"],
-      );
 
   @override
   List<Object?> get props => [

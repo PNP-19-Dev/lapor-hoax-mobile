@@ -212,7 +212,7 @@ class FeedList extends StatelessWidget {
                         right: 0,
                         bottom: 35,
                         child: Text(
-                          feed.title,
+                          feed.title!,
                           softWrap: true,
                           overflow: TextOverflow.clip,
                           style: GoogleFonts.inter(
@@ -234,7 +234,7 @@ class FeedList extends StatelessWidget {
                             ),
                             SizedBox(width: 4),
                             Text(
-                              DateTimeHelper.formattedDate(feed.date),
+                              DateTimeHelper.formattedDate(feed.date!),
                               style: GoogleFonts.inter(
                                 fontSize: 10,
                                 fontWeight: FontWeight.normal,
@@ -255,7 +255,7 @@ class FeedList extends StatelessWidget {
                       Positioned(
                         top: 0,
                         right: 0,
-                        child: SaveButton(feed.toEntity(), isSavedFeed),
+                        child: SaveButton(feed, isSavedFeed),
                       ),
                     ],
                   ),

@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
-import 'package:laporhoax/data/model/category.dart';
+import 'package:laporhoax/data/model/category_model.dart';
 import 'package:laporhoax/data/model/report_request.dart';
 import 'package:laporhoax/data/model/token_id.dart';
 import 'package:laporhoax/presentation/pages/account/login_page.dart';

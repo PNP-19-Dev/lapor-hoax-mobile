@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
-import 'package:laporhoax/data/models/feed_model.dart';
+import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/presentation/pages/news/news_page.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
 import 'package:laporhoax/presentation/widget/custom_scaffold.dart';
@@ -26,7 +26,7 @@ class NewsWebView extends StatelessWidget {
       children: [
         Consumer<FeedNotifier>(
             builder: (context, data, child) =>
-                SaveButton(feed.toEntity(), data.isFeedSaved)),
+                SaveButton(feed, data.isFeedSaved)),
         IconButton(
           onPressed: () => Share.share(
               'Ada berita di laporhoax ${LaporhoaxApi.baseUrl}/news/${feed.id}'),

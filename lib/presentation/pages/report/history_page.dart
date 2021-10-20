@@ -5,7 +5,7 @@ import 'package:laporhoax/common/result_state.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/report_response.dart';
 import 'package:laporhoax/data/model/token_id.dart';
-import 'package:laporhoax/presentation/provider/report_provider.dart';
+import 'package:laporhoax/presentation/provider/report_notifier.dart';
 import 'package:laporhoax/presentation/widget/report_list_item.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
