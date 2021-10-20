@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/model/report_response.dart';
+import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/presentation/pages/report/detail_report_page.dart';
 import 'package:laporhoax/util/datetime_helper.dart';
 
 class ReportListItem extends StatelessWidget {
-  final ReportItem report;
+  final Report report;
 
   ReportListItem({required this.report});
 

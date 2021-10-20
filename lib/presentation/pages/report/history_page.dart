@@ -5,7 +5,7 @@ import 'package:laporhoax/common/result_state.dart';
 import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/data/model/report_response.dart';
 import 'package:laporhoax/data/model/token_id.dart';
-import 'package:laporhoax/presentation/provider/reports_provider.dart';
+import 'package:laporhoax/presentation/provider/report_provider.dart';
 import 'package:laporhoax/presentation/widget/report_list_item.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +31,7 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget _getSlidable(
       BuildContext context, int index, List<ReportItem> reports) {
     final report = reports[index];
-    var provider = Provider.of<ReportsProvider>(
+    var provider = Provider.of<ReportsNotifier>(
       context,
       listen: false,
     );
@@ -71,7 +71,7 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Widget _buildReportItem() {
-    return Consumer<ReportsProvider>(builder: (context, provider, widget) {
+    return Consumer<ReportsNotifier>(builder: (context, provider, widget) {
       if (provider.state == ResultState.Loading) {
         return Center(child: CircularProgressIndicator());
       } else if (provider.state == ResultState.HasData) {
@@ -132,9 +132,9 @@ class _HistoryPageState extends State<HistoryPage> {
         ),
       ),
       body: Container(
-        child: ChangeNotifierProvider<ReportsProvider>(
+        child: ChangeNotifierProvider<ReportsNotifier>(
           create: (_) =>
-              ReportsProvider(api: LaporhoaxApi(), tokenId: widget.tokenId),
+              ReportsNotifier(api: LaporhoaxApi(), tokenId: widget.tokenId),
           child: _buildReportItem(),
         ),
       ),

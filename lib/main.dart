@@ -8,6 +8,7 @@ import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/injection.dart' as di;
 import 'package:laporhoax/presentation/pages/home_page.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
+import 'package:laporhoax/presentation/provider/report_provider.dart';
 import 'package:laporhoax/presentation/provider/saved_feed_notifier.dart';
 import 'package:laporhoax/util/route/routes.dart';
 import 'package:provider/provider.dart';
@@ -65,11 +66,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<SavedFeedNotifier>(),
         ),
-        /*ChangeNotifierProvider(create: (_) => ListProviders()),
         ChangeNotifierProvider(
-          create: (_) =>
-              PreferencesNotifier(preferencesHelper: PreferencesHelper()),
-        ),*/
+          create: (_) => di.locator<ReportNotifier>(),
+        ),
       ],
       child: MaterialApp(
         title: 'Lapor Hoax',

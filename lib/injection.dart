@@ -17,6 +17,7 @@ import 'package:laporhoax/domain/usecases/post_user_challenge.dart';
 import 'package:laporhoax/domain/usecases/save_feed.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
 import 'package:laporhoax/presentation/provider/preferences_notifier.dart';
+import 'package:laporhoax/presentation/provider/report_provider.dart';
 import 'package:laporhoax/presentation/provider/saved_feed_notifier.dart';
 
 import 'data/datasources/preferences/preferences_helper.dart';
@@ -41,6 +42,10 @@ void init() {
       saveFeed: locator(),
     ),
   );
+  locator.registerFactory(() => ReportNotifier(
+        getReports: locator(),
+        postReport: locator(),
+      ));
   locator.registerFactory(
     () => SavedFeedNotifier(getFeeds: locator()),
   );

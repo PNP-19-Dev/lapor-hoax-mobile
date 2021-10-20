@@ -25,4 +25,6 @@ class User extends Equatable {
 
   @override
   List<Object?> get props => [id, username, email];
+
+  static User empty() => User(id: -1, username: '', email: '');
 }
