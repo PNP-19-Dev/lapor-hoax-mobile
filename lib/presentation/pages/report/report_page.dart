@@ -6,14 +6,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:laporhoax/common/navigation.dart';
+import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/api/laporhoax_api.dart';
-import 'package:laporhoax/data/model/category_model.dart';
-import 'package:laporhoax/data/model/report_request.dart';
-import 'package:laporhoax/data/model/token_id.dart';
+import 'package:laporhoax/data/models/report_request.dart';
+import 'package:laporhoax/data/models/token_id.dart';
+import 'package:laporhoax/domain/entities/category.dart';
 import 'package:laporhoax/presentation/pages/account/login_page.dart';
-import 'package:laporhoax/presentation/provider/list_providers.dart';
 import 'package:laporhoax/presentation/provider/preferences_notifier.dart';
+import 'package:laporhoax/presentation/provider/report_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +22,10 @@ import 'on_loading_report.dart';
 
 class ReportPage extends StatefulWidget {
   static const routeName = '/lapor_page';
+
+  final TokenId? tokenId;
+
+  ReportPage(this.tokenId);
 
   @override
   _ReportPageState createState() => _ReportPageState();
@@ -35,7 +39,6 @@ class _ReportPageState extends State<ReportPage> {
 
   var _urlController = TextEditingController();
   var _descController = TextEditingController();
-  final api = LaporhoaxApi();
 
   Future getImage(ImageSource source) async {
     try {
@@ -53,17 +56,21 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      Provider.of<PreferencesNotifier>(context, listen: false)
+        ..userData
+        ..loginData;
+      Provider.of<ReportNotifier>(context, listen: false)..fetchCategories();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Consumer<PreferencesNotifier>(
-          builder: (context, provider, child) {
-            if (provider.isLoggedIn) {
-              return lapor();
-            } else
-              return welcome();
-          },
-        ),
+        body: widget.tokenId == null ? welcome() : lapor(),
       ),
     );
   }
@@ -71,9 +78,25 @@ class _ReportPageState extends State<ReportPage> {
   FocusNode _linkFocusNode = new FocusNode();
   final _formKey = GlobalKey<FormState>();
 
+  void postReport(BuildContext context, ReportRequest report) async {
+    var progress = ProgressHUD.of(context);
+    var provider = Provider.of<ReportNotifier>(context, listen: true);
+    provider.sendReport(widget.tokenId!, report);
+
+    if (provider.postReportState == RequestState.Loading) {
+      progress!.showWithText('Laporanmu sedang diupload!');
+    } else if (provider.postReportState == RequestState.Loaded) {
+      progress!.dismiss();
+      Navigation.intentWithData(OnSuccessReport.routeName, provider.report!);
+    } else if (provider.postReportState == RequestState.Error) {
+      progress!.dismiss();
+      toast(provider.postReportMessage);
+      Navigation.intent(OnFailureReport.routeName);
+    }
+  }
+
   Widget lapor() => ProgressHUD(
         child: Builder(builder: (context) {
-          var progress = ProgressHUD.of(context);
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -151,9 +174,9 @@ class _ReportPageState extends State<ReportPage> {
                                     : Colors.black,
                               )),
                         ),
-                        Consumer<ListProviders>(
+                        Consumer<ReportNotifier>(
                           builder: (context, provider, widget) {
-                            _categories = provider.categoryList;
+                            _categories = provider.category;
                             return DropdownButtonFormField<String>(
                               isExpanded: true,
                               iconSize: 0,
@@ -233,7 +256,7 @@ class _ReportPageState extends State<ReportPage> {
                                 String category = _selectedCategory;
                                 bool isAnonym = _anonym;
 
-                                var report = Report(
+                                var report = ReportRequest(
                                   user: id,
                                   url: url,
                                   description: desc,
@@ -242,21 +265,7 @@ class _ReportPageState extends State<ReportPage> {
                                   img: img,
                                 );
 
-                                var result = api.postReport(
-                                    data.loginData.token!, report);
-                                progress!
-                                    .showWithText('Laporanmu sedang diupload!');
-
-                                result.then((value) {
-                                  print('Report Status : ${value.status}');
-                                  progress.dismiss();
-                                  Navigation.intentWithData(
-                                      OnSuccessReport.routeName, value);
-                                }).onError((error, stackTrace) {
-                                  print(error);
-                                  progress.dismiss();
-                                  Navigation.intent(OnFailureReport.routeName);
-                                });
+                                postReport(context, report);
                               }
                             },
                             child: Text('Lapor'),

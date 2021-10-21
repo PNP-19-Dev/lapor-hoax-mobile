@@ -8,7 +8,7 @@ class PostLogin {
 
   PostLogin(this.repository);
 
-  Future<Either<Failure, UserToken>> execute() {
-    return repository.postLogin();
+  Future<Either<Failure, UserToken>> execute(String username, String password) {
+    return repository.postLogin(username, password);
   }
 }

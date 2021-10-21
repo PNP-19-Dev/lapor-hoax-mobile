@@ -22,12 +22,14 @@ class PreferencesHelper {
     return prefs.getStringList(SESSION) ?? [];
   }
 
-  void setSessionData(UserToken value) async {
+  Future<String> setSessionData(UserToken value) async {
     final prefs = await sharedPreferences;
     if (value.expiry != null && value.token != null) {
       prefs.setStringList(SESSION, [value.expiry!, value.token!]);
+      return 'Success';
     } else {
       prefs.setStringList(SESSION, []);
+      return 'Removed!';
     }
   }
 
@@ -36,13 +38,15 @@ class PreferencesHelper {
     return prefs.getStringList(DATA) ?? [];
   }
 
-  void setUserData(User data) async {
+  Future<String> setUserData(User data) async {
     final prefs = await sharedPreferences;
     if (data.id != -1) {
       prefs
           .setStringList(DATA, [data.id.toString(), data.username, data.email]);
+      return 'Success';
     } else {
       prefs.setStringList(DATA, []);
+      return 'Removed!';
     }
   }
 

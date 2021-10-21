@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/models/report_response.dart';
+import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/presentation/pages/report/report_page.dart';
 
 import 'detail_report_page.dart';
@@ -11,7 +11,7 @@ import 'detail_report_page.dart';
 class OnSuccessReport extends StatelessWidget {
   static String routeName = '/success';
 
-  final ReportItem reportItem;
+  final Report reportItem;
 
   OnSuccessReport({required this.reportItem});
 

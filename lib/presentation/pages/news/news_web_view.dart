@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:laporhoax/data/api/laporhoax_api.dart';
+import 'package:laporhoax/data/datasources/remote_data_source.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/presentation/pages/news/news_page.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
@@ -20,7 +20,7 @@ class NewsWebView extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScaffold(
       body: WebView(
-        initialUrl: '${LaporhoaxApi.baseUrl}/news/${feed.id}',
+        initialUrl: '${RemoteDataSourceImpl.baseUrl}/news/${feed.id}',
         javascriptMode: JavascriptMode.unrestricted,
       ),
       children: [
@@ -29,7 +29,7 @@ class NewsWebView extends StatelessWidget {
                 SaveButton(feed, data.isFeedSaved)),
         IconButton(
           onPressed: () => Share.share(
-              'Ada berita di laporhoax ${LaporhoaxApi.baseUrl}/news/${feed.id}'),
+              'Ada berita di laporhoax ${RemoteDataSourceImpl.baseUrl}/news/${feed.id}'),
           icon: SvgPicture.asset('assets/icons/share.svg'),
         )
       ],

@@ -1,8 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/model/report_response.dart';
+import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/util/datetime_helper.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -10,23 +11,23 @@ import 'package:url_launcher/url_launcher.dart';
 class DetailReportPage extends StatelessWidget {
   static const routeName = '/detail_report';
 
-  final ReportItem reportItem;
+  final Report report;
 
-  DetailReportPage({required this.reportItem});
+  DetailReportPage({required this.report});
 
   @override
   Widget build(BuildContext context) {
-    var verdictDesc = reportItem.verdictDesc ?? "";
+    var verdictDesc = report.verdictDesc ?? "";
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        title: Text('${reportItem.category}'),
+        title: Text('${report.category}'),
         actions: [
           IconButton(
             onPressed: () => Share.share(
-                'Ini klarifikasi oleh pihak ahli: ${reportItem.verdictDesc}'),
+                'Ini klarifikasi oleh pihak ahli: ${report.verdictDesc}'),
             icon: SvgPicture.asset('assets/icons/share.svg'),
           ),
         ],
@@ -35,20 +36,24 @@ class DetailReportPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              reportItem.img,
+            CachedNetworkImage(
+              imageUrl: report.img!,
+              placeholder: (context, url) => Center(
+                child: CircularProgressIndicator(),
+              ),
+              errorWidget: (context, url, eror) => Icon(Icons.error),
               width: double.infinity,
               height: 250,
               fit: BoxFit.cover,
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Status : ${reportItem.status}'),
+              child: Text('Status : ${report.status}'),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child:
-              Text('Keputusan : ${reportItem.verdict ?? "Menunggu"}',
+              Text('Keputusan : ${report.verdict ?? "Menunggu"}',
                   style: GoogleFonts.inter(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -104,13 +109,13 @@ class DetailReportPage extends StatelessWidget {
                     Icon(Icons.link),
                     SizedBox(width: 5),
                     InkWell(
-                      child: Text('${reportItem.url}',
+                      child: Text('${report.url}',
                           style: GoogleFonts.inter(
                             fontWeight: FontWeight.w600,
                             fontSize: 12,
                             color: orangeBlaze,
                           )),
-                      onTap: () => launch('${reportItem.url}'),
+                      onTap: () => launch('${report.url}'),
                     ),
                   ]),
             ),
@@ -126,7 +131,7 @@ class DetailReportPage extends StatelessWidget {
                   Icon(Icons.calendar_today),
                   SizedBox(width: 5),
                   Text(
-                      '${DateTimeHelper.formattedDate(reportItem.dateReported.toString())}'),
+                      '${DateTimeHelper.formattedDate(report.dateReported.toString())}'),
                 ],
               ),
             ),
@@ -145,7 +150,7 @@ class DetailReportPage extends StatelessWidget {
               ),
               width: double.infinity,
               child: Text(
-                '${reportItem.description}',
+                '${report.description}',
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.w400,
                   fontSize: 14,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/data/models/token_id.dart';
-import 'package:laporhoax/data/model/user_token.dart';
+import 'package:laporhoax/data/models/user_token.dart';
 import 'package:laporhoax/presentation/pages/account/static_page_viewer.dart';
 import 'package:laporhoax/presentation/pages/news/saved_news.dart';
 import 'package:laporhoax/presentation/pages/report/history_page.dart';

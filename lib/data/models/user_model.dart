@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:laporhoax/domain/entities/User.dart';
+import 'package:laporhoax/domain/entities/user.dart';
 
 class UserModel extends Equatable {
   UserModel({
@@ -23,6 +23,12 @@ class UserModel extends Equatable {
         "username": username,
         "email": email,
       };
+
+  factory UserModel.fromEntity(User user) => UserModel(
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      );
 
   User toEntity() => User(id: id, username: username, email: email);
 

@@ -12,25 +12,27 @@ import 'package:laporhoax/data/models/register_model.dart';
 import 'package:laporhoax/data/models/report_model.dart';
 import 'package:laporhoax/data/models/report_request.dart';
 import 'package:laporhoax/data/models/report_response.dart';
+import 'package:laporhoax/data/models/user_model.dart';
 import 'package:laporhoax/data/models/user_question_model.dart';
 import 'package:laporhoax/data/models/user_response.dart';
 import 'package:laporhoax/data/models/user_token.dart';
-import 'package:laporhoax/domain/entities/user.dart';
+import 'package:laporhoax/domain/entities/report.dart';
+import 'package:laporhoax/domain/entities/user_question.dart';
 
 abstract class RemoteDataSource {
   Future<UserToken> postLogin(String username, String password);
 
-  Future<UserRegister> postRegister(UserLogin user);
+  Future<UserResponse> postRegister(RegisterModel user);
 
   Future<List<CategoryModel>> getCategory();
 
-  Future<List<User>> getUserData(String email);
+  Future<List<UserModel>> getUserData(String email);
 
   Future<List<ReportModel>> getReport(String token, String id);
 
   Future<ReportModel> postReport(String token, ReportRequest report);
 
-  Future<String> deleteReport(String token, ReportModel report);
+  Future<String> deleteReport(String token, Report report);
 
   Future<List<FeedModel>> getFeeds();
 
@@ -38,7 +40,7 @@ abstract class RemoteDataSource {
 
   Future<UserQuestionModel> getUserQuestions(String id);
 
-  Future postSecurityQNA(UserQuestionModel result);
+  Future postChallenge(UserQuestion challenge);
 
   Future postFcmToken(String user, String fcmToken);
 
@@ -127,7 +129,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<List<User>> getUserData(String email) async {
+  Future<List<UserModel>> getUserData(String email) async {
     final response = await dio.get(
       '/$getUserEndpint',
       options: Options(headers: <String, String>{
@@ -137,7 +139,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
     if (response.statusCode == 200) {
       // return on list, but still only 1 entry
-      return List<User>.from(response.data.map((x) => User.fromJson(x)));
+      return List<UserModel>.from(
+          (response.data).map((x) => UserModel.fromJson(x)));
     } else {
       throw ServerException();
     }
@@ -189,7 +192,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<String> deleteReport(String token, ReportModel report) async {
+  Future<String> deleteReport(String token, Report report) async {
     final response = await dio.delete(
       '/$reportsEndpoint/${report.id}/',
       options: Options(
@@ -241,11 +244,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future postSecurityQNA(UserQuestionModel result) async {
+  Future<String> postChallenge(UserQuestion challenge) async {
     final response = await dio.post(
       '/$questionEndpoint/user/',
       options: Options(contentType: Headers.jsonContentType),
-      data: result.toJson(),
+      data: challenge.toJson(),
     );
 
     if (response.statusCode == 200) {

@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/api/laporhoax_api.dart';
-import 'package:laporhoax/data/model/user_response.dart';
-import 'package:laporhoax/data/model/user_token.dart';
 import 'package:laporhoax/presentation/pages/account/forgot_password_page.dart';
 import 'package:laporhoax/presentation/pages/account/register_page.dart';
 import 'package:laporhoax/presentation/pages/home_page.dart';
@@ -28,24 +24,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    var api = LaporhoaxApi();
-
-    Future<UserToken> getToken(String username, String password) async {
-      return await api.postLogin(username, password);
-    }
-
-    Future<List<User>> getData(String username) async {
-      return await api.getUserData(username);
-    }
-
-    void toast(String message) {
-      Fluttertoast.showToast(
-          msg: message,
-          toastLength: Toast.LENGTH_LONG,
-          textColor: Colors.white,
-          fontSize: 16.0);
-    }
-
     final _formKey = GlobalKey<FormState>();
 
     return Scaffold(

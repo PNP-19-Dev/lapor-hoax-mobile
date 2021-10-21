@@ -15,9 +15,11 @@ abstract class LocalDataSource {
 
   Future<bool> isLoggedIn();
 
-  Future<List<String>> getSessionData();
+  Future<List<String>> getSession();
 
-  void setSessionData(SessionData data);
+  Future<String> setSession(SessionData data);
+
+  Future<String> removeSession();
 }
 
 class LocalDataSourceImpl implements LocalDataSource {
@@ -71,13 +73,19 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  Future<List<String>> getSessionData() async {
+  Future<List<String>> getSession() async {
     return await preferencesHelper.sessionData;
   }
 
   @override
-  void setSessionData(SessionData? data) {
-    preferencesHelper.setSessionData(data!.userToken);
-    preferencesHelper.setUserData(data.data);
+  Future<String> setSession(SessionData data) async {
+    await preferencesHelper.setSessionData(data.userToken);
+    return await preferencesHelper.setUserData(data.data);
+  }
+
+  @override
+  Future<String> removeSession() async {
+    await preferencesHelper.setSessionData(null);
+    return await preferencesHelper.setUserData(null);
   }
 }

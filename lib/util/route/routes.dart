@@ -41,13 +41,15 @@ Map<String, Widget Function(BuildContext)> routes = {
   HistoryPage.routeName: (context) => HistoryPage(
         tokenId: ModalRoute.of(context)?.settings.arguments as TokenId,
       ),
-  ReportPage.routeName: (context) => ReportPage(),
+  ReportPage.routeName: (context) => ReportPage(
+        ModalRoute.of(context)?.settings.arguments as TokenId,
+      ),
   OnSuccessReport.routeName: (context) => OnSuccessReport(
         reportItem: ModalRoute.of(context)?.settings.arguments as Report,
       ),
   OnFailureReport.routeName: (context) => OnFailureReport(),
   DetailReportPage.routeName: (context) => DetailReportPage(
-        reportItem: ModalRoute.of(context)?.settings.arguments as Report,
+        report: ModalRoute.of(context)?.settings.arguments as Report,
       ),
   NewsWebView.routeName: (context) =>
       NewsWebView(feed: ModalRoute.of(context)?.settings.arguments as Feed),

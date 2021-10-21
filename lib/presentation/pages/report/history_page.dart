@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:laporhoax/common/navigation.dart';
-import 'package:laporhoax/common/result_state.dart';
-import 'package:laporhoax/data/api/laporhoax_api.dart';
-import 'package:laporhoax/data/model/report_response.dart';
-import 'package:laporhoax/data/model/token_id.dart';
+import 'package:laporhoax/common/state_enum.dart';
+import 'package:laporhoax/data/models/token_id.dart';
+import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
 import 'package:laporhoax/presentation/widget/report_list_item.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
@@ -22,19 +21,24 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(
+      () => Provider.of<ReportNotifier>(context, listen: false)
+        ..fetchReports(widget.tokenId),
+    );
+  }
+
   void _showSnackBar(BuildContext context, String text) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(content: Text(text)));
   }
 
-  Widget _getSlidable(
-      BuildContext context, int index, List<ReportItem> reports) {
+  Widget _getSlidable(BuildContext context, int index, List<Report> reports) {
     final report = reports[index];
-    var provider = Provider.of<ReportsNotifier>(
-      context,
-      listen: false,
-    );
+    var provider = Provider.of<ReportNotifier>(context, listen: false);
 
     return Slidable(
       key: Key(report.id.toString()),
@@ -42,18 +46,19 @@ class _HistoryPageState extends State<HistoryPage> {
       dismissal: SlidableDismissal(
         child: SlidableDrawerDismissal(),
         onDismissed: (actionType) {
-          setState(() {
+          setState(() async {
             // remove item pada report
-            provider.deleteReport(report.id.toString()).then((value) {
-              _showSnackBar(context, 'Delete $value');
-              reports.removeAt(index);
-            }).onError((error, stackTrace) {
-              _showSnackBar(context, 'Delete fail');
-            });
+            provider.removeReport(widget.tokenId, report);
+
+            if (provider.postReportState == RequestState.Success) {
+              _showSnackBar(context, provider.postReportMessage);
+            } else {
+              _showSnackBar(context, provider.postReportMessage);
+            }
           });
         },
         onWillDismiss: (actionType) {
-          return report.status.toLowerCase() == 'belum diproses';
+          return report.status!.toLowerCase() == 'belum diproses';
         },
       ),
       actionPane: SlidableBehindActionPane(),
@@ -71,21 +76,21 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Widget _buildReportItem() {
-    return Consumer<ReportsNotifier>(builder: (context, provider, widget) {
-      if (provider.state == ResultState.Loading) {
+    return Consumer<ReportNotifier>(builder: (context, provider, widget) {
+      if (provider.fetchReportState == RequestState.Loading) {
         return Center(child: CircularProgressIndicator());
-      } else if (provider.state == ResultState.HasData) {
-        var reports = provider.reports.results;
+      } else if (provider.fetchReportState == RequestState.Loaded) {
+        var reports = provider.reports;
         return ListView.builder(
-          itemCount: provider.count,
+          itemCount: reports.length,
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
           itemBuilder: (context, index) {
             return _getSlidable(context, index, reports);
           },
         );
-      } else if (provider.state == ResultState.NoData) {
-        return Center(child: Text(provider.message));
+      } else if (provider.fetchReportState == RequestState.Empty) {
+        return Center(child: Text(provider.fetchReportMessage));
       } else {
         toast('Terjadi Masalah');
         return Center(
@@ -99,13 +104,9 @@ class _HistoryPageState extends State<HistoryPage> {
                 color: Color(0xFFBDBDBD),
               ),
               Text(
-                'Terjadi masalah ${provider.message}',
+                'Terjadi masalah ${provider.fetchReportMessage}',
                 style: Theme.of(context).textTheme.bodyText2,
               ),
-              /*Text(
-                'Token: ${provider.token} \nId: ${provider.id}',
-                style: Theme.of(context).textTheme.bodyText2,
-              ),*/
             ],
           ),
         );
@@ -132,11 +133,7 @@ class _HistoryPageState extends State<HistoryPage> {
         ),
       ),
       body: Container(
-        child: ChangeNotifierProvider<ReportsNotifier>(
-          create: (_) =>
-              ReportsNotifier(api: LaporhoaxApi(), tokenId: widget.tokenId),
-          child: _buildReportItem(),
-        ),
+        child: _buildReportItem(),
       ),
     );
   }
