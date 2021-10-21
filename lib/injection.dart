@@ -22,6 +22,7 @@ import 'package:laporhoax/domain/usecases/post_login.dart';
 import 'package:laporhoax/domain/usecases/post_register.dart';
 import 'package:laporhoax/domain/usecases/post_report.dart';
 import 'package:laporhoax/domain/usecases/post_user_challenge.dart';
+import 'package:laporhoax/domain/usecases/remove_session_data.dart';
 import 'package:laporhoax/domain/usecases/save_feed.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
@@ -96,6 +97,7 @@ void init() {
   locator.registerLazySingleton(() => PostReport(locator()));
   locator.registerLazySingleton(() => PostUserChallenge(locator()));
   locator.registerLazySingleton(() => RemoveFeed(locator()));
+  locator.registerLazySingleton(() => RemoveSessionData(locator()));
   locator.registerLazySingleton(() => SaveFeed(locator()));
   locator.registerLazySingleton(() => UpdateSessionData(locator()));
 

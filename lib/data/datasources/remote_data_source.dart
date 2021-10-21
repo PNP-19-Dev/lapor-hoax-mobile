@@ -157,7 +157,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
     if (response.statusCode == 200) {
       print('${response.data}');
-      return UserReport.fromJson(response.data).reportList;
+      return ReportResponse.fromJson(response.data).reportList;
     } else {
       print('${response.statusCode}');
       throw ServerException();

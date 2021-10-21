@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:laporhoax/data/models/report_model.dart';
 
-UserReport userReportFromJson(String str) =>
-    UserReport.fromJson(json.decode(str));
+ReportResponse userReportFromJson(String str) =>
+    ReportResponse.fromJson(json.decode(str));
 
-class UserReport extends Equatable {
-  UserReport({
+class ReportResponse extends Equatable {
+  ReportResponse({
     required this.count,
     required this.next,
     required this.previous,
@@ -19,7 +19,7 @@ class UserReport extends Equatable {
   final String? previous;
   final List<ReportModel> reportList;
 
-  factory UserReport.fromJson(Map<String, dynamic> json) => UserReport(
+  factory ReportResponse.fromJson(Map<String, dynamic> json) => ReportResponse(
         count: json["count"],
         next: json["next"],
         previous: json["previous"],
@@ -28,11 +28,16 @@ class UserReport extends Equatable {
             .where((element) => element.img != null)),
       );
 
-  Map<String, dynamic> toJson() => {
-        "results": List<dynamic>.from(reportList.map((x) => x.toJson())),
+  Map<String, dynamic> toJson() =>
+      {
+        "count": count,
+        "next": next,
+        "previous": previous,
+        "results": List<dynamic>.from(
+          reportList.map((x) => x.toJson()),
+        ),
       };
 
   @override
-  // TODO: implement props
   List<Object?> get props => [reportList];
 }

@@ -65,7 +65,7 @@ class _NewsPageState extends State<NewsPage> {
               child: Container(
                 width: double.infinity,
                 padding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -129,8 +129,10 @@ class _NewsPageState extends State<NewsPage> {
             final state = data.feedState;
             if (state == RequestState.Loading) {
               return SliverToBoxAdapter(
-                child: Center(
-                  child: CircularProgressIndicator(),
+                child: Container(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
               );
             } else if (state == RequestState.Loaded) {
@@ -190,6 +192,14 @@ class FeedList extends StatelessWidget {
                     alignment: Alignment.bottomLeft,
                     fit: StackFit.passthrough,
                     children: [
+                      CachedNetworkImage(
+                        imageUrl: feed.thumbnail!,
+                        placeholder: (context, url) => Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (context, url, eror) => Icon(Icons.error),
+                        fit: BoxFit.fill,
+                      ),
                       Positioned(
                         top: 0,
                         left: 0,
@@ -243,14 +253,6 @@ class FeedList extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ),
-                      CachedNetworkImage(
-                        imageUrl: feed.thumbnail!,
-                        placeholder: (context, url) => Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                        errorWidget: (context, url, eror) => Icon(Icons.error),
-                        fit: BoxFit.fill,
                       ),
                       Positioned(
                         top: 0,

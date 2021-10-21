@@ -60,7 +60,7 @@ class ReportModel extends Equatable {
         "isAnonym": isAnonym,
         "dateReported": dateReported,
         "description": description,
-        "processDate": prosesDate,
+        "prosesDate": prosesDate,
         "verdict": verdict,
         "verdictDesc": verdictDesc,
         "verdictDate": verdictDate,
