@@ -30,7 +30,7 @@ abstract class Repository {
 
   Future<Either<Failure, List<Feed>>> getSavedFeeds();
 
-  Future<Either<Failure, SessionData>> getSessionData();
+  Future<Either<Failure, SessionData?>> getSessionData();
 
   Future<Either<Failure, User>> getUser(String email);
 
@@ -51,7 +51,7 @@ abstract class Repository {
 
   Future<Either<Failure, String>> removeFeed(Feed feed);
 
-  Future<Either<Failure, String>> removeSessionData();
+  Future<Either<Failure, String>> removeSessionData(SessionData data);
 
   Future<Either<Failure, String>> saveFeed(Feed feed);
 

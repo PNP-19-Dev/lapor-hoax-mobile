@@ -15,11 +15,11 @@ abstract class LocalDataSource {
 
   Future<bool> isLoggedIn();
 
-  Future<List<String>> getSession();
+  Future<SessionData?> getSession();
 
-  Future<String> setSession(SessionData data);
+  Future<String> insertSession(SessionData data);
 
-  Future<String> removeSession();
+  Future<String> removeSession(SessionData data);
 }
 
 class LocalDataSourceImpl implements LocalDataSource {
@@ -73,19 +73,32 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  Future<List<String>> getSession() async {
-    return await preferencesHelper.sessionData;
+  Future<SessionData?> getSession() async {
+    final result = await databaseHelper.getLastSessions();
+    if (result != null) {
+      return SessionData.fromMap(result);
+    } else {
+      return null;
+    }
   }
 
   @override
-  Future<String> setSession(SessionData data) async {
-    await preferencesHelper.setSessionData(data.userToken);
-    return await preferencesHelper.setUserData(data.data);
+  Future<String> insertSession(SessionData data) async {
+    try {
+      await databaseHelper.insertSession(data);
+      return 'Session Saved';
+    } catch (e) {
+      throw DatabaseException(e.toString());
+    }
   }
 
   @override
-  Future<String> removeSession() async {
-    await preferencesHelper.setSessionData(null);
-    return await preferencesHelper.setUserData(null);
+  Future<String> removeSession(SessionData data) async {
+    try {
+      await databaseHelper.removeSession(data);
+      return 'Session Saved';
+    } catch (e) {
+      throw DatabaseException(e.toString());
+    }
   }
 }

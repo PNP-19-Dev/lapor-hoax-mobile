@@ -228,20 +228,38 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, SessionData>> getSessionData() {
-    // TODO: implement getSessionData
-    throw UnimplementedError();
+  Future<Either<Failure, SessionData?>> getSessionData() async {
+    try {
+      final result = await localDataSource.getSession();
+      return Right(result);
+    } on DatabaseException catch (e) {
+      return Left(DatabaseFailure(e.message));
+    } catch (e) {
+      throw e;
+    }
   }
 
   @override
-  Future<Either<Failure, String>> removeSessionData() {
-    // TODO: implement removeSessionData
-    throw UnimplementedError();
+  Future<Either<Failure, String>> removeSessionData(SessionData data) async {
+    try {
+      final result = await localDataSource.removeSession(data);
+      return Right(result);
+    } on DatabaseException catch (e) {
+      return Left(DatabaseFailure(e.message));
+    } catch (e) {
+      throw e;
+    }
   }
 
   @override
-  Future<Either<Failure, String>> saveSessionData(SessionData data) {
-    // TODO: implement saveSessionData
-    throw UnimplementedError();
+  Future<Either<Failure, String>> saveSessionData(SessionData data) async {
+    try {
+      final result = await localDataSource.insertSession(data);
+      return Right(result);
+    } on DatabaseException catch (e) {
+      return Left(DatabaseFailure(e.message));
+    } catch (e) {
+      throw e;
+    }
   }
 }

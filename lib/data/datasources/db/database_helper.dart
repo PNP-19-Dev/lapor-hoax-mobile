@@ -1,4 +1,5 @@
 import 'package:laporhoax/data/models/feed_table.dart';
+import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
@@ -20,6 +21,7 @@ class DatabaseHelper {
   }
 
   static const String _tblFeeds = 'feeds';
+  static const String _tblSession = 'session';
 
   Future<Database> _initDb() async {
     final path = await getDatabasesPath();
@@ -36,6 +38,14 @@ class DatabaseHelper {
       title TEXT,
       thumbnail TEXT,
       date TEXT
+    );
+    
+    CREATE TABLE $_tblSession (
+      token TEXT,
+      expire TEXT,
+      userId TEXT,
+      username TEXT,
+      email TEXT,
     );
     ''');
   }
@@ -74,6 +84,31 @@ class DatabaseHelper {
       _tblFeeds,
       where: 'id = ?',
       whereArgs: [feed.id],
+    );
+  }
+
+  Future<void> insertSession(SessionData data) async {
+    final db = await database;
+    await db!.insert(_tblSession, data.toJson());
+  }
+
+  Future<Map<String, dynamic>?> getLastSessions() async {
+    final db = await database;
+    List<Map<String, dynamic>> results = await db!.query(_tblSession, limit: 1);
+    if (results.isNotEmpty) {
+      return results.first;
+    } else {
+      return null;
+    }
+  }
+
+  Future<void> removeSession(SessionData data) async {
+    final db = await database;
+
+    await db!.delete(
+      _tblSession,
+      where: 'token = ?',
+      whereArgs: [data.token],
     );
   }
 }

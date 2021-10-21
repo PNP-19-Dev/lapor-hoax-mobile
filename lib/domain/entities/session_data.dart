@@ -1,18 +1,35 @@
 import 'package:equatable/equatable.dart';
-import 'package:laporhoax/data/models/user_token.dart';
-import 'package:laporhoax/domain/entities/user.dart';
 
 class SessionData extends Equatable {
-  final UserToken userToken;
-  final User? data;
+  String token;
+  String expiry;
+  int userid;
+  String username;
+  String email;
 
-  SessionData({
-    required this.userToken,
-    required this.data,
-  });
+  SessionData(
+      {required this.token,
+      required this.expiry,
+      required this.userid,
+      required this.username,
+      required this.email});
 
-  SessionData.empty() => SessionData(userToken: '', data: null);
+  Map<String, dynamic> toJson() => {
+        "token": token,
+        "expiry": expiry,
+        "userId": userid,
+        "username": username,
+        "email": email,
+      };
+
+  factory SessionData.fromMap(Map<String, dynamic> map) => SessionData(
+        token: map["token"],
+        expiry: map["expiry"],
+        userid: map["userid"],
+        username: map["username"],
+        email: map["email"],
+      );
 
   @override
-  List<Object?> get props => [userToken, data];
+  List<Object?> get props => [token, expiry];
 }
