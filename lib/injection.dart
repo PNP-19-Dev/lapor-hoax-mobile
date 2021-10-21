@@ -12,7 +12,10 @@ import 'package:laporhoax/domain/usecases/get_feeds.dart';
 import 'package:laporhoax/domain/usecases/get_password_reset.dart';
 import 'package:laporhoax/domain/usecases/get_questions.dart';
 import 'package:laporhoax/domain/usecases/get_reports.dart';
+import 'package:laporhoax/domain/usecases/get_session_data.dart';
+import 'package:laporhoax/domain/usecases/get_session_status.dart';
 import 'package:laporhoax/domain/usecases/get_user.dart';
+import 'package:laporhoax/domain/usecases/get_user_challenge.dart';
 import 'package:laporhoax/domain/usecases/post_change_password.dart';
 import 'package:laporhoax/domain/usecases/post_fcm_token.dart';
 import 'package:laporhoax/domain/usecases/post_login.dart';
@@ -21,7 +24,6 @@ import 'package:laporhoax/domain/usecases/post_report.dart';
 import 'package:laporhoax/domain/usecases/post_user_challenge.dart';
 import 'package:laporhoax/domain/usecases/save_feed.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
-import 'package:laporhoax/presentation/provider/preferences_notifier.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
 import 'package:laporhoax/presentation/provider/saved_feed_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
@@ -29,16 +31,12 @@ import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'data/datasources/preferences/preferences_helper.dart';
 import 'domain/usecases/get_saved_feeds.dart';
 import 'domain/usecases/remove_feed.dart';
+import 'domain/usecases/update_session_data.dart';
 
 final locator = GetIt.instance;
 
 void init() {
   // provider
-  locator.registerFactory(
-    () => PreferencesNotifier(
-      preferencesHelper: locator(),
-    ),
-  );
   locator.registerFactory(
     () => FeedNotifier(
       getFeeds: locator(),
@@ -66,6 +64,12 @@ void init() {
       postFCMToken: locator(),
       postChangePassword: locator(),
       postUserChallenge: locator(),
+      getUserChallenge: locator(),
+      removeSessionData: locator(),
+      saveSessionData: locator(),
+      getSessionData: locator(),
+      updateSessionData: locator(),
+      getSessionStatus: locator(),
     ),
   );
   locator.registerFactory(
@@ -81,7 +85,10 @@ void init() {
   locator.registerLazySingleton(() => GetQuestions(locator()));
   locator.registerLazySingleton(() => GetReports(locator()));
   locator.registerLazySingleton(() => GetSavedFeeds(locator()));
+  locator.registerLazySingleton(() => GetSessionData(locator()));
+  locator.registerLazySingleton(() => GetSessionStatus(locator()));
   locator.registerLazySingleton(() => GetUser(locator()));
+  locator.registerLazySingleton(() => GetUserChallenge(locator()));
   locator.registerLazySingleton(() => PostChangePassword(locator()));
   locator.registerLazySingleton(() => PostFCMToken(locator()));
   locator.registerLazySingleton(() => PostLogin(locator()));
@@ -90,6 +97,7 @@ void init() {
   locator.registerLazySingleton(() => PostUserChallenge(locator()));
   locator.registerLazySingleton(() => RemoveFeed(locator()));
   locator.registerLazySingleton(() => SaveFeed(locator()));
+  locator.registerLazySingleton(() => UpdateSessionData(locator()));
 
   // repository
   locator.registerLazySingleton<Repository>(

@@ -102,6 +102,16 @@ class DatabaseHelper {
     }
   }
 
+  Future<void> updateSession(SessionData data) async {
+    final db = await database;
+    await db!.update(
+      _tblSession,
+      data.toJson(),
+      where: 'token = ?',
+      whereArgs: [data.token],
+    );
+  }
+
   Future<void> removeSession(SessionData data) async {
     final db = await database;
 

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/data/models/token_id.dart';
-import 'package:laporhoax/data/models/user_token.dart';
+import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/presentation/pages/account/static_page_viewer.dart';
 import 'package:laporhoax/presentation/pages/news/saved_news.dart';
 import 'package:laporhoax/presentation/pages/report/history_page.dart';
-import 'package:laporhoax/presentation/provider/preferences_notifier.dart';
+import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/util/static_data_web.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -22,7 +22,13 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  late PreferencesNotifier state;
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => Provider.of<UserNotifier>(context, listen: false)
+      ..getSession()
+      ..isLogin());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +36,11 @@ class _AccountPageState extends State<AccountPage> {
       body: Container(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 50.0),
         child: SingleChildScrollView(
-          child: Consumer<PreferencesNotifier>(
+          child: Consumer<UserNotifier>(
             builder: (context, provider, child) {
               if (provider.isLoggedIn) {
-                return onLogin(provider.userData.username);
+                return onLogin(provider.sessionData);
               } else {
-                state = provider;
                 return onWelcome();
               }
             },
@@ -45,8 +50,8 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  Widget onLogin(String username) {
-    var provider = Provider.of<PreferencesNotifier>(context, listen: false);
+  Widget onLogin(SessionData sessionData) {
+    var provider = Provider.of<UserNotifier>(context, listen: false);
     return Column(
       children: [
         Padding(
@@ -61,14 +66,14 @@ class _AccountPageState extends State<AccountPage> {
               SizedBox(width: 16),
               Expanded(
                 child: Text(
-                  username,
+                  sessionData.username,
                   textAlign: TextAlign.start,
                   style: GoogleFonts.inter(
                       fontWeight: FontWeight.w700, fontSize: 20),
                 ),
               ),
               GestureDetector(
-                onTap: () => provider.setSessionData(UserToken.empty()),
+                onTap: () => provider.logout(sessionData),
                 child: Icon(
                   Icons.exit_to_app,
                   color: Colors.red,
@@ -96,8 +101,8 @@ class _AccountPageState extends State<AccountPage> {
             onTap: () => Navigation.intentWithData(
               HistoryPage.routeName,
               TokenId(
-                token: provider.loginData.token!,
-                id: provider.userData.id.toString(),
+                token: provider.sessionData.token,
+                id: provider.sessionData.userid.toString(),
               ),
             ),
           ),

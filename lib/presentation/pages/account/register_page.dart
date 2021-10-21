@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/api/laporhoax_api.dart';
-import 'package:laporhoax/data/models/register_model.dart';
-import 'package:laporhoax/presentation/pages/account/user_challenge.dart';
 
 class RegisterPage extends StatefulWidget {
   static String routeName = "/register_page";
@@ -26,20 +21,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    var api = LaporhoaxApi();
-
-    Future<UserRegister> getResponse(UserLogin user) async {
-      return await api.postRegister(user);
-    }
-
-    void toast(String message) {
-      Fluttertoast.showToast(
-          msg: message,
-          toastLength: Toast.LENGTH_LONG,
-          textColor: Colors.white,
-          fontSize: 16.0);
-    }
-
     final _formKey = GlobalKey<FormState>();
     final _confirmFocusNode = FocusNode();
 
@@ -222,7 +203,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                                     progress!.showWithText('Loading...');
 
-                                    var userData = UserLogin(
+                                    /*var userData = UserLogin(
                                       name: username,
                                       email: email,
                                       password: password,
@@ -241,7 +222,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       progress.dismiss();
                                       toast('$error');
                                       print('$error');
-                                    });
+                                    });*/
                                   }
                                 },
                                 child: Text('Selanjutnya'),

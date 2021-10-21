@@ -3,9 +3,7 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/api/laporhoax_api.dart';
-import 'package:laporhoax/presentation/provider/preferences_notifier.dart';
-import 'package:laporhoax/presentation/widget/toast.dart';
+import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:provider/provider.dart';
 
 class PasswordChangePage extends StatefulWidget {
@@ -82,7 +80,7 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
         child: Builder(
           builder: (context) => Container(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Consumer<PreferencesNotifier>(
+            child: Consumer<UserNotifier>(
               builder: (context, provider, widget) {
                 return Form(
                   key: _formKey,
@@ -202,20 +200,17 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                             if (_formKey.currentState!.validate()) {
                               String oldPass = _oldPassword.text;
                               String newPass = _newPassword.text;
-                              String token = provider.loginData.token!;
+                              String token = provider.sessionData.token;
 
                               progress!.showWithText('Loading...');
-                              var api = LaporhoaxApi();
-                              var response = api.postChangePassword(
-                                  oldPass, newPass, token);
 
                               print('loading password...');
-                              response.then((value) {
+                              /* response.then((value) {
                                 print(value);
                                 _showSimpleModalDialog(context);
                               }).onError((error, stackTrace) {
                                 toast('Error $error');
-                              });
+                              });*/
                             }
                           },
                           child: Text('Kirim'),

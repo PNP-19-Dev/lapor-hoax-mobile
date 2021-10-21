@@ -12,8 +12,8 @@ import 'package:laporhoax/data/models/report_request.dart';
 import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/category.dart';
 import 'package:laporhoax/presentation/pages/account/login_page.dart';
-import 'package:laporhoax/presentation/provider/preferences_notifier.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
+import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
@@ -59,9 +59,7 @@ class _ReportPageState extends State<ReportPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      Provider.of<PreferencesNotifier>(context, listen: false)
-        ..userData
-        ..loginData;
+      Provider.of<UserNotifier>(context, listen: false)..getSession();
       Provider.of<ReportNotifier>(context, listen: false)..fetchCategories();
     });
   }
@@ -246,10 +244,7 @@ class _ReportPageState extends State<ReportPage> {
                           child: ElevatedButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                var data = Provider.of<PreferencesNotifier>(
-                                    context,
-                                    listen: false);
-                                int id = data.userData.id;
+                                int id = widget.tokenId!.id as int;
                                 String url = _urlController.text.toString();
                                 String desc = _descController.text.toString();
                                 XFile img = _image!;
@@ -274,24 +269,17 @@ class _ReportPageState extends State<ReportPage> {
                       ],
                     ),
                   ),
-                  Consumer<PreferencesNotifier>(
-                      builder: (context, provider, child) {
-                    return GestureDetector(
-                      onTap: () => Navigation.intentWithData(
-                          HistoryPage.routeName,
-                          TokenId(
-                            token: provider.loginData.token!,
-                            id: provider.userData.id.toString(),
-                          )),
-                      child: Container(
-                        child: Center(
-                            child: Text(
-                          'Lihat riwayat pelaporan',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )),
-                      ),
-                    );
-                  }),
+                  GestureDetector(
+                    onTap: () => Navigation.intentWithData(
+                        HistoryPage.routeName, widget.tokenId!),
+                    child: Container(
+                      child: Center(
+                          child: Text(
+                        'Lihat riwayat pelaporan',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )),
+                    ),
+                  ),
                 ],
               ),
             ),

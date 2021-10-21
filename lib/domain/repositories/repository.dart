@@ -20,6 +20,8 @@ abstract class Repository {
 
   Future<bool> isAddedToSavedFeed(int id);
 
+  Future<bool> isSessionActivated();
+
   Future<Either<Failure, List<Feed>>> getFeeds();
 
   Future<Either<Failure, String>> getPasswordReset(String email, String token);
@@ -33,6 +35,8 @@ abstract class Repository {
   Future<Either<Failure, SessionData?>> getSessionData();
 
   Future<Either<Failure, User>> getUser(String email);
+
+  Future<Either<Failure, UserQuestion>> getUserChallenge(String id);
 
   Future<Either<Failure, String>> postChangePassword(
       String oldPass, String newPass, String token);
@@ -56,4 +60,6 @@ abstract class Repository {
   Future<Either<Failure, String>> saveFeed(Feed feed);
 
   Future<Either<Failure, String>> saveSessionData(SessionData data);
+
+  Future<Either<Failure, String>> updateSessionData(SessionData data);
 }

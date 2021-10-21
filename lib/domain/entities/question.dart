@@ -10,6 +10,11 @@ class Question extends Equatable {
   int id;
   String question;
 
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "question": question,
+      };
+
   @override
   List<Object?> get props => [id, question];
 }

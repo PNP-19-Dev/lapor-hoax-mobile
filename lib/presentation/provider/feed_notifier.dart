@@ -16,7 +16,6 @@ class FeedNotifier extends ChangeNotifier {
   List<Feed> get feeds => _feeds;
 
   RequestState _feedState = RequestState.Empty;
-
   RequestState get feedState => _feedState;
 
   bool _isFeedSaved = false;
@@ -26,10 +25,6 @@ class FeedNotifier extends ChangeNotifier {
   String _message = '';
 
   String get message => _message;
-
-  String _savedFeedMessage = '';
-
-  String get savedFeedMessage => _savedFeedMessage;
 
   FeedNotifier({
     required this.getFeeds,
@@ -60,6 +55,10 @@ class FeedNotifier extends ChangeNotifier {
       notifyListeners();
     });
   }
+
+  String _savedFeedMessage = '';
+
+  String get savedFeedMessage => _savedFeedMessage;
 
   Future<void> saveFeedItem(Feed feed) async {
     final result = await saveFeed.execute(feed);

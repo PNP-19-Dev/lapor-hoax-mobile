@@ -2,10 +2,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/api/laporhoax_api.dart';
 import 'package:laporhoax/presentation/pages/account/password_change_page.dart';
 import 'package:laporhoax/presentation/pages/account/user_challenge.dart';
-import 'package:laporhoax/presentation/provider/preferences_notifier.dart';
+import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
@@ -18,12 +17,16 @@ class AccountProfile extends StatefulWidget {
 
 class _AccountProfileState extends State<AccountProfile> {
   final _formKey = GlobalKey<FormState>();
-
-  // final _confirmFocusNode = FocusNode();
-  // bool _obscureText = true;
-
   var _usernameController = TextEditingController();
   var _emailController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => Provider.of<UserNotifier>(context, listen: false)
+      ..getSession()
+      ..isLogin());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +54,9 @@ class _AccountProfileState extends State<AccountProfile> {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Consumer<PreferencesNotifier>(
+              child: Consumer<UserNotifier>(
                 builder: (context, provider, widget) {
-                  var userData = provider.userData;
+                  var userData = provider.sessionData;
 
                   _usernameController.text = userData.username;
                   _emailController.text = userData.email;
@@ -92,7 +95,7 @@ class _AccountProfileState extends State<AccountProfile> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () => Navigation.intentWithData(
-                                UserChallenge.routeName, userData.id),
+                                UserChallenge.routeName, userData.userid),
                             child: Text('Ubah Pertanyaan Keamanan'),
                           ),
                         ),
@@ -105,9 +108,10 @@ class _AccountProfileState extends State<AccountProfile> {
                                   await FirebaseMessaging.instance.getToken();
                               print('FIREBASE token: $token');
 
-                              var api = LaporhoaxApi();
                               if (token != null) {
-                                api.postFcmToken(userData.id.toString(), token);
+                                // api.postFcmToken(userData.id.toString(), token);
+                                provider.postToken(
+                                    userData.userid.toString(), token);
                               } else {
                                 toast('error in firebase!');
                               }

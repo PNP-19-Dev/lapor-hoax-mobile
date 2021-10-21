@@ -8,7 +8,7 @@ class GetSessionData {
 
   GetSessionData(this.repository);
 
-  Future<Either<Failure, SessionData>> execute() {
+  Future<Either<Failure, SessionData?>> execute() {
     return repository.getSessionData();
   }
 }

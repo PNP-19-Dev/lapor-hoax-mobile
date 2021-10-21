@@ -1,9 +1,9 @@
-import 'package:laporhoax/data/models/user_question_model.dart';
 import 'package:laporhoax/domain/entities/user.dart';
+import 'package:laporhoax/domain/entities/user_question.dart';
 
 class ChallengeArguments {
   final User user;
-  final UserQuestionModel challenge;
+  final UserQuestion challenge;
 
   ChallengeArguments(this.user, this.challenge);
 }

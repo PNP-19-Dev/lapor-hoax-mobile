@@ -3,11 +3,13 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
+import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/presentation/pages/account/forgot_password_page.dart';
 import 'package:laporhoax/presentation/pages/account/register_page.dart';
 import 'package:laporhoax/presentation/pages/home_page.dart';
-import 'package:laporhoax/presentation/provider/preferences_notifier.dart';
+import 'package:laporhoax/presentation/provider/user_notifier.dart';
+import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -21,6 +23,26 @@ class _LoginPageState extends State<LoginPage> {
   bool _obscureText = true;
   var _usernameController = TextEditingController();
   var _passwordController = TextEditingController();
+
+  void onLogin(BuildContext context, String username, String password) async {
+    final progress = ProgressHUD.of(context);
+
+    progress!.showWithText('Loading...');
+    var provider = Provider.of<UserNotifier>(context, listen: true);
+
+    provider.login(username, password);
+
+    if (provider.loginState == RequestState.Success) {
+      progress.dismiss();
+      Navigation.intent(HomePage.routeName);
+    } else {
+      progress.dismiss();
+      toast(provider.loginMessage);
+      print(provider.loginMessage);
+    }
+
+    print('loading...');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,22 +170,14 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  final progress = ProgressHUD.of(context);
                                   if (_formKey.currentState!.validate()) {
                                     var username =
                                         _usernameController.text.toString();
                                     var password =
                                         _passwordController.text.toString();
 
-                                    progress!.showWithText('Loading...');
-                                    var token = getToken(username, password);
-                                    var data = getData(username);
-                                    var provider =
-                                    Provider.of<PreferencesNotifier>(
-                                            context,
-                                            listen: false);
-
-                                    print('loading...');
+                                    onLogin(context, username, password);
+/*
                                     data.then((value) {
                                       provider.setUserData(value.first);
                                     });
@@ -181,6 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                                         print(error);
                                       },
                                     );
+*/
                                   }
                                 },
                                 child: Text('Login'),

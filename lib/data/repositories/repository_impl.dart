@@ -58,6 +58,12 @@ class RepositoryImpl implements Repository {
   }
 
   @override
+  Future<bool> isSessionActivated() async {
+    final result = await localDataSource.getSession();
+    return result != null;
+  }
+
+  @override
   Future<Either<Failure, List<Feed>>> getSavedFeeds() async {
     final result = await localDataSource.getFeeds();
     return Right(result.map((data) => data.toEntity()).toList());
@@ -260,6 +266,24 @@ class RepositoryImpl implements Repository {
       return Left(DatabaseFailure(e.message));
     } catch (e) {
       throw e;
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> updateSessionData(SessionData data) {
+    // TODO: implement updateSessionData
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, UserQuestion>> getUserChallenge(String id) async {
+    try {
+      final result = await remoteDataSource.getUserQuestions(id);
+      return Right(result.toEntity());
+    } on ServerException {
+      return Left(ServerFailure(""));
+    } on SocketException {
+      return Left(ConnectionFailure("Failed to connect to the network"));
     }
   }
 }

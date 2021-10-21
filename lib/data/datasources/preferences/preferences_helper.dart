@@ -16,6 +16,7 @@ class PreferencesHelper {
   static const LOGIN = 'LOGIN';
   static const SESSION = 'SESSION';
   static const DATA = 'DATA';
+  static const TOKEN = 'TOKEN';
 
   Future<List<String>> get sessionData async {
     final prefs = await sharedPreferences;

@@ -5,10 +5,11 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
+import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/model/user_question_model.dart';
-import 'package:laporhoax/data/model/user_response.dart';
-import 'package:laporhoax/presentation/provider/list_providers.dart';
+import 'package:laporhoax/domain/entities/user.dart';
+import 'package:laporhoax/domain/entities/user_question.dart';
+import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:laporhoax/util/route/challenge_arguments.dart';
 import 'package:provider/provider.dart';
@@ -104,37 +105,42 @@ class _ForgotPasswordSectionOneState extends State<ForgotPasswordSectionOne> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Consumer<ListProviders>(
+                              Consumer<UserNotifier>(
                                 builder: (context, provider, widget) {
                                   return ElevatedButton(
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
                                         final progress =
                                             ProgressHUD.of(context);
-                                        progress!.show();
 
-                                        provider
-                                            .getUserData(_inputEmail.text)
-                                            .then((value) {
-                                          User user = value;
-                                          String id = value.id.toString();
+                                        provider.getUserData(_inputEmail.text);
 
-                                          provider
-                                              .getUserQuestion(id)
-                                              .then((value) {
-                                            progress.dismiss();
+                                        if (provider.userState ==
+                                            RequestState.Loading) {
+                                          progress!.showWithText(
+                                              "Mendapatkan Data..");
+                                        } else if (provider.userState ==
+                                            RequestState.Loaded) {
+                                          if (provider.userQuestionState ==
+                                              RequestState.Loaded) {
+                                            progress!.dismiss();
+                                            var user = provider.user;
+                                            var userQuestions =
+                                                provider.userQuestion;
+
                                             Navigation.intentWithData(
                                                 ForgotPasswordSectionTwo
                                                     .routeName,
                                                 ChallengeArguments(
-                                                    user, value));
-                                          }).onError((error, stackTrace) {
-                                            toast('Error $error');
-                                          });
-                                        }).onError((error, stackTrace) {
-                                          progress.dismiss();
-                                          toast('Error $error');
-                                        });
+                                                    user, userQuestions));
+                                          } else {
+                                            progress!.dismiss();
+                                            toast(provider.userQuestionMessage);
+                                          }
+                                        } else {
+                                          progress!.dismiss();
+                                          toast(provider.userMessage);
+                                        }
                                       }
                                     },
                                     child: Text('selanjutnya'),
@@ -160,7 +166,7 @@ class _ForgotPasswordSectionOneState extends State<ForgotPasswordSectionOne> {
 class ForgotPasswordSectionTwo extends StatefulWidget {
   static String routeName = '/forgot_password2';
   final User user;
-  final Challenge challenge;
+  final UserQuestion challenge;
 
   ForgotPasswordSectionTwo({required this.user, required this.challenge});
 
@@ -192,6 +198,8 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
   @override
   void initState() {
     super.initState();
+    Future.microtask(() =>
+        Provider.of<UserNotifier>(context, listen: false)..fetchQuestions());
     getAnsAndIndex();
   }
 
@@ -223,8 +231,17 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                     fontSize: 15,
                   ),
                 ),
-                Consumer<ListProviders>(builder: (context, provider, child) {
-                  questionMap = provider.questionToMap();
+                Consumer<UserNotifier>(builder: (context, provider, child) {
+                  var progress = ProgressHUD.of(context);
+                  if (provider.questionState == RequestState.Loading) {
+                    progress!.showWithText("Mengambil data");
+                  } else if (provider.questionState == RequestState.Loaded) {
+                    progress!.dismiss();
+                    questionMap = provider.questionMap;
+                  } else {
+                    progress!.dismiss();
+                    toast(provider.questionMessage);
+                  }
 
                   _inputQuestion.text =
                       questionMap[index.isNotEmpty ? index[0] : 1] as String;
