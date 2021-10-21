@@ -9,8 +9,8 @@ import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/models/report_request.dart';
-import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/category.dart';
+import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/presentation/pages/account/login_page.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
@@ -23,10 +23,6 @@ import 'on_loading_report.dart';
 class ReportPage extends StatefulWidget {
   static const routeName = '/lapor_page';
 
-  final TokenId? tokenId;
-
-  ReportPage(this.tokenId);
-
   @override
   _ReportPageState createState() => _ReportPageState();
 }
@@ -36,6 +32,7 @@ class _ReportPageState extends State<ReportPage> {
   bool _anonym = false;
   XFile? _image;
   List<Category> _categories = [];
+  late SessionData session;
 
   var _urlController = TextEditingController();
   var _descController = TextEditingController();
@@ -59,7 +56,9 @@ class _ReportPageState extends State<ReportPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      Provider.of<UserNotifier>(context, listen: false)..getSession();
+      Provider.of<UserNotifier>(context, listen: false)
+        ..getSession()
+        ..isLogin();
       Provider.of<ReportNotifier>(context, listen: false)..fetchCategories();
     });
   }
@@ -68,7 +67,15 @@ class _ReportPageState extends State<ReportPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: widget.tokenId == null ? welcome() : lapor(),
+        body: Consumer<UserNotifier>(
+          builder: (context, provider, child) {
+            if (provider.isLoggedIn) {
+              session = provider.sessionData;
+              return welcome();
+            } else
+              return lapor();
+          },
+        ),
       ),
     );
   }
@@ -76,25 +83,9 @@ class _ReportPageState extends State<ReportPage> {
   FocusNode _linkFocusNode = new FocusNode();
   final _formKey = GlobalKey<FormState>();
 
-  void postReport(BuildContext context, ReportRequest report) async {
-    var progress = ProgressHUD.of(context);
-    var provider = Provider.of<ReportNotifier>(context, listen: true);
-    provider.sendReport(widget.tokenId!, report);
-
-    if (provider.postReportState == RequestState.Loading) {
-      progress!.showWithText('Laporanmu sedang diupload!');
-    } else if (provider.postReportState == RequestState.Loaded) {
-      progress!.dismiss();
-      Navigation.intentWithData(OnSuccessReport.routeName, provider.report!);
-    } else if (provider.postReportState == RequestState.Error) {
-      progress!.dismiss();
-      toast(provider.postReportMessage);
-      Navigation.intent(OnFailureReport.routeName);
-    }
-  }
-
   Widget lapor() => ProgressHUD(
         child: Builder(builder: (context) {
+          var progress = ProgressHUD.of(context);
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -110,7 +101,7 @@ class _ReportPageState extends State<ReportPage> {
                   ),
                   Container(
                     padding:
-                        const EdgeInsets.only(top: 30, left: 15, right: 15),
+                    const EdgeInsets.only(top: 30, left: 15, right: 15),
                     child: Center(
                       child: Text(
                         'Buat Laporan',
@@ -165,7 +156,7 @@ class _ReportPageState extends State<ReportPage> {
                           decoration: InputDecoration(
                               labelText: 'URL / Link (optional)',
                               icon:
-                                  SvgPicture.asset('assets/icons/link_on.svg'),
+                              SvgPicture.asset('assets/icons/link_on.svg'),
                               labelStyle: TextStyle(
                                 color: _linkFocusNode.hasFocus
                                     ? orangeBlaze
@@ -174,7 +165,18 @@ class _ReportPageState extends State<ReportPage> {
                         ),
                         Consumer<ReportNotifier>(
                           builder: (context, provider, widget) {
-                            _categories = provider.category;
+                            if (provider.fetchCategoryState ==
+                                RequestState.Loading) {
+                              progress!.showWithText('Mengambil data kategori');
+                            } else if (provider.fetchCategoryState ==
+                                RequestState.Loaded) {
+                              progress!.dismiss();
+                              _categories = provider.category;
+                            } else {
+                              progress!.dismiss();
+                              toast(provider.fetchCategoryMessage);
+                            }
+
                             return DropdownButtonFormField<String>(
                               isExpanded: true,
                               iconSize: 0,
@@ -241,37 +243,58 @@ class _ReportPageState extends State<ReportPage> {
                         ),
                         SizedBox(
                           width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                int id = widget.tokenId!.id as int;
-                                String url = _urlController.text.toString();
-                                String desc = _descController.text.toString();
-                                XFile img = _image!;
-                                String category = _selectedCategory;
-                                bool isAnonym = _anonym;
+                          child: Consumer<ReportNotifier>(
+                              builder: (context, provider, child) {
+                            return ElevatedButton(
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  int id = session.userid;
+                                  String url = _urlController.text.toString();
+                                  String desc = _descController.text.toString();
+                                  XFile img = _image!;
+                                  String category = _selectedCategory;
+                                  bool isAnonym = _anonym;
 
-                                var report = ReportRequest(
-                                  user: id,
-                                  url: url,
-                                  description: desc,
-                                  category: category,
-                                  isAnonym: isAnonym,
-                                  img: img,
-                                );
+                                  var report = ReportRequest(
+                                    user: id,
+                                    url: url,
+                                    description: desc,
+                                    category: category,
+                                    isAnonym: isAnonym,
+                                    img: img,
+                                  );
 
-                                postReport(context, report);
-                              }
-                            },
-                            child: Text('Lapor'),
-                          ),
+                                  provider.sendReport(session.token, report);
+
+                                  if (provider.postReportState ==
+                                      RequestState.Loading) {
+                                    progress!.showWithText(
+                                        'Laporanmu sedang diupload!');
+                                  } else if (provider.postReportState ==
+                                      RequestState.Loaded) {
+                                    progress!.dismiss();
+                                    Navigation.intentWithData(
+                                        OnSuccessReport.routeName,
+                                        provider.report!);
+                                  } else if (provider.postReportState ==
+                                      RequestState.Error) {
+                                    progress!.dismiss();
+                                    toast(provider.postReportMessage);
+                                    Navigation.intent(
+                                        OnFailureReport.routeName);
+                                  }
+                                }
+                              },
+                              child: Text('Lapor'),
+                            );
+                          }),
                         ),
                       ],
                     ),
                   ),
                   GestureDetector(
                     onTap: () => Navigation.intentWithData(
-                        HistoryPage.routeName, widget.tokenId!),
+                        HistoryPage.routeName, session.userid),
                     child: Container(
                       child: Center(
                           child: Text(

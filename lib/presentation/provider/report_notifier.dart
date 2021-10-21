@@ -106,11 +106,11 @@ class ReportNotifier extends ChangeNotifier {
     });
   }
 
-  Future<void> sendReport(TokenId tokenId, ReportRequest request) async {
+  Future<void> sendReport(String token, ReportRequest request) async {
     _postReportState = RequestState.Loading;
     notifyListeners();
 
-    final result = await postReport.execute(tokenId.token, request);
+    final result = await postReport.execute(token, request);
     result.fold((failure) {
       _postReportMessage = 'error: ${failure.message}';
       _postReportState = RequestState.Error;

@@ -41,9 +41,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   HistoryPage.routeName: (context) => HistoryPage(
         tokenId: ModalRoute.of(context)?.settings.arguments as TokenId,
       ),
-  ReportPage.routeName: (context) => ReportPage(
-        ModalRoute.of(context)?.settings.arguments as TokenId,
-      ),
+  ReportPage.routeName: (context) => ReportPage(),
   OnSuccessReport.routeName: (context) => OnSuccessReport(
         reportItem: ModalRoute.of(context)?.settings.arguments as Report,
       ),
