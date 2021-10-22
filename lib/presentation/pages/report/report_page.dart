@@ -70,30 +70,34 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   Future<Null> cropImage(String path) async {
-    File? fileImage = await ImageCropper.cropImage(
-      sourcePath: path,
-      aspectRatioPresets: [
-        CropAspectRatioPreset.square,
-        CropAspectRatioPreset.ratio3x2,
-        CropAspectRatioPreset.original,
-        CropAspectRatioPreset.ratio4x3,
-        CropAspectRatioPreset.ratio16x9
-      ],
-      androidUiSettings: AndroidUiSettings(
-          toolbarTitle: 'Cropper',
-          toolbarColor: orangeBlaze,
-          toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: false),
-      compressQuality: 80,
-    );
+    try {
+      File? fileImage = await ImageCropper.cropImage(
+        sourcePath: path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: orangeBlaze,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        compressQuality: 80,
+      );
 
-    print('path : ${fileImage!.path}');
+      print('path : ${fileImage!.path}');
 
-    setState(() {
-      filename = fileImage.path.trim().split('/').last;
-      this._image = XFile(fileImage.path, name: filename);
-    });
+      setState(() {
+        filename = fileImage.path.trim().split('/').last;
+        this._image = XFile(fileImage.path, name: filename);
+      });
+    } on IOException catch (e) {
+      print('Pick error $e');
+    }
   }
 
   @override
