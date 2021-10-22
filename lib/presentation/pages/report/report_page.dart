@@ -56,10 +56,8 @@ class _ReportPageState extends State<ReportPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      Provider.of<UserNotifier>(context, listen: false)
-        ..getSession()
-        ..isLogin();
-      Provider.of<ReportNotifier>(context, listen: false)..fetchCategories();
+      Provider.of<ReportNotifier>(context, listen: false).fetchCategories();
+      Provider.of<UserNotifier>(context, listen: false).isLogin();
     });
   }
 

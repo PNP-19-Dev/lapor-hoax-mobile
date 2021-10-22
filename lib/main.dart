@@ -8,6 +8,9 @@ import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/injection.dart' as di;
 import 'package:laporhoax/presentation/pages/home_page.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
+import 'package:laporhoax/presentation/provider/login_notifier.dart';
+import 'package:laporhoax/presentation/provider/question_notifier.dart';
+import 'package:laporhoax/presentation/provider/register_notifier.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
 import 'package:laporhoax/presentation/provider/saved_feed_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
@@ -72,6 +75,15 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => di.locator<UserNotifier>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<LoginNotifier>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<RegisterNotifier>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<QuestionNotifier>(),
         ),
       ],
       child: MaterialApp(

@@ -8,14 +8,14 @@ import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
-class AccountProfile extends StatefulWidget {
-  static const routeName = '/account_profile';
+class ProfilePage extends StatefulWidget {
+  static const routeName = '/profile_page';
 
   @override
-  _AccountProfileState createState() => _AccountProfileState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _AccountProfileState extends State<AccountProfile> {
+class _ProfilePageState extends State<ProfilePage> {
   final _formKey = GlobalKey<FormState>();
   var _usernameController = TextEditingController();
   var _emailController = TextEditingController();

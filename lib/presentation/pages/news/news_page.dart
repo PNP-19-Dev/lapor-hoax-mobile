@@ -6,7 +6,7 @@ import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
-import 'package:laporhoax/presentation/pages/account/tutorial.dart';
+import 'package:laporhoax/presentation/pages/account/tutorial_page.dart';
 import 'package:laporhoax/presentation/pages/report/report_page.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
@@ -99,7 +99,7 @@ class _NewsPageState extends State<NewsPage> {
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Card(
               child: ListTile(
-                onTap: () => Navigation.intent(Tutorial.routeName),
+                onTap: () => Navigation.intent(TutorialPage.routeName),
                 leading: Icon(Icons.menu_book_sharp),
                 title: Text('Tutorial Penggunaan',
                     style: GoogleFonts.inter(
