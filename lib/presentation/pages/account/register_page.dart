@@ -3,11 +3,10 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
-import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/models/register_model.dart';
-import 'package:laporhoax/presentation/pages/account/user_challenge.dart';
-import 'package:laporhoax/presentation/provider/register_notifier.dart';
+import 'package:laporhoax/presentation/pages/home_page.dart';
+import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
@@ -196,50 +195,45 @@ class _RegisterPageState extends State<RegisterPage> {
                                       color: orangeBlaze),
                                 ),
                               ),
-                              Consumer<RegisterNotifier>(
-                                builder: (context, provider, child) {
+                              ElevatedButton(
+                                onPressed: () async {
                                   final progress = ProgressHUD.of(context);
+                                  if (_formKey.currentState!.validate()) {
+                                    var username =
+                                        _usernameController.text.toString();
+                                    var email =
+                                        _emailController.text.toString();
+                                    var password =
+                                        _passwordController.text.toString();
 
-                                  if (provider.registerState ==
-                                      RequestState.Loading) {
-                                    progress!.showWithText("Memproses data");
-                                  } else if (provider.registerState ==
-                                      RequestState.Loaded) {
-                                    progress!.dismiss();
-                                    toast('Akun terdaftar! Silakan Login');
-                                    Navigation.intentWithData(
-                                        UserChallenge.routeName,
-                                        provider.userResponse.user.id);
-                                  } else if (provider.registerState ==
-                                      RequestState.Error) {
-                                    progress!.dismiss();
-                                    toast('Error: ${provider.registerMessage}');
+                                    progress!.showWithText('Loading...');
+
+                                    var userData = RegisterModel(
+                                      name: username,
+                                      email: email,
+                                      password: password,
+                                    );
+
+                                    await Provider.of<UserNotifier>(context,
+                                            listen: false)
+                                        .register(userData);
+
+                                    final message = Provider.of<UserNotifier>(
+                                            context,
+                                            listen: false)
+                                        .registerMessage;
+
+                                    if (message ==
+                                        UserNotifier.messageRegister) {
+                                      progress.dismiss();
+                                      toast(message);
+                                      Navigation.intent(HomePage.routeName);
+                                    } else {
+                                      toast(message);
+                                    }
                                   }
-
-                                  return ElevatedButton(
-                                    onPressed: () {
-                                      if (_formKey.currentState!.validate()) {
-                                        var username =
-                                            _usernameController.text.toString();
-                                        var email =
-                                            _emailController.text.toString();
-                                        var password =
-                                            _passwordController.text.toString();
-
-                                        progress!.showWithText('Loading...');
-
-                                        var userData = RegisterModel(
-                                          name: username,
-                                          email: email,
-                                          password: password,
-                                        );
-
-                                        provider.register(userData);
-                                      }
-                                    },
-                                    child: Text('Selanjutnya'),
-                                  );
                                 },
+                                child: Text('Selanjutnya'),
                               ),
                             ],
                           ),

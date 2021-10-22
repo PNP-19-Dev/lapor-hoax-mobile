@@ -7,7 +7,7 @@ import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/presentation/pages/account/forgot_password_page.dart';
 import 'package:laporhoax/presentation/pages/account/register_page.dart';
 import 'package:laporhoax/presentation/pages/home_page.dart';
-import 'package:laporhoax/presentation/provider/login_notifier.dart';
+import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
@@ -147,35 +147,38 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                               ),
-                              Consumer<LoginNotifier>(
-                                builder: (context, provider, builder) {
-                                  return ElevatedButton(
-                                    onPressed: () {
-                                      if (_formKey.currentState!.validate()) {
-                                        var username =
-                                            _usernameController.text.toString();
-                                        var password =
-                                            _passwordController.text.toString();
+                              ElevatedButton(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    var username =
+                                        _usernameController.text.toString();
+                                    var password =
+                                        _passwordController.text.toString();
 
-                                        final progress =
-                                            ProgressHUD.of(context);
-                                        progress?.showWithText('Loading...');
+                                    final progress = ProgressHUD.of(context);
+                                    progress?.showWithText('Loading...');
 
-                                        provider
-                                            .login(username, password)
-                                            .then((value) {
-                                          progress?.dismiss();
-                                          Navigation.intent(HomePage.routeName);
-                                        }).onError((error, stackTrace) {
-                                          progress?.dismiss();
-                                          toast(provider.loginMessage);
-                                          print(provider.loginMessage);
-                                        });
-                                      }
-                                    },
-                                    child: Text('Login'),
-                                  );
+                                    await Provider.of<UserNotifier>(context,
+                                            listen: false)
+                                        .login(username, password);
+
+                                    final message = Provider.of<UserNotifier>(
+                                            context,
+                                            listen: false)
+                                        .loginMessage;
+
+                                    if (message == UserNotifier.messageLogin) {
+                                      progress?.dismiss();
+                                      toast(message);
+                                      Navigation.intent(HomePage.routeName);
+                                    } else {
+                                      progress?.dismiss();
+                                      toast(message);
+                                      print(message);
+                                    }
+                                  }
                                 },
+                                child: Text('Login'),
                               ),
                             ],
                           ),

@@ -26,9 +26,7 @@ import 'package:laporhoax/domain/usecases/remove_session_data.dart';
 import 'package:laporhoax/domain/usecases/save_feed.dart';
 import 'package:laporhoax/domain/usecases/save_session_data.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
-import 'package:laporhoax/presentation/provider/login_notifier.dart';
 import 'package:laporhoax/presentation/provider/question_notifier.dart';
-import 'package:laporhoax/presentation/provider/register_notifier.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
 import 'package:laporhoax/presentation/provider/saved_feed_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
@@ -71,17 +69,9 @@ void init() {
       getSessionData: locator(),
       updateSessionData: locator(),
       getSessionStatus: locator(),
-    ),
-  );
-  locator.registerFactory(
-    () => LoginNotifier(
-      getUser: locator(),
       postLogin: locator(),
-      saveSessionData: locator(),
+      postRegister: locator(),
     ),
-  );
-  locator.registerFactory(
-    () => RegisterNotifier(postRegister: locator()),
   );
   locator.registerFactory(
     () => QuestionNotifier(

@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:laporhoax/common/state_enum.dart';
+import 'package:laporhoax/data/models/register_model.dart';
+import 'package:laporhoax/data/models/user_response.dart';
+import 'package:laporhoax/data/models/user_token.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/domain/entities/user.dart';
 import 'package:laporhoax/domain/usecases/get_password_reset.dart';
@@ -8,14 +11,21 @@ import 'package:laporhoax/domain/usecases/get_session_status.dart';
 import 'package:laporhoax/domain/usecases/get_user.dart';
 import 'package:laporhoax/domain/usecases/post_change_password.dart';
 import 'package:laporhoax/domain/usecases/post_fcm_token.dart';
+import 'package:laporhoax/domain/usecases/post_login.dart';
+import 'package:laporhoax/domain/usecases/post_register.dart';
 import 'package:laporhoax/domain/usecases/post_user_challenge.dart';
 import 'package:laporhoax/domain/usecases/remove_session_data.dart';
 import 'package:laporhoax/domain/usecases/save_session_data.dart';
 import 'package:laporhoax/domain/usecases/update_session_data.dart';
 
 class UserNotifier extends ChangeNotifier {
-  final GetUser getUser;
+  static const String messageLogin = 'Anda Login';
+  static const String messageLogout = 'Anda Logout';
+  static const String messageRegister = 'Register Berhasil!';
 
+  final GetUser getUser;
+  final PostLogin postLogin;
+  final PostRegister postRegister;
   final GetPasswordReset getPasswordReset;
   final GetSessionData getSessionData;
 
@@ -27,18 +37,18 @@ class UserNotifier extends ChangeNotifier {
   final UpdateSessionData updateSessionData;
   final GetSessionStatus getSessionStatus;
 
-  UserNotifier({
-    required this.getUser,
-    required this.getPasswordReset,
-    required this.getSessionData,
-    required this.postFCMToken,
-    required this.postChangePassword,
-    required this.postUserChallenge,
-    required this.saveSessionData,
-    required this.removeSessionData,
-    required this.updateSessionData,
-    required this.getSessionStatus,
-  });
+  UserNotifier({required this.getUser,
+      required this.getPasswordReset,
+      required this.getSessionData,
+      required this.postFCMToken,
+      required this.postChangePassword,
+      required this.postUserChallenge,
+      required this.saveSessionData,
+      required this.removeSessionData,
+      required this.updateSessionData,
+      required this.getSessionStatus,
+      required this.postLogin,
+      required this.postRegister});
 
   RequestState _sessionState = RequestState.Empty;
 
@@ -131,6 +141,78 @@ class UserNotifier extends ChangeNotifier {
     }, (user) {
       _user = user;
       _userState = RequestState.Loaded;
+      notifyListeners();
+    });
+  }
+
+  late UserToken _userToken;
+
+  UserToken get userToken => _userToken;
+
+  RequestState _loginState = RequestState.Empty;
+
+  RequestState get loginState => _loginState;
+
+  String _loginMessage = '';
+
+  String get loginMessage => _loginMessage;
+
+  Future<void> login(String username, String password) async {
+    _loginState = RequestState.Loading;
+    notifyListeners();
+
+    final result = await postLogin.execute(username, password);
+    final user = await getUser.execute(username);
+
+    result.fold((failure) {
+      _loginMessage = failure.message;
+      _loginState = RequestState.Error;
+    }, (userToken) {
+      _userToken = userToken;
+      user.fold((failure) {
+        _userState = RequestState.Error;
+      }, (user) {
+        var data = SessionData(
+          username: user.username,
+          email: user.email,
+          userid: user.id,
+          token: userToken.token!,
+          expiry: userToken.expiry!,
+        );
+
+        saveSessionData.execute(data);
+        _loginMessage = messageLogin;
+      });
+      _loginState = RequestState.Success;
+      notifyListeners();
+    });
+  }
+
+  late UserResponse _userResponse;
+
+  UserResponse get userResponse => _userResponse;
+
+  RequestState _registerState = RequestState.Empty;
+
+  RequestState get registerState => _registerState;
+
+  String _registerMessage = '';
+
+  String get registerMessage => _registerMessage;
+
+  Future<void> register(RegisterModel user) async {
+    _registerState = RequestState.Loading;
+    notifyListeners();
+
+    final result = await postRegister.execute(user);
+
+    result.fold((failure) {
+      _registerMessage = failure.message;
+      _registerState = RequestState.Error;
+    }, (userResponse) {
+      _userResponse = userResponse;
+      _registerMessage = messageRegister;
+      _registerState = RequestState.Loaded;
       notifyListeners();
     });
   }

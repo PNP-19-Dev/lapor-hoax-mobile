@@ -295,8 +295,9 @@ class SaveButton extends StatelessWidget {
 
         if (message == FeedNotifier.feedSavedMessage ||
             message == FeedNotifier.feedRemovedMessage) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(message)));
+          // ScaffoldMessenger.of(context)
+          //     .showSnackBar(SnackBar(content: Text(message), ));
+          toast(message);
         } else {
           showDialog(
               context: context,

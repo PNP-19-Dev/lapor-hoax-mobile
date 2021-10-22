@@ -105,38 +105,41 @@ class _ForgotPasswordSectionOneState extends State<ForgotPasswordSectionOne> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Consumer<UserNotifier>(
-                                builder: (context, provider, widget) {
-                                  return ElevatedButton(
-                                    onPressed: () {
-                                      if (_formKey.currentState!.validate()) {
-                                        final progress =
-                                            ProgressHUD.of(context);
+                              ElevatedButton(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    final progress = ProgressHUD.of(context);
+                                    progress!
+                                        .showWithText("Mendapatkan Data..");
+                                    await Provider.of<UserNotifier>(context,
+                                            listen: false)
+                                        .getUserData(_inputEmail.text);
 
-                                        provider.getUserData(_inputEmail.text);
+                                    final state = Provider.of<UserNotifier>(
+                                            context,
+                                            listen: false)
+                                        .userState;
+                                    final message = Provider.of<UserNotifier>(
+                                            context,
+                                            listen: false)
+                                        .userMessage;
 
-                                        if (provider.userState ==
-                                            RequestState.Loading) {
-                                          progress!.showWithText(
-                                              "Mendapatkan Data..");
-                                        } else if (provider.userState ==
-                                            RequestState.Loaded) {
-                                          progress!.dismiss();
-                                          var user = provider.user;
-
-                                          Navigation.intentWithData(
-                                              ForgotPasswordSectionTwo
-                                                  .routeName,
-                                              user);
-                                        } else {
-                                          progress!.dismiss();
-                                          toast(provider.userMessage);
-                                        }
-                                      }
-                                    },
-                                    child: Text('selanjutnya'),
-                                  );
+                                    if (state == RequestState.Loaded) {
+                                      progress.dismiss();
+                                      var user = Provider.of<UserNotifier>(
+                                              context,
+                                              listen: false)
+                                          .user;
+                                      Navigation.intentWithData(
+                                          ForgotPasswordSectionTwo.routeName,
+                                          user);
+                                    } else {
+                                      progress.dismiss();
+                                      toast(message);
+                                    }
+                                  }
                                 },
+                                child: Text('selanjutnya'),
                               ),
                             ],
                           ),
@@ -172,17 +175,31 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
   List<String> userAnswer = [];
   List<int> index = [];
 
-  void getAnsAndIndex(UserQuestion userquestion) {
+  void getAnsAndIndex(UserQuestion userQuestion) {
     userAnswer.clear();
-    userAnswer.add(userquestion.ans1 ?? '');
-    userAnswer.add(userquestion.ans2 ?? '');
-    userAnswer.add(userquestion.ans3 ?? '');
+    userAnswer.add(userQuestion.ans1 ?? '');
+    userAnswer.add(userQuestion.ans2 ?? '');
+    userAnswer.add(userQuestion.ans3 ?? '');
     index.clear();
-    index.add(userquestion.quest1 ?? 1);
-    index.add(userquestion.quest2 ?? 1);
-    index.add(userquestion.quest3 ?? 1);
+    index.add(userQuestion.quest1 ?? 1);
+    index.add(userQuestion.quest2 ?? 1);
+    index.add(userQuestion.quest3 ?? 1);
 
     print('index: ${index.length}');
+  }
+
+  void populateData(BuildContext context) async {
+    final provider = Provider.of<QuestionNotifier>(context, listen: false);
+
+    if (provider.userQuestionState == RequestState.Loaded) {
+      print('question length : ${provider.question.length}');
+      questionMap = provider.questionMap;
+      getAnsAndIndex(provider.userQuestion);
+      _inputQuestion.text =
+          questionMap[index.isNotEmpty ? index[0] : 1] as String;
+    } else {
+      toast(provider.userQuestionMessage);
+    }
   }
 
   @override
@@ -208,51 +225,25 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
       ),
       body: ProgressHUD(
         child: Builder(
-          builder: (context) => Container(
-            padding: const EdgeInsets.only(
-              top: 40,
-              left: 16,
-              right: 16,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Pertanyaan',
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15,
+          builder: (context) {
+            populateData(context);
+            return Container(
+              padding: const EdgeInsets.only(
+                top: 40,
+                left: 16,
+                right: 16,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Pertanyaan',
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                    ),
                   ),
-                ),
-                Consumer<QuestionNotifier>(builder: (context, provider, child) {
-                  var progress = ProgressHUD.of(context);
-
-                  if (provider.questionState == RequestState.Loading) {
-                    progress!.showWithText("Mengambil data");
-                  } else if (provider.questionState == RequestState.Loaded) {
-                    progress!.dismiss();
-                    questionMap = provider.questionMap;
-                    getAnsAndIndex(provider.userQuestion);
-                  } else {
-                    progress!.dismiss();
-                    toast(provider.questionMessage);
-                  }
-
-                  if (provider.userQuestionState == RequestState.Loading) {
-                    progress.showWithText("Mengambil data");
-                  } else if (provider.userQuestionState ==
-                      RequestState.Loaded) {
-                    progress.dismiss();
-                    questionMap = provider.questionMap;
-                  } else {
-                    progress.dismiss();
-                    toast(provider.questionMessage);
-                  }
-
-                  _inputQuestion.text =
-                      questionMap[index.isNotEmpty ? index[0] : 1] as String;
-
-                  return TextField(
+                  TextField(
                     controller: _inputQuestion,
                     enabled: false,
                     decoration: InputDecoration(
@@ -262,68 +253,68 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                         width: 24,
                       ),
                     ),
-                  );
-                }),
-                SizedBox(height: 20),
-                Text(
-                  'Jawaban',
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15,
                   ),
-                ),
-                TextField(
-                  controller: _inputAnswer,
-                  textInputAction: TextInputAction.done,
-                  decoration: InputDecoration(
-                    hintText: 'Masukkan Jawabanmu',
-                    icon: Image.asset(
-                      'assets/icons/ans.png',
-                      width: 24,
+                  SizedBox(height: 20),
+                  Text(
+                    'Jawaban',
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
                     ),
                   ),
-                ),
-                SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () {
-                    var random = Random();
-                    var nilaiRandom = random.nextInt(3);
-                    int nilai = index[nilaiRandom];
-                    print(nilai);
-                    var _newValue = questionMap[nilai] as String;
-
-                    _inputQuestion.value = TextEditingValue(
-                      text: _newValue,
-                      selection: TextSelection.fromPosition(
-                        TextPosition(offset: _newValue.length),
-                      ),
-                    );
-
-                    print(_inputQuestion.value);
-                  },
-                  child: Container(
-                    child: Text(
-                      'Ganti Pertanyaan?',
-                      style: GoogleFonts.inter(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15,
-                        color: orangeBlaze,
+                  TextField(
+                    controller: _inputAnswer,
+                    textInputAction: TextInputAction.done,
+                    decoration: InputDecoration(
+                      hintText: 'Masukkan Jawabanmu',
+                      icon: Image.asset(
+                        'assets/icons/ans.png',
+                        width: 24,
                       ),
                     ),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: Text('Selanjutnya'),
+                  SizedBox(height: 20),
+                  GestureDetector(
+                    onTap: () {
+                      var random = Random();
+                      var nilaiRandom = random.nextInt(3);
+                      int nilai = index[nilaiRandom];
+                      print(nilai);
+                      var _newValue = questionMap[nilai] as String;
+
+                      _inputQuestion.value = TextEditingValue(
+                        text: _newValue,
+                        selection: TextSelection.fromPosition(
+                          TextPosition(offset: _newValue.length),
+                        ),
+                      );
+
+                      print(_inputQuestion.value);
+                    },
+                    child: Container(
+                      child: Text(
+                        'Ganti Pertanyaan?',
+                        style: GoogleFonts.inter(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                          color: orangeBlaze,
+                        ),
+                      ),
                     ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () async {},
+                        child: Text('Selanjutnya'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
