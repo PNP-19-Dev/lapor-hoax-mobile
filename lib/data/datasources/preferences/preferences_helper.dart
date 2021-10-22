@@ -1,5 +1,4 @@
-import 'package:laporhoax/data/models/user_token.dart';
-import 'package:laporhoax/domain/entities/user.dart';
+import 'package:laporhoax/util/datetime_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesHelper {
@@ -14,45 +13,30 @@ class PreferencesHelper {
   factory PreferencesHelper() => _instance ?? PreferencesHelper.getInstance();
 
   static const LOGIN = 'LOGIN';
-  static const SESSION = 'SESSION';
-  static const DATA = 'DATA';
-  static const TOKEN = 'TOKEN';
+  static const EXPIRE = 'EXPIRE';
 
-  Future<List<String>> get sessionData async {
+  String? _expire;
+
+  Future<String> get expireDate async {
     final prefs = await sharedPreferences;
-    return prefs.getStringList(SESSION) ?? [];
+    return prefs.getString(EXPIRE) ?? '';
   }
 
-  Future<String> setSessionData(UserToken value) async {
+  void setExpire(String? value) async {
     final prefs = await sharedPreferences;
-    if (value.expiry != null && value.token != null) {
-      prefs.setStringList(SESSION, [value.expiry!, value.token!]);
-      return 'Success';
-    } else {
-      prefs.setStringList(SESSION, []);
-      return 'Removed!';
-    }
-  }
-
-  Future<List<String>> get userData async {
-    final prefs = await sharedPreferences;
-    return prefs.getStringList(DATA) ?? [];
-  }
-
-  Future<String> setUserData(User data) async {
-    final prefs = await sharedPreferences;
-    if (data.id != -1) {
-      prefs
-          .setStringList(DATA, [data.id.toString(), data.username, data.email]);
-      return 'Success';
-    } else {
-      prefs.setStringList(DATA, []);
-      return 'Removed!';
-    }
+    _expire = value;
+    prefs.setString(EXPIRE, value ?? '');
   }
 
   Future<bool> get isLogin async {
     final prefs = await sharedPreferences;
+    if (_expire != null) {
+      if (DateTime.now().isAfter(DateTimeHelper.formattedDateToken(_expire!))) {
+        setExpire(null);
+        setLogin(false);
+      }
+      return prefs.getBool(EXPIRE) ?? false;
+    }
     return prefs.getBool(LOGIN) ?? false;
   }
 

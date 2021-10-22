@@ -75,8 +75,16 @@ class LocalDataSourceImpl implements LocalDataSource {
   @override
   Future<SessionData?> getSession() async {
     final result = await databaseHelper.getLastSessions();
+    final session = await preferencesHelper.isLogin;
+
     if (result != null) {
-      return SessionData.fromMap(result);
+      final data = SessionData.fromMap(result);
+      if (session) {
+        return data;
+      } else {
+        removeSession(data);
+        return null;
+      }
     } else {
       return null;
     }
@@ -86,6 +94,8 @@ class LocalDataSourceImpl implements LocalDataSource {
   Future<String> insertSession(SessionData data) async {
     try {
       await databaseHelper.insertSession(data);
+      preferencesHelper.setExpire(data.expiry);
+      preferencesHelper.setLogin(true);
       return 'Session Saved';
     } catch (e) {
       throw DatabaseException(e.toString());
@@ -96,6 +106,8 @@ class LocalDataSourceImpl implements LocalDataSource {
   Future<String> removeSession(SessionData data) async {
     try {
       await databaseHelper.removeSession(data);
+      preferencesHelper.setExpire(data.expiry);
+      preferencesHelper.setLogin(false);
       return 'Session Saved';
     } catch (e) {
       throw DatabaseException(e.toString());

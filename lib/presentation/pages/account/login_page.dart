@@ -3,7 +3,6 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
-import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/presentation/pages/account/forgot_password_page.dart';
 import 'package:laporhoax/presentation/pages/account/register_page.dart';
@@ -150,23 +149,6 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               Consumer<LoginNotifier>(
                                 builder: (context, provider, builder) {
-                                  final progress = ProgressHUD.of(context);
-
-                                  if (provider.loginState ==
-                                      RequestState.Loading) {
-                                    print('loading...');
-                                    progress!.showWithText('Loading...');
-                                  } else if (provider.loginState ==
-                                      RequestState.Success) {
-                                    progress!.dismiss();
-                                    Navigation.intent(HomePage.routeName);
-                                  } else if (provider.loginState ==
-                                      RequestState.Error) {
-                                    progress!.dismiss();
-                                    toast(provider.loginMessage);
-                                    print(provider.loginMessage);
-                                  }
-
                                   return ElevatedButton(
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
@@ -175,7 +157,20 @@ class _LoginPageState extends State<LoginPage> {
                                         var password =
                                             _passwordController.text.toString();
 
-                                        provider.login(username, password);
+                                        final progress =
+                                            ProgressHUD.of(context);
+                                        progress?.showWithText('Loading...');
+
+                                        provider
+                                            .login(username, password)
+                                            .then((value) {
+                                          progress?.dismiss();
+                                          Navigation.intent(HomePage.routeName);
+                                        }).onError((error, stackTrace) {
+                                          progress?.dismiss();
+                                          toast(provider.loginMessage);
+                                          print(provider.loginMessage);
+                                        });
                                       }
                                     },
                                     child: Text('Login'),

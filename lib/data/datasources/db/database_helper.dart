@@ -32,20 +32,20 @@ class DatabaseHelper {
   }
 
   void _onCreate(Database db, int version) async {
-    await db.execute('''
-    CREATE TABLE $_tblFeeds (
+    await db.execute('''CREATE TABLE $_tblFeeds (
       id INTEGER PRIMARY KEY,
       title TEXT,
       thumbnail TEXT,
       date TEXT
-    );
-    
+    );''');
+
+    await db.execute('''
     CREATE TABLE $_tblSession (
       token TEXT,
       expire TEXT,
       userId TEXT,
       username TEXT,
-      email TEXT,
+      email TEXT
     );
     ''');
   }

@@ -18,7 +18,6 @@ import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/domain/entities/user.dart';
 import 'package:laporhoax/domain/entities/user_question.dart';
 import 'package:laporhoax/domain/repositories/repository.dart';
-import 'package:laporhoax/util/datetime_helper.dart';
 
 class RepositoryImpl implements Repository {
   final RemoteDataSource remoteDataSource;
@@ -60,17 +59,7 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<bool> isSessionActivated() async {
-    final result = await localDataSource.getSession();
-
-    if (result != null) {
-      if (DateTime.now()
-          .isAfter(DateTimeHelper.formattedDateToken(result.expiry))) {
-        removeSessionData(result);
-        return false;
-      }
-    }
-
-    return result != null;
+    return await localDataSource.isLoggedIn();
   }
 
   @override

@@ -3,16 +3,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
-import 'package:laporhoax/util/static_page_viewer.dart';
 import 'package:laporhoax/presentation/pages/news/saved_news.dart';
 import 'package:laporhoax/presentation/pages/report/history_page.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/util/static_data_web.dart';
+import 'package:laporhoax/util/static_page_viewer.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
-import 'profile_page.dart';
 import 'login_page.dart';
+import 'profile_page.dart';
 
 class AccountPage extends StatefulWidget {
   static const String pageName = 'Akun';
@@ -25,9 +25,8 @@ class _AccountPageState extends State<AccountPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => Provider.of<UserNotifier>(context, listen: false)
-      ..getSession()
-      ..isLogin());
+    Future.microtask(
+        () => Provider.of<UserNotifier>(context, listen: false)..getSession());
   }
 
   @override
