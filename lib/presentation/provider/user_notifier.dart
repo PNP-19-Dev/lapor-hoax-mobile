@@ -37,7 +37,8 @@ class UserNotifier extends ChangeNotifier {
   final UpdateSessionData updateSessionData;
   final GetSessionStatus getSessionStatus;
 
-  UserNotifier({required this.getUser,
+  UserNotifier(
+      {required this.getUser,
       required this.getPasswordReset,
       required this.getSessionData,
       required this.postFCMToken,
@@ -214,6 +215,21 @@ class UserNotifier extends ChangeNotifier {
       _registerMessage = messageRegister;
       _registerState = RequestState.Loaded;
       notifyListeners();
+    });
+  }
+
+  static const String messageReset = 'RESETED';
+  String _resetMessage = '';
+
+  String get resetMessage => _resetMessage;
+
+  Future<void> reset(String email, String token) async {
+    final result = await getPasswordReset.execute(email, token);
+
+    result.fold((failure) {
+      _resetMessage = failure.message;
+    }, (response) {
+      _resetMessage = messageReset;
     });
   }
 }

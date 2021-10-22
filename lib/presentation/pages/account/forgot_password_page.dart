@@ -306,7 +306,22 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ElevatedButton(
-                        onPressed: () async {},
+                        onPressed: () async {
+                          // TOKENNYA MANAAAAAA !!!!!!
+                          await Provider.of<UserNotifier>(context,
+                                  listen: false)
+                              .reset(widget.user.email, '');
+
+                          final message =
+                              Provider.of<UserNotifier>(context, listen: false)
+                                  .resetMessage;
+
+                          if (message == UserNotifier.messageReset) {
+                            toast(message);
+                          } else {
+                            toast(message);
+                          }
+                        },
                         child: Text('Selanjutnya'),
                       ),
                     ],
