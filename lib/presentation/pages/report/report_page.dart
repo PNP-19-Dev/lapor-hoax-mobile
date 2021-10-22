@@ -116,61 +116,61 @@ class _ReportPageState extends State<ReportPage> {
   final _formKey = GlobalKey<FormState>();
 
   Widget lapor() => ProgressHUD(
-    child: Builder(builder: (context) {
-      var progress = ProgressHUD.of(context);
-      return SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.only(top: 11),
-                child: GestureDetector(
-                  child: Icon(Icons.arrow_back, size: 32),
-                  onTap: () => Navigation.back(),
-                ),
-              ),
-              Container(
-                padding:
-                const EdgeInsets.only(top: 30, left: 15, right: 15),
-                child: Center(
-                  child: Text(
-                    'Buat Laporan',
-                    style: TextStyle(
-                        fontSize: 25, fontWeight: FontWeight.bold),
+        child: Builder(builder: (context) {
+          var progress = ProgressHUD.of(context);
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(top: 11),
+                    child: GestureDetector(
+                      child: Icon(Icons.arrow_back, size: 32),
+                      onTap: () => Navigation.back(),
+                    ),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 45,
-              ),
-              Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+                  Container(
+                    padding:
+                        const EdgeInsets.only(top: 30, left: 15, right: 15),
+                    child: Center(
+                      child: Text(
+                        'Buat Laporan',
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 45,
+                  ),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CircleAvatar(
-                          backgroundColor: orangeBlaze,
-                          child: IconButton(
-                            onPressed: () async =>
-                                getImage(ImageSource.gallery),
-                            icon: Icon(Icons.image),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        CircleAvatar(
-                          backgroundColor: orangeBlaze,
-                          child: IconButton(
-                            onPressed: () async =>
-                                getImage(ImageSource.camera),
-                            icon: Icon(Icons.camera_alt),
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        Flexible(
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: orangeBlaze,
+                              child: IconButton(
+                                onPressed: () async =>
+                                    getImage(ImageSource.gallery),
+                                icon: Icon(Icons.image),
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            CircleAvatar(
+                              backgroundColor: orangeBlaze,
+                              child: IconButton(
+                                onPressed: () async =>
+                                    getImage(ImageSource.camera),
+                                icon: Icon(Icons.camera_alt),
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Flexible(
                               child: InkWell(
                                 onTap: () {},
                                 child: Text(
@@ -181,139 +181,139 @@ class _ReportPageState extends State<ReportPage> {
                                 ),
                               ),
                             ),
-                      ],
-                    ),
-                    TextField(
-                      keyboardType: TextInputType.url,
-                      textInputAction: TextInputAction.done,
-                      controller: _urlController,
-                      focusNode: _linkFocusNode,
-                      decoration: InputDecoration(
-                          labelText: 'URL / Link (optional)',
-                          icon:
-                          SvgPicture.asset('assets/icons/link_on.svg'),
-                          labelStyle: TextStyle(
-                            color: _linkFocusNode.hasFocus
-                                ? orangeBlaze
-                                : Colors.black,
-                          )),
-                    ),
-                    Consumer<ListProviders>(
-                      builder: (context, provider, widget) {
-                        _categories = provider.categoryList;
-                        return DropdownButtonFormField<String>(
-                          isExpanded: true,
-                          iconSize: 0,
+                          ],
+                        ),
+                        TextField(
+                          keyboardType: TextInputType.url,
+                          textInputAction: TextInputAction.done,
+                          controller: _urlController,
+                          focusNode: _linkFocusNode,
                           decoration: InputDecoration(
-                            icon: SvgPicture.asset(
-                                'assets/icons/category_alt.svg'),
-                            suffixIcon: Icon(Icons.arrow_drop_down),
-                          ),
-                          hint: Text('Category'),
-                          value: _selectedCategory,
-                          items: _categories.map((value) {
-                            return DropdownMenuItem<String>(
-                              child: Text(value.name),
-                              value: value.name,
+                              labelText: 'URL / Link (optional)',
+                              icon:
+                                  SvgPicture.asset('assets/icons/link_on.svg'),
+                              labelStyle: TextStyle(
+                                color: _linkFocusNode.hasFocus
+                                    ? orangeBlaze
+                                    : Colors.black,
+                              )),
+                        ),
+                        Consumer<ListProviders>(
+                          builder: (context, provider, widget) {
+                            _categories = provider.categoryList;
+                            return DropdownButtonFormField<String>(
+                              isExpanded: true,
+                              iconSize: 0,
+                              decoration: InputDecoration(
+                                icon: SvgPicture.asset(
+                                    'assets/icons/category_alt.svg'),
+                                suffixIcon: Icon(Icons.arrow_drop_down),
+                              ),
+                              hint: Text('Category'),
+                              value: _selectedCategory,
+                              items: _categories.map((value) {
+                                return DropdownMenuItem<String>(
+                                  child: Text(value.name),
+                                  value: value.name,
+                                );
+                              }).toList(),
+                              onChanged: (v) {
+                                setState(() {
+                                  _selectedCategory = v!;
+                                });
+                              },
+                              onTap: () {
+                                if (_categories.isEmpty) {
+                                  toast('Mengambil data kategori...');
+                                }
+                              },
                             );
-                          }).toList(),
-                          onChanged: (v) {
-                            setState(() {
-                              _selectedCategory = v!;
-                            });
                           },
-                          onTap: () {
-                            if (_categories.isEmpty) {
-                              toast('Mengambil data kategori...');
-                            }
-                          },
-                        );
-                      },
-                    ),
-                    TextField(
-                      keyboardType: TextInputType.multiline,
-                      textInputAction: TextInputAction.done,
-                      controller: _descController,
-                      minLines: 5,
-                      maxLines: null,
-                      decoration: InputDecoration(
-                        labelText: 'Deskripsi laporan ( Opsional )',
-                        alignLabelWithHint: true,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                              style: BorderStyle.solid, color: orangeBlaze),
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(style: BorderStyle.solid),
+                        TextField(
+                          keyboardType: TextInputType.multiline,
+                          textInputAction: TextInputAction.done,
+                          controller: _descController,
+                          minLines: 5,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            labelText: 'Deskripsi laporan ( Opsional )',
+                            alignLabelWithHint: true,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(
+                                  style: BorderStyle.solid, color: orangeBlaze),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(style: BorderStyle.solid),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        Checkbox(
-                          activeColor: orangeBlaze,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _anonym = value!;
-                            });
-                          },
-                          value: _anonym,
+                        Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Checkbox(
+                              activeColor: orangeBlaze,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _anonym = value!;
+                                });
+                              },
+                              value: _anonym,
+                            ),
+                            Text('Lapor Secara Anonim'),
+                          ],
                         ),
-                        Text('Lapor Secara Anonim'),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                var data = Provider.of<PreferencesProvider>(
+                                    context,
+                                    listen: false);
+                                int id = data.userData.id;
+                                String url = _urlController.text.toString();
+                                String desc = _descController.text.toString();
+                                XFile img = _image!;
+                                String category = _selectedCategory;
+                                bool isAnonym = _anonym;
+
+                                var report = Report(
+                                  user: id,
+                                  url: url,
+                                  description: desc,
+                                  category: category,
+                                  isAnonym: isAnonym,
+                                  img: img,
+                                );
+
+                                var result = api.postReport(
+                                    data.loginData.token!, report);
+                                progress!
+                                    .showWithText('Laporanmu sedang diupload!');
+
+                                result.then((value) {
+                                  print('Report Status : ${value.status}');
+                                  progress.dismiss();
+                                  Navigation.intentWithData(
+                                      OnSuccessReport.routeName, value);
+                                }).onError((error, stackTrace) {
+                                  print(error);
+                                  progress.dismiss();
+                                  Navigation.intent(OnFailureReport.routeName);
+                                });
+                              }
+                            },
+                            child: Text('Lapor'),
+                          ),
+                        ),
                       ],
                     ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            var data = Provider.of<PreferencesProvider>(
-                                context,
-                                listen: false);
-                            int id = data.userData.id;
-                            String url = _urlController.text.toString();
-                            String desc = _descController.text.toString();
-                            XFile img = _image!;
-                            String category = _selectedCategory;
-                            bool isAnonym = _anonym;
-
-                            var report = Report(
-                              user: id,
-                              url: url,
-                              description: desc,
-                              category: category,
-                              isAnonym: isAnonym,
-                              img: img,
-                            );
-
-                            var result = api.postReport(
-                                data.loginData.token!, report);
-                            progress!
-                                .showWithText('Laporanmu sedang diupload!');
-
-                            result.then((value) {
-                              print('Report Status : ${value.status}');
-                              progress.dismiss();
-                              Navigation.intentWithData(
-                                  OnSuccessReport.routeName, value);
-                            }).onError((error, stackTrace) {
-                              print(error);
-                              progress.dismiss();
-                              Navigation.intent(OnFailureReport.routeName);
-                            });
-                          }
-                        },
-                        child: Text('Lapor'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Consumer<PreferencesProvider>(
-                  builder: (context, provider, child) {
+                  ),
+                  Consumer<PreferencesProvider>(
+                      builder: (context, provider, child) {
                     return GestureDetector(
                       onTap: () => Navigation.intentWithData(
                           HistoryPage.routeName,
@@ -324,18 +324,18 @@ class _ReportPageState extends State<ReportPage> {
                       child: Container(
                         child: Center(
                             child: Text(
-                              'Lihat riwayat pelaporan',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )),
+                          'Lihat riwayat pelaporan',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
                       ),
                     );
                   }),
-            ],
-          ),
-        ),
+                ],
+              ),
+            ),
+          );
+        }),
       );
-    }),
-  );
 
   Widget welcome() {
     return Column(
