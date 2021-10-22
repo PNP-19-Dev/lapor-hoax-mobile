@@ -9,9 +9,9 @@ import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/domain/entities/user.dart';
 import 'package:laporhoax/domain/entities/user_question.dart';
+import 'package:laporhoax/presentation/provider/question_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
-import 'package:laporhoax/util/route/challenge_arguments.dart';
 import 'package:provider/provider.dart';
 
 class ForgotPasswordSectionOne extends StatefulWidget {
@@ -121,22 +121,13 @@ class _ForgotPasswordSectionOneState extends State<ForgotPasswordSectionOne> {
                                               "Mendapatkan Data..");
                                         } else if (provider.userState ==
                                             RequestState.Loaded) {
-                                          if (provider.userQuestionState ==
-                                              RequestState.Loaded) {
-                                            progress!.dismiss();
-                                            var user = provider.user;
-                                            var userQuestions =
-                                                provider.userQuestion;
+                                          progress!.dismiss();
+                                          var user = provider.user;
 
-                                            Navigation.intentWithData(
-                                                ForgotPasswordSectionTwo
-                                                    .routeName,
-                                                ChallengeArguments(
-                                                    user, userQuestions));
-                                          } else {
-                                            progress!.dismiss();
-                                            toast(provider.userQuestionMessage);
-                                          }
+                                          Navigation.intentWithData(
+                                              ForgotPasswordSectionTwo
+                                                  .routeName,
+                                              user);
                                         } else {
                                           progress!.dismiss();
                                           toast(provider.userMessage);
@@ -166,9 +157,8 @@ class _ForgotPasswordSectionOneState extends State<ForgotPasswordSectionOne> {
 class ForgotPasswordSectionTwo extends StatefulWidget {
   static String routeName = '/forgot_password2';
   final User user;
-  final UserQuestion challenge;
 
-  ForgotPasswordSectionTwo({required this.user, required this.challenge});
+  ForgotPasswordSectionTwo({required this.user});
 
   @override
   _ForgotPasswordSectionTwo createState() => _ForgotPasswordSectionTwo();
@@ -182,15 +172,15 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
   List<String> userAnswer = [];
   List<int> index = [];
 
-  void getAnsAndIndex() {
+  void getAnsAndIndex(UserQuestion userquestion) {
     userAnswer.clear();
-    userAnswer.add(widget.challenge.ans1 ?? '');
-    userAnswer.add(widget.challenge.ans2 ?? '');
-    userAnswer.add(widget.challenge.ans3 ?? '');
+    userAnswer.add(userquestion.ans1 ?? '');
+    userAnswer.add(userquestion.ans2 ?? '');
+    userAnswer.add(userquestion.ans3 ?? '');
     index.clear();
-    index.add(widget.challenge.quest1 ?? 1);
-    index.add(widget.challenge.quest2 ?? 1);
-    index.add(widget.challenge.quest3 ?? 1);
+    index.add(userquestion.quest1 ?? 1);
+    index.add(userquestion.quest2 ?? 1);
+    index.add(userquestion.quest3 ?? 1);
 
     print('index: ${index.length}');
   }
@@ -198,9 +188,12 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() =>
-        Provider.of<UserNotifier>(context, listen: false)..fetchQuestions());
-    getAnsAndIndex();
+    Future.microtask(
+      () => Provider.of<QuestionNotifier>(context, listen: false)
+        ..fetchQuestions()
+        ..getUserSecurityQuestion(widget.user.id.toString()),
+    );
+    // getAnsAndIndex();
   }
 
   @override
@@ -231,15 +224,28 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                     fontSize: 15,
                   ),
                 ),
-                Consumer<UserNotifier>(builder: (context, provider, child) {
+                Consumer<QuestionNotifier>(builder: (context, provider, child) {
                   var progress = ProgressHUD.of(context);
+
                   if (provider.questionState == RequestState.Loading) {
                     progress!.showWithText("Mengambil data");
                   } else if (provider.questionState == RequestState.Loaded) {
                     progress!.dismiss();
                     questionMap = provider.questionMap;
+                    getAnsAndIndex(provider.userQuestion);
                   } else {
                     progress!.dismiss();
+                    toast(provider.questionMessage);
+                  }
+
+                  if (provider.userQuestionState == RequestState.Loading) {
+                    progress.showWithText("Mengambil data");
+                  } else if (provider.userQuestionState ==
+                      RequestState.Loaded) {
+                    progress.dismiss();
+                    questionMap = provider.questionMap;
+                  } else {
+                    progress.dismiss();
                     toast(provider.questionMessage);
                   }
 

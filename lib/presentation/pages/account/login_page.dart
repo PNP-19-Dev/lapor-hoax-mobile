@@ -8,7 +8,7 @@ import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/presentation/pages/account/forgot_password_page.dart';
 import 'package:laporhoax/presentation/pages/account/register_page.dart';
 import 'package:laporhoax/presentation/pages/home_page.dart';
-import 'package:laporhoax/presentation/provider/user_notifier.dart';
+import 'package:laporhoax/presentation/provider/login_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
@@ -23,26 +23,6 @@ class _LoginPageState extends State<LoginPage> {
   bool _obscureText = true;
   var _usernameController = TextEditingController();
   var _passwordController = TextEditingController();
-
-  void onLogin(BuildContext context, String username, String password) async {
-    final progress = ProgressHUD.of(context);
-
-    progress!.showWithText('Loading...');
-    var provider = Provider.of<UserNotifier>(context, listen: true);
-
-    provider.login(username, password);
-
-    if (provider.loginState == RequestState.Success) {
-      progress.dismiss();
-      Navigation.intent(HomePage.routeName);
-    } else {
-      progress.dismiss();
-      toast(provider.loginMessage);
-      print(provider.loginMessage);
-    }
-
-    print('loading...');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -168,37 +148,39 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    var username =
-                                        _usernameController.text.toString();
-                                    var password =
-                                        _passwordController.text.toString();
+                              Consumer<LoginNotifier>(
+                                builder: (context, provider, builder) {
+                                  final progress = ProgressHUD.of(context);
 
-                                    onLogin(context, username, password);
-/*
-                                    data.then((value) {
-                                      provider.setUserData(value.first);
-                                    });
-
-                                    token.then(
-                                      (value) {
-                                        progress.dismiss();
-                                        provider.setSessionData(value);
-                                        Navigation.intent(HomePage.routeName);
-                                      },
-                                    ).onError(
-                                      (error, stackTrace) {
-                                        progress.dismiss();
-                                        toast('$error');
-                                        print(error);
-                                      },
-                                    );
-*/
+                                  if (provider.loginState ==
+                                      RequestState.Loading) {
+                                    print('loading...');
+                                    progress!.showWithText('Loading...');
+                                  } else if (provider.loginState ==
+                                      RequestState.Success) {
+                                    progress!.dismiss();
+                                    Navigation.intent(HomePage.routeName);
+                                  } else if (provider.loginState ==
+                                      RequestState.Error) {
+                                    progress!.dismiss();
+                                    toast(provider.loginMessage);
+                                    print(provider.loginMessage);
                                   }
+
+                                  return ElevatedButton(
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        var username =
+                                            _usernameController.text.toString();
+                                        var password =
+                                            _passwordController.text.toString();
+
+                                        provider.login(username, password);
+                                      }
+                                    },
+                                    child: Text('Login'),
+                                  );
                                 },
-                                child: Text('Login'),
                               ),
                             ],
                           ),
@@ -206,6 +188,7 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
+                  // Library from OAuth
                   /*Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [

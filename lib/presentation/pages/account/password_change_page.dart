@@ -67,6 +67,13 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    Future.microtask(
+        () => Provider.of<UserNotifier>(context, listen: false)..getSession());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -82,6 +89,8 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Consumer<UserNotifier>(
               builder: (context, provider, widget) {
+                final progress = ProgressHUD.of(context);
+
                 return Form(
                   key: _formKey,
                   child: Column(
@@ -195,8 +204,6 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            final progress = ProgressHUD.of(context);
-
                             if (_formKey.currentState!.validate()) {
                               String oldPass = _oldPassword.text;
                               String newPass = _newPassword.text;

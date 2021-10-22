@@ -7,6 +7,8 @@ import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/presentation/pages/account/account_page.dart';
 import 'package:laporhoax/presentation/pages/news/news_page.dart';
 import 'package:laporhoax/presentation/pages/report/report_page.dart';
+import 'package:laporhoax/presentation/provider/user_notifier.dart';
+import 'package:provider/provider.dart';
 
 import '../../main.dart';
 

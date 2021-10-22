@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
-import 'package:laporhoax/presentation/pages/account/static_page_viewer.dart';
+import 'package:laporhoax/util/static_page_viewer.dart';
 import 'package:laporhoax/presentation/pages/news/saved_news.dart';
 import 'package:laporhoax/presentation/pages/report/history_page.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
@@ -11,7 +11,7 @@ import 'package:laporhoax/util/static_data_web.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
-import 'account_profile.dart';
+import 'profile_page.dart';
 import 'login_page.dart';
 
 class AccountPage extends StatefulWidget {
@@ -89,7 +89,7 @@ class _AccountPageState extends State<AccountPage> {
             leading: Icon(Icons.person_outline_rounded),
             title: Text('Profil'),
             trailing: Icon(Icons.chevron_right),
-            onTap: () => Navigation.intent(AccountProfile.routeName),
+            onTap: () => Navigation.intent(ProfilePage.routeName),
           ),
         ),
         Card(

@@ -25,6 +25,9 @@ import 'package:laporhoax/domain/usecases/post_user_challenge.dart';
 import 'package:laporhoax/domain/usecases/remove_session_data.dart';
 import 'package:laporhoax/domain/usecases/save_feed.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
+import 'package:laporhoax/presentation/provider/login_notifier.dart';
+import 'package:laporhoax/presentation/provider/question_notifier.dart';
+import 'package:laporhoax/presentation/provider/register_notifier.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
 import 'package:laporhoax/presentation/provider/saved_feed_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
@@ -58,19 +61,31 @@ void init() {
   locator.registerFactory(
     () => UserNotifier(
       getUser: locator(),
-      getQuestions: locator(),
       getPasswordReset: locator(),
-      postLogin: locator(),
-      postRegister: locator(),
       postFCMToken: locator(),
       postChangePassword: locator(),
       postUserChallenge: locator(),
-      getUserChallenge: locator(),
       removeSessionData: locator(),
       saveSessionData: locator(),
       getSessionData: locator(),
       updateSessionData: locator(),
       getSessionStatus: locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => LoginNotifier(
+      getUser: locator(),
+      postLogin: locator(),
+      saveSessionData: locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => RegisterNotifier(postRegister: locator()),
+  );
+  locator.registerFactory(
+    () => QuestionNotifier(
+      getQuestions: locator(),
+      getUserChallenge: locator(),
     ),
   );
   locator.registerFactory(

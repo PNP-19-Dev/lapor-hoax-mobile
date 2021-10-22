@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:laporhoax/common/theme.dart';
 
-class Tutorial extends StatefulWidget {
-  static const String routeName = '/tutorial';
+class TutorialPage extends StatefulWidget {
+  static const String routeName = '/tutorial_page';
 
   @override
-  _TutorialState createState() => _TutorialState();
+  _TutorialPageState createState() => _TutorialPageState();
 }
 
-class _TutorialState extends State<Tutorial> {
+class _TutorialPageState extends State<TutorialPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

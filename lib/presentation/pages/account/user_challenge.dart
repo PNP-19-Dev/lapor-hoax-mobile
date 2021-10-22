@@ -4,7 +4,7 @@ import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/models/user_question_model.dart';
 import 'package:laporhoax/domain/entities/question.dart';
-import 'package:laporhoax/presentation/provider/user_notifier.dart';
+import 'package:laporhoax/presentation/provider/question_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
@@ -31,8 +31,8 @@ class _UserChallengeState extends State<UserChallenge> {
   @override
   initState() {
     super.initState();
-    Future.microtask(() =>
-        Provider.of<UserNotifier>(context, listen: false)..fetchQuestions());
+    Future.microtask(() => Provider.of<QuestionNotifier>(context, listen: false)
+      ..fetchQuestions());
   }
 
   void postResult(BuildContext context, UserQuestionModel challenge) async {
@@ -66,7 +66,7 @@ class _UserChallengeState extends State<UserChallenge> {
             title: Text('Atur Pertanyaan Rahasia'),
           ),
           body: SingleChildScrollView(
-            child: Consumer<UserNotifier>(
+            child: Consumer<QuestionNotifier>(
               builder: (context, provider, child) {
                 var progress = ProgressHUD.of(context);
 
