@@ -132,7 +132,7 @@ class _ForgotPasswordSectionOneState extends State<ForgotPasswordSectionOne> {
                                           .user;
                                       Navigation.intentWithData(
                                           ForgotPasswordSectionTwo.routeName,
-                                          user);
+                                          user!);
                                     } else {
                                       progress.dismiss();
                                       toast(message);

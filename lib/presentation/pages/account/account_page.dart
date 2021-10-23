@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
-import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/presentation/pages/news/saved_news.dart';
 import 'package:laporhoax/presentation/pages/report/history_page.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
-import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:laporhoax/util/static_data_web.dart';
 import 'package:laporhoax/util/static_page_viewer.dart';
 import 'package:provider/provider.dart';
@@ -27,8 +25,9 @@ class _AccountPageState extends State<AccountPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-        () => Provider.of<UserNotifier>(context, listen: false)..getSession());
+    Future.microtask(() => Provider.of<UserNotifier>(context, listen: false)
+      ..getSession()
+      ..isLogin());
   }
 
   @override
@@ -39,17 +38,11 @@ class _AccountPageState extends State<AccountPage> {
         child: SingleChildScrollView(
           child: Consumer<UserNotifier>(
             builder: (context, provider, child) {
-              if (provider.sessionState == RequestState.Loading) {
-                return Center(child: CircularProgressIndicator());
-              } else if (provider.sessionState == RequestState.Loaded) {
+              if (provider.sessionData != null) {
                 if (provider.isLoggedIn) {
-                  return onLogin(provider.sessionData);
-                } else {
+                  return onLogin(provider.sessionData!);
+                } else
                   return onWelcome();
-                }
-              } else if (provider.sessionState == RequestState.Error) {
-                toast(provider.sessionMessage);
-                return onWelcome();
               } else {
                 return onWelcome();
               }
@@ -61,7 +54,6 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Widget onLogin(SessionData sessionData) {
-    var provider = Provider.of<UserNotifier>(context, listen: false);
     return Column(
       children: [
         Padding(
@@ -83,7 +75,8 @@ class _AccountPageState extends State<AccountPage> {
                 ),
               ),
               GestureDetector(
-                onTap: () => provider.logout(sessionData),
+                onTap: () async => await Provider.of<UserNotifier>(context)
+                    .logout(sessionData),
                 child: Icon(
                   Icons.exit_to_app,
                   color: Colors.red,
@@ -99,7 +92,8 @@ class _AccountPageState extends State<AccountPage> {
             leading: Icon(Icons.person_outline_rounded),
             title: Text('Profil'),
             trailing: Icon(Icons.chevron_right),
-            onTap: () => Navigation.intent(ProfilePage.routeName),
+            onTap: () => Navigation.intentWithData(
+                ProfilePage.routeName, sessionData.email),
           ),
         ),
         Card(
@@ -111,8 +105,8 @@ class _AccountPageState extends State<AccountPage> {
             onTap: () => Navigation.intentWithData(
               HistoryPage.routeName,
               TokenId(
-                provider.sessionData.userid,
-                provider.sessionData.token,
+                sessionData.userid,
+                sessionData.token,
               ),
             ),
           ),

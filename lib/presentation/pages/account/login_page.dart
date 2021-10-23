@@ -169,7 +169,6 @@ class _LoginPageState extends State<LoginPage> {
 
                                     if (message == UserNotifier.messageLogin) {
                                       progress?.dismiss();
-                                      toast(message);
                                       Navigation.intent(HomePage.routeName);
                                     } else {
                                       progress?.dismiss();
@@ -186,51 +185,6 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-                  // Library from OAuth
-                  /*Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.only(left: 10, right: 20),
-                              child: Divider(
-                                height: 36,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            'atau',
-                            style: TextStyle(color: grey500),
-                          ),
-                          Expanded(
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.only(left: 20, right: 10),
-                              child: Divider(
-                                height: 36,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      SignInButton(
-                        Buttons.Google,
-                        text: 'Login dengan Google',
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        onPressed: signIn,
-                      ),
-                      SignInButton(
-                        Buttons.FacebookNew,
-                        text: 'Login dengan Facebook',
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        onPressed: facebookSignIn,
-                      ),
-                    ],
-                  ),*/
                 ],
               ),
             ),

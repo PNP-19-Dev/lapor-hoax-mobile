@@ -207,7 +207,7 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                             if (_formKey.currentState!.validate()) {
                               String oldPass = _oldPassword.text;
                               String newPass = _newPassword.text;
-                              String token = provider.sessionData.token;
+                              String? token = provider.sessionData?.token;
 
                               progress!.showWithText('Loading...');
 

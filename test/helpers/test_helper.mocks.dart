@@ -135,25 +135,28 @@ class MockRepository extends _i1.Mock implements _i10.Repository {
                   Future<_i2.Either<_i12.Failure, List<_i16.Report>>>.value(
                       _FakeEither_0<_i12.Failure, List<_i16.Report>>()))
           as _i11.Future<_i2.Either<_i12.Failure, List<_i16.Report>>>);
+
   @override
   _i11.Future<_i2.Either<_i12.Failure, List<_i14.Feed>>> getSavedFeeds() =>
       (super.noSuchMethod(Invocation.method(#getSavedFeeds, []),
           returnValue: Future<_i2.Either<_i12.Failure, List<_i14.Feed>>>.value(
               _FakeEither_0<_i12.Failure, List<_i14.Feed>>())) as _i11
           .Future<_i2.Either<_i12.Failure, List<_i14.Feed>>>);
+
   @override
-  _i11.Future<_i2.Either<_i12.Failure, _i17.SessionData?>> getSessionData() =>
+  _i11.Future<_i2.Either<_i12.Failure, _i17.SessionData>> getSessionData() =>
       (super.noSuchMethod(Invocation.method(#getSessionData, []),
-              returnValue:
-                  Future<_i2.Either<_i12.Failure, _i17.SessionData?>>.value(
-                      _FakeEither_0<_i12.Failure, _i17.SessionData?>()))
-          as _i11.Future<_i2.Either<_i12.Failure, _i17.SessionData?>>);
+          returnValue: Future<_i2.Either<_i12.Failure, _i17.SessionData>>.value(
+              _FakeEither_0<_i12.Failure, _i17.SessionData>())) as _i11
+          .Future<_i2.Either<_i12.Failure, _i17.SessionData>>);
+
   @override
   _i11.Future<_i2.Either<_i12.Failure, _i18.User>> getUser(String? email) =>
       (super.noSuchMethod(Invocation.method(#getUser, [email]),
               returnValue: Future<_i2.Either<_i12.Failure, _i18.User>>.value(
                   _FakeEither_0<_i12.Failure, _i18.User>()))
           as _i11.Future<_i2.Either<_i12.Failure, _i18.User>>);
+
   @override
   _i11.Future<_i2.Either<_i12.Failure, _i19.UserQuestion>> getUserChallenge(
           int? id) =>
@@ -461,22 +464,61 @@ class MockPreferencesHelper extends _i1.Mock implements _i30.PreferencesHelper {
       super.noSuchMethod(
           Invocation.setter(#sharedPreferences, _sharedPreferences),
           returnValueForMissingStub: null);
+
   @override
   _i11.Future<String> get expireDate =>
       (super.noSuchMethod(Invocation.getter(#expireDate),
           returnValue: Future<String>.value('')) as _i11.Future<String>);
+
+  @override
+  _i11.Future<String> get token =>
+      (super.noSuchMethod(Invocation.getter(#token),
+          returnValue: Future<String>.value('')) as _i11.Future<String>);
+
+  @override
+  _i11.Future<String> get email =>
+      (super.noSuchMethod(Invocation.getter(#email),
+          returnValue: Future<String>.value('')) as _i11.Future<String>);
+
+  @override
+  _i11.Future<int> get id => (super.noSuchMethod(Invocation.getter(#id),
+      returnValue: Future<int>.value(0)) as _i11.Future<int>);
+
   @override
   _i11.Future<bool> get isLogin =>
       (super.noSuchMethod(Invocation.getter(#isLogin),
           returnValue: Future<bool>.value(false)) as _i11.Future<bool>);
+
   @override
   void setExpire(String? value) =>
       super.noSuchMethod(Invocation.method(#setExpire, [value]),
           returnValueForMissingStub: null);
+
+  @override
+  void setToken(String? value) =>
+      super.noSuchMethod(Invocation.method(#setToken, [value]),
+          returnValueForMissingStub: null);
+
+  @override
+  void setEmail(String? value) =>
+      super.noSuchMethod(Invocation.method(#setEmail, [value]),
+          returnValueForMissingStub: null);
+
+  @override
+  void setId(int? value) =>
+      super.noSuchMethod(Invocation.method(#setId, [value]),
+          returnValueForMissingStub: null);
+
+  @override
+  void setUsername(String? value) =>
+      super.noSuchMethod(Invocation.method(#setUsername, [value]),
+          returnValueForMissingStub: null);
+
   @override
   void setLogin(bool? value) =>
       super.noSuchMethod(Invocation.method(#setLogin, [value]),
           returnValueForMissingStub: null);
+
   @override
   String toString() => super.toString();
 }

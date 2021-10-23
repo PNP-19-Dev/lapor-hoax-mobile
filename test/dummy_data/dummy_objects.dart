@@ -44,8 +44,8 @@ final testSessionData = SessionData(
   token: "token",
   expiry: "expiry",
   userid: 1,
-  username: "username",
   email: "email",
+  username: 'useranme',
 );
 
 final testUserChallenge = UserQuestion(

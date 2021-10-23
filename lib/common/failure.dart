@@ -20,3 +20,7 @@ class ConnectionFailure extends Failure {
 class DatabaseFailure extends Failure {
   DatabaseFailure(String message) : super(message);
 }
+
+class Exception extends Failure {
+  Exception(String message) : super(message);
+}

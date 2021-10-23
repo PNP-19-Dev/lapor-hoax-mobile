@@ -52,8 +52,7 @@ class DetailReportPage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child:
-              Text('Keputusan : ${report.verdict ?? "Menunggu"}',
+              child: Text('Keputusan : ${report.verdict ?? "Menunggu"}',
                   style: GoogleFonts.inter(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -104,20 +103,30 @@ class DetailReportPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    Icon(Icons.link),
-                    SizedBox(width: 5),
-                    InkWell(
-                      child: Text('${report.url}',
-                          style: GoogleFonts.inter(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                            color: orangeBlaze,
-                          )),
-                      onTap: () => launch('${report.url}'),
-                    ),
-                  ]),
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  Icon(Icons.link),
+                  SizedBox(width: 5),
+                  InkWell(
+                    child: Text('${report.url}',
+                        style: GoogleFonts.inter(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                          color: orangeBlaze,
+                        )),
+                    onTap: () {
+                      final url = report.url!.replaceAll('"', '');
+                      if (url.contains('://')) {
+                        launch(url);
+                      } else {
+                        if (url.contains('.')) {
+                          launch('http://$url');
+                        }
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8.0, top: 8.0),

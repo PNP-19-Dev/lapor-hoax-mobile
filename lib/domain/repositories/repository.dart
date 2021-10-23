@@ -14,24 +14,41 @@ import 'package:laporhoax/domain/entities/user_question.dart';
 
 abstract class Repository {
   Future<Either<Failure, String>> deleteReport(String token, int id);
+
   Future<Either<Failure, List<Category>>> getCategories();
+
   Future<bool> isAddedToSavedFeed(int id);
+
   Future<bool> isSessionActivated();
+
   Future<Either<Failure, List<Feed>>> getFeeds();
+
   Future<Either<Failure, Feed>> getFeedDetail(int id);
+
   Future<Either<Failure, String>> getPasswordReset(String email, String token);
+
   Future<Either<Failure, List<Question>>> getQuestions();
+
   Future<Either<Failure, List<Report>>> getReports(String token, int id);
+
   Future<Either<Failure, List<Feed>>> getSavedFeeds();
-  Future<Either<Failure, SessionData?>> getSessionData();
+
+  Future<Either<Failure, SessionData>> getSessionData();
+
   Future<Either<Failure, User>> getUser(String email);
+
   Future<Either<Failure, UserQuestion>> getUserChallenge(int id);
+
   Future<Either<Failure, String>> postChangePassword(
       String oldPass, String newPass, String token);
+
   Future<Either<Failure, String>> postFCMToken(int user, String fcmToken);
+
   Future<Either<Failure, UserToken>> postLogin(
       String username, String password);
+
   Future<Either<Failure, UserResponse>> postRegister(RegisterModel user);
+
   Future<Either<Failure, Report>> postReport(
       String token, ReportRequest report);
   Future<Either<Failure, String>> postUserChallenge(UserQuestion challenge);

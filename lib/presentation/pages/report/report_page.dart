@@ -12,8 +12,8 @@ import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/models/report_request.dart';
+import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/category.dart';
-import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/presentation/pages/account/login_page.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
@@ -36,7 +36,6 @@ class _ReportPageState extends State<ReportPage> {
   XFile? _image;
   List<Category> _categories = [];
   String filename = '';
-  late SessionData session;
 
   var _urlController = TextEditingController();
   var _descController = TextEditingController();
@@ -95,7 +94,9 @@ class _ReportPageState extends State<ReportPage> {
     super.initState();
     Future.microtask(() {
       Provider.of<ReportNotifier>(context, listen: false).fetchCategories();
-      Provider.of<UserNotifier>(context, listen: false).isLogin();
+      Provider.of<UserNotifier>(context, listen: false)
+        ..isLogin()
+        ..getSession();
     });
   }
 
@@ -106,7 +107,6 @@ class _ReportPageState extends State<ReportPage> {
         body: Consumer<UserNotifier>(
           builder: (context, provider, child) {
             if (provider.isLoggedIn) {
-              session = provider.sessionData;
               return lapor();
             } else
               return welcome();
@@ -120,166 +120,173 @@ class _ReportPageState extends State<ReportPage> {
   final _formKey = GlobalKey<FormState>();
 
   Widget lapor() => ProgressHUD(
-    child: Builder(builder: (context) {
-      var progress = ProgressHUD.of(context);
-      return StreamBuilder(
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(top: 11),
-                    child: GestureDetector(
-                      child: Icon(Icons.arrow_back, size: 32),
-                      onTap: () => Navigation.back(),
-                    ),
-                  ),
-                  Container(
-                    padding:
-                    const EdgeInsets.only(top: 30, left: 15, right: 15),
-                    child: Center(
-                      child: Text(
-                        'Buat Laporan',
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
+        child: Builder(builder: (context) {
+          _categories =
+              Provider.of<ReportNotifier>(context, listen: false).category;
+
+          return StreamBuilder(
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(top: 11),
+                        child: GestureDetector(
+                          child: Icon(Icons.arrow_back, size: 32),
+                          onTap: () => Navigation.back(),
+                        ),
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 45,
-                  ),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: orangeBlaze,
-                              child: IconButton(
-                                onPressed: () async =>
-                                    getImage(ImageSource.gallery),
-                                icon: Icon(Icons.image),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            CircleAvatar(
-                              backgroundColor: orangeBlaze,
-                              child: IconButton(
-                                onPressed: () async =>
-                                    getImage(ImageSource.camera),
-                                icon: Icon(Icons.camera_alt),
-                              ),
-                            ),
-                            SizedBox(width: 8),
-                            Flexible(
-                              child: Text(
-                                _image == null
-                                    ? 'Sertakan Screenshoot'
-                                    : _image!.path,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                        TextField(
-                          keyboardType: TextInputType.url,
-                          textInputAction: TextInputAction.done,
-                          controller: _urlController,
-                          focusNode: _linkFocusNode,
-                          decoration: InputDecoration(
-                              labelText: 'URL / Link (optional)',
-                              icon: SvgPicture.asset(
-                                  'assets/icons/link_on.svg'),
-                              labelStyle: TextStyle(
-                                color: _linkFocusNode.hasFocus
-                                    ? orangeBlaze
-                                    : Colors.black,
-                              )),
-                        ),
-                        DropdownButtonFormField<String>(
-                          isExpanded: true,
-                          iconSize: 0,
-                          decoration: InputDecoration(
-                            icon: SvgPicture.asset(
-                                'assets/icons/category_alt.svg'),
-                            suffixIcon: Icon(Icons.arrow_drop_down),
-                          ),
-                          hint: Text('Category'),
-                          value: _selectedCategory,
-                          items: _categories.map((value) {
-                            return DropdownMenuItem<String>(
-                              child: Text(value.name),
-                              value: value.name,
-                            );
-                          }).toList(),
-                          onChanged: (v) {
-                            setState(() {
-                              _selectedCategory = v!;
-                            });
-                          },
-                          onTap: () {
-                            if (_categories.isEmpty) {
-                              toast('Mengambil data kategori...');
-                            }
-                          },
-                        ),
-                        TextField(
-                          keyboardType: TextInputType.multiline,
-                          textInputAction: TextInputAction.done,
-                          controller: _descController,
-                          minLines: 5,
-                          maxLines: null,
-                          decoration: InputDecoration(
-                            labelText: 'Deskripsi laporan ( Opsional )',
-                            alignLabelWithHint: true,
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                  style: BorderStyle.solid,
-                                  color: orangeBlaze),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide:
-                              BorderSide(style: BorderStyle.solid),
-                            ),
+                      Container(
+                        padding:
+                            const EdgeInsets.only(top: 30, left: 15, right: 15),
+                        child: Center(
+                          child: Text(
+                            'Buat Laporan',
+                            style: TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
+                      ),
+                      SizedBox(
+                        height: 45,
+                      ),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Checkbox(
-                              activeColor: orangeBlaze,
-                              onChanged: (bool? value) {
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: orangeBlaze,
+                                  child: IconButton(
+                                    onPressed: () async =>
+                                        getImage(ImageSource.gallery),
+                                    icon: Icon(Icons.image),
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                CircleAvatar(
+                                  backgroundColor: orangeBlaze,
+                                  child: IconButton(
+                                    onPressed: () async =>
+                                        getImage(ImageSource.camera),
+                                    icon: Icon(Icons.camera_alt),
+                                  ),
+                                ),
+                                SizedBox(width: 8),
+                                Flexible(
+                                  child: Text(
+                                    _image == null
+                                        ? 'Sertakan Screenshoot'
+                                        : filename,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            TextField(
+                              keyboardType: TextInputType.url,
+                              textInputAction: TextInputAction.done,
+                              controller: _urlController,
+                              focusNode: _linkFocusNode,
+                              decoration: InputDecoration(
+                                  labelText: 'URL / Link (optional)',
+                                  icon: SvgPicture.asset(
+                                      'assets/icons/link_on.svg'),
+                                  labelStyle: TextStyle(
+                                    color: _linkFocusNode.hasFocus
+                                        ? orangeBlaze
+                                        : Colors.black,
+                                  )),
+                            ),
+                            DropdownButtonFormField<String>(
+                              isExpanded: true,
+                              iconSize: 0,
+                              decoration: InputDecoration(
+                                icon: SvgPicture.asset(
+                                    'assets/icons/category_alt.svg'),
+                                suffixIcon: Icon(Icons.arrow_drop_down),
+                              ),
+                              hint: Text('Category'),
+                              value: _selectedCategory,
+                              items: _categories.map((value) {
+                                return DropdownMenuItem<String>(
+                                  child: Text(value.name),
+                                  value: value.name,
+                                );
+                              }).toList(),
+                              onChanged: (v) {
                                 setState(() {
-                                  _anonym = value!;
+                                  _selectedCategory = v!;
                                 });
                               },
-                              value: _anonym,
+                              onTap: () {
+                                if (_categories.isEmpty) {
+                                  toast('Mengambil data kategori...');
+                                }
+                              },
                             ),
-                            Text('Lapor Secara Anonim'),
-                          ],
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: Consumer<ReportNotifier>(
-                              builder: (context, provider, child) {
-                                return ElevatedButton(
-                                  onPressed: () {
+                            TextField(
+                              keyboardType: TextInputType.multiline,
+                              textInputAction: TextInputAction.done,
+                              controller: _descController,
+                              minLines: 5,
+                              maxLines: null,
+                              decoration: InputDecoration(
+                                labelText: 'Deskripsi laporan ( Opsional )',
+                                alignLabelWithHint: true,
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide(
+                                      style: BorderStyle.solid,
+                                      color: orangeBlaze),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide:
+                                      BorderSide(style: BorderStyle.solid),
+                                ),
+                              ),
+                            ),
+                            Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: [
+                                Checkbox(
+                                  activeColor: orangeBlaze,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _anonym = value!;
+                                    });
+                                  },
+                                  value: _anonym,
+                                ),
+                                Text('Lapor Secara Anonim'),
+                              ],
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  var data = Provider.of<UserNotifier>(context)
+                                      .sessionData;
+
+                                  if (data != null) {
                                     if (_formKey.currentState!.validate()) {
-                                      int id = session.userid;
+                                      int id = data.userid;
                                       String url =
-                                      _urlController.text.toString();
+                                          _urlController.text.toString();
                                       String desc =
-                                      _descController.text.toString();
+                                          _descController.text.toString();
                                       XFile img = _image!;
                                       String category = _selectedCategory;
                                       bool isAnonym = _anonym;
+
+                                      final progress = ProgressHUD.of(context);
+                                      progress?.showWithText('Loading...');
 
                                       var report = ReportRequest(
                                         user: id,
@@ -290,54 +297,71 @@ class _ReportPageState extends State<ReportPage> {
                                         img: img,
                                       );
 
-                                      provider.sendReport(
-                                          session.token, report);
+                                      await Provider.of<ReportNotifier>(context,
+                                              listen: false)
+                                          .sendReport(data.token, report);
 
-                                      if (provider.postReportState ==
-                                          RequestState.Loading) {
-                                        progress!.showWithText(
-                                            'Laporanmu sedang diupload!');
-                                      } else if (provider.postReportState ==
-                                          RequestState.Loaded) {
+                                      final state = Provider.of<ReportNotifier>(
+                                              context,
+                                              listen: false)
+                                          .postReportState;
+
+                                      final message =
+                                          Provider.of<ReportNotifier>(context,
+                                                  listen: false)
+                                              .postReportMessage;
+
+                                      final result =
+                                          Provider.of<ReportNotifier>(context,
+                                                  listen: false)
+                                              .report;
+
+                                      if (state == RequestState.Loaded) {
                                         progress!.dismiss();
                                         Navigation.intentWithData(
-                                            OnSuccessReport.routeName,
-                                            provider.report!);
-                                      } else if (provider.postReportState ==
-                                          RequestState.Error) {
+                                            OnSuccessReport.routeName, result!);
+                                      } else if (state == RequestState.Error) {
                                         progress!.dismiss();
-                                        toast(provider.postReportMessage);
+                                        toast(message);
                                         Navigation.intent(
                                             OnFailureReport.routeName);
                                       }
                                     }
-                                  },
-                                  child: Text('Lapor'),
-                                );
-                              }),
+                                  }
+                                },
+                                child: Text('Lapor'),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigation.intentWithData(
-                        HistoryPage.routeName, session.userid),
-                    child: Container(
-                      child: Center(
-                          child: Text(
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          var data =
+                              Provider.of<UserNotifier>(context, listen: false)
+                                  .sessionData;
+                          if (data != null) {
+                            return Navigation.intentWithData(
+                                HistoryPage.routeName,
+                                TokenId(data.userid, data.token));
+                          }
+                        },
+                        child: Container(
+                          child: Center(
+                              child: Text(
                             'Lihat riwayat pelaporan',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           )),
-                    ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           );
-        },
+        }),
       );
-    }),
-  );
 
   Widget welcome() {
     return Column(

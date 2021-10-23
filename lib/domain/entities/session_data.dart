@@ -1,35 +1,36 @@
 import 'package:equatable/equatable.dart';
 
 class SessionData extends Equatable {
-  String token;
-  String expiry;
-  int userid;
-  String username;
-  String email;
+  final String token;
+  final int userid;
+  final String expiry;
+  final String email;
+  final String username;
 
-  SessionData(
-      {required this.token,
-      required this.expiry,
-      required this.userid,
-      required this.username,
-      required this.email});
+  SessionData({
+    required this.token,
+    required this.userid,
+    required this.expiry,
+    required this.email,
+    required this.username,
+  });
 
   Map<String, dynamic> toJson() => {
         "token": token,
-        "expiry": expiry,
         "userId": userid,
-        "username": username,
+        "expiry": expiry,
         "email": email,
+        "username": username,
       };
 
   factory SessionData.fromMap(Map<String, dynamic> map) => SessionData(
         token: map["token"],
-        expiry: map["expiry"],
         userid: map["userid"],
-        username: map["username"],
+        expiry: map["expiry"],
         email: map["email"],
+        username: map["username"],
       );
 
   @override
-  List<Object?> get props => [token, expiry, userid, username, email];
+  List<Object?> get props => [token, userid, expiry, email, username];
 }

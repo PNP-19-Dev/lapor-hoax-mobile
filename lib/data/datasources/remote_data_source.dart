@@ -94,7 +94,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     );
 
     if (response.statusCode == 200) {
-      print(response.data);
       return UserToken.fromJson(response.data);
     } else {
       throw ServerException();
@@ -110,7 +109,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     );
 
     if (response.statusCode == 200) {
-      print(response.data);
       return UserResponse.fromJson(response.data);
     } else {
       throw ServerException();
@@ -157,10 +155,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     );
 
     if (response.statusCode == 200) {
-      print('${response.data}');
       return ReportResponse.fromJson(response.data).reportList;
     } else {
-      print('${response.statusCode}');
       throw ServerException();
     }
   }
@@ -206,7 +202,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     if (response.statusCode == 201) {
       return 'success';
     } else {
-      print('${response.statusCode}');
       throw ServerException();
     }
   }

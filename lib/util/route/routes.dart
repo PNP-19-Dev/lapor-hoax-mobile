@@ -31,7 +31,8 @@ Map<String, Widget Function(BuildContext)> routes = {
   UserChallenge.routeName: (context) => UserChallenge(
         id: ModalRoute.of(context)?.settings.arguments as int,
       ),
-  ProfilePage.routeName: (context) => ProfilePage(),
+  ProfilePage.routeName: (context) =>
+      ProfilePage(email: ModalRoute.of(context)?.settings.arguments as String),
   HistoryPage.routeName: (context) => HistoryPage(
         tokenId: ModalRoute.of(context)?.settings.arguments as TokenId,
       ),

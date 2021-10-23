@@ -63,9 +63,9 @@ class UserNotifier extends ChangeNotifier {
 
   String get sessionMessage => _sessionMessage;
 
-  late SessionData _sessionData;
+  SessionData? _sessionData;
 
-  SessionData get sessionData => _sessionData;
+  SessionData? get sessionData => _sessionData;
 
   bool _isLoggedIn = false;
 
@@ -78,17 +78,12 @@ class UserNotifier extends ChangeNotifier {
   }
 
   Future<void> getSession() async {
-    _sessionState = RequestState.Loading;
-    notifyListeners();
-
     final result = await getSessionData.execute();
     result.fold((failure) {
-      _sessionState = RequestState.Error;
       _sessionMessage = failure.message;
       notifyListeners();
     }, (sessionData) {
-      _sessionState = RequestState.Loaded;
-      _sessionData = sessionData!;
+      _sessionData = sessionData;
       notifyListeners();
     });
   }
@@ -128,9 +123,9 @@ class UserNotifier extends ChangeNotifier {
     });
   }
 
-  late User _user;
+  User? _user;
 
-  User get user => _user;
+  User? get user => _user;
 
   String _userMessage = '';
 
@@ -180,11 +175,11 @@ class UserNotifier extends ChangeNotifier {
         _userState = RequestState.Error;
       }, (user) {
         var data = SessionData(
-          username: user.username,
           email: user.email,
           userid: user.id,
           token: userToken.token!,
           expiry: userToken.expiry!,
+          username: user.username,
         );
 
         saveSessionData.execute(data);

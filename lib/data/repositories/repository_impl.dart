@@ -232,14 +232,12 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, SessionData?>> getSessionData() async {
-    try {
-      final result = await localDataSource.getSession();
+  Future<Either<Failure, SessionData>> getSessionData() async {
+    final result = await localDataSource.getSession();
+    if (result != null) {
       return Right(result);
-    } on DatabaseException catch (e) {
-      return Left(DatabaseFailure(e.message));
-    } catch (e) {
-      throw e;
+    } else {
+      return Left(Exception('No Data'));
     }
   }
 

@@ -6,12 +6,19 @@ import 'package:laporhoax/domain/entities/session_data.dart';
 
 abstract class LocalDataSource {
   Future<String> insertFeed(FeedTable feed);
+
   Future<String> removeFeed(FeedTable feed);
+
   Future<FeedTable?> getFeedById(int id);
+
   Future<List<FeedTable>> getFeeds();
+
   Future<bool> isLoggedIn();
+
   Future<SessionData?> getSession();
+
   Future<String> insertSession(SessionData data);
+
   Future<String> removeSession(SessionData data);
 }
 
@@ -67,17 +74,21 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   @override
   Future<SessionData?> getSession() async {
-    final result = await databaseHelper.getLastSessions();
-    final session = await preferencesHelper.isLogin;
+    final status = await preferencesHelper.isLogin;
+    final id = await preferencesHelper.id;
+    final token = await preferencesHelper.token;
+    final expiry = await preferencesHelper.expireDate;
+    final email = await preferencesHelper.email;
+    final username = await preferencesHelper.username;
 
-    if (result != null) {
-      final data = SessionData.fromMap(result);
-      if (session) {
-        return data;
-      } else {
-        removeSession(data);
-        return null;
-      }
+    if (status) {
+      return SessionData(
+        userid: id,
+        token: token,
+        expiry: expiry,
+        email: email,
+        username: username,
+      );
     } else {
       return null;
     }
@@ -85,25 +96,23 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   @override
   Future<String> insertSession(SessionData data) async {
-    try {
-      await databaseHelper.insertSession(data);
-      preferencesHelper.setExpire(data.expiry);
-      preferencesHelper.setLogin(true);
-      return 'Session Saved';
-    } catch (e) {
-      throw DatabaseException(e.toString());
-    }
+    preferencesHelper.setId(data.userid);
+    preferencesHelper.setExpire(data.expiry);
+    preferencesHelper.setToken(data.token);
+    preferencesHelper.setEmail(data.email);
+    preferencesHelper.setUsername(data.username);
+    preferencesHelper.setLogin(true);
+    return 'Session Saved';
   }
 
   @override
   Future<String> removeSession(SessionData data) async {
-    try {
-      await databaseHelper.removeSession(data);
-      preferencesHelper.setExpire(data.expiry);
-      preferencesHelper.setLogin(false);
-      return 'Session Saved';
-    } catch (e) {
-      throw DatabaseException(e.toString());
-    }
+    preferencesHelper.setId(-1);
+    preferencesHelper.setExpire(null);
+    preferencesHelper.setToken(null);
+    preferencesHelper.setEmail(null);
+    preferencesHelper.setUsername(null);
+    preferencesHelper.setLogin(false);
+    return 'Session Removed';
   }
 }
