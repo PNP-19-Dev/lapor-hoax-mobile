@@ -8,7 +8,7 @@ class GetUserChallenge {
 
   GetUserChallenge(this.repository);
 
-  Future<Either<Failure, UserQuestion>> execute(String id) {
+  Future<Either<Failure, UserQuestion>> execute(int id) {
     return repository.getUserChallenge(id);
   }
 }

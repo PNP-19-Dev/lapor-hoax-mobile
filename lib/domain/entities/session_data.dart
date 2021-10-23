@@ -31,5 +31,5 @@ class SessionData extends Equatable {
       );
 
   @override
-  List<Object?> get props => [token, expiry];
+  List<Object?> get props => [token, expiry, userid, username, email];
 }

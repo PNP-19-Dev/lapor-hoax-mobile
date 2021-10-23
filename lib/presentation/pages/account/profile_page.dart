@@ -110,8 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                               if (token != null) {
                                 // api.postFcmToken(userData.id.toString(), token);
-                                provider.postToken(
-                                    userData.userid.toString(), token);
+                                provider.postToken(userData.userid, token);
                               } else {
                                 toast('error in firebase!');
                               }

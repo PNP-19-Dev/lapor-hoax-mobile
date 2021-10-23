@@ -65,7 +65,7 @@ class QuestionNotifier extends ChangeNotifier {
 
   RequestState get userQuestionState => _userQuestionState;
 
-  Future<void> getUserSecurityQuestion(String id) async {
+  Future<void> getUserSecurityQuestion(int id) async {
     _userQuestionState = RequestState.Loading;
     notifyListeners();
 

@@ -1,6 +1,6 @@
 class TokenId {
-  String id;
+  int id;
   String token;
 
-  TokenId({required this.id, required this.token});
+  TokenId(this.id, this.token);
 }

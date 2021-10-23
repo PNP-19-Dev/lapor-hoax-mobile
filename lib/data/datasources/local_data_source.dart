@@ -6,19 +6,12 @@ import 'package:laporhoax/domain/entities/session_data.dart';
 
 abstract class LocalDataSource {
   Future<String> insertFeed(FeedTable feed);
-
   Future<String> removeFeed(FeedTable feed);
-
   Future<FeedTable?> getFeedById(int id);
-
   Future<List<FeedTable>> getFeeds();
-
   Future<bool> isLoggedIn();
-
   Future<SessionData?> getSession();
-
   Future<String> insertSession(SessionData data);
-
   Future<String> removeSession(SessionData data);
 }
 

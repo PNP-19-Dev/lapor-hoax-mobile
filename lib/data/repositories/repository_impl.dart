@@ -92,8 +92,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, List<Report>>> getReports(
-      String token, String id) async {
+  Future<Either<Failure, List<Report>>> getReports(String token, int id) async {
     try {
       final result = await remoteDataSource.getReport(token, id);
       return Right(result.map((data) => data.toEntity()).toList());
@@ -107,7 +106,7 @@ class RepositoryImpl implements Repository {
   @override
   Future<Either<Failure, User>> getUser(String email) async {
     try {
-      final result = await remoteDataSource.getUserData(email);
+      final result = await remoteDataSource.getUser(email);
       return Right(result.map((e) => e.toEntity()).first);
     } on ServerException {
       return Left(ServerFailure(""));
@@ -168,10 +167,9 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, String>> deleteReport(
-      String token, Report report) async {
+  Future<Either<Failure, String>> deleteReport(String token, int id) async {
     try {
-      final result = await remoteDataSource.deleteReport(token, report);
+      final result = await remoteDataSource.deleteReport(token, id);
       return Right(result);
     } on ServerException {
       return Left(ServerFailure(""));
@@ -221,9 +219,10 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<Either<Failure, String>> postFCMToken(
-      String user, String fcmToken) async {
+      int user, String fcmToken) async {
     try {
-      final result = await remoteDataSource.postFcmToken(user, fcmToken);
+      final result =
+          await remoteDataSource.postFcmToken(user.toString(), fcmToken);
       return Right(result);
     } on ServerException {
       return Left(ServerFailure(""));
@@ -275,7 +274,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, UserQuestion>> getUserChallenge(String id) async {
+  Future<Either<Failure, UserQuestion>> getUserChallenge(int id) async {
     try {
       final result = await remoteDataSource.getUserQuestions(id);
       return Right(result.toEntity());

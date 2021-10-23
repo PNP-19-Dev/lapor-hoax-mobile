@@ -19,11 +19,11 @@ void main() {
   const isActiveEndpoint = 'isactive';
   const verifyOtpEndpoint = 'verifyotp';
 
-  late RemoteDataSourceImpl datasource;
+  late RemoteDataSourceImpl dataSource;
   late MockDio mockDio;
 
   setUp(() {
     mockDio = MockDio();
-    datasource = RemoteDataSourceImpl(dio: mockDio);
+    dataSource = RemoteDataSourceImpl(dio: mockDio);
   });
 }

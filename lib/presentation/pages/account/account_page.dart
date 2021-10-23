@@ -100,8 +100,8 @@ class _AccountPageState extends State<AccountPage> {
             onTap: () => Navigation.intentWithData(
               HistoryPage.routeName,
               TokenId(
-                token: provider.sessionData.token,
-                id: provider.sessionData.userid.toString(),
+                provider.sessionData.userid,
+                provider.sessionData.token,
               ),
             ),
           ),

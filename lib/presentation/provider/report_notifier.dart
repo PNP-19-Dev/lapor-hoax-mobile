@@ -123,11 +123,11 @@ class ReportNotifier extends ChangeNotifier {
     });
   }
 
-  Future<void> removeReport(TokenId tokenId, Report report) async {
+  Future<void> removeReport(TokenId tokenId, int id) async {
     _deleteReportState = RequestState.Loading;
     notifyListeners();
 
-    final result = await deleteReport.execute(tokenId.token, report);
+    final result = await deleteReport.execute(tokenId.token, id);
     result.fold((failure) {
       _deleteReportMessage = failure.message;
     }, (reportData) {

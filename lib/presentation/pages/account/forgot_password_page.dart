@@ -208,7 +208,7 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
     Future.microtask(
       () => Provider.of<QuestionNotifier>(context, listen: false)
         ..fetchQuestions()
-        ..getUserSecurityQuestion(widget.user.id.toString()),
+        ..getUserSecurityQuestion(widget.user.id),
     );
     // getAnsAndIndex();
   }

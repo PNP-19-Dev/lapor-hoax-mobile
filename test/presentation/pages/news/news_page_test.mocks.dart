@@ -2,17 +2,13 @@
 // in laporhoax/test/presentation/pages/news/news_page_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i10;
-import 'dart:ui' as _i11;
+import 'dart:async' as _i6;
+import 'dart:ui' as _i7;
 
-import 'package:laporhoax/common/state_enum.dart' as _i9;
-import 'package:laporhoax/domain/entities/feed.dart' as _i8;
-import 'package:laporhoax/domain/usecases/get_feed_save_status.dart' as _i5;
+import 'package:laporhoax/common/state_enum.dart' as _i5;
+import 'package:laporhoax/domain/entities/feed.dart' as _i4;
 import 'package:laporhoax/domain/usecases/get_feeds.dart' as _i2;
-import 'package:laporhoax/domain/usecases/get_saved_feeds.dart' as _i6;
-import 'package:laporhoax/domain/usecases/remove_feed.dart' as _i4;
-import 'package:laporhoax/domain/usecases/save_feed.dart' as _i3;
-import 'package:laporhoax/presentation/provider/feed_notifier.dart' as _i7;
+import 'package:laporhoax/presentation/provider/feed_notifier.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
@@ -26,19 +22,10 @@ import 'package:mockito/mockito.dart' as _i1;
 
 class _FakeGetFeeds_0 extends _i1.Fake implements _i2.GetFeeds {}
 
-class _FakeSaveFeed_1 extends _i1.Fake implements _i3.SaveFeed {}
-
-class _FakeRemoveFeed_2 extends _i1.Fake implements _i4.RemoveFeed {}
-
-class _FakeGetFeedSaveStatus_3 extends _i1.Fake
-    implements _i5.GetFeedSaveStatus {}
-
-class _FakeGetSavedFeeds_4 extends _i1.Fake implements _i6.GetSavedFeeds {}
-
 /// A class which mocks [FeedNotifier].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFeedNotifier extends _i1.Mock implements _i7.FeedNotifier {
+class MockFeedNotifier extends _i1.Mock implements _i3.FeedNotifier {
   MockFeedNotifier() {
     _i1.throwOnMissingStub(this);
   }
@@ -48,97 +35,47 @@ class MockFeedNotifier extends _i1.Mock implements _i7.FeedNotifier {
       returnValue: _FakeGetFeeds_0()) as _i2.GetFeeds);
 
   @override
-  _i3.SaveFeed get saveFeed => (super.noSuchMethod(Invocation.getter(#saveFeed),
-      returnValue: _FakeSaveFeed_1()) as _i3.SaveFeed);
+  List<_i4.Feed> get feeds =>
+      (super.noSuchMethod(Invocation.getter(#feeds), returnValue: <_i4.Feed>[])
+          as List<_i4.Feed>);
 
   @override
-  _i4.RemoveFeed get removeFeed =>
-      (super.noSuchMethod(Invocation.getter(#removeFeed),
-          returnValue: _FakeRemoveFeed_2()) as _i4.RemoveFeed);
-
-  @override
-  _i5.GetFeedSaveStatus get getFeedSaveStatus =>
-      (super.noSuchMethod(Invocation.getter(#getFeedSaveStatus),
-          returnValue: _FakeGetFeedSaveStatus_3()) as _i5.GetFeedSaveStatus);
-
-  @override
-  _i6.GetSavedFeeds get getSavedFeeds =>
-      (super.noSuchMethod(Invocation.getter(#getSavedFeeds),
-          returnValue: _FakeGetSavedFeeds_4()) as _i6.GetSavedFeeds);
-
-  @override
-  List<_i8.Feed> get feeds =>
-      (super.noSuchMethod(Invocation.getter(#feeds), returnValue: <_i8.Feed>[])
-          as List<_i8.Feed>);
-
-  @override
-  _i9.RequestState get feedState =>
+  _i5.RequestState get feedState =>
       (super.noSuchMethod(Invocation.getter(#feedState),
-          returnValue: _i9.RequestState.Empty) as _i9.RequestState);
-
-  @override
-  bool get isFeedSaved =>
-      (super.noSuchMethod(Invocation.getter(#isFeedSaved), returnValue: false)
-          as bool);
+          returnValue: _i5.RequestState.Empty) as _i5.RequestState);
 
   @override
   String get message =>
       (super.noSuchMethod(Invocation.getter(#message), returnValue: '')
           as String);
-
-  @override
-  String get savedFeedMessage =>
-      (super.noSuchMethod(Invocation.getter(#savedFeedMessage), returnValue: '')
-          as String);
-
   @override
   bool get hasListeners =>
       (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
           as bool);
 
   @override
-  _i10.Future<void> fetchFeeds() => (super.noSuchMethod(
-      Invocation.method(#fetchFeeds, []),
-      returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i10.Future<void>);
+  _i6.Future<void> fetchFeeds() =>
+      (super.noSuchMethod(Invocation.method(#fetchFeeds, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i6.Future<void>);
 
   @override
-  _i10.Future<void> saveFeedItem(_i8.Feed? feed) => (super.noSuchMethod(
-      Invocation.method(#saveFeedItem, [feed]),
-      returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i10.Future<void>);
-
-  @override
-  _i10.Future<void> removeFeedItem(_i8.Feed? feed) => (super.noSuchMethod(
-      Invocation.method(#removeFeedItem, [feed]),
-      returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i10.Future<void>);
-
-  @override
-  _i10.Future<void> loadSavedFeedStatus(int? id) => (super.noSuchMethod(
-      Invocation.method(#loadSavedFeedStatus, [id]),
-      returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i10.Future<void>);
-
-  @override
-  void addListener(_i11.VoidCallback? listener) =>
+  void addListener(_i7.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#addListener, [listener]),
           returnValueForMissingStub: null);
 
   @override
-  void removeListener(_i11.VoidCallback? listener) =>
+  void removeListener(_i7.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#removeListener, [listener]),
           returnValueForMissingStub: null);
 
   @override
   void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
       returnValueForMissingStub: null);
-
   @override
   void notifyListeners() =>
       super.noSuchMethod(Invocation.method(#notifyListeners, []),
           returnValueForMissingStub: null);
-
   @override
   String toString() => super.toString();
 }

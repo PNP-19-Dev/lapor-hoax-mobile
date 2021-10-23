@@ -16,40 +16,39 @@ import 'package:laporhoax/data/models/user_model.dart';
 import 'package:laporhoax/data/models/user_question_model.dart';
 import 'package:laporhoax/data/models/user_response.dart';
 import 'package:laporhoax/data/models/user_token.dart';
-import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/domain/entities/user_question.dart';
 
 abstract class RemoteDataSource {
-  Future<UserToken> postLogin(String username, String password);
-
-  Future<UserResponse> postRegister(RegisterModel user);
+  Future<String> deleteReport(String token, int id);
 
   Future<List<CategoryModel>> getCategory();
 
-  Future<List<UserModel>> getUserData(String email);
-
-  Future<List<ReportModel>> getReport(String token, String id);
-
-  Future<ReportModel> postReport(String token, ReportRequest report);
-
-  Future<String> deleteReport(String token, Report report);
+  Future<FeedModel> getFeedDetail(int id);
 
   Future<List<FeedModel>> getFeeds();
 
-  Future<FeedModel> getFeedDetail(int id);
+  Future<String> getPasswordReset(String email, String token);
 
   Future<List<QuestionModel>> getQuestions();
 
-  Future<UserQuestionModel> getUserQuestions(String id);
+  Future<List<ReportModel>> getReport(String token, int id);
 
-  Future postChallenge(UserQuestion challenge);
+  Future<List<UserModel>> getUser(String email);
 
-  Future postFcmToken(String user, String fcmToken);
+  Future<UserQuestionModel> getUserQuestions(int id);
 
   Future<String> postChangePassword(
       String oldPass, String newPass, String token);
 
-  Future<String> getPasswordReset(String email, String token);
+  Future postFcmToken(String user, String fcmToken);
+
+  Future<UserToken> postLogin(String username, String password);
+
+  Future<UserResponse> postRegister(RegisterModel user);
+
+  Future<ReportModel> postReport(String token, ReportRequest report);
+
+  Future postChallenge(UserQuestion challenge);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -131,7 +130,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<List<UserModel>> getUserData(String email) async {
+  Future<List<UserModel>> getUser(String email) async {
     final response = await dio.get(
       '/$getUserEndpint',
       options: Options(headers: <String, String>{
@@ -149,7 +148,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<List<ReportModel>> getReport(String token, String id) async {
+  Future<List<ReportModel>> getReport(String token, int id) async {
     final response = await dio.get(
       '/$reportsEndpoint/user/$id/',
       options: Options(headers: {
@@ -194,9 +193,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<String> deleteReport(String token, Report report) async {
+  Future<String> deleteReport(String token, int id) async {
     final response = await dio.delete(
-      '/$reportsEndpoint/${report.id}/',
+      '/$reportsEndpoint/$id/',
       options: Options(
         headers: {
           HttpHeaders.authorizationHeader: "Token $token",
@@ -235,7 +234,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<UserQuestionModel> getUserQuestions(String id) async {
+  Future<UserQuestionModel> getUserQuestions(int id) async {
     final response = await dio.get('/$questionEndpoint/user/$id');
 
     if (response.statusCode == 200) {

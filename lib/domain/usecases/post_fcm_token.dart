@@ -7,7 +7,7 @@ class PostFCMToken {
 
   PostFCMToken(this.repository);
 
-  Future<Either<Failure, String>> execute(String user, String fcmToken) {
+  Future<Either<Failure, String>> execute(int user, String fcmToken) {
     return repository.postFCMToken(user, fcmToken);
   }
 }

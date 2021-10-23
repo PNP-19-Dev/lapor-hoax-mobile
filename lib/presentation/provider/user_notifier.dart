@@ -106,7 +106,7 @@ class UserNotifier extends ChangeNotifier {
 
   String get fcmMessage => _fcmMessage;
 
-  Future<void> postToken(String userid, String token) async {
+  Future<void> postToken(int userid, String token) async {
     _fcmState = RequestState.Loading;
     notifyListeners();
 

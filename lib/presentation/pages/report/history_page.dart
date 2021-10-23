@@ -48,7 +48,7 @@ class _HistoryPageState extends State<HistoryPage> {
         onDismissed: (actionType) {
           setState(() async {
             // remove item pada report
-            provider.removeReport(widget.tokenId, report);
+            provider.removeReport(widget.tokenId, report.id);
 
             if (provider.postReportState == RequestState.Success) {
               _showSnackBar(context, provider.postReportMessage);

@@ -8,7 +8,7 @@ class GetReports {
 
   GetReports(this.repository);
 
-  Future<Either<Failure, List<Report>>> execute(String token, String id) {
+  Future<Either<Failure, List<Report>>> execute(String token, int id) {
     return repository.getReports(token, id);
   }
 }
