@@ -21,6 +21,6 @@ class DatabaseFailure extends Failure {
   DatabaseFailure(String message) : super(message);
 }
 
-class Exception extends Failure {
-  Exception(String message) : super(message);
+class CustomException extends Failure {
+  CustomException(String message) : super(message);
 }

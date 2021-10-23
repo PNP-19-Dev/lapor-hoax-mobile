@@ -38,7 +38,6 @@ import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'data/datasources/preferences/preferences_helper.dart';
 import 'domain/usecases/get_saved_feeds.dart';
 import 'domain/usecases/remove_feed.dart';
-import 'domain/usecases/update_session_data.dart';
 
 final locator = GetIt.instance;
 
@@ -65,7 +64,6 @@ void init() {
       removeSessionData: locator(),
       saveSessionData: locator(),
       getSessionData: locator(),
-      updateSessionData: locator(),
       getSessionStatus: locator(),
       postLogin: locator(),
       postRegister: locator(),
@@ -112,7 +110,6 @@ void init() {
   locator.registerLazySingleton(() => RemoveFeed(locator()));
   locator.registerLazySingleton(() => RemoveSessionData(locator()));
   locator.registerLazySingleton(() => SaveFeed(locator()));
-  locator.registerLazySingleton(() => UpdateSessionData(locator()));
   locator.registerLazySingleton(() => SaveSessionData(locator()));
 
   // repository
