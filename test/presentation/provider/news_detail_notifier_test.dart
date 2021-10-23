@@ -4,7 +4,6 @@ import 'package:laporhoax/common/failure.dart';
 import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/domain/usecases/get_feed_detail.dart';
 import 'package:laporhoax/domain/usecases/get_feed_save_status.dart';
-import 'package:laporhoax/domain/usecases/get_saved_feeds.dart';
 import 'package:laporhoax/domain/usecases/remove_feed.dart';
 import 'package:laporhoax/domain/usecases/save_feed.dart';
 import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
@@ -12,13 +11,12 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy_data/dummy_objects.dart';
-import 'news_detail_notifier.mocks.dart';
+import 'news_detail_notifier_test.mocks.dart';
 
 @GenerateMocks([
   SaveFeed,
   RemoveFeed,
   GetFeedSaveStatus,
-  GetSavedFeeds,
   GetFeedDetail,
 ])
 void main() {
@@ -97,9 +95,9 @@ void main() {
     test('should execute save bookmark when function called', () async {
       // arrange
       when(mockSaveFeed.execute(testFeed))
-          .thenAnswer((realInvocation) async => Right('Success'));
+          .thenAnswer((_) async => Right('Success'));
       when(mockGetFeedSaveStatus.execute(testFeed.id))
-          .thenAnswer((realInvocation) async => true);
+          .thenAnswer((_) async => true);
       // act
       await provider.storeFeed(testFeed);
       // assert
@@ -109,9 +107,9 @@ void main() {
     test('should execute remove bookmark when function called', () async {
       // arrange
       when(mockRemoveFeed.execute(testFeed))
-          .thenAnswer((realInvocation) async => Right('Removed'));
+          .thenAnswer((_) async => Right('Removed'));
       when(mockGetFeedSaveStatus.execute(testFeed.id))
-          .thenAnswer((realInvocation) async => false);
+          .thenAnswer((_) async => false);
       // act
       await provider.deleteFeed(testFeed);
       // assert
@@ -120,16 +118,16 @@ void main() {
 
     test('should update feed bookmark list when function called', () async {
       // arrange
-      when(mockRemoveFeed.execute(testFeed))
-          .thenAnswer((realInvocation) async => Right('Added to Bookmark'));
+      when(mockSaveFeed.execute(testFeed))
+          .thenAnswer((_) async => Right('Berita Telah Disimpan'));
       when(mockGetFeedSaveStatus.execute(testFeed.id))
-          .thenAnswer((realInvocation) async => false);
+          .thenAnswer((_) async => true);
       // act
       await provider.storeFeed(testFeed);
       // assert
-      verify(mockRemoveFeed.execute(testFeed));
+      verify(mockSaveFeed.execute(testFeed));
       expect(provider.isAddedtoSavedFeed, true);
-      expect(provider.saveMessage, 'Added to Bookmark');
+      expect(provider.saveMessage, 'Berita Telah Disimpan');
       expect(listenerCallCount, 1);
     });
 

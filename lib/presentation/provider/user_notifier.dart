@@ -78,10 +78,16 @@ class UserNotifier extends ChangeNotifier {
   }
 
   Future<void> getSession() async {
+    _sessionState = RequestState.Loading;
+    notifyListeners();
+
     final result = await getSessionData.execute();
     result.fold((failure) {
+      _sessionState = RequestState.Error;
       _sessionMessage = failure.message;
+      notifyListeners();
     }, (sessionData) {
+      _sessionState = RequestState.Loaded;
       _sessionData = sessionData!;
       notifyListeners();
     });

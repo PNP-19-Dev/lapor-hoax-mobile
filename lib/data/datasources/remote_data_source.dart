@@ -70,14 +70,14 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   final Dio dio;
 
   RemoteDataSourceImpl({required this.dio}) {
-    dio.options.baseUrl = baseUrl;
-    dio.options.validateStatus = (int? status) {
-      return status != null && status > 0;
-    };
-    dio.options.headers = <String, String>{
-      HttpHeaders.acceptHeader: '*/*',
-      HttpHeaders.acceptEncodingHeader: 'gzip, deflate, br'
-    };
+    // dio.options.baseUrl = baseUrl;
+    // dio.options.validateStatus = (int? status) {
+    //   return status != null && status > 0;
+    // };
+    // dio.options.headers = <String, String>{
+    //   HttpHeaders.acceptHeader: '*/*',
+    //   HttpHeaders.acceptEncodingHeader: 'gzip, deflate, br'
+    // };
   }
 
   @override

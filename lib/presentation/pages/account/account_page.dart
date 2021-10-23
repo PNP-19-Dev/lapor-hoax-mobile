@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
+import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/presentation/pages/news/saved_news.dart';
 import 'package:laporhoax/presentation/pages/report/history_page.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
+import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:laporhoax/util/static_data_web.dart';
 import 'package:laporhoax/util/static_page_viewer.dart';
 import 'package:provider/provider.dart';
@@ -37,8 +39,17 @@ class _AccountPageState extends State<AccountPage> {
         child: SingleChildScrollView(
           child: Consumer<UserNotifier>(
             builder: (context, provider, child) {
-              if (provider.isLoggedIn) {
-                return onLogin(provider.sessionData);
+              if (provider.sessionState == RequestState.Loading) {
+                return Center(child: CircularProgressIndicator());
+              } else if (provider.sessionState == RequestState.Loaded) {
+                if (provider.isLoggedIn) {
+                  return onLogin(provider.sessionData);
+                } else {
+                  return onWelcome();
+                }
+              } else if (provider.sessionState == RequestState.Error) {
+                toast(provider.sessionMessage);
+                return onWelcome();
               } else {
                 return onWelcome();
               }

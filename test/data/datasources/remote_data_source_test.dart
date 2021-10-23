@@ -1,7 +1,13 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
+import 'package:mockito/mockito.dart';
 
+import '../../dummy_data/dummy_objects.dart';
 import '../../helpers/test_helper.mocks.dart';
+import '../../json_reader.dart';
 
 void main() {
   const baseUrl = 'https://laporhoaxpolda.herokuapp.com';
@@ -25,5 +31,37 @@ void main() {
   setUp(() {
     mockDio = MockDio();
     dataSource = RemoteDataSourceImpl(dio: mockDio);
+  });
+
+  group('get feeds', () {
+    test('should return list of feeds when response is success (200)',
+        () async {
+      final data = jsonEncode(readJson('dummy_data/feed.json'));
+
+      final response = Response(
+          requestOptions: RequestOptions(path: '$baseUrl/$feedsEndpoint'),
+          statusCode: 200,
+          data: data);
+
+      // arrange
+      when(mockDio.fetch(
+              RequestOptions(path: '$baseUrl/$feedsEndpoint', method: 'GET')))
+          .thenAnswer((_) async => response);
+      // act
+      final result = await dataSource.getFeeds();
+      // assert
+      expect(result, testFeedList);
+    });
+    /*test(
+        'should throw a ServerException when the response code is 404 or other',
+            () async {
+          // arrange
+          when(mockHttpClient.get(Uri.parse('$BASE_URL/movie/popular?$API_KEY')))
+              .thenAnswer((_) async => http.Response('Not Found', 404));
+          // act
+          final call = dataSource.getPopularMovies();
+          // assert
+          expect(() => call, throwsA(isA<ServerException>()));
+        });*/
   });
 }

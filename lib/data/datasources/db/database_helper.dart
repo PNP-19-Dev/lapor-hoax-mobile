@@ -42,7 +42,7 @@ class DatabaseHelper {
     await db.execute('''
     CREATE TABLE $_tblSession (
       token TEXT,
-      expire TEXT,
+      expiry TEXT,
       userId TEXT,
       username TEXT,
       email TEXT

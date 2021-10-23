@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:laporhoax/data/datasources/db/database_helper.dart';
@@ -30,6 +32,7 @@ import 'package:laporhoax/presentation/provider/feed_notifier.dart';
 import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
 import 'package:laporhoax/presentation/provider/question_notifier.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
+import 'package:laporhoax/presentation/provider/saved_news_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 
 import 'data/datasources/preferences/preferences_helper.dart';
@@ -42,12 +45,10 @@ final locator = GetIt.instance;
 void init() {
   // provider
   locator.registerFactory(
-    () => FeedNotifier(
-      getFeeds: locator(),
-    ),
+        () => FeedNotifier(getFeeds: locator()),
   );
   locator.registerFactory(
-    () => ReportNotifier(
+        () => ReportNotifier(
       getReports: locator(),
       postReport: locator(),
       deleteReport: locator(),
@@ -55,7 +56,7 @@ void init() {
     ),
   );
   locator.registerFactory(
-    () => UserNotifier(
+        () => UserNotifier(
       getUser: locator(),
       getPasswordReset: locator(),
       postFCMToken: locator(),
@@ -71,7 +72,7 @@ void init() {
     ),
   );
   locator.registerFactory(
-    () => QuestionNotifier(
+        () => QuestionNotifier(
       getQuestions: locator(),
       getUserChallenge: locator(),
     ),
@@ -83,6 +84,9 @@ void init() {
       saveFeed: locator(),
       getFeedDetail: locator(),
     ),
+  );
+  locator.registerFactory(
+    () => SavedNewsNotifier(getSavedFeeds: locator()),
   );
 
   // use case
@@ -113,7 +117,7 @@ void init() {
 
   // repository
   locator.registerLazySingleton<Repository>(
-    () => RepositoryImpl(
+        () => RepositoryImpl(
       remoteDataSource: locator(),
       localDataSource: locator(),
     ),
@@ -121,10 +125,10 @@ void init() {
 
   // data sources
   locator.registerLazySingleton<RemoteDataSource>(
-    () => RemoteDataSourceImpl(dio: locator()),
+        () => RemoteDataSourceImpl(dio: locator()),
   );
   locator.registerLazySingleton<LocalDataSource>(
-    () => LocalDataSourceImpl(
+        () => LocalDataSourceImpl(
       databaseHelper: locator(),
       preferencesHelper: locator(),
     ),
@@ -137,5 +141,14 @@ void init() {
   locator.registerLazySingleton<PreferencesHelper>(() => PreferencesHelper());
 
   // external
-  locator.registerLazySingleton(() => Dio());
+  locator.registerLazySingleton(() {
+    return Dio()
+      ..options.headers.addAll({
+        HttpHeaders.acceptHeader: '*/*',
+        HttpHeaders.acceptEncodingHeader: 'gzip, deflate, br'
+      })
+      ..options.baseUrl = RemoteDataSourceImpl.baseUrl
+      ..options.validateStatus = (int? status) => status != null && status > 0;
+    // ..interceptors.add(LogInterceptor())
+  });
 }
