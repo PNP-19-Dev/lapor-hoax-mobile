@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:laporhoax/data/models/token_id.dart';
-import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/domain/entities/user.dart';
 import 'package:laporhoax/presentation/pages/account/forgot_password_page.dart';
@@ -45,7 +44,7 @@ Map<String, Widget Function(BuildContext)> routes = {
         report: ModalRoute.of(context)?.settings.arguments as Report,
       ),
   NewsWebView.routeName: (context) =>
-      NewsWebView(feed: ModalRoute.of(context)?.settings.arguments as Feed),
+      NewsWebView(id: ModalRoute.of(context)?.settings.arguments as int),
   SavedNews.routeName: (context) => SavedNews(),
   StaticPageViewer.routeName: (context) => StaticPageViewer(
         data: ModalRoute.of(context)?.settings.arguments as StaticDataWeb,

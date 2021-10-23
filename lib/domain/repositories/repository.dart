@@ -24,6 +24,8 @@ abstract class Repository {
 
   Future<Either<Failure, List<Feed>>> getFeeds();
 
+  Future<Either<Failure, Feed>> getFeedDetail(int id);
+
   Future<Either<Failure, String>> getPasswordReset(String email, String token);
 
   Future<Either<Failure, List<Question>>> getQuestions();

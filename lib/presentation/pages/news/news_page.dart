@@ -136,7 +136,7 @@ class _NewsPageState extends State<NewsPage> {
                 ),
               );
             } else if (state == RequestState.Loaded) {
-              return FeedList(data.feeds, data.isFeedSaved);
+              return FeedList(data.feeds);
             } else {
               toast('No Connection!');
               return SliverList(
@@ -163,9 +163,8 @@ class _NewsPageState extends State<NewsPage> {
 
 class FeedList extends StatelessWidget {
   final List<Feed> feeds;
-  final bool isSavedFeed;
 
-  FeedList(this.feeds, this.isSavedFeed);
+  FeedList(this.feeds);
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +178,7 @@ class FeedList extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
               onTap: () =>
-                  Navigation.intentWithData(NewsWebView.routeName, feed),
+                  Navigation.intentWithData(NewsWebView.routeName, feed.id),
               child: Card(
                 clipBehavior: Clip.antiAlias,
                 shape: RoundedRectangleBorder(
@@ -254,11 +253,11 @@ class FeedList extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Positioned(
+                      /*Positioned(
                         top: 0,
                         right: 0,
-                        child: SaveButton(feed, isSavedFeed),
-                      ),
+                        child: SaveButton(feed),
+                      ),*/
                     ],
                   ),
                 ),
@@ -267,58 +266,6 @@ class FeedList extends StatelessWidget {
           );
         },
         childCount: feeds.length,
-      ),
-    );
-  }
-}
-
-class SaveButton extends StatelessWidget {
-  final Feed feed;
-  final bool isSavedFeed;
-
-  SaveButton(this.feed, this.isSavedFeed);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        if (!isSavedFeed) {
-          await Provider.of<FeedNotifier>(context, listen: false)
-              .saveFeedItem(feed);
-        } else {
-          await Provider.of<FeedNotifier>(context, listen: false)
-              .removeFeedItem(feed);
-        }
-
-        final message =
-            Provider.of<FeedNotifier>(context, listen: false).savedFeedMessage;
-
-        if (message == FeedNotifier.feedSavedMessage ||
-            message == FeedNotifier.feedRemovedMessage) {
-          // ScaffoldMessenger.of(context)
-          //     .showSnackBar(SnackBar(content: Text(message), ));
-          toast(message);
-        } else {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  content: Text(message),
-                );
-              });
-        }
-      },
-      child: Container(
-        padding: const EdgeInsets.all(4),
-        margin: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: Colors.white,
-        ),
-        child: Icon(
-          isSavedFeed ? Icons.bookmark : Icons.bookmark_outline,
-          color: orangeBlaze,
-        ),
       ),
     );
   }

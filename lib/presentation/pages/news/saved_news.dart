@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:laporhoax/common/state_enum.dart';
-import 'package:laporhoax/presentation/provider/saved_feed_notifier.dart';
-import 'package:laporhoax/presentation/widget/simple_item_feed.dart';
+import 'package:laporhoax/presentation/provider/saved_news_notifier.dart';
+import 'package:laporhoax/presentation/widget/feed_card.dart';
 import 'package:provider/provider.dart';
 
 class SavedNews extends StatefulWidget {
@@ -16,30 +16,26 @@ class _SavedNewsState extends State<SavedNews> {
   void initState() {
     super.initState();
     Future.microtask(() =>
-        Provider.of<SavedFeedNotifier>(context, listen: false).fetchFeeds());
+        Provider.of<SavedNewsNotifier>(context, listen: false)
+            .fetchSavedFeeds());
   }
 
   Widget _buildNewsItem() {
-    return Consumer<SavedFeedNotifier>(builder: (context, provider, child) {
-      if (provider.feedState == RequestState.Loading) {
+    return Consumer<SavedNewsNotifier>(builder: (context, data, child) {
+      if (data.feedListState == RequestState.Loading) {
         return Center(
           child: CircularProgressIndicator(),
         );
-      } else if (provider.feedState == RequestState.Loaded) {
-        return Expanded(
-          child: SingleChildScrollView(
-            child: ListView.builder(
-                itemCount: provider.feeds.length,
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context, index) {
-                  var news = provider.feeds[index];
-                  return SimpleItemFeed(feed: news);
-                }),
-          ),
+      } else if (data.feedListState == RequestState.Loaded) {
+        return ListView.builder(
+          itemBuilder: (context, index) {
+            var news = data.saveListFeeds[index];
+            return FeedCard(news);
+          },
+          itemCount: data.saveListFeeds.length,
         );
       } else {
-        return Center(child: Text(provider.message));
+        return Center(key: Key('error_message'), child: Text(data.message));
       }
     });
   }

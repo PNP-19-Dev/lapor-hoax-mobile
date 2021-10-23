@@ -3,23 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
-import 'package:laporhoax/presentation/pages/news/news_page.dart';
 import 'package:laporhoax/presentation/pages/news/news_web_view.dart';
-import 'package:laporhoax/presentation/provider/feed_notifier.dart';
 import 'package:laporhoax/util/datetime_helper.dart';
-import 'package:provider/provider.dart';
 
-class SimpleItemFeed extends StatelessWidget {
+class FeedCard extends StatelessWidget {
   final Feed feed;
 
-  SimpleItemFeed({required this.feed});
+  FeedCard(this.feed);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
-        onTap: () => Navigation.intentWithData(NewsWebView.routeName, feed),
+        onTap: () => Navigation.intentWithData(NewsWebView.routeName, feed.id),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
           decoration: BoxDecoration(
@@ -64,9 +61,6 @@ class SimpleItemFeed extends StatelessWidget {
                   date: feed.date!,
                 ),
               ),
-              Consumer<FeedNotifier>(
-                  builder: (context, data, child) =>
-                      SaveButton(feed, data.isFeedSaved)),
             ],
           ),
         ),

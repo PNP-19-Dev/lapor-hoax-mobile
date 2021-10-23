@@ -8,9 +8,10 @@ import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/injection.dart' as di;
 import 'package:laporhoax/presentation/pages/home_page.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
+import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
 import 'package:laporhoax/presentation/provider/question_notifier.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
-import 'package:laporhoax/presentation/provider/saved_feed_notifier.dart';
+import 'package:laporhoax/presentation/provider/saved_news_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/util/route/routes.dart';
 import 'package:provider/provider.dart';
@@ -66,7 +67,10 @@ class MyApp extends StatelessWidget {
           create: (_) => di.locator<FeedNotifier>(),
         ),
         ChangeNotifierProvider(
-          create: (_) => di.locator<SavedFeedNotifier>(),
+          create: (_) => di.locator<NewsDetailNotifier>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<SavedNewsNotifier>(),
         ),
         ChangeNotifierProvider(
           create: (_) => di.locator<ReportNotifier>(),

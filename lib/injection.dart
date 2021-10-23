@@ -7,6 +7,7 @@ import 'package:laporhoax/data/repositories/repository_impl.dart';
 import 'package:laporhoax/domain/repositories/repository.dart';
 import 'package:laporhoax/domain/usecases/delete_report.dart';
 import 'package:laporhoax/domain/usecases/get_categories.dart';
+import 'package:laporhoax/domain/usecases/get_feed_detail.dart';
 import 'package:laporhoax/domain/usecases/get_feed_save_status.dart';
 import 'package:laporhoax/domain/usecases/get_feeds.dart';
 import 'package:laporhoax/domain/usecases/get_password_reset.dart';
@@ -26,9 +27,9 @@ import 'package:laporhoax/domain/usecases/remove_session_data.dart';
 import 'package:laporhoax/domain/usecases/save_feed.dart';
 import 'package:laporhoax/domain/usecases/save_session_data.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
+import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
 import 'package:laporhoax/presentation/provider/question_notifier.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
-import 'package:laporhoax/presentation/provider/saved_feed_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 
 import 'data/datasources/preferences/preferences_helper.dart';
@@ -43,10 +44,6 @@ void init() {
   locator.registerFactory(
     () => FeedNotifier(
       getFeeds: locator(),
-      getFeedSaveStatus: locator(),
-      getSavedFeeds: locator(),
-      removeFeed: locator(),
-      saveFeed: locator(),
     ),
   );
   locator.registerFactory(
@@ -80,12 +77,18 @@ void init() {
     ),
   );
   locator.registerFactory(
-    () => SavedFeedNotifier(getFeeds: locator()),
+    () => NewsDetailNotifier(
+      getFeedSaveStatus: locator(),
+      removeFeed: locator(),
+      saveFeed: locator(),
+      getFeedDetail: locator(),
+    ),
   );
 
   // use case
   locator.registerLazySingleton(() => DeleteReport(locator()));
   locator.registerLazySingleton(() => GetCategories(locator()));
+  locator.registerLazySingleton(() => GetFeedDetail(locator()));
   locator.registerLazySingleton(() => GetFeedSaveStatus(locator()));
   locator.registerLazySingleton(() => GetFeeds(locator()));
   locator.registerLazySingleton(() => GetPasswordReset(locator()));

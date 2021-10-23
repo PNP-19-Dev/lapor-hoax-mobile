@@ -36,6 +36,8 @@ abstract class RemoteDataSource {
 
   Future<List<FeedModel>> getFeeds();
 
+  Future<FeedModel> getFeedDetail(int id);
+
   Future<List<QuestionModel>> getQuestions();
 
   Future<UserQuestionModel> getUserQuestions(String id);
@@ -308,6 +310,17 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
     if (response.statusCode == 200) {
       return 'Success';
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<FeedModel> getFeedDetail(int id) async {
+    final response = await dio.get('/$feedsEndpoint/$id');
+
+    if (response.statusCode == 200) {
+      return FeedModel.fromJson(response.data);
     } else {
       throw ServerException();
     }

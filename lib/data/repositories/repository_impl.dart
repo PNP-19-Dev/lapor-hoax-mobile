@@ -285,4 +285,16 @@ class RepositoryImpl implements Repository {
       return Left(ConnectionFailure("Failed to connect to the network"));
     }
   }
+
+  @override
+  Future<Either<Failure, Feed>> getFeedDetail(int id) async {
+    try {
+      final result = await remoteDataSource.getFeedDetail(id);
+      return Right(result.toEntity());
+    } on ServerException {
+      return Left(ServerFailure(""));
+    } on SocketException {
+      return Left(ConnectionFailure("Failed to connect to the network"));
+    }
+  }
 }
