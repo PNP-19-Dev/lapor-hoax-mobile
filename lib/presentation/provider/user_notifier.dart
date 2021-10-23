@@ -5,6 +5,7 @@ import 'package:laporhoax/data/models/user_response.dart';
 import 'package:laporhoax/data/models/user_token.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/domain/entities/user.dart';
+import 'package:laporhoax/domain/entities/user_question.dart';
 import 'package:laporhoax/domain/usecases/get_password_reset.dart';
 import 'package:laporhoax/domain/usecases/get_session_data.dart';
 import 'package:laporhoax/domain/usecases/get_session_status.dart';
@@ -52,23 +53,18 @@ class UserNotifier extends ChangeNotifier {
       required this.postRegister});
 
   RequestState _sessionState = RequestState.Empty;
-
   RequestState get sessionState => _sessionState;
 
   RequestState _userState = RequestState.Empty;
-
   RequestState get userState => _userState;
 
   String _sessionMessage = '';
-
   String get sessionMessage => _sessionMessage;
 
   SessionData? _sessionData;
-
   SessionData? get sessionData => _sessionData;
 
   bool _isLoggedIn = false;
-
   bool get isLoggedIn => _isLoggedIn;
 
   Future<void> isLogin() async {
@@ -100,11 +96,9 @@ class UserNotifier extends ChangeNotifier {
   }
 
   RequestState _fcmState = RequestState.Empty;
-
   RequestState get fcmState => _fcmState;
 
   String _fcmMessage = '';
-
   String get fcmMessage => _fcmMessage;
 
   Future<void> postToken(int userid, String token) async {
@@ -124,11 +118,9 @@ class UserNotifier extends ChangeNotifier {
   }
 
   User? _user;
-
   User? get user => _user;
 
   String _userMessage = '';
-
   String get userMessage => _userMessage;
 
   Future<void> getUserData(String email) async {
@@ -148,15 +140,12 @@ class UserNotifier extends ChangeNotifier {
   }
 
   late UserToken _userToken;
-
   UserToken get userToken => _userToken;
 
   RequestState _loginState = RequestState.Empty;
-
   RequestState get loginState => _loginState;
 
   String _loginMessage = '';
-
   String get loginMessage => _loginMessage;
 
   Future<void> login(String username, String password) async {
@@ -191,15 +180,12 @@ class UserNotifier extends ChangeNotifier {
   }
 
   late UserResponse _userResponse;
-
   UserResponse get userResponse => _userResponse;
 
   RequestState _registerState = RequestState.Empty;
-
   RequestState get registerState => _registerState;
 
   String _registerMessage = '';
-
   String get registerMessage => _registerMessage;
 
   Future<void> register(RegisterModel user) async {
@@ -232,5 +218,30 @@ class UserNotifier extends ChangeNotifier {
     }, (response) {
       _resetMessage = messageReset;
     });
+    notifyListeners();
+  }
+
+  String _challengeMessage = '';
+
+  String get challengeMessage => _challengeMessage;
+
+  RequestState _challengeState = RequestState.Empty;
+
+  RequestState get challengeState => _challengeState;
+
+  Future<void> postChallenge(UserQuestion challenge) async {
+    final result = await postUserChallenge.execute(challenge);
+
+    result.fold(
+      (failure) {
+        _challengeState = RequestState.Error;
+        _challengeMessage = failure.message;
+      },
+      (message) {
+        _challengeState = RequestState.Success;
+        _challengeMessage = message;
+      },
+    );
+    notifyListeners();
   }
 }

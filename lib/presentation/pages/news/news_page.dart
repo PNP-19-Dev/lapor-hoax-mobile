@@ -253,11 +253,6 @@ class FeedList extends StatelessWidget {
                           ],
                         ),
                       ),
-                      /*Positioned(
-                        top: 0,
-                        right: 0,
-                        child: SaveButton(feed),
-                      ),*/
                     ],
                   ),
                 ),
