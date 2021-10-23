@@ -17,7 +17,6 @@ import 'package:laporhoax/domain/usecases/post_register.dart';
 import 'package:laporhoax/domain/usecases/post_user_challenge.dart';
 import 'package:laporhoax/domain/usecases/remove_session_data.dart';
 import 'package:laporhoax/domain/usecases/save_session_data.dart';
-import 'package:laporhoax/domain/usecases/update_session_data.dart';
 
 class UserNotifier extends ChangeNotifier {
   static const String messageLogin = 'Anda Login';
@@ -35,7 +34,6 @@ class UserNotifier extends ChangeNotifier {
   final PostUserChallenge postUserChallenge;
   final RemoveSessionData removeSessionData;
   final SaveSessionData saveSessionData;
-  final UpdateSessionData updateSessionData;
   final GetSessionStatus getSessionStatus;
 
   UserNotifier(
@@ -47,7 +45,6 @@ class UserNotifier extends ChangeNotifier {
       required this.postUserChallenge,
       required this.saveSessionData,
       required this.removeSessionData,
-      required this.updateSessionData,
       required this.getSessionStatus,
       required this.postLogin,
       required this.postRegister});

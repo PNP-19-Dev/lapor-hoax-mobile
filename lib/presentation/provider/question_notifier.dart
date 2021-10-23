@@ -35,13 +35,14 @@ class QuestionNotifier extends ChangeNotifier {
     final result = await getQuestions.execute();
 
     result.fold((failure) {
-      _questionMessage = failure.message;
       _questionState = RequestState.Error;
+      notifyListeners();
+      _questionMessage = failure.message;
     }, (questions) {
-      _questions = questions;
-      _questionMap = _questionToMap();
       _questionState = RequestState.Loaded;
       notifyListeners();
+      _questions = questions;
+      _questionMap = _questionToMap();
     });
   }
 
@@ -72,12 +73,13 @@ class QuestionNotifier extends ChangeNotifier {
     final result = await getUserChallenge.execute(id);
 
     result.fold((failure) {
-      _userQuestionMessage = failure.message;
       _userQuestionState = RequestState.Error;
+      notifyListeners();
+      _userQuestionMessage = failure.message;
     }, (userQuestion) {
-      _userQuestion = userQuestion;
       _userQuestionState = RequestState.Loaded;
       notifyListeners();
+      _userQuestion = userQuestion;
     });
   }
 }

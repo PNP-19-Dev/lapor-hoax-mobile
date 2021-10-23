@@ -1,9 +1,12 @@
 import 'package:laporhoax/data/models/feed_table.dart';
 import 'package:laporhoax/data/models/register_model.dart';
+import 'package:laporhoax/data/models/report_model.dart';
 import 'package:laporhoax/data/models/user_model.dart';
 import 'package:laporhoax/data/models/user_response.dart';
 import 'package:laporhoax/data/models/user_token.dart';
+import 'package:laporhoax/domain/entities/category.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
+import 'package:laporhoax/domain/entities/question.dart';
 import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/domain/entities/user.dart';
@@ -20,6 +23,23 @@ final testFeed = Feed(
 );
 
 final testFeedList = [testFeed];
+
+final testReportModel = ReportModel(
+  id: 1,
+  url: "url",
+  img: "img",
+  category: "category",
+  status: "status",
+  isAnonym: false,
+  dateReported: "dateReported",
+  description: "description",
+  prosesDate: "prosesDate",
+  verdict: "verdict",
+  verdictDesc: "verdictDesc",
+  verdictDate: "verdictDate",
+  user: 1,
+  verdictJudge: 1,
+);
 
 final testReport = Report(
   id: 1,
@@ -99,3 +119,7 @@ final testFeedMap = {
   'thumbnail': 'thumbnail',
   'date': 'date'
 };
+
+final testCategory = Category(id: 1, name: 'name');
+
+final testQuestion = Question(id: 1, question: 'question');

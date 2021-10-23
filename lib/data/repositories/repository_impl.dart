@@ -158,7 +158,7 @@ class RepositoryImpl implements Repository {
       UserQuestion challenge) async {
     try {
       final result = await remoteDataSource.postChallenge(challenge);
-      return Right(result.toEntity());
+      return Right('Success');
     } on ServerException {
       return Left(ServerFailure(""));
     } on SocketException {
@@ -237,38 +237,28 @@ class RepositoryImpl implements Repository {
     if (result != null) {
       return Right(result);
     } else {
-      return Left(Exception('No Data'));
+      return Left(CustomException('No Data'));
     }
   }
 
   @override
   Future<Either<Failure, String>> removeSessionData(SessionData data) async {
-    try {
-      final result = await localDataSource.removeSession(data);
+    final result = await localDataSource.removeSession(data);
+    if (result == 'Session Removed') {
       return Right(result);
-    } on DatabaseException catch (e) {
-      return Left(DatabaseFailure(e.message));
-    } catch (e) {
-      throw e;
+    } else {
+      return Left(CustomException('No Data'));
     }
   }
 
   @override
   Future<Either<Failure, String>> saveSessionData(SessionData data) async {
-    try {
-      final result = await localDataSource.insertSession(data);
+    final result = await localDataSource.insertSession(data);
+    if (result == 'Session Saved') {
       return Right(result);
-    } on DatabaseException catch (e) {
-      return Left(DatabaseFailure(e.message));
-    } catch (e) {
-      throw e;
+    } else {
+      return Left(CustomException('No Data'));
     }
-  }
-
-  @override
-  Future<Either<Failure, String>> updateSessionData(SessionData data) {
-    // TODO: implement updateSessionData
-    throw UnimplementedError();
   }
 
   @override

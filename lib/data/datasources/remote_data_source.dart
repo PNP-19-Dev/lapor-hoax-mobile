@@ -20,35 +20,22 @@ import 'package:laporhoax/domain/entities/user_question.dart';
 
 abstract class RemoteDataSource {
   Future<String> deleteReport(String token, int id);
-
   Future<List<CategoryModel>> getCategory();
-
   Future<FeedModel> getFeedDetail(int id);
-
   Future<List<FeedModel>> getFeeds();
-
   Future<String> getPasswordReset(String email, String token);
-
   Future<List<QuestionModel>> getQuestions();
-
   Future<List<ReportModel>> getReport(String token, int id);
-
   Future<List<UserModel>> getUser(String email);
-
   Future<UserQuestionModel> getUserQuestions(int id);
-
   Future<String> postChangePassword(
       String oldPass, String newPass, String token);
-
   Future postFcmToken(String user, String fcmToken);
-
   Future<UserToken> postLogin(String username, String password);
-
   Future<UserResponse> postRegister(RegisterModel user);
-
   Future<ReportModel> postReport(String token, ReportRequest report);
 
-  Future postChallenge(UserQuestion challenge);
+  Future<String> postChallenge(UserQuestion challenge);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {

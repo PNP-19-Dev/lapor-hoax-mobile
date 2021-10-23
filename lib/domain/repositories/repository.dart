@@ -56,5 +56,4 @@ abstract class Repository {
   Future<Either<Failure, String>> removeSessionData(SessionData data);
   Future<Either<Failure, String>> saveFeed(Feed feed);
   Future<Either<Failure, String>> saveSessionData(SessionData data);
-  Future<Either<Failure, String>> updateSessionData(SessionData data);
 }

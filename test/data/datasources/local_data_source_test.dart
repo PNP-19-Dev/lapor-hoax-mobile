@@ -43,8 +43,6 @@ void main() {
     });
   });
 
-  group('Save Session', () {});
-
   group('Remove Feed', () {
     test('should return success message when remove to database is success',
         () async {
@@ -67,8 +65,6 @@ void main() {
       expect(call, throwsA(isA<DatabaseException>()));
     });
   });
-
-  group('Remove Session', () {});
 
   group('Get Feed Detail By Id', () {
     final tId = 1;
@@ -102,6 +98,17 @@ void main() {
       final result = await dataSource.getFeeds();
       // assert
       expect(result, [testFeedTable]);
+    });
+  });
+
+  group('Is Log in', () {
+    test('should return login status', () async {
+      // arrange
+      when(mockPreferencesHelper.isLogin).thenAnswer((_) async => true);
+      // act
+      final result = await dataSource.isLoggedIn();
+      // assert
+      expect(result, true);
     });
   });
 }

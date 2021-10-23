@@ -1,13 +1,8 @@
-import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
-import 'package:mockito/mockito.dart';
 
-import '../../dummy_data/dummy_objects.dart';
 import '../../helpers/test_helper.mocks.dart';
-import '../../json_reader.dart';
 
 void main() {
   const baseUrl = 'https://laporhoaxpolda.herokuapp.com';
@@ -34,7 +29,7 @@ void main() {
   });
 
   group('get feeds', () {
-    test('should return list of feeds when response is success (200)',
+  /*  test('should return list of feeds when response is success (200)',
         () async {
       final data = jsonEncode(readJson('dummy_data/feed.json'));
 
@@ -51,7 +46,7 @@ void main() {
       final result = await dataSource.getFeeds();
       // assert
       expect(result, testFeedList);
-    });
+    });*/
     /*test(
         'should throw a ServerException when the response code is 404 or other',
             () async {
