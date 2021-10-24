@@ -11,7 +11,7 @@ import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
-  static String routeName = "/register_page";
+  static const String ROUTE_NAME = "/register_page";
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -227,7 +227,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         UserNotifier.messageRegister) {
                                       progress.dismiss();
                                       toast(message);
-                                      Navigation.intent(HomePage.routeName);
+                                      Navigation.intent(HomePage.ROUTE_NAME);
                                     } else {
                                       toast(message);
                                     }

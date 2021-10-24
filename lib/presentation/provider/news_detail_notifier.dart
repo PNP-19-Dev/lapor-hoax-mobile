@@ -41,6 +41,7 @@ class NewsDetailNotifier extends ChangeNotifier {
   Future<void> fetchFeedDetail(int id) async {
     _feedState = RequestState.Loading;
     notifyListeners();
+
     final detailResult = await getFeedDetail.execute(id);
     detailResult.fold(
       (failure) {

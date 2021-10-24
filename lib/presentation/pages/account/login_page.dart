@@ -12,7 +12,7 @@ import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
-  static String routeName = "/login_page";
+  static const String ROUTE_NAME = "/login_page";
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: GestureDetector(
                             onTap: () {
                               Navigator.pushNamed(
-                                  context, ForgotPasswordSectionOne.routeName);
+                                  context, ForgotPasswordSectionOne.ROUTE_NAME);
                             },
                             child: Container(
                               child: Text('Lupa Password ?',
@@ -137,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                               GestureDetector(
                                 onTap: () {
                                   Navigator.pushNamed(
-                                      context, RegisterPage.routeName);
+                                      context, RegisterPage.ROUTE_NAME);
                                 },
                                 child: Text(
                                   'Daftar Akun',
@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
 
                                     if (message == UserNotifier.messageLogin) {
                                       progress?.dismiss();
-                                      Navigation.intent(HomePage.routeName);
+                                      Navigation.intent(HomePage.ROUTE_NAME);
                                     } else {
                                       progress?.dismiss();
                                       toast(message);

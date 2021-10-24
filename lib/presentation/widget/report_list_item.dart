@@ -14,7 +14,7 @@ class ReportListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, DetailReportPage.routeName,
+      onTap: () => Navigator.pushNamed(context, DetailReportPage.ROUTE_NAME,
           arguments: report),
       child: Container(
         color: Colors.white,

@@ -7,7 +7,7 @@ import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:provider/provider.dart';
 
 class PasswordChangePage extends StatefulWidget {
-  static const String routeName = '/password_change';
+  static const String ROUTE_NAME = '/password_change';
 
   @override
   _PasswordChangePageState createState() => _PasswordChangePageState();

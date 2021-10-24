@@ -317,12 +317,10 @@ class MockRemoteDataSource extends _i1.Mock implements _i22.RemoteDataSource {
       (super.noSuchMethod(Invocation.method(#postReport, [token, report]),
               returnValue: Future<_i7.ReportModel>.value(_FakeReportModel_5()))
           as _i11.Future<_i7.ReportModel>);
-
   @override
   _i11.Future<String> postChallenge(_i19.UserQuestion? challenge) =>
       (super.noSuchMethod(Invocation.method(#postChallenge, [challenge]),
           returnValue: Future<String>.value('')) as _i11.Future<String>);
-
   @override
   String toString() => super.toString();
 }

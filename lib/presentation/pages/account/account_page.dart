@@ -93,7 +93,7 @@ class _AccountPageState extends State<AccountPage> {
             title: Text('Profil'),
             trailing: Icon(Icons.chevron_right),
             onTap: () => Navigation.intentWithData(
-                ProfilePage.routeName, sessionData.email),
+                ProfilePage.ROUTE_NAME, sessionData.email),
           ),
         ),
         Card(
@@ -103,7 +103,7 @@ class _AccountPageState extends State<AccountPage> {
             title: Text('Riwayat Pelaporan'),
             trailing: Icon(Icons.chevron_right),
             onTap: () => Navigation.intentWithData(
-              HistoryPage.routeName,
+              HistoryPage.ROUTE_NAME,
               TokenId(
                 sessionData.userid,
                 sessionData.token,
@@ -117,7 +117,7 @@ class _AccountPageState extends State<AccountPage> {
             leading: Icon(Icons.bookmark_outline),
             title: Text('Berita Tersimpan'),
             trailing: Icon(Icons.chevron_right),
-            onTap: () => Navigation.intent(SavedNews.routeName),
+            onTap: () => Navigation.intent(SavedNews.ROUTE_NAME),
           ),
         ),
         Card(
@@ -170,7 +170,7 @@ class _AccountPageState extends State<AccountPage> {
           children: [
             GestureDetector(
               onTap: () => Navigation.intentWithData(
-                StaticPageViewer.routeName,
+                StaticPageViewer.ROUTE_NAME,
                 StaticDataWeb(
                   fileName: 'terms_of_service',
                   title: 'Syarat Penggunaan',
@@ -189,7 +189,7 @@ class _AccountPageState extends State<AccountPage> {
             Text(' | '),
             GestureDetector(
               onTap: () => Navigation.intentWithData(
-                StaticPageViewer.routeName,
+                StaticPageViewer.ROUTE_NAME,
                 StaticDataWeb(
                   fileName: 'privacy_policy',
                   title: 'Kebijakan Privasi',
@@ -232,7 +232,7 @@ class _AccountPageState extends State<AccountPage> {
             width: double.infinity,
             height: 42,
             child: ElevatedButton(
-              onPressed: () => Navigation.intent(LoginPage.routeName),
+              onPressed: () => Navigation.intent(LoginPage.ROUTE_NAME),
               child: Text('Login Sekarang'),
             ),
           ),
@@ -278,7 +278,7 @@ class _AccountPageState extends State<AccountPage> {
             leading: Icon(Icons.bookmark_outline),
             title: Text('Berita Tersimpan'),
             trailing: Icon(Icons.chevron_right),
-            onTap: () => Navigation.intent(SavedNews.routeName),
+            onTap: () => Navigation.intent(SavedNews.ROUTE_NAME),
           ),
         ),
         Card(
@@ -297,7 +297,7 @@ class _AccountPageState extends State<AccountPage> {
           children: [
             GestureDetector(
               onTap: () => Navigation.intentWithData(
-                StaticPageViewer.routeName,
+                StaticPageViewer.ROUTE_NAME,
                 StaticDataWeb(
                   fileName: 'terms_of_service',
                   title: 'Syarat Penggunaan',
@@ -316,7 +316,7 @@ class _AccountPageState extends State<AccountPage> {
             Text(' | '),
             GestureDetector(
               onTap: () => Navigation.intentWithData(
-                StaticPageViewer.routeName,
+                StaticPageViewer.ROUTE_NAME,
                 StaticDataWeb(
                   fileName: 'privacy_policy',
                   title: 'Kebijakan Privasi',

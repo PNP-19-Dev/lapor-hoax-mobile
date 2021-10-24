@@ -9,7 +9,7 @@ import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailReportPage extends StatelessWidget {
-  static const routeName = '/detail_report';
+  static const ROUTE_NAME = '/detail_report';
 
   final Report report;
 

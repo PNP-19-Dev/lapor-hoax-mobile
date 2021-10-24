@@ -11,7 +11,7 @@ import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsWebView extends StatefulWidget {
-  static const routeName = '/news_web_view';
+  static const ROUTE_NAME = '/news_web_view';
 
   final int id;
 

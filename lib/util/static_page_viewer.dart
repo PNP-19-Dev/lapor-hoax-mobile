@@ -6,7 +6,7 @@ import 'package:laporhoax/util/static_data_web.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class StaticPageViewer extends StatefulWidget {
-  static const String routeName = '/terms_of_service';
+  static const String ROUTE_NAME = '/terms_of_service';
 
   final StaticDataWeb data;
 

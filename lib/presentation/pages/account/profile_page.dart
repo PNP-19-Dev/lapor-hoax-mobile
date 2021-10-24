@@ -10,7 +10,7 @@ import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
-  static const routeName = '/profile_page';
+  static const ROUTE_NAME = '/profile_page';
 
   final String email;
 
@@ -106,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   onPressed: () => Navigation.intentWithData(
-                                      UserChallenge.routeName, userData.id),
+                                      UserChallenge.ROUTE_NAME, userData.id),
                                   child: Text('Ubah Pertanyaan Keamanan'),
                                 ),
                               ),
@@ -136,7 +136,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   onPressed: () => Navigation.intent(
-                                      PasswordChangePage.routeName),
+                                      PasswordChangePage.ROUTE_NAME),
                                   child: Text('Ganti Password'),
                                 ),
                               ),

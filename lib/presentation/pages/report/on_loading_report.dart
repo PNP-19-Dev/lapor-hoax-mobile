@@ -9,7 +9,7 @@ import 'package:laporhoax/presentation/pages/report/report_page.dart';
 import 'detail_report_page.dart';
 
 class OnSuccessReport extends StatelessWidget {
-  static String routeName = '/success';
+  static const String ROUTE_NAME = '/success';
 
   final Report reportItem;
 
@@ -46,13 +46,13 @@ class OnSuccessReport extends StatelessWidget {
                       fontWeight: FontWeight.w400, fontSize: 20)),
               SizedBox(height: 25),
               ElevatedButton(
-                onPressed: () => Navigation.intent(ReportPage.routeName),
+                onPressed: () => Navigation.intent(ReportPage.ROUTE_NAME),
                 child: Text('Lapor lagi yuk !'),
               ),
               SizedBox(height: 20),
               GestureDetector(
                 onTap: () => Navigation.intentWithData(
-                    DetailReportPage.routeName, reportItem),
+                    DetailReportPage.ROUTE_NAME, reportItem),
                 child: Text('Lihat laporan yang barusan',
                     style: GoogleFonts.inter(
                         fontWeight: FontWeight.w700,
@@ -68,7 +68,7 @@ class OnSuccessReport extends StatelessWidget {
 }
 
 class OnFailureReport extends StatelessWidget {
-  static String routeName = '/error';
+  static const String ROUTE_NAME = '/error';
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,7 @@ class OnFailureReport extends StatelessWidget {
                     fontWeight: FontWeight.w400, fontSize: 12)),
             SizedBox(height: 25),
             ElevatedButton(
-              onPressed: () => Navigation.intent(ReportPage.routeName),
+              onPressed: () => Navigation.intent(ReportPage.ROUTE_NAME),
               style: redElevatedButton,
               child: Text('Ulang Pelaporan'),
             ),

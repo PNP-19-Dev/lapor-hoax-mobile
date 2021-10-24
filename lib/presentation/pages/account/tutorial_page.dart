@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:laporhoax/common/theme.dart';
 
 class TutorialPage extends StatefulWidget {
-  static const String routeName = '/tutorial_page';
+  static const String ROUTE_NAME = '/tutorial_page';
 
   @override
   _TutorialPageState createState() => _TutorialPageState();

@@ -24,7 +24,7 @@ import 'history_page.dart';
 import 'on_loading_report.dart';
 
 class ReportPage extends StatefulWidget {
-  static const routeName = '/lapor_page';
+  static const ROUTE_NAME = '/lapor_page';
 
   @override
   _ReportPageState createState() => _ReportPageState();
@@ -319,12 +319,13 @@ class _ReportPageState extends State<ReportPage> {
                                       if (state == RequestState.Loaded) {
                                         progress!.dismiss();
                                         Navigation.intentWithData(
-                                            OnSuccessReport.routeName, result!);
+                                            OnSuccessReport.ROUTE_NAME,
+                                            result!);
                                       } else if (state == RequestState.Error) {
                                         progress!.dismiss();
                                         toast(message);
                                         Navigation.intent(
-                                            OnFailureReport.routeName);
+                                            OnFailureReport.ROUTE_NAME);
                                       }
                                     }
                                   }
@@ -342,7 +343,7 @@ class _ReportPageState extends State<ReportPage> {
                                   .sessionData;
                           if (data != null) {
                             return Navigation.intentWithData(
-                                HistoryPage.routeName,
+                                HistoryPage.ROUTE_NAME,
                                 TokenId(data.userid, data.token));
                           }
                         },
@@ -422,7 +423,7 @@ class _ReportPageState extends State<ReportPage> {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                Navigation.intent(LoginPage.routeName);
+                Navigation.intent(LoginPage.ROUTE_NAME);
               },
               child: Text('Login'),
             ),

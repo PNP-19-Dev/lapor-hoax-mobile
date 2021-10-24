@@ -79,7 +79,7 @@ class _NewsPageState extends State<NewsPage> {
                             )),
                         ElevatedButton(
                           onPressed: () =>
-                              Navigation.intent(ReportPage.routeName),
+                              Navigation.intent(ReportPage.ROUTE_NAME),
                           child: Text('Lapor yuk!'),
                         ),
                       ],
@@ -99,7 +99,7 @@ class _NewsPageState extends State<NewsPage> {
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Card(
               child: ListTile(
-                onTap: () => Navigation.intent(TutorialPage.routeName),
+                onTap: () => Navigation.intent(TutorialPage.ROUTE_NAME),
                 leading: Icon(Icons.menu_book_sharp),
                 title: Text('Tutorial Penggunaan',
                     style: GoogleFonts.inter(
@@ -178,7 +178,7 @@ class FeedList extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
               onTap: () =>
-                  Navigation.intentWithData(NewsWebView.routeName, feed.id),
+                  Navigation.intentWithData(NewsWebView.ROUTE_NAME, feed.id),
               child: Card(
                 clipBehavior: Clip.antiAlias,
                 shape: RoundedRectangleBorder(

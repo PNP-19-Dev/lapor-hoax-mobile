@@ -10,7 +10,7 @@ import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
 class HistoryPage extends StatefulWidget {
-  static const routeName = '/history_page';
+  static const ROUTE_NAME = '/history_page';
 
   final TokenId tokenId;
 

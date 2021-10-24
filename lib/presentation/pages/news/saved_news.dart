@@ -5,7 +5,7 @@ import 'package:laporhoax/presentation/widget/feed_card.dart';
 import 'package:provider/provider.dart';
 
 class SavedNews extends StatefulWidget {
-  static const String routeName = 'saved_news';
+  static const String ROUTE_NAME = 'saved_news';
 
   @override
   _SavedNewsState createState() => _SavedNewsState();

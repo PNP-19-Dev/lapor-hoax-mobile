@@ -16,7 +16,7 @@ class FeedCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
-        onTap: () => Navigation.intentWithData(NewsWebView.routeName, feed.id),
+        onTap: () => Navigation.intentWithData(NewsWebView.ROUTE_NAME, feed.id),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
           decoration: BoxDecoration(

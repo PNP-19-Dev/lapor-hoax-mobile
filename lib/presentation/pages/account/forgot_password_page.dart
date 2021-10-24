@@ -15,7 +15,7 @@ import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
 class ForgotPasswordSectionOne extends StatefulWidget {
-  static String routeName = '/forgot_password1';
+  static const String ROUTE_NAME = '/forgot_password1';
 
   @override
   _ForgotPasswordSectionOneState createState() =>
@@ -131,7 +131,7 @@ class _ForgotPasswordSectionOneState extends State<ForgotPasswordSectionOne> {
                                               listen: false)
                                           .user;
                                       Navigation.intentWithData(
-                                          ForgotPasswordSectionTwo.routeName,
+                                          ForgotPasswordSectionTwo.ROUTE_NAME,
                                           user!);
                                     } else {
                                       progress.dismiss();
@@ -158,7 +158,7 @@ class _ForgotPasswordSectionOneState extends State<ForgotPasswordSectionOne> {
 }
 
 class ForgotPasswordSectionTwo extends StatefulWidget {
-  static String routeName = '/forgot_password2';
+  static const String ROUTE_NAME = '/forgot_password2';
   final User user;
 
   ForgotPasswordSectionTwo({required this.user});

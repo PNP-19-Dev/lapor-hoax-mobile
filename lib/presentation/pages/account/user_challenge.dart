@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 class UserChallenge extends StatefulWidget {
   final int id;
 
-  static String routeName = '/challenge';
+  static const String ROUTE_NAME = '/challenge';
 
   UserChallenge({required this.id});
 
