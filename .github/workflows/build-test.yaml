@@ -3,6 +3,8 @@ name: flutterTestOnly
 on:
   push:
     branches:
+      - dev-3
+      - dev-2
       - dev-1
       - ulil
 
