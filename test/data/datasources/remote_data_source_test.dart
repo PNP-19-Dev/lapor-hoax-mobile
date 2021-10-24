@@ -1,8 +1,12 @@
+import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
 
-import '../../helpers/test_helper.mocks.dart';
+import '../../dummy_data/dummy_objects.dart';
+import '../../json_reader.dart';
 
 void main() {
   const baseUrl = 'https://laporhoaxpolda.herokuapp.com';
@@ -16,37 +20,70 @@ void main() {
 
   const reportsEndpoint = 'api/reports';
   const reportCatEndpoint = 'api/reports/cat';
-  const feedsEndpoint = 'api/feeds';
   const isActiveEndpoint = 'isactive';
   const verifyOtpEndpoint = 'verifyotp';
 
+  late Dio dio;
+  late DioAdapter dioAdapter;
   late RemoteDataSourceImpl dataSource;
-  late MockDio mockDio;
+  Response<dynamic> response;
 
   setUp(() {
-    mockDio = MockDio();
-    dataSource = RemoteDataSourceImpl(dio: mockDio);
+    dio = Dio(BaseOptions(baseUrl: baseUrl));
+    dioAdapter = DioAdapter(dio: dio);
+    dataSource = RemoteDataSourceImpl(dio: dioAdapter.dio);
   });
 
   group('get feeds', () {
-  /*  test('should return list of feeds when response is success (200)',
-        () async {
-      final data = jsonEncode(readJson('dummy_data/feed.json'));
-
-      final response = Response(
-          requestOptions: RequestOptions(path: '$baseUrl/$feedsEndpoint'),
-          statusCode: 200,
-          data: data);
-
+    final data = jsonDecode(readJson('dummy_data/feed.json'));
+    const feedsEndpoint = 'api/feeds';
+    test('should get response status code 200', () async {
       // arrange
-      when(mockDio.fetch(
-              RequestOptions(path: '$baseUrl/$feedsEndpoint', method: 'GET')))
-          .thenAnswer((_) async => response);
+      dioAdapter.onGet(
+        feedsEndpoint,
+        (server) => server.reply(200, data),
+      );
       // act
-      final result = await dataSource.getFeeds();
+      response = await dio.get(feedsEndpoint);
       // assert
-      expect(result, testFeedList);
-    });*/
+      expect(response.statusCode, 200);
+    });
+
+    test('should return list of feeds when response is success (200)',
+        () async {
+      // arrange
+      dioAdapter.onGet(
+        feedsEndpoint,
+        (server) => server.reply(200, data),
+      );
+      // act
+      // assert
+      expect(() async => await dataSource.getFeeds(), testFeedModelList);
+    });
+
+    test(
+        'should throw a ServerException when the response code is 404 or other',
+        () async {
+      // arrange
+      dioAdapter.onGet(
+        feedsEndpoint,
+        (server) => server.throws(
+          404,
+          DioError(
+            requestOptions: RequestOptions(
+              path: feedsEndpoint,
+            ),
+          ),
+        ),
+      );
+      // act
+      // assert
+      expect(
+        () async => await dataSource.getQuestions(),
+        throwsA(isA<DioError>()),
+      );
+    });
+
     /*test(
         'should throw a ServerException when the response code is 404 or other',
             () async {

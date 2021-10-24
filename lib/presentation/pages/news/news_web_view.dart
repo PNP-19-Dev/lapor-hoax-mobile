@@ -69,25 +69,26 @@ class CustomScaffold extends StatelessWidget {
   Widget _buildShortAppBar(
       BuildContext context, Feed feed, bool isAddedToFeedlist) {
     return Card(
+      elevation: 3,
       margin: EdgeInsets.all(0),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigation.back();
-            },
-          ),
-          Container(
-            padding: const EdgeInsets.only(right: 2.0),
-            child: Text(
-              'Berita',
-              style: Theme.of(context).textTheme.headline6,
+      child: Container(
+        height: 60,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigation.back();
+              },
             ),
-          ),
-          Container(
-            child: Row(
+            Expanded(
+              child: Text(
+                'Berita',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+            ),
+            Row(
               children: [
                 IconButton(
                   onPressed: () async {
@@ -132,12 +133,7 @@ class CustomScaffold extends StatelessWidget {
                 )
               ],
             ),
-          ),
-        ],
-      ),
-      shape: BeveledRectangleBorder(
-        borderRadius: BorderRadius.only(
-          bottomRight: Radius.circular(16.0),
+          ],
         ),
       ),
     );

@@ -15,6 +15,11 @@ class Question extends Equatable {
         "question": question,
       };
 
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "question": question,
+      };
+
   @override
   List<Object?> get props => [id, question];
 }

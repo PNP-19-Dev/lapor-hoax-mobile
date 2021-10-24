@@ -160,6 +160,12 @@ class _ReportPageState extends State<ReportPage> {
                           children: [
                             Row(
                               children: [
+                                OutlinedButton(
+                                  onPressed: () async =>
+                                      getImage(ImageSource.gallery),
+                                  child: Text('Gambar'),
+                                ),
+                                /* TODO FITUR TAMBAHAN
                                 CircleAvatar(
                                   backgroundColor: orangeBlaze,
                                   child: IconButton(
@@ -176,7 +182,7 @@ class _ReportPageState extends State<ReportPage> {
                                         getImage(ImageSource.camera),
                                     icon: Icon(Icons.camera_alt),
                                   ),
-                                ),
+                                ),*/
                                 SizedBox(width: 8),
                                 Flexible(
                                   child: Text(
@@ -348,11 +354,16 @@ class _ReportPageState extends State<ReportPage> {
                           }
                         },
                         child: Container(
+                          margin: const EdgeInsets.only(top: 20),
                           child: Center(
-                              child: Text(
-                            'Lihat riwayat pelaporan',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          )),
+                            child: Text(
+                              'Lihat riwayat pelaporan',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: orangeBlaze,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],

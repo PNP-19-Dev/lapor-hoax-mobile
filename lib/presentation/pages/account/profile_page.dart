@@ -121,7 +121,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                     print('FIREBASE token: $token');
 
                                     if (token != null) {
-                                      // api.postFcmToken(userData.id.toString(), token);
                                       provider.postToken(userData.id, token);
                                     } else {
                                       toast('error in firebase!');

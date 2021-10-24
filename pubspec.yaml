@@ -56,11 +56,10 @@ dependencies:
   dartz: ^0.10.0-nullsafety.2
   equatable: ^2.0.2
   image_cropper: ^1.4.1
+  http_mock_adapter: ^0.3.2
 
 dev_dependencies:
   flutter_test:
-    sdk: flutter
-  integration_test:
     sdk: flutter
   mockito: ^5.0.16
   build_runner: ^2.1.1

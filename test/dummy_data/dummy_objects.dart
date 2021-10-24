@@ -1,3 +1,4 @@
+import 'package:laporhoax/data/models/feed_model.dart';
 import 'package:laporhoax/data/models/feed_table.dart';
 import 'package:laporhoax/data/models/register_model.dart';
 import 'package:laporhoax/data/models/report_model.dart';
@@ -13,16 +14,30 @@ import 'package:laporhoax/domain/entities/user.dart';
 import 'package:laporhoax/domain/entities/user_question.dart';
 
 final testFeed = Feed(
-  id: 1,
-  title: "title",
+  id: 26,
+  title: "Libur Maulid Nabi 2021 Digeser: Tanggal dan Alasannya",
   content: "content",
-  thumbnail: "thumbnail",
-  date: "date",
+  thumbnail:
+      "https://django-lapor-hoax.s3.amazonaws.com/feeds/1.jpeg?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=yXthBiGVfwxxC%2Flai%2FvL0PZAMz4%3D&Expires=1634826461",
+  date: "2021-10-13T01:34:58.831621+07:00",
+  view: 0,
+  author: 1,
+);
+
+final testFeedModel = FeedModel(
+  id: 26,
+  title: "Libur Maulid Nabi 2021 Digeser: Tanggal dan Alasannya",
+  content: "content",
+  thumbnail:
+      "https://django-lapor-hoax.s3.amazonaws.com/feeds/1.jpeg?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=yXthBiGVfwxxC%2Flai%2FvL0PZAMz4%3D&Expires=1634826461",
+  date: "2021-10-13T01:34:58.831621+07:00",
   view: 0,
   author: 1,
 );
 
 final testFeedList = [testFeed];
+
+final testFeedModelList = [testFeedModel];
 
 final testReportModel = ReportModel(
   id: 1,
