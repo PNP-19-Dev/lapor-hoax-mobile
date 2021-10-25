@@ -1,12 +1,9 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/presentation/pages/account/password_change_page.dart';
-import 'package:laporhoax/presentation/pages/account/user_challenge.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
-import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -102,6 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       color: orangeBlaze),
                                 ),
                               ),
+                              /* TODO UBAH PERTANYAAN KEAMANAN
                               SizedBox(
                                 width: double.infinity,
                                 child: ElevatedButton(
@@ -109,8 +107,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                       UserChallenge.ROUTE_NAME, userData.id),
                                   child: Text('Ubah Pertanyaan Keamanan'),
                                 ),
-                              ),
+                              ),*/
                               SizedBox(height: 10),
+                              /* TODO FIREBASE MESSAGING
                               SizedBox(
                                 width: double.infinity,
                                 child: ElevatedButton(
@@ -129,7 +128,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   child:
                                       Text('Kirim Token Ke Server (DEV MODE)'),
                                 ),
-                              ),
+                              ),*/
                               SizedBox(height: 10),
                               SizedBox(
                                 width: double.infinity,

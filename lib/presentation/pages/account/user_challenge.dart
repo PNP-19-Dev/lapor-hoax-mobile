@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
+import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/domain/entities/question.dart';
 import 'package:laporhoax/domain/entities/user_question.dart';
+import 'package:laporhoax/presentation/pages/account/on_register_success.dart';
 import 'package:laporhoax/presentation/provider/question_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
@@ -258,6 +260,9 @@ class _UserChallengeState extends State<UserChallenge> {
                             if (state == RequestState.Success) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text(message)));
+                              Navigation.intentWithData(
+                                  OnRegisterSuccess.ROUTE_NAME,
+                                  'Akun berhasil dibuat!');
                             } else {
                               showDialog(
                                   context: context,

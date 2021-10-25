@@ -5,6 +5,12 @@ import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/presentation/pages/account/login_page.dart';
 
 class OnRegisterSuccess extends StatelessWidget {
+  static const String ROUTE_NAME = "/on_success";
+
+  final message;
+
+  OnRegisterSuccess(this.message);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,13 +20,13 @@ class OnRegisterSuccess extends StatelessWidget {
             children: [
               SvgPicture.asset('assets/illustration/otp_success.svg'),
               SizedBox(height: 32),
-              Text('Akun berhasil dibuat!',
+              Text(message,
                   style: GoogleFonts.inter(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                   )),
               SizedBox(height: 9),
-              Text('''Selamat akunmu berhasil dibuat.
+              Text('''Selamat pendaftaran akunmu berhasil.
                 Silahkan login untuk melanjutkan''',
                   style: GoogleFonts.inter(
                     fontWeight: FontWeight.bold,

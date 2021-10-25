@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/models/register_model.dart';
-import 'package:laporhoax/presentation/pages/home_page.dart';
+import 'package:laporhoax/presentation/pages/account/user_challenge.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
@@ -242,8 +242,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                     if (message ==
                                         UserNotifier.messageRegister) {
                                       progress.dismiss();
-                                      toast(message);
-                                      Navigation.intent(HomePage.ROUTE_NAME);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                              SnackBar(content: Text(message)));
+                                      Navigation.intentWithData(
+                                          UserChallenge.ROUTE_NAME,
+                                          user.user.id);
                                     } else {
                                       toast(message);
                                     }
