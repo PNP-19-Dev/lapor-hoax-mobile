@@ -68,7 +68,7 @@ class _HistoryPageState extends State<HistoryPage> {
           caption: 'Hapus',
           color: Colors.red,
           icon: Icons.delete,
-          onTap: () => _showSnackBar(context, "Hello"),
+          onTap: () => _showSnackBar(context, "Telah Dihapus"),
         ),
       ],
     );

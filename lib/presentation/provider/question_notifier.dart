@@ -74,12 +74,12 @@ class QuestionNotifier extends ChangeNotifier {
 
     result.fold((failure) {
       _userQuestionState = RequestState.Error;
-      notifyListeners();
       _userQuestionMessage = failure.message;
+      notifyListeners();
     }, (userQuestion) {
       _userQuestionState = RequestState.Loaded;
-      notifyListeners();
       _userQuestion = userQuestion;
+      notifyListeners();
     });
   }
 }

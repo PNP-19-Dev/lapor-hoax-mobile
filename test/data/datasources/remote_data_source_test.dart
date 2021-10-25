@@ -3,41 +3,31 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
-import 'package:laporhoax/data/datasources/remote_data_source.dart';
+import 'package:laporhoax/data/models/feed_response.dart';
 
 import '../../dummy_data/dummy_objects.dart';
+import '../../helpers/test_helper.mocks.dart';
 import '../../json_reader.dart';
 
 void main() {
   const baseUrl = 'https://laporhoaxpolda.herokuapp.com';
-  const loginEndpoint = 'auth/api/login';
-  const registerEndpoint = 'auth/api/register';
-  const getUserEndpint = 'auth/api/users/get';
-  const questionEndpoint = 'auth/api/question';
-  const firebaseTokenEndpoint = 'auth/api/fcmToken';
-  const passwordChangeEndpoint = 'auth/api/change-password';
-  const passwordResetEndpoint = 'auth/api/reset';
-
-  const reportsEndpoint = 'api/reports';
-  const reportCatEndpoint = 'api/reports/cat';
-  const isActiveEndpoint = 'isactive';
-  const verifyOtpEndpoint = 'verifyotp';
 
   late Dio dio;
   late DioAdapter dioAdapter;
-  late RemoteDataSourceImpl dataSource;
+//  late RemoteDataSourceImpl dataSource;
+  late MockDio mockDio;
   Response<dynamic> response;
 
   setUp(() {
     dio = Dio(BaseOptions(baseUrl: baseUrl));
     dioAdapter = DioAdapter(dio: dio);
-    dataSource = RemoteDataSourceImpl(dio: dioAdapter.dio);
+    mockDio = MockDio();
   });
 
   group('get feeds', () {
     final data = jsonDecode(readJson('dummy_data/feed.json'));
     const feedsEndpoint = 'api/feeds';
-    test('should get response status code 200', () async {
+    test('should get list of feeds when response status code 200', () async {
       // arrange
       dioAdapter.onGet(
         feedsEndpoint,
@@ -47,18 +37,7 @@ void main() {
       response = await dio.get(feedsEndpoint);
       // assert
       expect(response.statusCode, 200);
-    });
-
-    test('should return list of feeds when response is success (200)',
-        () async {
-      // arrange
-      dioAdapter.onGet(
-        feedsEndpoint,
-        (server) => server.reply(200, data),
-      );
-      // act
-      // assert
-      expect(() async => await dataSource.getFeeds(), testFeedModelList);
+      expect(FeedResponse.fromJson(response.data).feedList, testFeedModelList);
     });
 
     test(
@@ -79,21 +58,45 @@ void main() {
       // act
       // assert
       expect(
-        () async => await dataSource.getQuestions(),
+        () async => await dio.get(feedsEndpoint),
         throwsA(isA<DioError>()),
       );
     });
+  });
 
-    /*test(
-        'should throw a ServerException when the response code is 404 or other',
-            () async {
-          // arrange
-          when(mockHttpClient.get(Uri.parse('$BASE_URL/movie/popular?$API_KEY')))
-              .thenAnswer((_) async => http.Response('Not Found', 404));
-          // act
-          final call = dataSource.getPopularMovies();
-          // assert
-          expect(() => call, throwsA(isA<ServerException>()));
-        });*/
+  group('get reports', () {
+    const reportsEndpoint = 'api/reports';
+  });
+
+  group('get category', () {
+    const reportCatEndpoint = 'api/reports/cat';
+  });
+
+  group('get question', () {
+    const questionEndpoint = 'auth/api/question';
+  });
+
+  group('get user', () {
+    const getUserEndpint = 'auth/api/users/get';
+  });
+
+  group('post login', () {
+    const loginEndpoint = 'auth/api/login';
+  });
+
+  group('post register', () {
+    const registerEndpoint = 'auth/api/register';
+  });
+
+  group('post token', () {
+    const firebaseTokenEndpoint = 'auth/api/fcmToken';
+  });
+
+  group('change password', () {
+    const passwordChangeEndpoint = 'auth/api/change-password';
+  });
+
+  group('reset password', () {
+    const passwordResetEndpoint = 'auth/api/reset';
   });
 }

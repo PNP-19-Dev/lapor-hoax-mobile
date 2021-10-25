@@ -1,5 +1,7 @@
+import 'package:laporhoax/data/models/category_model.dart';
 import 'package:laporhoax/data/models/feed_model.dart';
 import 'package:laporhoax/data/models/feed_table.dart';
+import 'package:laporhoax/data/models/question_model.dart';
 import 'package:laporhoax/data/models/register_model.dart';
 import 'package:laporhoax/data/models/report_model.dart';
 import 'package:laporhoax/data/models/user_model.dart';
@@ -18,7 +20,7 @@ final testFeed = Feed(
   title: "Libur Maulid Nabi 2021 Digeser: Tanggal dan Alasannya",
   content: "content",
   thumbnail:
-      "https://django-lapor-hoax.s3.amazonaws.com/feeds/1.jpeg?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=yXthBiGVfwxxC%2Flai%2FvL0PZAMz4%3D&Expires=1634826461",
+  "https://django-lapor-hoax.s3.amazonaws.com/feeds/1.jpeg?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=yXthBiGVfwxxC%2Flai%2FvL0PZAMz4%3D&Expires=1634826461",
   date: "2021-10-13T01:34:58.831621+07:00",
   view: 0,
   author: 1,
@@ -29,7 +31,7 @@ final testFeedModel = FeedModel(
   title: "Libur Maulid Nabi 2021 Digeser: Tanggal dan Alasannya",
   content: "content",
   thumbnail:
-      "https://django-lapor-hoax.s3.amazonaws.com/feeds/1.jpeg?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=yXthBiGVfwxxC%2Flai%2FvL0PZAMz4%3D&Expires=1634826461",
+  "https://django-lapor-hoax.s3.amazonaws.com/feeds/1.jpeg?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=yXthBiGVfwxxC%2Flai%2FvL0PZAMz4%3D&Expires=1634826461",
   date: "2021-10-13T01:34:58.831621+07:00",
   view: 0,
   author: 1,
@@ -137,4 +139,15 @@ final testFeedMap = {
 
 final testCategory = Category(id: 1, name: 'name');
 
+final testCategoryModel = CategoryModel(id: 1, name: 'name');
+
+final testCategoryMap = {'id': 1, 'name': 'name'};
+
 final testQuestion = Question(id: 1, question: 'question');
+
+final testQuestionModel = QuestionModel(id: 1, question: 'question');
+
+final testQuestionMap = {
+  'id': 1,
+  'question': 'question',
+};

@@ -7,6 +7,7 @@ import 'package:laporhoax/presentation/pages/home_page.dart';
 import 'package:laporhoax/presentation/pages/news/saved_news.dart';
 import 'package:laporhoax/presentation/pages/report/history_page.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
+import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:laporhoax/util/static_data_web.dart';
 import 'package:laporhoax/util/static_page_viewer.dart';
 import 'package:provider/provider.dart';
@@ -77,9 +78,6 @@ class _AccountPageState extends State<AccountPage> {
               ),
               GestureDetector(
                 onTap: () async {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text("Mohon Tunggu")));
-
                   await Provider.of<UserNotifier>(context, listen: false)
                       .logout(sessionData);
 
@@ -88,12 +86,9 @@ class _AccountPageState extends State<AccountPage> {
                           .sessionMessage;
 
                   if (message == UserNotifier.messageLogout) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(message)));
                     Navigation.intent(HomePage.ROUTE_NAME);
                   } else {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text('Ada masalah')));
+                    toast('ada masalah');
                   }
                 },
                 child: Icon(

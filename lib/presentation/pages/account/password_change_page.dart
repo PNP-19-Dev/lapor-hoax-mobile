@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
+import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
 class PasswordChangePage extends StatefulWidget {
@@ -20,51 +20,6 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
   var _oldPassword = TextEditingController();
   var _newPassword = TextEditingController();
   var _confirmPassword = TextEditingController();
-
-  _showSimpleModalDialog(context) {
-    showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)),
-            child: Container(
-              constraints: BoxConstraints(maxHeight: 200),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Password berhasil Diganti !',
-                      style: GoogleFonts.inter(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      'Selamat password anda berhasil diganti !',
-                      style: GoogleFonts.inter(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text('Tutup'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
-  }
 
   @override
   void initState() {
@@ -203,7 +158,7 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               String oldPass = _oldPassword.text;
                               String newPass = _newPassword.text;
@@ -212,12 +167,23 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                               progress!.showWithText('Loading...');
 
                               print('loading password...');
-                              /* response.then((value) {
-                                print(value);
-                                _showSimpleModalDialog(context);
-                              }).onError((error, stackTrace) {
-                                toast('Error $error');
-                              });*/
+
+                              await Provider.of<UserNotifier>(context,
+                                      listen: false)
+                                  .changePassword(oldPass, newPass, token!);
+
+                              final message = Provider.of<UserNotifier>(context,
+                                      listen: false)
+                                  .passwordChangeMessage;
+
+                              if (message ==
+                                  UserNotifier.messageChangePassword) {
+                                progress.dismiss();
+                                toast(message);
+                              } else {
+                                progress.dismiss();
+                                toast(message);
+                              }
                             }
                           },
                           child: Text('Kirim'),

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/state_enum.dart';
@@ -16,6 +14,7 @@ import 'package:laporhoax/data/models/report_request.dart';
 import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/category.dart';
 import 'package:laporhoax/presentation/pages/account/login_page.dart';
+import 'package:laporhoax/presentation/pages/home_page.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
@@ -44,22 +43,25 @@ class _ReportPageState extends State<ReportPage> {
   // ignore : deprecation
   Future<Null> getImage(ImageSource source) async {
     try {
-      final image = await ImagePicker().getImage(
+      final image = await ImagePicker().pickImage(
         source: source,
         imageQuality: 85,
       );
 
       if (image != null) {
-        cropImage(image.path);
+        // cropImage(image.path);
+        setState(() {
+          filename = image.path.trim().split('/').last;
+          this._image = image;
+        });
       }
-      // final imageTemporary = XFile(image.path);
-      // setState(() => this._image = imageTemporary);
     } on PlatformException catch (e) {
       print('failed to pick image: $e');
     }
   }
 
-  Future<Null> cropImage(String path) async {
+  /* TODO SOON ADDING CROP
+ Future<Null> cropImage(String path) async {
     try {
       File? fileImage = await ImageCropper.cropImage(
         sourcePath: path,
@@ -88,7 +90,7 @@ class _ReportPageState extends State<ReportPage> {
     } on IOException catch (e) {
       print('Pick error $e');
     }
-  }
+  }*/
 
   @override
   void initState() {
@@ -128,8 +130,10 @@ class _ReportPageState extends State<ReportPage> {
     yield data;
   }
 
-  Widget lapor() => ProgressHUD(
-        child: Builder(builder: (context) {
+  Widget lapor() {
+    return ProgressHUD(
+      child: Builder(
+        builder: (context) {
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -140,7 +144,7 @@ class _ReportPageState extends State<ReportPage> {
                     padding: const EdgeInsets.only(top: 11),
                     child: GestureDetector(
                       child: Icon(Icons.arrow_back, size: 32),
-                      onTap: () => Navigation.back(),
+                      onTap: () => Navigation.intent(HomePage.ROUTE_NAME),
                     ),
                   ),
                   Container(
@@ -287,20 +291,20 @@ class _ReportPageState extends State<ReportPage> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () async {
-                              var data = Provider.of<UserNotifier>(context)
+                              var data = Provider.of<UserNotifier>(context,
+                                      listen: false)
                                   .sessionData;
 
                               if (data != null) {
                                 if (_formKey.currentState!.validate()) {
                                   int id = data.userid;
                                   String url = _urlController.text.toString();
-                                  String desc = _descController.text.toString();
+                                  String desc = _descController.text.length == 0
+                                      ? "tidak ada deskripsi"
+                                      : _descController.text.toString();
                                   XFile img = _image!;
                                   String category = _selectedCategory;
                                   bool isAnonym = _anonym;
-
-                                  final progress = ProgressHUD.of(context);
-                                  progress?.showWithText('Loading...');
 
                                   var report = ReportRequest(
                                     user: id,
@@ -311,9 +315,13 @@ class _ReportPageState extends State<ReportPage> {
                                     img: img,
                                   );
 
-                                  await Provider.of<ReportNotifier>(context,
-                                          listen: false)
-                                      .sendReport(data.token, report);
+                                  final progress = ProgressHUD.of(context);
+                                  progress?.showWithText('Loading...');
+
+                                  await Provider.of<ReportNotifier>(
+                                    context,
+                                    listen: false,
+                                  ).sendReport(data.token, report);
 
                                   final state = Provider.of<ReportNotifier>(
                                           context,
@@ -330,7 +338,7 @@ class _ReportPageState extends State<ReportPage> {
                                           listen: false)
                                       .report;
 
-                                  if (state == RequestState.Loaded) {
+                                  if (state == RequestState.Success) {
                                     progress!.dismiss();
                                     Navigation.intentWithData(
                                         OnSuccessReport.ROUTE_NAME, result!);
@@ -339,6 +347,8 @@ class _ReportPageState extends State<ReportPage> {
                                     toast(message);
                                     Navigation.intent(
                                         OnFailureReport.ROUTE_NAME);
+                                  } else {
+                                    progress!.dismiss();
                                   }
                                 }
                               }
@@ -376,8 +386,10 @@ class _ReportPageState extends State<ReportPage> {
               ),
             ),
           );
-        }),
-      );
+        },
+      ),
+    );
+  }
 
   Widget welcome() {
     return Column(

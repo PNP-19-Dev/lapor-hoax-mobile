@@ -53,8 +53,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   static final String reportsEndpoint = 'api/reports';
   static final String reportCatEndpoint = 'api/reports/cat';
   static final String feedsEndpoint = 'api/feeds';
-  static final String isActiveEndpoint = 'isactive';
-  static final String verifyOtpEndpoint = 'verifyotp';
 
   final Dio dio;
 
@@ -168,6 +166,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
             HttpHeaders.authorizationHeader: 'Token $token',
           },
         ));
+
+    print('status code ${response.statusCode}');
 
     if (response.statusCode == 201) {
       return ReportModel.fromJson(response.data);

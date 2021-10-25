@@ -114,7 +114,6 @@ class MockRepository extends _i1.Mock implements _i10.Repository {
               returnValue: Future<_i2.Either<_i12.Failure, _i14.Feed>>.value(
                   _FakeEither_0<_i12.Failure, _i14.Feed>()))
           as _i11.Future<_i2.Either<_i12.Failure, _i14.Feed>>);
-
   @override
   _i11.Future<_i2.Either<_i12.Failure, String>> getPasswordReset(
           String? email) =>
@@ -122,7 +121,6 @@ class MockRepository extends _i1.Mock implements _i10.Repository {
               returnValue: Future<_i2.Either<_i12.Failure, String>>.value(
                   _FakeEither_0<_i12.Failure, String>()))
           as _i11.Future<_i2.Either<_i12.Failure, String>>);
-
   @override
   _i11.Future<_i2.Either<_i12.Failure, List<_i15.Question>>> getQuestions() =>
       (super.noSuchMethod(Invocation.method(#getQuestions, []),
@@ -260,18 +258,15 @@ class MockRemoteDataSource extends _i1.Mock implements _i22.RemoteDataSource {
       (super.noSuchMethod(Invocation.method(#getFeedDetail, [id]),
               returnValue: Future<_i3.FeedModel>.value(_FakeFeedModel_1()))
           as _i11.Future<_i3.FeedModel>);
-
   @override
   _i11.Future<List<_i3.FeedModel>> getFeeds() =>
       (super.noSuchMethod(Invocation.method(#getFeeds, []),
               returnValue: Future<List<_i3.FeedModel>>.value(<_i3.FeedModel>[]))
           as _i11.Future<List<_i3.FeedModel>>);
-
   @override
   _i11.Future<String> getPasswordReset(String? email) =>
       (super.noSuchMethod(Invocation.method(#getPasswordReset, [email]),
           returnValue: Future<String>.value('')) as _i11.Future<String>);
-
   @override
   _i11.Future<List<_i24.QuestionModel>> getQuestions() => (super.noSuchMethod(
           Invocation.method(#getQuestions, []),

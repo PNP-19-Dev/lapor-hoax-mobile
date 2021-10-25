@@ -173,7 +173,6 @@ class _LoginPageState extends State<LoginPage> {
                                     } else {
                                       progress?.dismiss();
                                       toast(message);
-                                      print(message);
                                     }
                                   }
                                 },

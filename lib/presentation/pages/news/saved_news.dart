@@ -20,30 +20,10 @@ class _SavedNewsState extends State<SavedNews> {
             .fetchSavedFeeds());
   }
 
-  Widget _buildNewsItem() {
-    return Consumer<SavedNewsNotifier>(builder: (context, data, child) {
-      if (data.feedListState == RequestState.Loading) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      } else if (data.feedListState == RequestState.Loaded) {
-        return ListView.builder(
-          itemBuilder: (context, index) {
-            var news = data.saveListFeeds[index];
-            return FeedCard(news);
-          },
-          itemCount: data.saveListFeeds.length,
-        );
-      } else if (data.feedListState == RequestState.Empty) {
-        return Center(key: Key('error_message'), child: Text(data.message));
-      } else {
-        return Center(key: Key('error_message'), child: Text(data.message));
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    setState(() {});
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -52,7 +32,29 @@ class _SavedNewsState extends State<SavedNews> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: _buildNewsItem(),
+        child: Consumer<SavedNewsNotifier>(
+          builder: (context, data, child) {
+            if (data.feedListState == RequestState.Loading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (data.feedListState == RequestState.Loaded) {
+              return ListView.builder(
+                itemBuilder: (context, index) {
+                  var news = data.saveListFeeds[index];
+                  return FeedCard(news);
+                },
+                itemCount: data.saveListFeeds.length,
+              );
+            } else if (data.feedListState == RequestState.Empty) {
+              return Center(
+                  key: Key('error_message'), child: Text(data.message));
+            } else {
+              return Center(
+                  key: Key('error_message'), child: Text(data.message));
+            }
+          },
+        ),
       ),
     );
   }

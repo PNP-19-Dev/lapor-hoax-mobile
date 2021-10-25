@@ -137,11 +137,12 @@ class UserNotifier extends ChangeNotifier {
     final result = await getUser.execute(email);
 
     result.fold((failure) {
-      _userMessage = failure.message;
       _userState = RequestState.Error;
+      _userMessage = failure.message;
+      print('failuremessage ${failure.message}');
     }, (user) {
-      _user = user;
       _userState = RequestState.Loaded;
+      _user = user;
       notifyListeners();
     });
   }
@@ -254,6 +255,27 @@ class UserNotifier extends ChangeNotifier {
         _challengeState = RequestState.Success;
         notifyListeners();
         _challengeMessage = messageQuestion;
+      },
+    );
+  }
+
+  String _passwordChangeMessage = '';
+
+  String get passwordChangeMessage => _passwordChangeMessage;
+  static const String messageChangePassword = 'password telah diganti';
+
+  Future<void> changePassword(
+      String oldPass, String newPass, String token) async {
+    final result = await postChangePassword.execute(oldPass, newPass, token);
+
+    result.fold(
+      (failure) {
+        _challengeMessage = failure.message;
+        notifyListeners();
+      },
+      (message) {
+        _challengeMessage = messageChangePassword;
+        notifyListeners();
       },
     );
   }
