@@ -49,6 +49,8 @@ class _HistoryPageState extends State<HistoryPage> {
             // remove item pada report
             provider.removeReport(widget.tokenId, report.id);
 
+            reports.removeAt(index);
+
             if (provider.postReportState == RequestState.Success) {
               _showSnackBar(context, provider.postReportMessage);
             } else {

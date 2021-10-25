@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:laporhoax/common/state_enum.dart';
+import 'package:laporhoax/domain/entities/feed.dart';
+import 'package:laporhoax/presentation/pages/home_page.dart';
 import 'package:laporhoax/presentation/provider/saved_news_notifier.dart';
 import 'package:laporhoax/presentation/widget/feed_card.dart';
 import 'package:provider/provider.dart';
@@ -14,20 +16,23 @@ class SavedNews extends StatefulWidget {
 class _SavedNewsState extends State<SavedNews> {
   @override
   void initState() {
-    super.initState();
     Future.microtask(() =>
         Provider.of<SavedNewsNotifier>(context, listen: false)
             .fetchSavedFeeds());
+    super.initState();
   }
+
+  List<Feed> news = [];
 
   @override
   Widget build(BuildContext context) {
-    setState(() {});
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pushNamed(context, HomePage.ROUTE_NAME)),
         title: Text('Berita yang tersimpan'),
       ),
       body: Padding(
@@ -41,8 +46,9 @@ class _SavedNewsState extends State<SavedNews> {
             } else if (data.feedListState == RequestState.Loaded) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  var news = data.saveListFeeds[index];
-                  return FeedCard(news);
+                  news = data.saveListFeeds;
+
+                  return FeedCard(news[index]);
                 },
                 itemCount: data.saveListFeeds.length,
               );

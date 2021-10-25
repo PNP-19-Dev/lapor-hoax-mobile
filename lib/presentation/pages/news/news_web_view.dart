@@ -5,6 +5,7 @@ import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
+import 'package:laporhoax/presentation/pages/news/saved_news.dart';
 import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -79,7 +80,7 @@ class CustomScaffold extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                Navigation.back();
+                Navigator.pushNamed(context, SavedNews.ROUTE_NAME);
               },
             ),
             Expanded(
