@@ -25,7 +25,7 @@ jobs:
           channel: 'stable'
       - name: Setup key
         run: |
-          echo "${{ secrets.RELEASE_KEYSTORE }}" > release.keystore.asc
+          echo "${{ secrets.RELEASE_KEYSTORE }}" > private-keystore.asc
           gpg -d --passphrase "${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}" --batch private-keystore.jks.asc > android/app/private-keystore.jks
       - name: Install pub Dependencies
         run: flutter pub get
