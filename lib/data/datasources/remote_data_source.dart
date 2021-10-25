@@ -140,7 +140,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         HttpHeaders.authorizationHeader: "Token $token",
       }),
     );
-
     if (response.statusCode == 200) {
       return ReportResponse.fromJson(response.data).reportList;
     } else {

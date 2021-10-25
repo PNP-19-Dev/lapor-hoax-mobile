@@ -91,7 +91,7 @@ class ReportNotifier extends ChangeNotifier {
     });
   }
 
-  Future<void> fetchCategories() async {
+  Future<List<Category>> fetchCategories() async {
     _fetchCategoryState = RequestState.Loading;
     notifyListeners();
 
@@ -104,6 +104,8 @@ class ReportNotifier extends ChangeNotifier {
       _fetchCategoryState = RequestState.Loaded;
       notifyListeners();
     });
+
+    return _category;
   }
 
   Future<void> sendReport(String token, ReportRequest request) async {

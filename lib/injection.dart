@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:laporhoax/common/NetworkInfoImpl.dart';
 import 'package:laporhoax/data/datasources/db/database_helper.dart';
 import 'package:laporhoax/data/datasources/local_data_source.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
@@ -117,6 +119,7 @@ void init() {
         () => RepositoryImpl(
       remoteDataSource: locator(),
       localDataSource: locator(),
+      networkInfo: locator(),
     ),
   );
 
@@ -125,7 +128,7 @@ void init() {
         () => RemoteDataSourceImpl(dio: locator()),
   );
   locator.registerLazySingleton<LocalDataSource>(
-        () => LocalDataSourceImpl(
+    () => LocalDataSourceImpl(
       databaseHelper: locator(),
       preferencesHelper: locator(),
     ),
@@ -133,6 +136,9 @@ void init() {
 
   // helper
   locator.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
+
+  // network info
+  locator.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(locator()));
 
   // shared preferences
   locator.registerLazySingleton<PreferencesHelper>(() => PreferencesHelper());
@@ -148,4 +154,5 @@ void init() {
       ..options.validateStatus = (int? status) => status != null && status > 0;
     // ..interceptors.add(LogInterceptor())
   });
+  locator.registerLazySingleton(() => DataConnectionChecker());
 }

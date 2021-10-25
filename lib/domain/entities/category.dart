@@ -7,9 +7,21 @@ class Category extends Equatable {
     required this.name,
   });
 
-  int id;
-  String name;
+  final int id;
+  final String name;
+
+  factory Category.fromMap(Map<String, dynamic> map) => Category(
+        id: map["id"],
+        name: map["name"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+      };
 
   @override
   List<Object?> get props => [id, name];
+
+  Category toEntity() => Category(id: id, name: name);
 }

@@ -34,6 +34,8 @@ class _SavedNewsState extends State<SavedNews> {
           },
           itemCount: data.saveListFeeds.length,
         );
+      } else if (data.feedListState == RequestState.Empty) {
+        return Center(key: Key('error_message'), child: Text(data.message));
       } else {
         return Center(key: Key('error_message'), child: Text(data.message));
       }

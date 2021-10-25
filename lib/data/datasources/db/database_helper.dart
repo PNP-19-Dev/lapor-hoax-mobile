@@ -1,4 +1,5 @@
 import 'package:laporhoax/data/models/feed_table.dart';
+import 'package:laporhoax/domain/entities/category.dart';
 import 'package:laporhoax/domain/entities/question.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -96,5 +97,45 @@ class DatabaseHelper {
         txn.insert(_tblQuestions, questionJson);
       }
     });
+  }
+
+  Future<void> insertCategoryTransaction(List<Category> categories) async {
+    final db = await database;
+    db!.transaction((txn) async {
+      for (final category in categories) {
+        final questionJson = category.toJson();
+        txn.insert(_tblQuestions, questionJson);
+      }
+    });
+  }
+
+  Future<List<Map<String, dynamic>>> getQuestionCache() async {
+    final db = await database;
+    final List<Map<String, dynamic>> results = await db!.query(
+      _tblQuestions,
+    );
+    return results;
+  }
+
+  Future<List<Map<String, dynamic>>> getCategoryCache() async {
+    final db = await database;
+    final List<Map<String, dynamic>> results = await db!.query(
+      _tblCategories,
+    );
+    return results;
+  }
+
+  Future<int> clearQuestionCache() async {
+    final db = await database;
+    return await db!.delete(
+      _tblQuestions,
+    );
+  }
+
+  Future<int> clearCategoryCache() async {
+    final db = await database;
+    return await db!.delete(
+      _tblCategories,
+    );
   }
 }

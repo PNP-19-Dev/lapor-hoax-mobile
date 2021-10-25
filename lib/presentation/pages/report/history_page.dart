@@ -6,7 +6,6 @@ import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
 import 'package:laporhoax/presentation/widget/report_list_item.dart';
-import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -92,7 +91,6 @@ class _HistoryPageState extends State<HistoryPage> {
       } else if (provider.fetchReportState == RequestState.Empty) {
         return Center(child: Text(provider.fetchReportMessage));
       } else {
-        toast('Terjadi Masalah');
         return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

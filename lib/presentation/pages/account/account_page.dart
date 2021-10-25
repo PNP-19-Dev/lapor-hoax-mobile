@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
+import 'package:laporhoax/presentation/pages/home_page.dart';
 import 'package:laporhoax/presentation/pages/news/saved_news.dart';
 import 'package:laporhoax/presentation/pages/report/history_page.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
@@ -75,8 +76,26 @@ class _AccountPageState extends State<AccountPage> {
                 ),
               ),
               GestureDetector(
-                onTap: () async => await Provider.of<UserNotifier>(context)
-                    .logout(sessionData),
+                onTap: () async {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text("Mohon Tunggu")));
+
+                  await Provider.of<UserNotifier>(context, listen: false)
+                      .logout(sessionData);
+
+                  var message =
+                      Provider.of<UserNotifier>(context, listen: false)
+                          .sessionMessage;
+
+                  if (message == UserNotifier.messageLogout) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text(message)));
+                    Navigation.intent(HomePage.ROUTE_NAME);
+                  } else {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text('Ada masalah')));
+                  }
+                },
                 child: Icon(
                   Icons.exit_to_app,
                   color: Colors.red,

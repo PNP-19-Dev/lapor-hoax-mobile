@@ -2,17 +2,34 @@ import 'package:laporhoax/common/exception.dart';
 import 'package:laporhoax/data/datasources/db/database_helper.dart';
 import 'package:laporhoax/data/datasources/preferences/preferences_helper.dart';
 import 'package:laporhoax/data/models/feed_table.dart';
+import 'package:laporhoax/domain/entities/category.dart';
+import 'package:laporhoax/domain/entities/question.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
 
 abstract class LocalDataSource {
   Future<String> insertFeed(FeedTable feed);
+
   Future<String> removeFeed(FeedTable feed);
+
   Future<FeedTable?> getFeedById(int id);
+
   Future<List<FeedTable>> getFeeds();
+
   Future<bool> isLoggedIn();
+
   Future<SessionData?> getSession();
+
   Future<String> insertSession(SessionData data);
+
   Future<String> removeSession(SessionData data);
+
+  Future<void> cacheQuestions(List<Question> questions);
+
+  Future<List<Question>> getCachedQuestion();
+
+  Future<void> cacheCategory(List<Category> category);
+
+  Future<List<Category>> getCachedCategory();
 }
 
 class LocalDataSourceImpl implements LocalDataSource {
@@ -107,5 +124,37 @@ class LocalDataSourceImpl implements LocalDataSource {
     preferencesHelper.setUsername(null);
     preferencesHelper.setLogin(false);
     return 'Session Removed';
+  }
+
+  @override
+  Future<void> cacheCategory(List<Category> categories) async {
+    await databaseHelper.clearCategoryCache();
+    await databaseHelper.insertCategoryTransaction(categories);
+  }
+
+  @override
+  Future<void> cacheQuestions(List<Question> questions) async {
+    await databaseHelper.clearQuestionCache();
+    await databaseHelper.insertQuestionTransaction(questions);
+  }
+
+  @override
+  Future<List<Category>> getCachedCategory() async {
+    final result = await databaseHelper.getCategoryCache();
+    if (result.length > 0) {
+      return result.map((data) => Category.fromMap(data)).toList();
+    } else {
+      throw CacheException("Can't get the data :(");
+    }
+  }
+
+  @override
+  Future<List<Question>> getCachedQuestion() async {
+    final result = await databaseHelper.getQuestionCache();
+    if (result.length > 0) {
+      return result.map((data) => Question.fromMap(data)).toList();
+    } else {
+      throw CacheException("Can't get the data :(");
+    }
   }
 }

@@ -10,6 +10,11 @@ class Question extends Equatable {
   int id;
   String question;
 
+  factory Question.fromMap(Map<String, dynamic> map) => Question(
+        id: map["id"],
+        question: map["question"],
+      );
+
   Map<String, dynamic> toMap() => {
         "id": id,
         "question": question,
@@ -22,4 +27,9 @@ class Question extends Equatable {
 
   @override
   List<Object?> get props => [id, question];
+
+  Question toEntity() => Question(
+        id: id,
+        question: question,
+      );
 }

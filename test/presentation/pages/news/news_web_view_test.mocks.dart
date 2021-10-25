@@ -39,14 +39,12 @@ class MockGetFeedDetail extends _i1.Mock implements _i4.GetFeedDetail {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
-
   @override
   _i5.Future<_i3.Either<_i6.Failure, _i7.Feed>> execute(int? id) =>
       (super.noSuchMethod(Invocation.method(#execute, [id]),
               returnValue: Future<_i3.Either<_i6.Failure, _i7.Feed>>.value(
                   _FakeEither_1<_i6.Failure, _i7.Feed>()))
           as _i5.Future<_i3.Either<_i6.Failure, _i7.Feed>>);
-
   @override
   String toString() => super.toString();
 }
@@ -63,14 +61,12 @@ class MockSaveFeed extends _i1.Mock implements _i8.SaveFeed {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
-
   @override
   _i5.Future<_i3.Either<_i6.Failure, String>> execute(_i7.Feed? feed) =>
       (super.noSuchMethod(Invocation.method(#execute, [feed]),
               returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
                   _FakeEither_1<_i6.Failure, String>()))
           as _i5.Future<_i3.Either<_i6.Failure, String>>);
-
   @override
   String toString() => super.toString();
 }
@@ -87,14 +83,12 @@ class MockRemoveFeed extends _i1.Mock implements _i9.RemoveFeed {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
-
   @override
   _i5.Future<_i3.Either<_i6.Failure, String>> execute(_i7.Feed? feed) =>
       (super.noSuchMethod(Invocation.method(#execute, [feed]),
               returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
                   _FakeEither_1<_i6.Failure, String>()))
           as _i5.Future<_i3.Either<_i6.Failure, String>>);
-
   @override
   String toString() => super.toString();
 }
@@ -111,12 +105,10 @@ class MockGetFeedSaveStatus extends _i1.Mock implements _i10.GetFeedSaveStatus {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
-
   @override
   _i5.Future<bool> execute(int? id) =>
       (super.noSuchMethod(Invocation.method(#execute, [id]),
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
-
   @override
   String toString() => super.toString();
 }
