@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:laporhoax/common/exception.dart';
 import 'package:laporhoax/common/failure.dart';
-import 'package:laporhoax/data/models/category_model.dart';
 import 'package:laporhoax/data/models/question_model.dart';
 import 'package:laporhoax/data/models/report_model.dart';
 import 'package:laporhoax/data/models/report_request.dart';
@@ -102,7 +101,7 @@ void main() {
             .thenAnswer((realInvocation) async => true);
       });
 
-      test('should reutrn data when the call to remote data is successful',
+      test('should return data when the call to remote data is successful',
           () async {
         // arrange
         when(mockRemoteDataSource.getCategory())
@@ -144,8 +143,21 @@ void main() {
         when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
       });
 
-      test('should return connection failure when the device is not connected',
-          () async {});
+      test(
+          'should return connection failure when the device is not connected to internet',
+          () async {
+        // arrange
+        when(mockRemoteDataSource.getCategory())
+            .thenThrow(SocketException('Failed to connect to the network'));
+        // act
+        final result = await repository.getCategories();
+        // assert
+        verify(mockRemoteDataSource.getCategory());
+        expect(
+            result,
+            equals(
+                Left(ConnectionFailure('Failed to connect to the network'))));
+      });
 
       test('should return cached data when device is offline', () async {
         // arrange
@@ -159,46 +171,6 @@ void main() {
         expect(resultList, [testCategory]);
       });
     });
-
-    test(
-        'should return remote data when the call to remote data source is successful',
-        () async {
-      final tCategoryResponse = CategoryModel(name: 'name', id: 1);
-      // arrange
-      when(mockRemoteDataSource.getCategory())
-          .thenAnswer((_) async => [tCategoryResponse]);
-      // act
-      final result = await repository.getCategories();
-      // assert
-          verify(mockRemoteDataSource.getCategory());
-          /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
-          final resultMessage = result.getOrElse(() => []);
-          expect(resultMessage, [testCategory]);
-        });
-    test(
-        'should return server failure when the call to remote data source is unsuccessful',
-            () async {
-          // arrange
-          when(mockRemoteDataSource.getCategory()).thenThrow(ServerException());
-      // act
-      final result = await repository.getCategories();
-      // assert
-      verify(mockRemoteDataSource.getCategory());
-      expect(result, equals(Left(ServerFailure('Cant Fetch Categories'))));
-    });
-    test(
-        'should return connection failure when the device is not connected to internet',
-            () async {
-          // arrange
-          when(mockRemoteDataSource.getCategory())
-              .thenThrow(SocketException('Failed to connect to the network'));
-          // act
-          final result = await repository.getCategories();
-          // assert
-          verify(mockRemoteDataSource.getCategory());
-          expect(result,
-              equals(Left(ConnectionFailure('Failed to connect to the network'))));
-        });
   });
   group('Get Feed Detail', () {
     test(
@@ -409,7 +381,7 @@ void main() {
         // assert
         verify(mockLocalDataSource.getCachedQuestion());
         final resultList = result.getOrElse(() => []);
-        expect(resultList, [testCategory]);
+        expect(resultList, [testQuestion]);
       });
     });
   });

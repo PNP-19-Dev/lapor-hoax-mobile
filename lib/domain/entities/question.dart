@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:laporhoax/data/models/question_model.dart';
 
 // ignore: must_be_immutable
 class Question extends Equatable {
@@ -31,5 +32,10 @@ class Question extends Equatable {
   Question toEntity() => Question(
         id: id,
         question: question,
+      );
+
+  factory Question.fromDTO(QuestionModel question) => Question(
+        id: question.id,
+        question: question.question,
       );
 }

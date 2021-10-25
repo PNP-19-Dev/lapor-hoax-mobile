@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:laporhoax/data/models/category_model.dart';
 
 // ignore: must_be_immutable
 class Category extends Equatable {
@@ -13,6 +14,11 @@ class Category extends Equatable {
   factory Category.fromMap(Map<String, dynamic> map) => Category(
         id: map["id"],
         name: map["name"],
+      );
+
+  factory Category.fromDTO(CategoryModel model) => Category(
+        id: model.id,
+        name: model.name,
       );
 
   Map<String, dynamic> toJson() => {

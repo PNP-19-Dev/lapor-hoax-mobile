@@ -89,6 +89,8 @@ class RepositoryImpl implements Repository {
     if (await networkInfo.isConnected) {
       try {
         final result = await remoteDataSource.getCategory();
+        localDataSource.cacheCategory(
+            result.map((category) => Category.fromDTO(category)).toList());
         return Right(result.map((e) => e.toEntity()).toList());
       } on ServerException {
         return Left(ServerFailure("Cant Fetch Categories"));
@@ -206,6 +208,8 @@ class RepositoryImpl implements Repository {
     if (await networkInfo.isConnected) {
       try {
         final result = await remoteDataSource.getQuestions();
+        localDataSource.cacheQuestions(
+            result.map((question) => Question.fromDTO(question)).toList());
         return Right(result.map((e) => e.toEntity()).toList());
       } on ServerException {
         return Left(ServerFailure("Cant Retrieve Data"));
