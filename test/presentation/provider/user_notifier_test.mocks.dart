@@ -120,12 +120,12 @@ class MockGetPasswordReset extends _i1.Mock implements _i13.GetPasswordReset {
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
   @override
-  _i5.Future<_i3.Either<_i6.Failure, String>> execute(
-          String? email, String? token) =>
-      (super.noSuchMethod(Invocation.method(#execute, [email, token]),
+  _i5.Future<_i3.Either<_i6.Failure, String>> execute(String? email) =>
+      (super.noSuchMethod(Invocation.method(#execute, [email]),
               returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
                   _FakeEither_1<_i6.Failure, String>()))
           as _i5.Future<_i3.Either<_i6.Failure, String>>);
+
   @override
   String toString() => super.toString();
 }

@@ -23,7 +23,9 @@ abstract class RemoteDataSource {
   Future<List<CategoryModel>> getCategory();
   Future<FeedModel> getFeedDetail(int id);
   Future<List<FeedModel>> getFeeds();
-  Future<String> getPasswordReset(String email, String token);
+
+  Future<String> getPasswordReset(String email);
+
   Future<List<QuestionModel>> getQuestions();
   Future<List<ReportModel>> getReport(String token, int id);
   Future<List<UserModel>> getUser(String email);
@@ -279,12 +281,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<String> getPasswordReset(String email, String token) async {
+  Future<String> getPasswordReset(String email) async {
     final response = await dio.get(
       '/$passwordResetEndpoint/$email',
       options: Options(
         contentType: Headers.jsonContentType,
-        headers: {HttpHeaders.authorizationHeader: "Token $token"},
       ),
     );
 

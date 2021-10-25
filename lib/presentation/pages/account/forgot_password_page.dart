@@ -307,10 +307,9 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          // TOKENNYA MANAAAAAA !!!!!!
                           await Provider.of<UserNotifier>(context,
                                   listen: false)
-                              .reset(widget.user.email, '');
+                              .reset(widget.user.email);
 
                           final message =
                               Provider.of<UserNotifier>(context, listen: false)

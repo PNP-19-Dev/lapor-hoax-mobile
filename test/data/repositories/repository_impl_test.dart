@@ -226,12 +226,12 @@ void main() {
         'should return remote data when the call to remote data source is successful',
         () async {
       // arrange
-      when(mockRemoteDataSource.getPasswordReset(tEmail, tToken))
+      when(mockRemoteDataSource.getPasswordReset(tEmail))
           .thenAnswer((_) async => 'Success');
       // act
-      final result = await repository.getPasswordReset(tEmail, tToken);
+      final result = await repository.getPasswordReset(tEmail);
       // assert
-      verify(mockRemoteDataSource.getPasswordReset(tEmail, tToken));
+      verify(mockRemoteDataSource.getPasswordReset(tEmail));
       /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
       final resultMessage = result.getOrElse(() => 'Failure');
       expect(resultMessage, 'Success');
@@ -240,24 +240,24 @@ void main() {
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-      when(mockRemoteDataSource.getPasswordReset(tEmail, tToken))
+          when(mockRemoteDataSource.getPasswordReset(tEmail))
           .thenThrow(ServerException());
       // act
-      final result = await repository.getPasswordReset(tEmail, tToken);
+      final result = await repository.getPasswordReset(tEmail);
       // assert
-      verify(mockRemoteDataSource.getPasswordReset(tEmail, tToken));
+      verify(mockRemoteDataSource.getPasswordReset(tEmail));
       expect(result, equals(Left(ServerFailure(''))));
     });
     test(
         'should return connection failure when the device is not connected to internet',
         () async {
       // arrange
-      when(mockRemoteDataSource.getPasswordReset(tEmail, tToken))
+          when(mockRemoteDataSource.getPasswordReset(tEmail))
           .thenThrow(SocketException('Failed to connect to the network'));
       // act
-      final result = await repository.getPasswordReset(tEmail, tToken);
+      final result = await repository.getPasswordReset(tEmail);
       // assert
-      verify(mockRemoteDataSource.getPasswordReset(tEmail, tToken));
+      verify(mockRemoteDataSource.getPasswordReset(tEmail));
       expect(result,
           equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });

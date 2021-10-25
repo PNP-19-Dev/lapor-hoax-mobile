@@ -19,7 +19,9 @@ abstract class Repository {
   Future<bool> isSessionActivated();
   Future<Either<Failure, List<Feed>>> getFeeds();
   Future<Either<Failure, Feed>> getFeedDetail(int id);
-  Future<Either<Failure, String>> getPasswordReset(String email, String token);
+
+  Future<Either<Failure, String>> getPasswordReset(String email);
+
   Future<Either<Failure, List<Question>>> getQuestions();
   Future<Either<Failure, List<Report>>> getReports(String token, int id);
   Future<Either<Failure, List<Feed>>> getSavedFeeds();

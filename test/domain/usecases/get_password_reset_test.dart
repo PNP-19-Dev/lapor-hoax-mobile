@@ -20,10 +20,10 @@ void main() {
   test('should get success callback of feeds when execute function is called',
       () async {
     // arrange
-    when(mockRepository.getPasswordReset(tEmail, tToken))
+    when(mockRepository.getPasswordReset(tEmail))
         .thenAnswer((_) async => Right('success'));
     // act
-    final result = await usecase.execute(tEmail, tToken);
+    final result = await usecase.execute(tEmail);
     // assert
     expect(result, Right('success'));
   });

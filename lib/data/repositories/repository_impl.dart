@@ -190,10 +190,9 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, String>> getPasswordReset(
-      String email, String token) async {
+  Future<Either<Failure, String>> getPasswordReset(String email) async {
     try {
-      final result = await remoteDataSource.getPasswordReset(email, token);
+      final result = await remoteDataSource.getPasswordReset(email);
       return Right(result);
     } on ServerException {
       return Left(ServerFailure(""));

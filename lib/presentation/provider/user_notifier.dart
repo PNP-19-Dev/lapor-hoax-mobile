@@ -223,8 +223,8 @@ class UserNotifier extends ChangeNotifier {
 
   String get resetMessage => _resetMessage;
 
-  Future<void> reset(String email, String token) async {
-    final result = await getPasswordReset.execute(email, token);
+  Future<void> reset(String email) async {
+    final result = await getPasswordReset.execute(email);
 
     result.fold((failure) {
       _resetMessage = failure.message;

@@ -7,7 +7,7 @@ class GetPasswordReset {
 
   GetPasswordReset(this.repository);
 
-  Future<Either<Failure, String>> execute(String email, String token) {
-    return repository.getPasswordReset(email, token);
+  Future<Either<Failure, String>> execute(String email) {
+    return repository.getPasswordReset(email);
   }
 }
