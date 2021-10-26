@@ -1,3 +1,5 @@
+[![Build and Release Apps](https://github.com/PNP-19-Dev/lapor-hoax-mobile/actions/workflows/build-and-release.yaml/badge.svg?branch=release)](https://github.com/PNP-19-Dev/lapor-hoax-mobile/actions/workflows/build-and-release.yaml)
+[![Testing](https://github.com/PNP-19-Dev/lapor-hoax-mobile/actions/workflows/build-test.yaml/badge.svg?branch=dev-2)](https://github.com/PNP-19-Dev/lapor-hoax-mobile/actions/workflows/build-test.yaml)
 # laporhoax
 
 A new Flutter project.
