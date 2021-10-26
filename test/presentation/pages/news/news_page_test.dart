@@ -4,7 +4,6 @@ import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
 
 import 'news_page_test.mocks.dart';
 
@@ -16,6 +15,7 @@ void main() {
     mockFeedNotifier = MockFeedNotifier();
   });
 
+  /*TODO INCREMENTAL TESTING
   Widget _makeTestableWidget(Widget body) {
     return ChangeNotifierProvider<FeedNotifier>.value(
       value: mockFeedNotifier,
@@ -23,7 +23,7 @@ void main() {
         home: body,
       ),
     );
-  }
+  }*/
 
   testWidgets('Page should display progress bar when loading',
       (WidgetTester tester) async {
