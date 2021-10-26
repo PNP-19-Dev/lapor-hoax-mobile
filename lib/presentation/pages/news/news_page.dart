@@ -9,7 +9,6 @@ import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/presentation/pages/account/tutorial_page.dart';
 import 'package:laporhoax/presentation/pages/report/report_page.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
-import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:laporhoax/util/datetime_helper.dart';
 import 'package:provider/provider.dart';
 
@@ -138,7 +137,6 @@ class _NewsPageState extends State<NewsPage> {
             } else if (state == RequestState.Loaded) {
               return FeedList(data.feeds);
             } else {
-              toast('No Connection!');
               return SliverList(
                 delegate: SliverChildListDelegate([
                   Icon(

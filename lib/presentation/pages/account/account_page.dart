@@ -3,9 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
+import 'package:laporhoax/presentation/pages/home_page.dart';
 import 'package:laporhoax/presentation/pages/news/saved_news.dart';
 import 'package:laporhoax/presentation/pages/report/history_page.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
+import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:laporhoax/util/static_data_web.dart';
 import 'package:laporhoax/util/static_page_viewer.dart';
 import 'package:provider/provider.dart';
@@ -75,8 +77,20 @@ class _AccountPageState extends State<AccountPage> {
                 ),
               ),
               GestureDetector(
-                onTap: () async => await Provider.of<UserNotifier>(context)
-                    .logout(sessionData),
+                onTap: () async {
+                  await Provider.of<UserNotifier>(context, listen: false)
+                      .logout(sessionData);
+
+                  var message =
+                      Provider.of<UserNotifier>(context, listen: false)
+                          .sessionMessage;
+
+                  if (message == UserNotifier.messageLogout) {
+                    Navigation.intent(HomePage.ROUTE_NAME);
+                  } else {
+                    toast('ada masalah');
+                  }
+                },
                 child: Icon(
                   Icons.exit_to_app,
                   color: Colors.red,

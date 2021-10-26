@@ -38,6 +38,7 @@ class MockGetQuestions extends _i1.Mock implements _i4.GetQuestions {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, List<_i7.Question>>> execute() =>
       (super.noSuchMethod(Invocation.method(#execute, []),
@@ -45,6 +46,7 @@ class MockGetQuestions extends _i1.Mock implements _i4.GetQuestions {
                   Future<_i3.Either<_i6.Failure, List<_i7.Question>>>.value(
                       _FakeEither_1<_i6.Failure, List<_i7.Question>>()))
           as _i5.Future<_i3.Either<_i6.Failure, List<_i7.Question>>>);
+
   @override
   String toString() => super.toString();
 }
@@ -61,12 +63,14 @@ class MockGetUserChallenge extends _i1.Mock implements _i8.GetUserChallenge {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, _i9.UserQuestion>> execute(int? id) =>
       (super.noSuchMethod(Invocation.method(#execute, [id]),
           returnValue: Future<_i3.Either<_i6.Failure, _i9.UserQuestion>>.value(
               _FakeEither_1<_i6.Failure, _i9.UserQuestion>())) as _i5
           .Future<_i3.Either<_i6.Failure, _i9.UserQuestion>>);
+
   @override
   String toString() => super.toString();
 }

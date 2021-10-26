@@ -9,6 +9,7 @@ import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/domain/entities/user.dart';
 import 'package:laporhoax/domain/entities/user_question.dart';
+import 'package:laporhoax/presentation/pages/account/login_page.dart';
 import 'package:laporhoax/presentation/provider/question_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
@@ -113,12 +114,14 @@ class _ForgotPasswordSectionOneState extends State<ForgotPasswordSectionOne> {
                                         .showWithText("Mendapatkan Data..");
                                     await Provider.of<UserNotifier>(context,
                                             listen: false)
-                                        .getUserData(_inputEmail.text);
+                                        .getUserData(
+                                            _inputEmail.text.toString());
 
                                     final state = Provider.of<UserNotifier>(
                                             context,
                                             listen: false)
                                         .userState;
+
                                     final message = Provider.of<UserNotifier>(
                                             context,
                                             listen: false)
@@ -198,7 +201,7 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
       _inputQuestion.text =
           questionMap[index.isNotEmpty ? index[0] : 1] as String;
     } else {
-      toast(provider.userQuestionMessage);
+      // toast(provider.userQuestionMessage);
     }
   }
 
@@ -307,19 +310,63 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          // TOKENNYA MANAAAAAA !!!!!!
-                          await Provider.of<UserNotifier>(context,
-                                  listen: false)
-                              .reset(widget.user.email, '');
+                          await Provider.of<UserNotifier>(
+                            context,
+                            listen: false,
+                          ).reset(widget.user.email);
 
                           final message =
                               Provider.of<UserNotifier>(context, listen: false)
                                   .resetMessage;
 
                           if (message == UserNotifier.messageReset) {
-                            toast(message);
+                            showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    insetPadding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    content: Container(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Text(
+                                            'Password Baru',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          const Text('12345678',
+                                              style: TextStyle(
+                                                fontSize: 30,
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                          Text(
+                                            'Ini adalah password barumu. Silakan masuk untuk melanjutkan',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .caption,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () =>
+                                                Navigator.pushNamed(
+                                              context,
+                                              LoginPage.ROUTE_NAME,
+                                            ),
+                                            child: Text('Masuk'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                });
                           } else {
-                            toast(message);
+                            toast(
+                                'Mohon Maaf, Jawaban Anda salah, silakan ulangi');
                           }
                         },
                         child: Text('Selanjutnya'),

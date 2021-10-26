@@ -43,9 +43,9 @@ class MockGetFeedDetail extends _i1.Mock implements _i4.GetFeedDetail {
   @override
   _i5.Future<_i3.Either<_i6.Failure, _i7.Feed>> execute(int? id) =>
       (super.noSuchMethod(Invocation.method(#execute, [id]),
-              returnValue: Future<_i3.Either<_i6.Failure, _i7.Feed>>.value(
-                  _FakeEither_1<_i6.Failure, _i7.Feed>()))
-          as _i5.Future<_i3.Either<_i6.Failure, _i7.Feed>>);
+          returnValue: Future<_i3.Either<_i6.Failure, _i7.Feed>>.value(
+              _FakeEither_1<_i6.Failure, _i7.Feed>()))
+      as _i5.Future<_i3.Either<_i6.Failure, _i7.Feed>>);
 
   @override
   String toString() => super.toString();
@@ -67,9 +67,9 @@ class MockSaveFeed extends _i1.Mock implements _i8.SaveFeed {
   @override
   _i5.Future<_i3.Either<_i6.Failure, String>> execute(_i7.Feed? feed) =>
       (super.noSuchMethod(Invocation.method(#execute, [feed]),
-              returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
-                  _FakeEither_1<_i6.Failure, String>()))
-          as _i5.Future<_i3.Either<_i6.Failure, String>>);
+          returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
+              _FakeEither_1<_i6.Failure, String>()))
+      as _i5.Future<_i3.Either<_i6.Failure, String>>);
 
   @override
   String toString() => super.toString();
@@ -91,9 +91,9 @@ class MockRemoveFeed extends _i1.Mock implements _i9.RemoveFeed {
   @override
   _i5.Future<_i3.Either<_i6.Failure, String>> execute(_i7.Feed? feed) =>
       (super.noSuchMethod(Invocation.method(#execute, [feed]),
-              returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
-                  _FakeEither_1<_i6.Failure, String>()))
-          as _i5.Future<_i3.Either<_i6.Failure, String>>);
+          returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
+              _FakeEither_1<_i6.Failure, String>()))
+      as _i5.Future<_i3.Either<_i6.Failure, String>>);
 
   @override
   String toString() => super.toString();

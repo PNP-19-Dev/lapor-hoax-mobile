@@ -6,6 +6,7 @@ import 'dart:async' as _i11;
 
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:dio/dio.dart' as _i9;
+import 'package:laporhoax/common/NetworkInfoImpl.dart' as _i31;
 import 'package:laporhoax/common/failure.dart' as _i12;
 import 'package:laporhoax/data/datasources/db/database_helper.dart' as _i28;
 import 'package:laporhoax/data/datasources/local_data_source.dart' as _i26;
@@ -115,8 +116,8 @@ class MockRepository extends _i1.Mock implements _i10.Repository {
           as _i11.Future<_i2.Either<_i12.Failure, _i14.Feed>>);
   @override
   _i11.Future<_i2.Either<_i12.Failure, String>> getPasswordReset(
-          String? email, String? token) =>
-      (super.noSuchMethod(Invocation.method(#getPasswordReset, [email, token]),
+          String? email) =>
+      (super.noSuchMethod(Invocation.method(#getPasswordReset, [email]),
               returnValue: Future<_i2.Either<_i12.Failure, String>>.value(
                   _FakeEither_0<_i12.Failure, String>()))
           as _i11.Future<_i2.Either<_i12.Failure, String>>);
@@ -263,8 +264,8 @@ class MockRemoteDataSource extends _i1.Mock implements _i22.RemoteDataSource {
               returnValue: Future<List<_i3.FeedModel>>.value(<_i3.FeedModel>[]))
           as _i11.Future<List<_i3.FeedModel>>);
   @override
-  _i11.Future<String> getPasswordReset(String? email, String? token) =>
-      (super.noSuchMethod(Invocation.method(#getPasswordReset, [email, token]),
+  _i11.Future<String> getPasswordReset(String? email) =>
+      (super.noSuchMethod(Invocation.method(#getPasswordReset, [email]),
           returnValue: Future<String>.value('')) as _i11.Future<String>);
   @override
   _i11.Future<List<_i24.QuestionModel>> getQuestions() => (super.noSuchMethod(
@@ -369,6 +370,28 @@ class MockLocalDataSource extends _i1.Mock implements _i26.LocalDataSource {
       (super.noSuchMethod(Invocation.method(#removeSession, [data]),
           returnValue: Future<String>.value('')) as _i11.Future<String>);
   @override
+  _i11.Future<void> cacheQuestions(List<_i15.Question>? questions) =>
+      (super.noSuchMethod(Invocation.method(#cacheQuestions, [questions]),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i11.Future<void>);
+  @override
+  _i11.Future<List<_i15.Question>> getCachedQuestion() =>
+      (super.noSuchMethod(Invocation.method(#getCachedQuestion, []),
+              returnValue: Future<List<_i15.Question>>.value(<_i15.Question>[]))
+          as _i11.Future<List<_i15.Question>>);
+  @override
+  _i11.Future<void> cacheCategory(List<_i13.Category>? category) =>
+      (super.noSuchMethod(Invocation.method(#cacheCategory, [category]),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i11.Future<void>);
+  @override
+  _i11.Future<List<_i13.Category>> getCachedCategory() =>
+      (super.noSuchMethod(Invocation.method(#getCachedCategory, []),
+              returnValue: Future<List<_i13.Category>>.value(<_i13.Category>[]))
+          as _i11.Future<List<_i13.Category>>);
+  @override
   String toString() => super.toString();
 }
 
@@ -407,28 +430,40 @@ class MockDatabaseHelper extends _i1.Mock implements _i28.DatabaseHelper {
       returnValue: Future<void>.value(),
       returnValueForMissingStub: Future<void>.value()) as _i11.Future<void>);
   @override
-  _i11.Future<void> insertSession(_i17.SessionData? data) =>
-      (super.noSuchMethod(Invocation.method(#insertSession, [data]),
+  _i11.Future<void> insertQuestionTransaction(List<_i15.Question>? questions) =>
+      (super.noSuchMethod(
+              Invocation.method(#insertQuestionTransaction, [questions]),
               returnValue: Future<void>.value(),
               returnValueForMissingStub: Future<void>.value())
           as _i11.Future<void>);
   @override
-  _i11.Future<Map<String, dynamic>?> getLastSessions() =>
-      (super.noSuchMethod(Invocation.method(#getLastSessions, []),
-              returnValue: Future<Map<String, dynamic>?>.value())
-          as _i11.Future<Map<String, dynamic>?>);
-  @override
-  _i11.Future<void> updateSession(_i17.SessionData? data) =>
-      (super.noSuchMethod(Invocation.method(#updateSession, [data]),
+  _i11.Future<void> insertCategoryTransaction(
+          List<_i13.Category>? categories) =>
+      (super.noSuchMethod(
+              Invocation.method(#insertCategoryTransaction, [categories]),
               returnValue: Future<void>.value(),
               returnValueForMissingStub: Future<void>.value())
           as _i11.Future<void>);
   @override
-  _i11.Future<void> removeSession(_i17.SessionData? data) =>
-      (super.noSuchMethod(Invocation.method(#removeSession, [data]),
-              returnValue: Future<void>.value(),
-              returnValueForMissingStub: Future<void>.value())
-          as _i11.Future<void>);
+  _i11.Future<List<Map<String, dynamic>>> getQuestionCache() =>
+      (super.noSuchMethod(Invocation.method(#getQuestionCache, []),
+              returnValue: Future<List<Map<String, dynamic>>>.value(
+                  <Map<String, dynamic>>[]))
+          as _i11.Future<List<Map<String, dynamic>>>);
+  @override
+  _i11.Future<List<Map<String, dynamic>>> getCategoryCache() =>
+      (super.noSuchMethod(Invocation.method(#getCategoryCache, []),
+              returnValue: Future<List<Map<String, dynamic>>>.value(
+                  <Map<String, dynamic>>[]))
+          as _i11.Future<List<Map<String, dynamic>>>);
+  @override
+  _i11.Future<int> clearQuestionCache() =>
+      (super.noSuchMethod(Invocation.method(#clearQuestionCache, []),
+          returnValue: Future<int>.value(0)) as _i11.Future<int>);
+  @override
+  _i11.Future<int> clearCategoryCache() =>
+      (super.noSuchMethod(Invocation.method(#clearCategoryCache, []),
+          returnValue: Future<int>.value(0)) as _i11.Future<int>);
   @override
   String toString() => super.toString();
 }
@@ -496,6 +531,22 @@ class MockPreferencesHelper extends _i1.Mock implements _i30.PreferencesHelper {
   void setLogin(bool? value) =>
       super.noSuchMethod(Invocation.method(#setLogin, [value]),
           returnValueForMissingStub: null);
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [NetworkInfo].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockNetworkInfo extends _i1.Mock implements _i31.NetworkInfo {
+  MockNetworkInfo() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<bool> get isConnected =>
+      (super.noSuchMethod(Invocation.getter(#isConnected),
+          returnValue: Future<bool>.value(false)) as _i11.Future<bool>);
   @override
   String toString() => super.toString();
 }

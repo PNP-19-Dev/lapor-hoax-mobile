@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -5,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/models/register_model.dart';
-import 'package:laporhoax/presentation/pages/home_page.dart';
+import 'package:laporhoax/presentation/pages/account/user_challenge.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
@@ -75,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           decoration: InputDecoration(
                             hintText: 'Username',
                             icon:
-                                Icon(Icons.person_outline, color: orangeBlaze),
+                            Icon(Icons.person_outline, color: orangeBlaze),
                           ),
                           validator: (value) {
                             if (value!.trim().isEmpty) {
@@ -95,7 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           decoration: InputDecoration(
                             hintText: 'Email',
                             icon:
-                                Icon(Icons.email_outlined, color: orangeBlaze),
+                            Icon(Icons.email_outlined, color: orangeBlaze),
                           ),
                           validator: (value) {
                             if (value!.trim().isEmpty) {
@@ -122,7 +123,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           decoration: InputDecoration(
                             hintText: 'Kata Sandi',
                             icon:
-                                Icon(FontAwesomeIcons.key, color: orangeBlaze),
+                            Icon(FontAwesomeIcons.key, color: orangeBlaze),
                             suffixIcon: IconButton(
                               icon: Icon(_obscureText
                                   ? FontAwesomeIcons.eyeSlash
@@ -156,7 +157,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           decoration: InputDecoration(
                             hintText: 'Masukkan ulang Kata Sandi',
                             icon:
-                                Icon(FontAwesomeIcons.key, color: orangeBlaze),
+                            Icon(FontAwesomeIcons.key, color: orangeBlaze),
                             suffixIcon: IconButton(
                               icon: Icon(_obscureText
                                   ? FontAwesomeIcons.eyeSlash
@@ -200,11 +201,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                   final progress = ProgressHUD.of(context);
                                   if (_formKey.currentState!.validate()) {
                                     var username =
-                                        _usernameController.text.toString();
+                                    _usernameController.text.toString();
                                     var email =
-                                        _emailController.text.toString();
+                                    _emailController.text.toString();
                                     var password =
-                                        _passwordController.text.toString();
+                                    _passwordController.text.toString();
 
                                     progress!.showWithText('Loading...');
 
@@ -218,6 +219,21 @@ class _RegisterPageState extends State<RegisterPage> {
                                             listen: false)
                                         .register(userData);
 
+                                    final user = Provider.of<UserNotifier>(
+                                            context,
+                                            listen: false)
+                                        .userResponse;
+
+                                    String? token = await FirebaseMessaging
+                                        .instance
+                                        .getToken();
+
+                                    if (token != null) {
+                                      await Provider.of<UserNotifier>(context,
+                                              listen: false)
+                                          .postToken(user.user.id, token);
+                                    }
+
                                     final message = Provider.of<UserNotifier>(
                                             context,
                                             listen: false)
@@ -226,8 +242,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                     if (message ==
                                         UserNotifier.messageRegister) {
                                       progress.dismiss();
-                                      toast(message);
-                                      Navigation.intent(HomePage.ROUTE_NAME);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                              SnackBar(content: Text(message)));
+                                      Navigation.intentWithData(
+                                          UserChallenge.ROUTE_NAME,
+                                          user.user.id);
                                     } else {
                                       toast(message);
                                     }

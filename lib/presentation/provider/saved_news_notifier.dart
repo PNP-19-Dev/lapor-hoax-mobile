@@ -34,6 +34,13 @@ class SavedNewsNotifier extends ChangeNotifier {
       (feedData) {
         _feedListState = RequestState.Loaded;
         _saveListFeeds = feedData;
+
+        if (feedData.isEmpty) {
+          _feedListState = RequestState.Empty;
+          _message = "Empty Data";
+          notifyListeners();
+        }
+
         notifyListeners();
       },
     );

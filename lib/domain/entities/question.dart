@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:laporhoax/data/models/question_model.dart';
 
 // ignore: must_be_immutable
 class Question extends Equatable {
@@ -10,11 +11,31 @@ class Question extends Equatable {
   int id;
   String question;
 
+  factory Question.fromMap(Map<String, dynamic> map) => Question(
+        id: map["id"],
+        question: map["question"],
+      );
+
   Map<String, dynamic> toMap() => {
+        "id": id,
+        "question": question,
+      };
+
+  Map<String, dynamic> toJson() => {
         "id": id,
         "question": question,
       };
 
   @override
   List<Object?> get props => [id, question];
+
+  Question toEntity() => Question(
+        id: id,
+        question: question,
+      );
+
+  factory Question.fromDTO(QuestionModel question) => Question(
+        id: question.id,
+        question: question.question,
+      );
 }

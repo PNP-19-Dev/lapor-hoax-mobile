@@ -79,19 +79,19 @@ class ReportNotifier extends ChangeNotifier {
       _fetchReportMessage = failure.message;
       notifyListeners();
     }, (reportData) {
-      _reports = reportData;
       _fetchReportState = RequestState.Loaded;
+      _reports = reportData;
       notifyListeners();
 
       if (_reports.length == 0) {
-        _fetchReportMessage = "Tidak ada data saat ini";
         _fetchReportState = RequestState.Empty;
+        _fetchReportMessage = "Tidak ada data saat ini";
         notifyListeners();
       }
     });
   }
 
-  Future<void> fetchCategories() async {
+  Future<List<Category>> fetchCategories() async {
     _fetchCategoryState = RequestState.Loading;
     notifyListeners();
 
@@ -99,11 +99,14 @@ class ReportNotifier extends ChangeNotifier {
 
     result.fold((failure) {
       _fetchCategoryMessage = failure.message;
+      notifyListeners();
     }, (categoryData) {
       _category = categoryData;
       _fetchCategoryState = RequestState.Loaded;
       notifyListeners();
     });
+
+    return _category;
   }
 
   Future<void> sendReport(String token, ReportRequest request) async {
@@ -112,13 +115,13 @@ class ReportNotifier extends ChangeNotifier {
 
     final result = await postReport.execute(token, request);
     result.fold((failure) {
-      _postReportMessage = 'error: ${failure.message}';
       _postReportState = RequestState.Error;
+      _postReportMessage = 'error: ${failure.message}';
       notifyListeners();
     }, (reportData) {
+      _postReportState = RequestState.Success;
       _report = reportData;
       _postReportMessage = 'Data Berhasil Diupload';
-      _postReportState = RequestState.Success;
       notifyListeners();
     });
   }
@@ -131,8 +134,8 @@ class ReportNotifier extends ChangeNotifier {
     result.fold((failure) {
       _deleteReportMessage = failure.message;
     }, (reportData) {
-      _deleteReportMessage = reportData;
       _postReportState = RequestState.Loaded;
+      _deleteReportMessage = reportData;
       notifyListeners();
     });
   }

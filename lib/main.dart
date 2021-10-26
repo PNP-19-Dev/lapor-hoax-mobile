@@ -9,8 +9,10 @@ import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/domain/entities/user.dart';
 import 'package:laporhoax/injection.dart' as di;
+import 'package:laporhoax/presentation/pages/account/change_user_question.dart';
 import 'package:laporhoax/presentation/pages/account/forgot_password_page.dart';
 import 'package:laporhoax/presentation/pages/account/login_page.dart';
+import 'package:laporhoax/presentation/pages/account/on_register_success.dart';
 import 'package:laporhoax/presentation/pages/account/password_change_page.dart';
 import 'package:laporhoax/presentation/pages/account/profile_page.dart';
 import 'package:laporhoax/presentation/pages/account/register_page.dart';
@@ -128,6 +130,11 @@ class MyApp extends StatelessWidget {
                 final id = settings.arguments as int;
                 return UserChallenge(id: id);
               });
+            case ChangeUserQuestion.ROUTE_NAME:
+              return MaterialPageRoute(builder: (_) {
+                final id = settings.arguments as int;
+                return ChangeUserQuestion(id: id);
+              });
             case ProfilePage.ROUTE_NAME:
               return MaterialPageRoute(builder: (_) {
                 final email = settings.arguments as String;
@@ -168,6 +175,11 @@ class MyApp extends StatelessWidget {
               });
             case TutorialPage.ROUTE_NAME:
               return MaterialPageRoute(builder: (_) => TutorialPage());
+            case OnRegisterSuccess.ROUTE_NAME:
+              return MaterialPageRoute(
+                  builder: (_) => OnRegisterSuccess(
+                        settings.arguments as String,
+                      ));
             default:
               return MaterialPageRoute(builder: (_) {
                 return Scaffold(

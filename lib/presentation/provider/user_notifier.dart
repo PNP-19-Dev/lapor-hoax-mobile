@@ -22,6 +22,7 @@ class UserNotifier extends ChangeNotifier {
   static const String messageLogin = 'Anda Login';
   static const String messageLogout = 'Anda Logout';
   static const String messageRegister = 'Register Berhasil!';
+  static const String messageQuestion = 'Pertanyaan Telah Diperbarui!';
 
   final GetUser getUser;
   final PostLogin postLogin;
@@ -50,18 +51,23 @@ class UserNotifier extends ChangeNotifier {
       required this.postRegister});
 
   RequestState _sessionState = RequestState.Empty;
+
   RequestState get sessionState => _sessionState;
 
   RequestState _userState = RequestState.Empty;
+
   RequestState get userState => _userState;
 
   String _sessionMessage = '';
+
   String get sessionMessage => _sessionMessage;
 
   SessionData? _sessionData;
+
   SessionData? get sessionData => _sessionData;
 
   bool _isLoggedIn = false;
+
   bool get isLoggedIn => _isLoggedIn;
 
   Future<void> isLogin() async {
@@ -87,15 +93,17 @@ class UserNotifier extends ChangeNotifier {
     result.fold((failure) {
       _sessionMessage = failure.message;
     }, (session) {
-      _sessionMessage = session;
+      _sessionMessage = messageLogout;
       notifyListeners();
     });
   }
 
   RequestState _fcmState = RequestState.Empty;
+
   RequestState get fcmState => _fcmState;
 
   String _fcmMessage = '';
+
   String get fcmMessage => _fcmMessage;
 
   Future<void> postToken(int userid, String token) async {
@@ -115,9 +123,11 @@ class UserNotifier extends ChangeNotifier {
   }
 
   User? _user;
+
   User? get user => _user;
 
   String _userMessage = '';
+
   String get userMessage => _userMessage;
 
   Future<void> getUserData(String email) async {
@@ -127,22 +137,26 @@ class UserNotifier extends ChangeNotifier {
     final result = await getUser.execute(email);
 
     result.fold((failure) {
-      _userMessage = failure.message;
       _userState = RequestState.Error;
+      _userMessage = failure.message;
+      print('failuremessage ${failure.message}');
     }, (user) {
-      _user = user;
       _userState = RequestState.Loaded;
+      _user = user;
       notifyListeners();
     });
   }
 
   late UserToken _userToken;
+
   UserToken get userToken => _userToken;
 
   RequestState _loginState = RequestState.Empty;
+
   RequestState get loginState => _loginState;
 
   String _loginMessage = '';
+
   String get loginMessage => _loginMessage;
 
   Future<void> login(String username, String password) async {
@@ -177,12 +191,15 @@ class UserNotifier extends ChangeNotifier {
   }
 
   late UserResponse _userResponse;
+
   UserResponse get userResponse => _userResponse;
 
   RequestState _registerState = RequestState.Empty;
+
   RequestState get registerState => _registerState;
 
   String _registerMessage = '';
+
   String get registerMessage => _registerMessage;
 
   Future<void> register(RegisterModel user) async {
@@ -207,8 +224,8 @@ class UserNotifier extends ChangeNotifier {
 
   String get resetMessage => _resetMessage;
 
-  Future<void> reset(String email, String token) async {
-    final result = await getPasswordReset.execute(email, token);
+  Future<void> reset(String email) async {
+    final result = await getPasswordReset.execute(email);
 
     result.fold((failure) {
       _resetMessage = failure.message;
@@ -231,14 +248,35 @@ class UserNotifier extends ChangeNotifier {
 
     result.fold(
       (failure) {
-        _challengeState = RequestState.Error;
         _challengeMessage = failure.message;
+        notifyListeners();
       },
       (message) {
         _challengeState = RequestState.Success;
-        _challengeMessage = message;
+        notifyListeners();
+        _challengeMessage = messageQuestion;
       },
     );
-    notifyListeners();
+  }
+
+  String _passwordChangeMessage = '';
+
+  String get passwordChangeMessage => _passwordChangeMessage;
+  static const String messageChangePassword = 'password telah diganti';
+
+  Future<void> changePassword(
+      String oldPass, String newPass, String token) async {
+    final result = await postChangePassword.execute(oldPass, newPass, token);
+
+    result.fold(
+      (failure) {
+        _challengeMessage = failure.message;
+        notifyListeners();
+      },
+      (message) {
+        _challengeMessage = messageChangePassword;
+        notifyListeners();
+      },
+    );
   }
 }

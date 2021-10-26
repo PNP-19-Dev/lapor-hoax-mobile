@@ -1,5 +1,6 @@
 import 'package:laporhoax/data/models/feed_table.dart';
-import 'package:laporhoax/domain/entities/session_data.dart';
+import 'package:laporhoax/domain/entities/category.dart';
+import 'package:laporhoax/domain/entities/question.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
@@ -21,7 +22,8 @@ class DatabaseHelper {
   }
 
   static const String _tblFeeds = 'feeds';
-  static const String _tblSession = 'session';
+  static const String _tblCategories = 'categories';
+  static const String _tblQuestions = 'questions';
 
   Future<Database> _initDb() async {
     final path = await getDatabasesPath();
@@ -39,15 +41,15 @@ class DatabaseHelper {
       date TEXT
     );''');
 
-    await db.execute('''
-    CREATE TABLE $_tblSession (
-      token TEXT,
-      expiry TEXT,
-      userId TEXT,
-      username TEXT,
-      email TEXT
-    );
-    ''');
+    await db.execute('''CREATE TABLE $_tblQuestions (
+      id INTEGER PRIMARY KEY,
+      question TEXT
+    );''');
+
+    await db.execute('''CREATE TABLE $_tblCategories (
+      id INTEGER PRIMARY KEY,
+      name TEXT
+    );''');
   }
 
   Future<void> insertNews(FeedTable feed) async {
@@ -87,38 +89,53 @@ class DatabaseHelper {
     );
   }
 
-  Future<void> insertSession(SessionData data) async {
+  Future<void> insertQuestionTransaction(List<Question> questions) async {
     final db = await database;
-    await db!.insert(_tblSession, data.toJson());
+    db!.transaction((txn) async {
+      for (final question in questions) {
+        final questionJson = question.toJson();
+        txn.insert(_tblQuestions, questionJson);
+      }
+    });
   }
 
-  Future<Map<String, dynamic>?> getLastSessions() async {
+  Future<void> insertCategoryTransaction(List<Category> categories) async {
     final db = await database;
-    List<Map<String, dynamic>> results = await db!.query(_tblSession, limit: 1);
-    if (results.isNotEmpty) {
-      return results.first;
-    } else {
-      return null;
-    }
+    db!.transaction((txn) async {
+      for (final category in categories) {
+        final questionJson = category.toJson();
+        txn.insert(_tblQuestions, questionJson);
+      }
+    });
   }
 
-  Future<void> updateSession(SessionData data) async {
+  Future<List<Map<String, dynamic>>> getQuestionCache() async {
     final db = await database;
-    await db!.update(
-      _tblSession,
-      data.toJson(),
-      where: 'token = ?',
-      whereArgs: [data.token],
+    final List<Map<String, dynamic>> results = await db!.query(
+      _tblQuestions,
+    );
+    return results;
+  }
+
+  Future<List<Map<String, dynamic>>> getCategoryCache() async {
+    final db = await database;
+    final List<Map<String, dynamic>> results = await db!.query(
+      _tblCategories,
+    );
+    return results;
+  }
+
+  Future<int> clearQuestionCache() async {
+    final db = await database;
+    return await db!.delete(
+      _tblQuestions,
     );
   }
 
-  Future<void> removeSession(SessionData data) async {
+  Future<int> clearCategoryCache() async {
     final db = await database;
-
-    await db!.delete(
-      _tblSession,
-      where: 'token = ?',
-      whereArgs: [data.token],
+    return await db!.delete(
+      _tblCategories,
     );
   }
 }

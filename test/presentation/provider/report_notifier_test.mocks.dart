@@ -41,6 +41,7 @@ class MockGetReports extends _i1.Mock implements _i4.GetReports {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, List<_i7.Report>>> execute(
           String? token, int? id) =>
@@ -48,6 +49,7 @@ class MockGetReports extends _i1.Mock implements _i4.GetReports {
           returnValue: Future<_i3.Either<_i6.Failure, List<_i7.Report>>>.value(
               _FakeEither_1<_i6.Failure, List<_i7.Report>>())) as _i5
           .Future<_i3.Either<_i6.Failure, List<_i7.Report>>>);
+
   @override
   String toString() => super.toString();
 }
@@ -64,6 +66,7 @@ class MockPostReport extends _i1.Mock implements _i8.PostReport {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, _i7.Report>> execute(
           String? token, _i9.ReportRequest? report) =>
@@ -71,6 +74,7 @@ class MockPostReport extends _i1.Mock implements _i8.PostReport {
               returnValue: Future<_i3.Either<_i6.Failure, _i7.Report>>.value(
                   _FakeEither_1<_i6.Failure, _i7.Report>()))
           as _i5.Future<_i3.Either<_i6.Failure, _i7.Report>>);
+
   @override
   String toString() => super.toString();
 }
@@ -87,12 +91,14 @@ class MockDeleteReport extends _i1.Mock implements _i10.DeleteReport {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, String>> execute(String? token, int? id) =>
       (super.noSuchMethod(Invocation.method(#execute, [token, id]),
               returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
                   _FakeEither_1<_i6.Failure, String>()))
           as _i5.Future<_i3.Either<_i6.Failure, String>>);
+
   @override
   String toString() => super.toString();
 }
@@ -109,6 +115,7 @@ class MockGetCategories extends _i1.Mock implements _i11.GetCategories {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, List<_i12.Category>>> execute() =>
       (super.noSuchMethod(Invocation.method(#execute, []),
@@ -116,6 +123,7 @@ class MockGetCategories extends _i1.Mock implements _i11.GetCategories {
                   Future<_i3.Either<_i6.Failure, List<_i12.Category>>>.value(
                       _FakeEither_1<_i6.Failure, List<_i12.Category>>()))
           as _i5.Future<_i3.Either<_i6.Failure, List<_i12.Category>>>);
+
   @override
   String toString() => super.toString();
 }

@@ -36,12 +36,14 @@ class MockGetFeeds extends _i1.Mock implements _i4.GetFeeds {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, List<_i7.Feed>>> execute() =>
       (super.noSuchMethod(Invocation.method(#execute, []),
           returnValue: Future<_i3.Either<_i6.Failure, List<_i7.Feed>>>.value(
               _FakeEither_1<_i6.Failure, List<_i7.Feed>>())) as _i5
           .Future<_i3.Either<_i6.Failure, List<_i7.Feed>>>);
+
   @override
   String toString() => super.toString();
 }

@@ -19,29 +19,31 @@ jobs:
         with:
           java-version: '11.0.10'
           distribution: 'adopt'
-      - name: Setup key
-        run: |
-          echo "${{ secrets.RELEASE_KEYSTORE }}" > release.keystore.asc
-          gpg -d --passphrase "${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}" --batch private-keystore.jks.asc > android/app/private-keystore.jks
       - name: Set up Flutter
         uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
+      - name: Setup key
+        run: |
+          echo "${{ secrets.RELEASE_KEYSTORE }}" > private-keystore.jks.asc
+          gpg -d --passphrase "${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}" --batch private-keystore.jks.asc > android/app/private-keystore.jks
       - name: Install pub Dependencies
         run: flutter pub get
       - name: Run Tests
         run: flutter test
+      #      - name: Build Android App
+      #        run: flutter build apk --split-per-abi
       - name: Build Android App
-        run: flutter build apk --split-per-abi
-      - name: Build iOS App
-        run: |
-          flutter build ios --no-codesign
-          cd build/ios/iphoneos
-          mkdir Payload
-          cd Payload
-          ln -s ../Runner.app
-          cd ..
-          zip -r app.ipa Payload
+        run: flutter build appbundle --release
+      #      - name: Build iOS App
+      #        run: |
+      #          flutter build ios --no-codesign
+      #          cd build/ios/iphoneos
+      #          mkdir Payload
+      #          cd Payload
+      #          ln -s ../Runner.app
+      #          cd ..
+      #          zip -r app.ipa Payload
 
       - name: Release Apps
         uses: ncipollo/release-action@v1

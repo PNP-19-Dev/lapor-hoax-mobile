@@ -111,4 +111,66 @@ void main() {
       expect(result, true);
     });
   });
+
+  group('cache categories', () {
+    test('should call database helper to save data', () async {
+      // arrange
+      when(mockDatabaseHelper.clearCategoryCache()).thenAnswer((_) async => 1);
+      // act
+      await dataSource.cacheCategory([testCategory]);
+      // assert
+      verify(mockDatabaseHelper.clearCategoryCache());
+      verify(mockDatabaseHelper.insertCategoryTransaction([testCategory]));
+    });
+
+    test('should return list of categories when data exist', () async {
+      // arrange
+      when(mockDatabaseHelper.getCategoryCache())
+          .thenAnswer((_) async => [testCategoryMap]);
+      // act
+      final result = await dataSource.getCachedCategory();
+      // assert
+      expect(result, [testCategory]);
+    });
+
+    test('should throw CacheException when data is not exist', () async {
+      // arrange
+      when(mockDatabaseHelper.getCategoryCache()).thenAnswer((_) async => []);
+      // act
+      final call = dataSource.getCachedCategory();
+      // assert
+      expect(() => call, throwsA(isA<CacheException>()));
+    });
+  });
+
+  group('cache questions', () {
+    test('should call database helper to save data', () async {
+      // arrange
+      when(mockDatabaseHelper.clearQuestionCache()).thenAnswer((_) async => 1);
+      // act
+      await dataSource.cacheQuestions([testQuestion]);
+      // assert
+      verify(mockDatabaseHelper.clearQuestionCache());
+      verify(mockDatabaseHelper.insertQuestionTransaction([testQuestion]));
+    });
+
+    test('should return list of categories when data exist', () async {
+      // arrange
+      when(mockDatabaseHelper.getQuestionCache())
+          .thenAnswer((_) async => [testQuestionMap]);
+      // act
+      final result = await dataSource.getCachedQuestion();
+      // assert
+      expect(result, [testQuestion]);
+    });
+
+    test('should throw CacheException when data is not exist', () async {
+      // arrange
+      when(mockDatabaseHelper.getQuestionCache()).thenAnswer((_) async => []);
+      // act
+      final call = dataSource.getCachedQuestion();
+      // assert
+      expect(() => call, throwsA(isA<CacheException>()));
+    });
+  });
 }

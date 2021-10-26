@@ -23,7 +23,9 @@ abstract class RemoteDataSource {
   Future<List<CategoryModel>> getCategory();
   Future<FeedModel> getFeedDetail(int id);
   Future<List<FeedModel>> getFeeds();
-  Future<String> getPasswordReset(String email, String token);
+
+  Future<String> getPasswordReset(String email);
+
   Future<List<QuestionModel>> getQuestions();
   Future<List<ReportModel>> getReport(String token, int id);
   Future<List<UserModel>> getUser(String email);
@@ -51,8 +53,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   static final String reportsEndpoint = 'api/reports';
   static final String reportCatEndpoint = 'api/reports/cat';
   static final String feedsEndpoint = 'api/feeds';
-  static final String isActiveEndpoint = 'isactive';
-  static final String verifyOtpEndpoint = 'verifyotp';
 
   final Dio dio;
 
@@ -140,7 +140,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         HttpHeaders.authorizationHeader: "Token $token",
       }),
     );
-
     if (response.statusCode == 200) {
       return ReportResponse.fromJson(response.data).reportList;
     } else {
@@ -167,6 +166,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
             HttpHeaders.authorizationHeader: 'Token $token',
           },
         ));
+
+    print('status code ${response.statusCode}');
 
     if (response.statusCode == 201) {
       return ReportModel.fromJson(response.data);
@@ -280,12 +281,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<String> getPasswordReset(String email, String token) async {
+  Future<String> getPasswordReset(String email) async {
     final response = await dio.get(
       '/$passwordResetEndpoint/$email',
       options: Options(
         contentType: Headers.jsonContentType,
-        headers: {HttpHeaders.authorizationHeader: "Token $token"},
       ),
     );
 

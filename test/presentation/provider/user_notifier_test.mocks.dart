@@ -51,12 +51,14 @@ class MockGetUser extends _i1.Mock implements _i4.GetUser {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, _i7.User>> execute(String? email) =>
       (super.noSuchMethod(Invocation.method(#execute, [email]),
               returnValue: Future<_i3.Either<_i6.Failure, _i7.User>>.value(
                   _FakeEither_1<_i6.Failure, _i7.User>()))
           as _i5.Future<_i3.Either<_i6.Failure, _i7.User>>);
+
   @override
   String toString() => super.toString();
 }
@@ -73,6 +75,7 @@ class MockPostLogin extends _i1.Mock implements _i8.PostLogin {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, _i9.UserToken>> execute(
           String? username, String? password) =>
@@ -80,6 +83,7 @@ class MockPostLogin extends _i1.Mock implements _i8.PostLogin {
               returnValue: Future<_i3.Either<_i6.Failure, _i9.UserToken>>.value(
                   _FakeEither_1<_i6.Failure, _i9.UserToken>()))
           as _i5.Future<_i3.Either<_i6.Failure, _i9.UserToken>>);
+
   @override
   String toString() => super.toString();
 }
@@ -96,6 +100,7 @@ class MockPostRegister extends _i1.Mock implements _i10.PostRegister {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, _i11.UserResponse>> execute(
           _i12.RegisterModel? user) =>
@@ -103,6 +108,7 @@ class MockPostRegister extends _i1.Mock implements _i10.PostRegister {
           returnValue: Future<_i3.Either<_i6.Failure, _i11.UserResponse>>.value(
               _FakeEither_1<_i6.Failure, _i11.UserResponse>())) as _i5
           .Future<_i3.Either<_i6.Failure, _i11.UserResponse>>);
+
   @override
   String toString() => super.toString();
 }
@@ -119,13 +125,14 @@ class MockGetPasswordReset extends _i1.Mock implements _i13.GetPasswordReset {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
-  _i5.Future<_i3.Either<_i6.Failure, String>> execute(
-          String? email, String? token) =>
-      (super.noSuchMethod(Invocation.method(#execute, [email, token]),
+  _i5.Future<_i3.Either<_i6.Failure, String>> execute(String? email) =>
+      (super.noSuchMethod(Invocation.method(#execute, [email]),
               returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
                   _FakeEither_1<_i6.Failure, String>()))
           as _i5.Future<_i3.Either<_i6.Failure, String>>);
+
   @override
   String toString() => super.toString();
 }
@@ -142,12 +149,14 @@ class MockGetSessionData extends _i1.Mock implements _i14.GetSessionData {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, _i15.SessionData?>> execute() =>
       (super.noSuchMethod(Invocation.method(#execute, []),
           returnValue: Future<_i3.Either<_i6.Failure, _i15.SessionData?>>.value(
               _FakeEither_1<_i6.Failure, _i15.SessionData?>())) as _i5
           .Future<_i3.Either<_i6.Failure, _i15.SessionData?>>);
+
   @override
   String toString() => super.toString();
 }
@@ -164,6 +173,7 @@ class MockPostFCMToken extends _i1.Mock implements _i16.PostFCMToken {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, String>> execute(
           int? user, String? fcmToken) =>
@@ -171,6 +181,7 @@ class MockPostFCMToken extends _i1.Mock implements _i16.PostFCMToken {
               returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
                   _FakeEither_1<_i6.Failure, String>()))
           as _i5.Future<_i3.Either<_i6.Failure, String>>);
+
   @override
   String toString() => super.toString();
 }
@@ -188,6 +199,7 @@ class MockPostChangePassword extends _i1.Mock
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, String>> execute(
           String? oldPass, String? newPass, String? token) =>
@@ -196,6 +208,7 @@ class MockPostChangePassword extends _i1.Mock
               returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
                   _FakeEither_1<_i6.Failure, String>()))
           as _i5.Future<_i3.Either<_i6.Failure, String>>);
+
   @override
   String toString() => super.toString();
 }
@@ -212,6 +225,7 @@ class MockPostUserChallenge extends _i1.Mock implements _i18.PostUserChallenge {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, String>> execute(
           _i19.UserQuestion? challenge) =>
@@ -219,6 +233,7 @@ class MockPostUserChallenge extends _i1.Mock implements _i18.PostUserChallenge {
               returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
                   _FakeEither_1<_i6.Failure, String>()))
           as _i5.Future<_i3.Either<_i6.Failure, String>>);
+
   @override
   String toString() => super.toString();
 }
@@ -235,12 +250,14 @@ class MockRemoveSessionData extends _i1.Mock implements _i20.RemoveSessionData {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, String>> execute(_i15.SessionData? data) =>
       (super.noSuchMethod(Invocation.method(#execute, [data]),
               returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
                   _FakeEither_1<_i6.Failure, String>()))
           as _i5.Future<_i3.Either<_i6.Failure, String>>);
+
   @override
   String toString() => super.toString();
 }
@@ -257,12 +274,14 @@ class MockSaveSessionData extends _i1.Mock implements _i21.SaveSessionData {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, String>> execute(_i15.SessionData? data) =>
       (super.noSuchMethod(Invocation.method(#execute, [data]),
               returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
                   _FakeEither_1<_i6.Failure, String>()))
           as _i5.Future<_i3.Either<_i6.Failure, String>>);
+
   @override
   String toString() => super.toString();
 }
@@ -279,10 +298,12 @@ class MockGetSessionStatus extends _i1.Mock implements _i22.GetSessionStatus {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
+
   @override
   _i5.Future<bool> execute() =>
       (super.noSuchMethod(Invocation.method(#execute, []),
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
+
   @override
   String toString() => super.toString();
 }

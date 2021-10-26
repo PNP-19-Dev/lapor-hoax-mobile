@@ -56,11 +56,14 @@ dependencies:
   dartz: ^0.10.0-nullsafety.2
   equatable: ^2.0.2
   image_cropper: ^1.4.1
+  http_mock_adapter: ^0.3.2
+  data_connection_checker:
+    git:
+      url: https://github.com/chornthorn/data_connection_checker.git
+      ref: master
 
 dev_dependencies:
   flutter_test:
-    sdk: flutter
-  integration_test:
     sdk: flutter
   mockito: ^5.0.16
   build_runner: ^2.1.1
