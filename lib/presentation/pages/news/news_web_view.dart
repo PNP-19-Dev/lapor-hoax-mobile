@@ -20,9 +20,8 @@ class NewsWebView extends StatefulWidget {
   static const ROUTE_NAME = '/news_web_view';
 
   final int id;
-  final String fromRoute;
 
-  const NewsWebView(this.fromRoute, {required this.id});
+  const NewsWebView({required this.id});
 
   _NewsWebViewState createState() => _NewsWebViewState();
 }
@@ -45,7 +44,6 @@ class _NewsWebViewState extends State<NewsWebView> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      widget.fromRoute,
       body: Stack(
         children: [
           WebView(
@@ -71,9 +69,8 @@ class _NewsWebViewState extends State<NewsWebView> {
 
 class CustomScaffold extends StatelessWidget {
   final Widget body;
-  final route;
 
-  CustomScaffold(this.route, {required this.body});
+  CustomScaffold({required this.body});
 
   Widget _buildShortAppBar(
       BuildContext context, Feed feed, bool isAddedToFeedlist) {
@@ -88,7 +85,7 @@ class CustomScaffold extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.pushNamed(context, route);
+                Navigator.pop(context, true);
               },
             ),
             Expanded(
