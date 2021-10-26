@@ -28,6 +28,12 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
         () => Provider.of<UserNotifier>(context, listen: false)..getSession());
   }
 
+  void clearAll(){
+    _oldPassword.clear();
+    _newPassword.clear();
+    _confirmPassword.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -176,12 +182,13 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                                       listen: false)
                                   .passwordChangeMessage;
 
-                              if (message ==
-                                  UserNotifier.messageChangePassword) {
+                              if (message == UserNotifier.messageChangePassword) {
                                 progress.dismiss();
+                                clearAll();
                                 toast(message);
                               } else {
                                 progress.dismiss();
+                                clearAll();
                                 toast(message);
                               }
                             }

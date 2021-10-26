@@ -103,8 +103,8 @@ class DatabaseHelper {
     final db = await database;
     db!.transaction((txn) async {
       for (final category in categories) {
-        final questionJson = category.toJson();
-        txn.insert(_tblQuestions, questionJson);
+        final categoryJson = category.toJson();
+        txn.insert(_tblCategories, categoryJson);
       }
     });
   }

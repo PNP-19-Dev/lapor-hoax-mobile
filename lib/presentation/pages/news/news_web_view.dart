@@ -4,18 +4,25 @@ import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
-import 'package:laporhoax/presentation/pages/news/saved_news.dart';
 import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+class NewsWebViewData {
+  final id;
+  final fromRoute;
+
+  NewsWebViewData(this.id, this.fromRoute);
+}
+
 class NewsWebView extends StatefulWidget {
   static const ROUTE_NAME = '/news_web_view';
 
   final int id;
+  final String fromRoute;
 
-  const NewsWebView({required this.id});
+  const NewsWebView(this.fromRoute, {required this.id});
 
   _NewsWebViewState createState() => _NewsWebViewState();
 }
@@ -38,6 +45,7 @@ class _NewsWebViewState extends State<NewsWebView> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
+      widget.fromRoute,
       body: Stack(
         children: [
           WebView(
@@ -63,8 +71,9 @@ class _NewsWebViewState extends State<NewsWebView> {
 
 class CustomScaffold extends StatelessWidget {
   final Widget body;
+  final route;
 
-  CustomScaffold({required this.body});
+  CustomScaffold(this.route, {required this.body});
 
   Widget _buildShortAppBar(
       BuildContext context, Feed feed, bool isAddedToFeedlist) {
@@ -79,7 +88,7 @@ class CustomScaffold extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.pushNamed(context, SavedNews.ROUTE_NAME);
+                Navigator.pushNamed(context, route);
               },
             ),
             Expanded(

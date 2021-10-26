@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/presentation/pages/news/news_web_view.dart';
+import 'package:laporhoax/presentation/pages/news/saved_news.dart';
 import 'package:laporhoax/util/datetime_helper.dart';
 
 class FeedCard extends StatelessWidget {
@@ -10,18 +11,15 @@ class FeedCard extends StatelessWidget {
 
   FeedCard(this.feed);
 
-  get onReturn => null;
-
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
         onTap: () async {
-          final result = await Navigator.pushNamed(
+          await Navigator.pushNamed(
               context, NewsWebView.ROUTE_NAME,
-              arguments: feed.id);
-          onReturn?.call(result as bool);
+              arguments: NewsWebViewData(feed.id, SavedNews.ROUTE_NAME));
         },
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
