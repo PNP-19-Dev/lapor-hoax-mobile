@@ -131,18 +131,24 @@ class ReportNotifier extends ChangeNotifier {
     });
   }
 
-  Future<void> removeReport(String token, int id) async {
+  Future<bool> removeReport(String token, int id, String status) async {
     _deleteReportState = RequestState.Loading;
     notifyListeners();
 
+    if (status.toLowerCase() != 'belum diproses'){
+      return false;
+    }
+
     final result = await deleteReport.execute(token, id);
     result.fold((failure) {
-      _deleteReportState = RequestState.Error;
       _deleteReportMessage = failure.message;
+      _deleteReportState = RequestState.Error;
+      notifyListeners();
     }, (reportData) {
+      _deleteReportMessage = reportRemoveSuccess;
       _deleteReportState = RequestState.Success;
-      _deleteReportMessage = reportData;
+      notifyListeners();
     });
-    notifyListeners();
+    return true;
   }
 }

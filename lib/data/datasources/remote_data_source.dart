@@ -197,8 +197,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         },
       ),
     );
-
-    if (response.statusCode == 201) {
+    print('delete status code ${response.statusCode} ${response.statusMessage}');
+    if (response.statusCode == 204) {
       return 'success';
     } else {
       throw ServerException();
@@ -296,8 +296,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       '/$passwordResetEndpoint/$email',
       options: Options(contentType: Headers.jsonContentType),
     );
-
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       return 'Success';
     } else {
       throw ServerException();

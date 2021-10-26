@@ -35,42 +35,49 @@ class _HistoryPageState extends State<HistoryPage> {
       ..showSnackBar(SnackBar(content: Text(text)));
   }
 
-  Widget _getSlidable(BuildContext context, int index, List<Report> reports) {
-    final report = reports[index];
+  Widget _getSlidable(BuildContext context, List<Report> reports) {
     var provider = Provider.of<ReportNotifier>(context, listen: false);
-
-    return Slidable(
-      key: Key(report.id.toString()),
-      direction: Axis.horizontal,
-      dismissal: SlidableDismissal(
-        child: SlidableDrawerDismissal(),
-        onDismissed: (actionType) {
-          setState(() async {
-            // remove item pada report
-            provider.removeReport(widget.tokenId.token, report.id);
-            if (provider.postReportState == RequestState.Success) {
-              _showSnackBar(context, provider.postReportMessage);
-              reports.removeAt(index);
-            } else {
-              _showSnackBar(context, provider.postReportMessage);
-            }
-          });
-        },
-        onWillDismiss: (actionType) {
-          return report.status!.toLowerCase() == 'belum diproses';
-        },
-      ),
-      actionPane: SlidableBehindActionPane(),
-      actionExtentRatio: 0.25,
-      child: ReportListItem(report: report),
-      secondaryActions: [
-        IconSlideAction(
-          caption: 'Hapus',
-          color: Colors.red,
-          icon: Icons.delete,
-          onTap: () => _showSnackBar(context, "Telah Dihapus"),
-        ),
-      ],
+    return ListView.builder(
+      itemCount: reports.length,
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      itemBuilder: (context, index) {
+        final report = reports[index];
+        return Slidable(
+          key: Key(report.id.toString()),
+          direction: Axis.horizontal,
+          dismissal: SlidableDismissal(
+            child: SlidableDrawerDismissal(),
+            onDismissed: (actionType) async {
+              setState((){
+                // remove item pada report
+                if (provider.postReportState == RequestState.Success) {
+                  _showSnackBar(context, provider.deleteReportMessage);
+                  reports.removeAt(index);
+                } else {
+                  _showSnackBar(context, provider.deleteReportMessage);
+                }
+              });
+            },
+            onWillDismiss: (actionType) {
+              return provider.removeReport(widget.tokenId.token, report.id, report.status!);
+            },
+          ),
+          actionPane: SlidableBehindActionPane(),
+          actionExtentRatio: 0.25,
+          child: ReportListItem(report: report),
+          secondaryActions: [
+            IconSlideAction(
+              caption: 'Hapus',
+              color: Colors.red,
+              icon: Icons.delete,
+              onTap: () {
+                _showSnackBar(context, "Geser untuk ke kiri menghapus");
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -80,14 +87,7 @@ class _HistoryPageState extends State<HistoryPage> {
         return Center(child: CircularProgressIndicator());
       } else if (provider.fetchReportState == RequestState.Loaded) {
         var reports = provider.reports;
-        return ListView.builder(
-          itemCount: reports.length,
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          itemBuilder: (context, index) {
-            return _getSlidable(context, index, reports);
-          },
-        );
+        return _getSlidable(context, reports);
       } else if (provider.fetchReportState == RequestState.Empty) {
         return Center(child: Text(provider.fetchReportMessage));
       } else {
