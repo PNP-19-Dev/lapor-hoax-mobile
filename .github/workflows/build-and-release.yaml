@@ -44,7 +44,7 @@ jobs:
       - name: Build Android App
         run: |
           flutter build appbundle --release
-          flutter build apk --split-per-abi
+          flutter build apk --release --split-per-abi
       #      - name: Build iOS App
       #        run: |
       #          flutter build ios --no-codesign
@@ -66,7 +66,7 @@ jobs:
       - name: Release Apps
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ env.APP_VERSION }}
+          tag: v1.0.${{ github.run_number }}
           name: ${{ env.APP_VERSION }}
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: 'build/app/outputs/flutter-apk/*.apk,build/ios/iphoneos/app.ipa,build/app/outputs/bundle/*'
