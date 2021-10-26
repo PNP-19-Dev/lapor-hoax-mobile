@@ -21,6 +21,9 @@ class ReportNotifier extends ChangeNotifier {
 
   Report? get report => _report;
 
+  TokenId? _tokenId;
+  TokenId? get tokenId => _tokenId;
+
   List<Report> _reports = [];
 
   List<Report> get reports => _reports;
@@ -59,9 +62,9 @@ class ReportNotifier extends ChangeNotifier {
 
   ReportNotifier(
       {required this.getReports,
-      required this.postReport,
-      required this.deleteReport,
-      required this.getCategories});
+        required this.postReport,
+        required this.deleteReport,
+        required this.getCategories});
 
   final GetReports getReports;
   final PostReport postReport;
@@ -69,6 +72,7 @@ class ReportNotifier extends ChangeNotifier {
   final GetCategories getCategories;
 
   Future<void> fetchReports(TokenId tokenId) async {
+    _tokenId = tokenId;
     _fetchReportState = RequestState.Loading;
     notifyListeners();
 
@@ -127,18 +131,24 @@ class ReportNotifier extends ChangeNotifier {
     });
   }
 
-  Future<void> removeReport(String token, int id) async {
+  Future<bool> removeReport(String token, int id, String status) async {
     _deleteReportState = RequestState.Loading;
     notifyListeners();
 
+    if (status.toLowerCase() != 'belum diproses'){
+      return false;
+    }
+
     final result = await deleteReport.execute(token, id);
     result.fold((failure) {
-      _postReportState = RequestState.Error;
       _deleteReportMessage = failure.message;
+      _deleteReportState = RequestState.Error;
+      notifyListeners();
     }, (reportData) {
-      _postReportState = RequestState.Success;
-      _deleteReportMessage = reportData;
+      _deleteReportMessage = reportRemoveSuccess;
+      _deleteReportState = RequestState.Success;
+      notifyListeners();
     });
-    notifyListeners();
+    return true;
   }
 }
