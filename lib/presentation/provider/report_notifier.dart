@@ -98,11 +98,12 @@ class ReportNotifier extends ChangeNotifier {
     final result = await getCategories.execute();
 
     result.fold((failure) {
+      _fetchCategoryState = RequestState.Error;
       _fetchCategoryMessage = failure.message;
       notifyListeners();
     }, (categoryData) {
-      _category = categoryData;
       _fetchCategoryState = RequestState.Loaded;
+      _category = categoryData;
       notifyListeners();
     });
 
@@ -126,17 +127,18 @@ class ReportNotifier extends ChangeNotifier {
     });
   }
 
-  Future<void> removeReport(TokenId tokenId, int id) async {
+  Future<void> removeReport(String token, int id) async {
     _deleteReportState = RequestState.Loading;
     notifyListeners();
 
-    final result = await deleteReport.execute(tokenId.token, id);
+    final result = await deleteReport.execute(token, id);
     result.fold((failure) {
+      _postReportState = RequestState.Error;
       _deleteReportMessage = failure.message;
     }, (reportData) {
-      _postReportState = RequestState.Loaded;
+      _postReportState = RequestState.Success;
       _deleteReportMessage = reportData;
-      notifyListeners();
     });
+    notifyListeners();
   }
 }
