@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/state_enum.dart';
@@ -6,7 +5,6 @@ import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/presentation/pages/account/change_user_question.dart';
 import 'package:laporhoax/presentation/pages/account/password_change_page.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
-import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -77,7 +75,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             children: [
                               Text('Username',
                                   style:
-                                  TextStyle(fontWeight: FontWeight.bold)),
+                                      TextStyle(fontWeight: FontWeight.bold)),
                               TextFormField(
                                 controller: _usernameController,
                                 keyboardType: TextInputType.text,
@@ -91,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               SizedBox(height: 10),
                               Text('Email',
                                   style:
-                                  TextStyle(fontWeight: FontWeight.bold)),
+                                      TextStyle(fontWeight: FontWeight.bold)),
                               TextFormField(
                                 controller: _emailController,
                                 keyboardType: TextInputType.emailAddress,
@@ -114,7 +112,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               SizedBox(height: 10),
                               // TODO FIREBASE MESSAGING
-                              SizedBox(
+                              /* SizedBox(
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   onPressed: () async {
@@ -132,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   child:
                                       Text('Kirim Token Ke Server (DEV MODE)'),
                                 ),
-                              ),
+                              ),*/
                               SizedBox(height: 10),
                               SizedBox(
                                 width: double.infinity,
