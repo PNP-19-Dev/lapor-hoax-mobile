@@ -154,7 +154,7 @@ void main() {
      tToken, tId,
     )).thenAnswer((_) async => Right('Success'));
     // act
-    await provider.removeReport(tToken, tId);
+    await provider.removeReport(tToken, tId, "belum diproses");
     // assert
     expect(provider.postReportState, RequestState.Success);
     expect(provider.deleteReportMessage, 'Success');
@@ -166,7 +166,7 @@ void main() {
     when(mockDeleteReport.execute(tToken, tId))
         .thenAnswer((_) async => Left(ServerFailure("")));
     // act
-    await provider.removeReport(tToken, tId);
+    await provider.removeReport(tToken, tId, "belum diproses");
     // assert
     expect(provider.postReportState, RequestState.Error);
     expect(provider.deleteReportMessage, "");

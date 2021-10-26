@@ -136,6 +136,7 @@ class ReportNotifier extends ChangeNotifier {
     notifyListeners();
 
     if (status.toLowerCase() != 'belum diproses'){
+      _deleteReportMessage = 'Laporan Tak dapat dihapus!';
       return false;
     }
 

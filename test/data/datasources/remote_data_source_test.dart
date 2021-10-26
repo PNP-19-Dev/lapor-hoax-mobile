@@ -6,7 +6,6 @@ import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:laporhoax/data/models/feed_response.dart';
 
 import '../../dummy_data/dummy_objects.dart';
-import '../../helpers/test_helper.mocks.dart';
 import '../../json_reader.dart';
 
 void main() {
@@ -14,14 +13,11 @@ void main() {
 
   late Dio dio;
   late DioAdapter dioAdapter;
-//  late RemoteDataSourceImpl dataSource;
-  late MockDio mockDio;
   Response<dynamic> response;
 
   setUp(() {
     dio = Dio(BaseOptions(baseUrl: baseUrl));
     dioAdapter = DioAdapter(dio: dio);
-    mockDio = MockDio();
   });
 
   group('get feeds', () {
