@@ -264,10 +264,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<String> postChangePassword(
       String oldPass, String newPass, String token) async {
     final response = await dio.post('/$passwordChangeEndpoint/',
-        options: Options(
-          contentType: Headers.jsonContentType,
-          headers: {HttpHeaders.authorizationHeader: "Token $token"},
-        ),
+        options: Options(contentType: Headers.jsonContentType),
         data: <String, String>{
           "old_password": oldPass,
           "new_password": newPass,
