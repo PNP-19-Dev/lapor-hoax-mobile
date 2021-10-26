@@ -163,8 +163,8 @@ class MyApp extends StatelessWidget {
               });
             case NewsWebView.ROUTE_NAME:
               return MaterialPageRoute(builder: (_) {
-                final data = settings.arguments as NewsWebViewData;
-                return NewsWebView(data.fromRoute, id: data.id);
+                final data = settings.arguments as int;
+                return NewsWebView(id: data);
               });
             case SavedNews.ROUTE_NAME:
               return MaterialPageRoute(builder: (_) => SavedNews());

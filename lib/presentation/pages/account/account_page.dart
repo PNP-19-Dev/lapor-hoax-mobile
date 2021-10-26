@@ -10,6 +10,7 @@ import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:laporhoax/util/static_data_web.dart';
 import 'package:laporhoax/util/static_page_viewer.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
@@ -30,6 +31,14 @@ class _AccountPageState extends State<AccountPage> {
     Future.microtask(() => Provider.of<UserNotifier>(context, listen: false)
       ..getSession()
       ..isLogin());
+    getPlatformVersion();
+  }
+
+  String _version = '';
+
+  void getPlatformVersion() async {
+    final info = await PackageInfo.fromPlatform();
+    _version = info.version;
   }
 
   @override
@@ -52,6 +61,35 @@ class _AccountPageState extends State<AccountPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void about(){
+    showAboutDialog(
+      context: context,
+      applicationIcon:
+      Image.asset('assets/icons/logo_new.png', width: 50),
+      applicationName: 'LAPOR HOAX',
+      applicationVersion: _version,
+      children: [
+        Text(
+            'Aplikasi pelaporan hoax yang ditangani langsung oleh pihak yang berwewenang'),
+        SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/icons/pnp_logo.png',
+              width: 50,
+            ),
+            Image.asset(
+              'assets/icons/polda_sumbar_logo.png',
+              width: 50,
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -140,32 +178,7 @@ class _AccountPageState extends State<AccountPage> {
             leading: Icon(Icons.info_outline),
             title: Text('Tentang Laporhoax'),
             trailing: Icon(Icons.chevron_right),
-            onTap: () => showAboutDialog(
-              context: context,
-              applicationIcon:
-                  Image.asset('assets/icons/logo_new.png', width: 50),
-              applicationName: 'LAPOR HOAX',
-              applicationVersion: 'v1.0-alpha',
-              children: [
-                Text(
-                    'Aplikasi pelaporan hoax yang ditangani langsung oleh pihak yang berwewenang'),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/icons/pnp_logo.png',
-                      width: 50,
-                    ),
-                    Image.asset(
-                      'assets/icons/polda_sumbar_logo.png',
-                      width: 50,
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            onTap: () => about(),
           ),
         ),
         Card(
@@ -258,32 +271,7 @@ class _AccountPageState extends State<AccountPage> {
             leading: Icon(Icons.info_outline),
             title: Text('Tentang Laporhoax'),
             trailing: Icon(Icons.chevron_right),
-            onTap: () => showAboutDialog(
-              context: context,
-              applicationIcon:
-                  Image.asset('assets/icons/logo_new.png', width: 50),
-              applicationName: 'LAPOR HOAX',
-              applicationVersion: 'v1.0-alpha',
-              children: [
-                Text(
-                    'Aplikasi pelaporan hoax yang ditangani langsung oleh pihak yang berwewenang'),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/icons/pnp_logo.png',
-                      width: 50,
-                    ),
-                    Image.asset(
-                      'assets/icons/polda_sumbar_logo.png',
-                      width: 50,
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            onTap: () => about(),
           ),
         ),
         Card(
