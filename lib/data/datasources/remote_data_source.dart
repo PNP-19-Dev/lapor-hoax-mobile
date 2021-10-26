@@ -20,21 +20,32 @@ import 'package:laporhoax/domain/entities/user_question.dart';
 
 abstract class RemoteDataSource {
   Future<String> deleteReport(String token, int id);
+
   Future<List<CategoryModel>> getCategory();
+
   Future<FeedModel> getFeedDetail(int id);
+
   Future<List<FeedModel>> getFeeds();
 
   Future<String> getPasswordReset(String email);
 
   Future<List<QuestionModel>> getQuestions();
+
   Future<List<ReportModel>> getReport(String token, int id);
+
   Future<List<UserModel>> getUser(String email);
+
   Future<UserQuestionModel> getUserQuestions(int id);
+
   Future<String> postChangePassword(
       String oldPass, String newPass, String token);
+
   Future postFcmToken(String user, String fcmToken);
+
   Future<UserToken> postLogin(String username, String password);
+
   Future<UserResponse> postRegister(RegisterModel user);
+
   Future<ReportModel> postReport(String token, ReportRequest report);
 
   Future<String> postChallenge(UserQuestion challenge);
@@ -263,8 +274,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<String> postChangePassword(
       String oldPass, String newPass, String token) async {
-    final response = await dio.post('/$passwordChangeEndpoint/',
-        options: Options(contentType: Headers.jsonContentType),
+    final response = await dio.put('/$passwordChangeEndpoint/',
+        options: Options(contentType: Headers.jsonContentType, headers: {
+          HttpHeaders.authorizationHeader: "Token $token",
+        }),
         data: <String, String>{
           "old_password": oldPass,
           "new_password": newPass,
@@ -281,9 +294,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<String> getPasswordReset(String email) async {
     final response = await dio.get(
       '/$passwordResetEndpoint/$email',
-      options: Options(
-        contentType: Headers.jsonContentType,
-      ),
+      options: Options(contentType: Headers.jsonContentType),
     );
 
     if (response.statusCode == 200) {

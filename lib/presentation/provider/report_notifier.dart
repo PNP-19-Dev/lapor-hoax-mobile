@@ -21,6 +21,9 @@ class ReportNotifier extends ChangeNotifier {
 
   Report? get report => _report;
 
+  TokenId? _tokenId;
+  TokenId? get tokenId => _tokenId;
+
   List<Report> _reports = [];
 
   List<Report> get reports => _reports;
@@ -69,6 +72,7 @@ class ReportNotifier extends ChangeNotifier {
   final GetCategories getCategories;
 
   Future<void> fetchReports(TokenId tokenId) async {
+    _tokenId = tokenId;
     _fetchReportState = RequestState.Loading;
     notifyListeners();
 
@@ -133,10 +137,10 @@ class ReportNotifier extends ChangeNotifier {
 
     final result = await deleteReport.execute(token, id);
     result.fold((failure) {
-      _postReportState = RequestState.Error;
+      _deleteReportState = RequestState.Error;
       _deleteReportMessage = failure.message;
     }, (reportData) {
-      _postReportState = RequestState.Success;
+      _deleteReportState = RequestState.Success;
       _deleteReportMessage = reportData;
     });
     notifyListeners();

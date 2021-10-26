@@ -174,6 +174,7 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
   var _inputQuestion = TextEditingController();
   var _inputAnswer = TextEditingController();
   var question = 'value';
+  var _hint = 'Pertanyaan';
   Map<int, String> questionMap = {};
   List<String> userAnswer = [];
   List<int> index = [];
@@ -189,19 +190,9 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
     index.add(userQuestion.quest3 ?? 1);
 
     print('index: ${index.length}');
-  }
 
-  void populateData(BuildContext context) async {
-    final provider = Provider.of<QuestionNotifier>(context, listen: false);
-
-    if (provider.userQuestionState == RequestState.Loaded) {
-      print('question length : ${provider.question.length}');
-      questionMap = provider.questionMap;
-      getAnsAndIndex(provider.userQuestion);
-      _inputQuestion.text =
-          questionMap[index.isNotEmpty ? index[0] : 1] as String;
-    } else {
-      // toast(provider.userQuestionMessage);
+    if (questionMap.isNotEmpty){
+      _inputQuestion.text = questionMap[index.isNotEmpty ? index[0] : 1] as String;
     }
   }
 
@@ -213,7 +204,6 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
         ..fetchQuestions()
         ..getUserSecurityQuestion(widget.user.id),
     );
-    // getAnsAndIndex();
   }
 
   @override
@@ -229,7 +219,6 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
       body: ProgressHUD(
         child: Builder(
           builder: (context) {
-            populateData(context);
             return Container(
               padding: const EdgeInsets.only(
                 top: 40,
@@ -246,16 +235,50 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                       fontSize: 15,
                     ),
                   ),
-                  TextField(
-                    controller: _inputQuestion,
-                    enabled: false,
-                    decoration: InputDecoration(
-                      hintText: 'Pertanyaan',
-                      icon: Image.asset(
-                        'assets/icons/question.png',
-                        width: 24,
-                      ),
-                    ),
+                  Consumer<QuestionNotifier>(
+                    builder: (_, data, child){
+                      if (data.userQuestionState == RequestState.Loading){
+                        _hint = 'mengambil data';
+                        return TextField(
+                          controller: _inputQuestion,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            hintText: _hint,
+                            icon: Image.asset(
+                              'assets/icons/question.png',
+                              width: 24,
+                            ),
+                          ),
+                        );
+                      } else if (data.userQuestionState == RequestState.Loaded){
+                        questionMap = data.questionMap;
+                        getAnsAndIndex(data.userQuestion);
+                        return TextField(
+                          controller: _inputQuestion,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            hintText: _hint,
+                            icon: Image.asset(
+                              'assets/icons/question.png',
+                              width: 24,
+                            ),
+                          ),
+                        );
+                      } else {
+                        _hint = 'Gagal Mendapatkan Data';
+                        return TextField(
+                          controller: _inputQuestion,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            hintText: _hint,
+                            icon: Image.asset(
+                              'assets/icons/question.png',
+                              width: 24,
+                            ),
+                          ),
+                        );
+                      }
+                    },
                   ),
                   SizedBox(height: 20),
                   Text(

@@ -46,13 +46,13 @@ class _NewsPageState extends State<NewsPage> {
             child: Image.asset('assets/icons/logo_new.png', width: 60),
           ),
           actions: [
-            IconButton(
+            /*IconButton(
               onPressed: () {},
               icon: Icon(
                 Icons.notifications_none,
                 color: orangeBlaze,
               ),
-            ),
+            ),*/
           ],
         ),
         SliverToBoxAdapter(
