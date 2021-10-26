@@ -1,11 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:laporhoax/common/exception.dart';
 import 'package:laporhoax/common/failure.dart';
 import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/data/models/register_model.dart';
 import 'package:laporhoax/data/models/user_response.dart';
-import 'package:laporhoax/data/models/user_token.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/domain/usecases/get_password_reset.dart';
 import 'package:laporhoax/domain/usecases/get_session_data.dart';
@@ -86,7 +84,6 @@ void main() {
 
   final tId = 1;
   final tToken = 'token';
-  final tUsername = 'username';
   final tEmail = 'email';
   final tOldPass = 'oldPass';
   final tNewPass = 'newPass';
@@ -103,7 +100,6 @@ void main() {
     password: "password",
   );
   final tUserResponse = UserResponse(user: testUserModel, token: tToken);
-  final tUserToken = UserToken(token: "token", expiry: "expiry");
 
   group('GetUser', () {
     test('should change user data when data is gotten successfully', () async {
@@ -243,7 +239,7 @@ void main() {
   });
   group('Login', () {
     test('should return callback when data is gotten successfully', () async {
-    /*  // arrange
+      /*  // arrange
       when(mockPostLogin.execute(tUsername, tOldPass))
           .thenAnswer((_) async => Right(tUserToken));
       when(mockGetUser.execute(tUsername))
@@ -258,7 +254,7 @@ void main() {
       expect(listenerCallCount, 1);*/
     });
     test('should return error when data is unsuccessful', () async {
-     /* // arrange
+      /* // arrange
       when(mockPostLogin.execute(tUsername, tOldPass))
           .thenAnswer((_) async => Left(ServerFailure('invalid')));
       // act

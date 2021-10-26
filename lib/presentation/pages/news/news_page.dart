@@ -7,6 +7,7 @@ import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/presentation/pages/account/tutorial_page.dart';
+import 'package:laporhoax/presentation/pages/home_page.dart';
 import 'package:laporhoax/presentation/pages/report/report_page.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
 import 'package:laporhoax/util/datetime_helper.dart';
@@ -46,13 +47,13 @@ class _NewsPageState extends State<NewsPage> {
             child: Image.asset('assets/icons/logo_new.png', width: 60),
           ),
           actions: [
-            IconButton(
+            /*IconButton(
               onPressed: () {},
               icon: Icon(
                 Icons.notifications_none,
                 color: orangeBlaze,
               ),
-            ),
+            ),*/
           ],
         ),
         SliverToBoxAdapter(
@@ -176,7 +177,7 @@ class FeedList extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
               onTap: () =>
-                  Navigation.intentWithData(NewsWebView.ROUTE_NAME, feed.id),
+                  Navigation.intentWithData(NewsWebView.ROUTE_NAME, NewsWebViewData(feed.id, HomePage.ROUTE_NAME)),
               child: Card(
                 clipBehavior: Clip.antiAlias,
                 shape: RoundedRectangleBorder(

@@ -78,6 +78,7 @@ class PreferencesHelper {
       if (DateTime.now().isAfter(DateTimeHelper.formattedDateToken(_expire!))) {
         setExpire(null);
         setLogin(false);
+        return false;
       }
       return prefs.getBool(LOGIN) ?? false;
     }

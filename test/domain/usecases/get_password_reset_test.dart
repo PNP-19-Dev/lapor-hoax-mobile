@@ -15,7 +15,6 @@ void main() {
   });
 
   final tEmail = 'email';
-  final tToken = 'token';
 
   test('should get success callback of feeds when execute function is called',
       () async {
