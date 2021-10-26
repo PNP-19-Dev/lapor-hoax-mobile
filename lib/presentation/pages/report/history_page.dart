@@ -47,7 +47,7 @@ class _HistoryPageState extends State<HistoryPage> {
         onDismissed: (actionType) {
           setState(() async {
             // remove item pada report
-            provider.removeReport(widget.tokenId, report.id);
+            provider.removeReport(widget.tokenId.token, report.id);
 
             reports.removeAt(index);
 

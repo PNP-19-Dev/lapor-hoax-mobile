@@ -22,7 +22,7 @@ class UserNotifier extends ChangeNotifier {
   static const String messageLogin = 'Anda Login';
   static const String messageLogout = 'Anda Logout';
   static const String messageRegister = 'Register Berhasil!';
-  static const String messageQuestion = 'Pertanyaan Telah Diperbarui!';
+  static const String messageQuestion = 'Pertanyaan Keamanan Telah Diperbarui!';
 
   final GetUser getUser;
   final PostLogin postLogin;
@@ -249,14 +249,13 @@ class UserNotifier extends ChangeNotifier {
     result.fold(
       (failure) {
         _challengeMessage = failure.message;
-        notifyListeners();
       },
       (message) {
         _challengeState = RequestState.Success;
-        notifyListeners();
         _challengeMessage = messageQuestion;
       },
     );
+    notifyListeners();
   }
 
   String _passwordChangeMessage = '';
@@ -270,13 +269,12 @@ class UserNotifier extends ChangeNotifier {
 
     result.fold(
       (failure) {
-        _challengeMessage = failure.message;
-        notifyListeners();
+        _passwordChangeMessage = failure.message;
       },
       (message) {
-        _challengeMessage = messageChangePassword;
-        notifyListeners();
+        _passwordChangeMessage = messageChangePassword;
       },
     );
+    notifyListeners();
   }
 }
