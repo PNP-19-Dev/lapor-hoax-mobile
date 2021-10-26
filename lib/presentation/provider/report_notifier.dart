@@ -137,10 +137,12 @@ class ReportNotifier extends ChangeNotifier {
 
     if (status.toLowerCase() != 'belum diproses'){
       _deleteReportMessage = 'Laporan Tak dapat dihapus!';
+      notifyListeners();
       return false;
     }
 
     final result = await deleteReport.execute(token, id);
+
     result.fold((failure) {
       _deleteReportMessage = failure.message;
       _deleteReportState = RequestState.Error;

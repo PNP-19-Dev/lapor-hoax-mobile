@@ -156,8 +156,8 @@ void main() {
     // act
     await provider.removeReport(tToken, tId, "belum diproses");
     // assert
-    expect(provider.postReportState, RequestState.Success);
-    expect(provider.deleteReportMessage, 'Success');
+    expect(provider.deleteReportState, RequestState.Success);
+    expect(provider.deleteReportMessage, 'Laporan Telah Dihapus');
     expect(listenerCallCount, 2);
   });
 
@@ -168,7 +168,7 @@ void main() {
     // act
     await provider.removeReport(tToken, tId, "belum diproses");
     // assert
-    expect(provider.postReportState, RequestState.Error);
+    expect(provider.deleteReportState, RequestState.Error);
     expect(provider.deleteReportMessage, "");
     expect(listenerCallCount, 2);
   });
