@@ -46,10 +46,10 @@ android {
 
     signingConfigs {
         release {
-            keyAlias 'andidev'
-            keyPassword 'andi developer'
-            storePassword 'andi developer'
-            storeFile file('private-keystore.jks')
+            keyAlias 'andi dev1'
+            keyPassword 'andideveloper'
+            storePassword 'andideveloper'
+            storeFile file('release-keystore.jks')
         }
     }
 
