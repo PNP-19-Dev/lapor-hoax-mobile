@@ -172,6 +172,7 @@ class _LoginPageState extends State<LoginPage> {
                                             listen: false)
                                         .user;
 
+/*
                                     String? token = await FirebaseMessaging
                                         .instance
                                         .getToken();
@@ -181,6 +182,7 @@ class _LoginPageState extends State<LoginPage> {
                                           context,
                                           listen: false).putToken(data!.id, token);
                                     }
+*/
 
                                     if (message == UserNotifier.messageLogin) {
                                       progress?.dismiss();
