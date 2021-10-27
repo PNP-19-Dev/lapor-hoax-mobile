@@ -251,6 +251,19 @@ class RepositoryImpl implements Repository {
   }
 
   @override
+  Future<Either<Failure, String>> putFCMToken(int user, String fcmToken) async {
+    try {
+      final result =
+          await remoteDataSource.updateFcmToken(user.toString(), fcmToken);
+      return Right(result);
+    } on ServerException {
+      return Left(ServerFailure("Cant To Send"));
+    } on SocketException {
+      return Left(ConnectionFailure("Failed to connect to the network"));
+    }
+  }
+
+  @override
   Future<Either<Failure, SessionData>> getSessionData() async {
     final result = await localDataSource.getSession();
     if (result != null) {

@@ -42,6 +42,8 @@ abstract class RemoteDataSource {
 
   Future postFcmToken(String user, String fcmToken);
 
+  Future updateFcmToken(String user, String fcmToken);
+
   Future<UserToken> postLogin(String username, String password);
 
   Future<UserResponse> postRegister(RegisterModel user);
@@ -197,7 +199,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         },
       ),
     );
-    print('delete status code ${response.statusCode} ${response.statusMessage}');
+    print(
+        'delete status code ${response.statusCode} ${response.statusMessage}');
     if (response.statusCode == 204) {
       return 'success';
     } else {
@@ -256,6 +259,24 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future postFcmToken(String user, String fcmToken) async {
     final response = await dio.post(
+      '/$firebaseTokenEndpoint',
+      options: Options(contentType: Headers.jsonContentType),
+      data: <String, String>{
+        'user': user,
+        'token': fcmToken,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return "Success";
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future updateFcmToken(String user, String fcmToken) async {
+    final response = await dio.put(
       '/$firebaseTokenEndpoint',
       options: Options(contentType: Headers.jsonContentType),
       data: <String, String>{

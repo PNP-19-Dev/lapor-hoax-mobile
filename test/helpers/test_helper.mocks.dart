@@ -6,8 +6,8 @@ import 'dart:async' as _i11;
 
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:dio/dio.dart' as _i9;
-import 'package:laporhoax/common/NetworkInfoImpl.dart' as _i31;
 import 'package:laporhoax/common/failure.dart' as _i12;
+import 'package:laporhoax/common/NetworkInfoImpl.dart' as _i31;
 import 'package:laporhoax/data/datasources/db/database_helper.dart' as _i28;
 import 'package:laporhoax/data/datasources/local_data_source.dart' as _i26;
 import 'package:laporhoax/data/datasources/preferences/preferences_helper.dart'
@@ -178,6 +178,13 @@ class MockRepository extends _i1.Mock implements _i10.Repository {
                   _FakeEither_0<_i12.Failure, String>()))
           as _i11.Future<_i2.Either<_i12.Failure, String>>);
   @override
+  _i11.Future<_i2.Either<_i12.Failure, String>> putFCMToken(
+          int? user, String? fcmToken) =>
+      (super.noSuchMethod(Invocation.method(#putFCMToken, [user, fcmToken]),
+              returnValue: Future<_i2.Either<_i12.Failure, String>>.value(
+                  _FakeEither_0<_i12.Failure, String>()))
+          as _i11.Future<_i2.Either<_i12.Failure, String>>);
+  @override
   _i11.Future<_i2.Either<_i12.Failure, _i5.UserToken>> postLogin(
           String? username, String? password) =>
       (super.noSuchMethod(Invocation.method(#postLogin, [username, password]),
@@ -300,6 +307,10 @@ class MockRemoteDataSource extends _i1.Mock implements _i22.RemoteDataSource {
   @override
   _i11.Future<dynamic> postFcmToken(String? user, String? fcmToken) =>
       (super.noSuchMethod(Invocation.method(#postFcmToken, [user, fcmToken]),
+          returnValue: Future<dynamic>.value()) as _i11.Future<dynamic>);
+  @override
+  _i11.Future<dynamic> updateFcmToken(String? user, String? fcmToken) =>
+      (super.noSuchMethod(Invocation.method(#updateFcmToken, [user, fcmToken]),
           returnValue: Future<dynamic>.value()) as _i11.Future<dynamic>);
   @override
   _i11.Future<_i5.UserToken> postLogin(String? username, String? password) =>

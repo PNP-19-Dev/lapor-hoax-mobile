@@ -166,9 +166,16 @@ class _LoginPageState extends State<LoginPage> {
                                             context,
                                             listen: false)
                                         .loginMessage;
+                                    final data = Provider.of<UserNotifier>(
+                                            context,
+                                            listen: false)
+                                        .user;
 
                                     if (message == UserNotifier.messageLogin) {
                                       progress?.dismiss();
+                                      await Provider.of<UserNotifier>(
+                                          context,
+                                          listen: false);
                                       Navigation.intent(HomePage.ROUTE_NAME);
                                     } else {
                                       progress?.dismiss();

@@ -39,6 +39,7 @@ import 'package:laporhoax/presentation/provider/user_notifier.dart';
 
 import 'data/datasources/preferences/preferences_helper.dart';
 import 'domain/usecases/get_saved_feeds.dart';
+import 'domain/usecases/put_fcm_token.dart';
 import 'domain/usecases/remove_feed.dart';
 
 final locator = GetIt.instance;
@@ -46,10 +47,10 @@ final locator = GetIt.instance;
 void init() {
   // provider
   locator.registerFactory(
-        () => FeedNotifier(getFeeds: locator()),
+    () => FeedNotifier(getFeeds: locator()),
   );
   locator.registerFactory(
-        () => ReportNotifier(
+    () => ReportNotifier(
       getReports: locator(),
       postReport: locator(),
       deleteReport: locator(),
@@ -57,7 +58,7 @@ void init() {
     ),
   );
   locator.registerFactory(
-        () => UserNotifier(
+    () => UserNotifier(
       getUser: locator(),
       getPasswordReset: locator(),
       postFCMToken: locator(),
@@ -69,10 +70,11 @@ void init() {
       getSessionStatus: locator(),
       postLogin: locator(),
       postRegister: locator(),
+      putFCMToken: locator(),
     ),
   );
   locator.registerFactory(
-        () => QuestionNotifier(
+    () => QuestionNotifier(
       getQuestions: locator(),
       getUserChallenge: locator(),
     ),
@@ -105,6 +107,7 @@ void init() {
   locator.registerLazySingleton(() => GetUserChallenge(locator()));
   locator.registerLazySingleton(() => PostChangePassword(locator()));
   locator.registerLazySingleton(() => PostFCMToken(locator()));
+  locator.registerLazySingleton(() => PutFCMToken(locator()));
   locator.registerLazySingleton(() => PostLogin(locator()));
   locator.registerLazySingleton(() => PostRegister(locator()));
   locator.registerLazySingleton(() => PostReport(locator()));
@@ -116,7 +119,7 @@ void init() {
 
   // repository
   locator.registerLazySingleton<Repository>(
-        () => RepositoryImpl(
+    () => RepositoryImpl(
       remoteDataSource: locator(),
       localDataSource: locator(),
       networkInfo: locator(),
@@ -125,7 +128,7 @@ void init() {
 
   // data sources
   locator.registerLazySingleton<RemoteDataSource>(
-        () => RemoteDataSourceImpl(dio: locator()),
+    () => RemoteDataSourceImpl(dio: locator()),
   );
   locator.registerLazySingleton<LocalDataSource>(
     () => LocalDataSourceImpl(
