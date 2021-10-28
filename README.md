@@ -1,8 +1,10 @@
 [![Build and Release Apps](https://github.com/PNP-19-Dev/lapor-hoax-mobile/actions/workflows/build-and-release.yaml/badge.svg?branch=release)](https://github.com/PNP-19-Dev/lapor-hoax-mobile/actions/workflows/build-and-release.yaml)
 [![Testing](https://github.com/PNP-19-Dev/lapor-hoax-mobile/actions/workflows/build-test.yaml/badge.svg?branch=dev-2)](https://github.com/PNP-19-Dev/lapor-hoax-mobile/actions/workflows/build-test.yaml)
+[![Codemagic build status](https://api.codemagic.io/apps/61776adf13349ad000c6026c/61776adf13349ad000c6026b/status_badge.svg)](https://codemagic.io/apps/61776adf13349ad000c6026c/61776adf13349ad000c6026b/latest_build)
+
 # laporhoax
 
-A new Flutter project.
+Aplikasi Pelaporan Hoax
 
 ## Getting Started
 
