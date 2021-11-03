@@ -23,6 +23,7 @@ class PreferencesHelper {
 
   Future<String> get expireDate async {
     final prefs = await sharedPreferences;
+    _expire = prefs.getString(EXPIRE) ?? '';
     return prefs.getString(EXPIRE) ?? '';
   }
 
@@ -75,7 +76,8 @@ class PreferencesHelper {
   Future<bool> get isLogin async {
     final prefs = await sharedPreferences;
     if (_expire != null) {
-      if (DateTime.now().isAfter(DateTimeHelper.formattedDateToken(_expire!))) {
+      if (_expire!.length != 0 &&
+          DateTime.now().isAfter(DateTimeHelper.formattedDateToken(_expire!))) {
         setExpire(null);
         setLogin(false);
         return false;
