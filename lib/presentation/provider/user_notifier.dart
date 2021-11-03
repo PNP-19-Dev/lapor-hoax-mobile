@@ -15,6 +15,7 @@ import 'package:laporhoax/domain/usecases/post_fcm_token.dart';
 import 'package:laporhoax/domain/usecases/post_login.dart';
 import 'package:laporhoax/domain/usecases/post_register.dart';
 import 'package:laporhoax/domain/usecases/post_user_challenge.dart';
+import 'package:laporhoax/domain/usecases/put_fcm_token.dart';
 import 'package:laporhoax/domain/usecases/remove_session_data.dart';
 import 'package:laporhoax/domain/usecases/save_session_data.dart';
 
@@ -31,24 +32,27 @@ class UserNotifier extends ChangeNotifier {
   final GetSessionData getSessionData;
 
   final PostFCMToken postFCMToken;
+  final PutFCMToken putFCMToken;
   final PostChangePassword postChangePassword;
   final PostUserChallenge postUserChallenge;
   final RemoveSessionData removeSessionData;
   final SaveSessionData saveSessionData;
   final GetSessionStatus getSessionStatus;
 
-  UserNotifier(
-      {required this.getUser,
-      required this.getPasswordReset,
-      required this.getSessionData,
-      required this.postFCMToken,
-      required this.postChangePassword,
-      required this.postUserChallenge,
-      required this.saveSessionData,
-      required this.removeSessionData,
-      required this.getSessionStatus,
-      required this.postLogin,
-      required this.postRegister});
+  UserNotifier({
+    required this.getUser,
+    required this.getPasswordReset,
+    required this.getSessionData,
+    required this.postFCMToken,
+    required this.postChangePassword,
+    required this.postUserChallenge,
+    required this.saveSessionData,
+    required this.removeSessionData,
+    required this.getSessionStatus,
+    required this.postLogin,
+    required this.postRegister,
+    required this.putFCMToken,
+  });
 
   RequestState _sessionState = RequestState.Empty;
 
@@ -122,6 +126,23 @@ class UserNotifier extends ChangeNotifier {
     });
   }
 
+  Future<void> putToken(int userid, String token) async {
+    _fcmState = RequestState.Loading;
+    notifyListeners();
+
+    final result = await putFCMToken.execute(userid, token);
+
+    result.fold((failure) {
+      _fcmMessage = failure.message;
+      _fcmState = RequestState.Error;
+    }, (message) {
+      _fcmMessage = message;
+      _fcmState = RequestState.Loaded;
+      notifyListeners();
+    });
+  }
+
+
   User? _user;
 
   User? get user => _user;
@@ -181,7 +202,6 @@ class UserNotifier extends ChangeNotifier {
           expiry: userToken.expiry!,
           username: user.username,
         );
-
         saveSessionData.execute(data);
         _loginMessage = messageLogin;
       });

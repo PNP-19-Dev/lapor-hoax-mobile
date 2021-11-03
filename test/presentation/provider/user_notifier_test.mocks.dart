@@ -11,19 +11,20 @@ import 'package:laporhoax/data/models/user_response.dart' as _i11;
 import 'package:laporhoax/data/models/user_token.dart' as _i9;
 import 'package:laporhoax/domain/entities/session_data.dart' as _i15;
 import 'package:laporhoax/domain/entities/user.dart' as _i7;
-import 'package:laporhoax/domain/entities/user_question.dart' as _i19;
+import 'package:laporhoax/domain/entities/user_question.dart' as _i20;
 import 'package:laporhoax/domain/repositories/repository.dart' as _i2;
 import 'package:laporhoax/domain/usecases/get_password_reset.dart' as _i13;
 import 'package:laporhoax/domain/usecases/get_session_data.dart' as _i14;
-import 'package:laporhoax/domain/usecases/get_session_status.dart' as _i22;
+import 'package:laporhoax/domain/usecases/get_session_status.dart' as _i23;
 import 'package:laporhoax/domain/usecases/get_user.dart' as _i4;
-import 'package:laporhoax/domain/usecases/post_change_password.dart' as _i17;
+import 'package:laporhoax/domain/usecases/post_change_password.dart' as _i18;
 import 'package:laporhoax/domain/usecases/post_fcm_token.dart' as _i16;
 import 'package:laporhoax/domain/usecases/post_login.dart' as _i8;
 import 'package:laporhoax/domain/usecases/post_register.dart' as _i10;
-import 'package:laporhoax/domain/usecases/post_user_challenge.dart' as _i18;
-import 'package:laporhoax/domain/usecases/remove_session_data.dart' as _i20;
-import 'package:laporhoax/domain/usecases/save_session_data.dart' as _i21;
+import 'package:laporhoax/domain/usecases/post_user_challenge.dart' as _i19;
+import 'package:laporhoax/domain/usecases/put_fcm_token.dart' as _i17;
+import 'package:laporhoax/domain/usecases/remove_session_data.dart' as _i21;
+import 'package:laporhoax/domain/usecases/save_session_data.dart' as _i22;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
@@ -51,14 +52,12 @@ class MockGetUser extends _i1.Mock implements _i4.GetUser {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
-
   @override
   _i5.Future<_i3.Either<_i6.Failure, _i7.User>> execute(String? email) =>
       (super.noSuchMethod(Invocation.method(#execute, [email]),
               returnValue: Future<_i3.Either<_i6.Failure, _i7.User>>.value(
                   _FakeEither_1<_i6.Failure, _i7.User>()))
           as _i5.Future<_i3.Either<_i6.Failure, _i7.User>>);
-
   @override
   String toString() => super.toString();
 }
@@ -75,7 +74,6 @@ class MockPostLogin extends _i1.Mock implements _i8.PostLogin {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
-
   @override
   _i5.Future<_i3.Either<_i6.Failure, _i9.UserToken>> execute(
           String? username, String? password) =>
@@ -83,7 +81,6 @@ class MockPostLogin extends _i1.Mock implements _i8.PostLogin {
               returnValue: Future<_i3.Either<_i6.Failure, _i9.UserToken>>.value(
                   _FakeEither_1<_i6.Failure, _i9.UserToken>()))
           as _i5.Future<_i3.Either<_i6.Failure, _i9.UserToken>>);
-
   @override
   String toString() => super.toString();
 }
@@ -100,7 +97,6 @@ class MockPostRegister extends _i1.Mock implements _i10.PostRegister {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
-
   @override
   _i5.Future<_i3.Either<_i6.Failure, _i11.UserResponse>> execute(
           _i12.RegisterModel? user) =>
@@ -108,7 +104,6 @@ class MockPostRegister extends _i1.Mock implements _i10.PostRegister {
           returnValue: Future<_i3.Either<_i6.Failure, _i11.UserResponse>>.value(
               _FakeEither_1<_i6.Failure, _i11.UserResponse>())) as _i5
           .Future<_i3.Either<_i6.Failure, _i11.UserResponse>>);
-
   @override
   String toString() => super.toString();
 }
@@ -125,14 +120,12 @@ class MockGetPasswordReset extends _i1.Mock implements _i13.GetPasswordReset {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
-
   @override
   _i5.Future<_i3.Either<_i6.Failure, String>> execute(String? email) =>
       (super.noSuchMethod(Invocation.method(#execute, [email]),
               returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
                   _FakeEither_1<_i6.Failure, String>()))
           as _i5.Future<_i3.Either<_i6.Failure, String>>);
-
   @override
   String toString() => super.toString();
 }
@@ -149,14 +142,12 @@ class MockGetSessionData extends _i1.Mock implements _i14.GetSessionData {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
-
   @override
   _i5.Future<_i3.Either<_i6.Failure, _i15.SessionData?>> execute() =>
       (super.noSuchMethod(Invocation.method(#execute, []),
           returnValue: Future<_i3.Either<_i6.Failure, _i15.SessionData?>>.value(
               _FakeEither_1<_i6.Failure, _i15.SessionData?>())) as _i5
           .Future<_i3.Either<_i6.Failure, _i15.SessionData?>>);
-
   @override
   String toString() => super.toString();
 }
@@ -173,7 +164,6 @@ class MockPostFCMToken extends _i1.Mock implements _i16.PostFCMToken {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
-
   @override
   _i5.Future<_i3.Either<_i6.Failure, String>> execute(
           int? user, String? fcmToken) =>
@@ -181,7 +171,29 @@ class MockPostFCMToken extends _i1.Mock implements _i16.PostFCMToken {
               returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
                   _FakeEither_1<_i6.Failure, String>()))
           as _i5.Future<_i3.Either<_i6.Failure, String>>);
+  @override
+  String toString() => super.toString();
+}
 
+/// A class which mocks [PutFCMToken].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPutFCMToken extends _i1.Mock implements _i17.PutFCMToken {
+  MockPutFCMToken() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.Repository get repository =>
+      (super.noSuchMethod(Invocation.getter(#repository),
+          returnValue: _FakeRepository_0()) as _i2.Repository);
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, String>> execute(
+          int? user, String? fcmToken) =>
+      (super.noSuchMethod(Invocation.method(#execute, [user, fcmToken]),
+              returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
+                  _FakeEither_1<_i6.Failure, String>()))
+          as _i5.Future<_i3.Either<_i6.Failure, String>>);
   @override
   String toString() => super.toString();
 }
@@ -190,7 +202,7 @@ class MockPostFCMToken extends _i1.Mock implements _i16.PostFCMToken {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPostChangePassword extends _i1.Mock
-    implements _i17.PostChangePassword {
+    implements _i18.PostChangePassword {
   MockPostChangePassword() {
     _i1.throwOnMissingStub(this);
   }
@@ -199,7 +211,6 @@ class MockPostChangePassword extends _i1.Mock
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
-
   @override
   _i5.Future<_i3.Either<_i6.Failure, String>> execute(
           String? oldPass, String? newPass, String? token) =>
@@ -208,7 +219,6 @@ class MockPostChangePassword extends _i1.Mock
               returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
                   _FakeEither_1<_i6.Failure, String>()))
           as _i5.Future<_i3.Either<_i6.Failure, String>>);
-
   @override
   String toString() => super.toString();
 }
@@ -216,7 +226,7 @@ class MockPostChangePassword extends _i1.Mock
 /// A class which mocks [PostUserChallenge].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPostUserChallenge extends _i1.Mock implements _i18.PostUserChallenge {
+class MockPostUserChallenge extends _i1.Mock implements _i19.PostUserChallenge {
   MockPostUserChallenge() {
     _i1.throwOnMissingStub(this);
   }
@@ -225,15 +235,13 @@ class MockPostUserChallenge extends _i1.Mock implements _i18.PostUserChallenge {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
-
   @override
   _i5.Future<_i3.Either<_i6.Failure, String>> execute(
-          _i19.UserQuestion? challenge) =>
+          _i20.UserQuestion? challenge) =>
       (super.noSuchMethod(Invocation.method(#execute, [challenge]),
               returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
                   _FakeEither_1<_i6.Failure, String>()))
           as _i5.Future<_i3.Either<_i6.Failure, String>>);
-
   @override
   String toString() => super.toString();
 }
@@ -241,7 +249,7 @@ class MockPostUserChallenge extends _i1.Mock implements _i18.PostUserChallenge {
 /// A class which mocks [RemoveSessionData].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockRemoveSessionData extends _i1.Mock implements _i20.RemoveSessionData {
+class MockRemoveSessionData extends _i1.Mock implements _i21.RemoveSessionData {
   MockRemoveSessionData() {
     _i1.throwOnMissingStub(this);
   }
@@ -250,14 +258,12 @@ class MockRemoveSessionData extends _i1.Mock implements _i20.RemoveSessionData {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
-
   @override
   _i5.Future<_i3.Either<_i6.Failure, String>> execute(_i15.SessionData? data) =>
       (super.noSuchMethod(Invocation.method(#execute, [data]),
               returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
                   _FakeEither_1<_i6.Failure, String>()))
           as _i5.Future<_i3.Either<_i6.Failure, String>>);
-
   @override
   String toString() => super.toString();
 }
@@ -265,7 +271,7 @@ class MockRemoveSessionData extends _i1.Mock implements _i20.RemoveSessionData {
 /// A class which mocks [SaveSessionData].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSaveSessionData extends _i1.Mock implements _i21.SaveSessionData {
+class MockSaveSessionData extends _i1.Mock implements _i22.SaveSessionData {
   MockSaveSessionData() {
     _i1.throwOnMissingStub(this);
   }
@@ -274,14 +280,12 @@ class MockSaveSessionData extends _i1.Mock implements _i21.SaveSessionData {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
-
   @override
   _i5.Future<_i3.Either<_i6.Failure, String>> execute(_i15.SessionData? data) =>
       (super.noSuchMethod(Invocation.method(#execute, [data]),
               returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
                   _FakeEither_1<_i6.Failure, String>()))
           as _i5.Future<_i3.Either<_i6.Failure, String>>);
-
   @override
   String toString() => super.toString();
 }
@@ -289,7 +293,7 @@ class MockSaveSessionData extends _i1.Mock implements _i21.SaveSessionData {
 /// A class which mocks [GetSessionStatus].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetSessionStatus extends _i1.Mock implements _i22.GetSessionStatus {
+class MockGetSessionStatus extends _i1.Mock implements _i23.GetSessionStatus {
   MockGetSessionStatus() {
     _i1.throwOnMissingStub(this);
   }
@@ -298,12 +302,10 @@ class MockGetSessionStatus extends _i1.Mock implements _i22.GetSessionStatus {
   _i2.Repository get repository =>
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
-
   @override
   _i5.Future<bool> execute() =>
       (super.noSuchMethod(Invocation.method(#execute, []),
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
-
   @override
   String toString() => super.toString();
 }

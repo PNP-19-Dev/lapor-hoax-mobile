@@ -14,6 +14,7 @@ import 'package:laporhoax/domain/usecases/post_fcm_token.dart';
 import 'package:laporhoax/domain/usecases/post_login.dart';
 import 'package:laporhoax/domain/usecases/post_register.dart';
 import 'package:laporhoax/domain/usecases/post_user_challenge.dart';
+import 'package:laporhoax/domain/usecases/put_fcm_token.dart';
 import 'package:laporhoax/domain/usecases/remove_session_data.dart';
 import 'package:laporhoax/domain/usecases/save_session_data.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
@@ -30,6 +31,7 @@ import 'user_notifier_test.mocks.dart';
   GetPasswordReset,
   GetSessionData,
   PostFCMToken,
+  PutFCMToken,
   PostChangePassword,
   PostUserChallenge,
   RemoveSessionData,
@@ -49,6 +51,7 @@ void main() {
   late MockRemoveSessionData mockRemoveSessionData;
   late MockSaveSessionData mockSaveSessionData;
   late MockGetSessionStatus mockGetSessionStatus;
+  late MockPutFCMToken mockPutFCMToken;
   late int listenerCallCount;
 
   setUp(() {
@@ -65,11 +68,14 @@ void main() {
     mockGetSessionStatus = MockGetSessionStatus();
     mockSaveSessionData = MockSaveSessionData();
     mockGetSessionData = MockGetSessionData();
+    mockPutFCMToken = MockPutFCMToken();
+
     provider = UserNotifier(
       getUser: mockGetUser,
       getPasswordReset: mockGetPasswordReset,
       getSessionData: mockGetSessionData,
       postFCMToken: mockPostFCMToken,
+      putFCMToken: mockPutFCMToken,
       postChangePassword: mockPostChangePassword,
       postUserChallenge: mockPostUserChallenge,
       saveSessionData: mockSaveSessionData,
@@ -192,6 +198,30 @@ void main() {
       expect(listenerCallCount, 1);
     });
   });
+
+  group('PutFCMToken', () {
+    test('should return callback when data is gotten successfully', () async {
+      // arrange
+      when(mockPutFCMToken.execute(tId, tToken))
+          .thenAnswer((_) async => Right("Success"));
+      // act
+      await provider.putToken(tId, tToken);
+      // assert
+      expect(provider.fcmMessage, "Success");
+      expect(listenerCallCount, 2);
+    });
+    test('should return error when data is unsuccessful', () async {
+      // arrange
+      when(mockPutFCMToken.execute(tId, tToken))
+          .thenAnswer((_) async => Left(ServerFailure("Can't get data")));
+      // act
+      await provider.putToken(tId, tToken);
+      // assert
+      expect(provider.fcmMessage, "Can't get data");
+      expect(listenerCallCount, 1);
+    });
+  });
+
   group('PostChangePassword', () {
     test('should return callback when data is gotten successfully', () async {
       // arrange

@@ -188,7 +188,7 @@ class _AccountPageState extends State<AccountPage> {
             title: Text('Bagikan Laporhoax'),
             trailing: Icon(Icons.chevron_right),
             onTap: () => Share.share(
-                'Ayo berantas hoaks bersama LaporHoax! di https://example.com'),
+                'Ayo berantas hoaks bersama LaporHoax! di https://s.id/LAPORHOAX'),
           ),
         ),
         SizedBox(height: 20),
@@ -290,7 +290,7 @@ class _AccountPageState extends State<AccountPage> {
             title: Text('Bagikan LaporHoax'),
             trailing: Icon(Icons.chevron_right),
             onTap: () => Share.share(
-                'Ayo berantas hoaks bersama LaporHoax! di https://example.com'),
+                'Ayo berantas hoaks bersama LaporHoax! di https://s.id/LAPORHOAX'),
           ),
         ),
         SizedBox(height: 20),

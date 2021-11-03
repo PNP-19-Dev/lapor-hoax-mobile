@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -166,6 +167,22 @@ class _LoginPageState extends State<LoginPage> {
                                             context,
                                             listen: false)
                                         .loginMessage;
+                                    final data = Provider.of<UserNotifier>(
+                                            context,
+                                            listen: false)
+                                        .user;
+
+/*
+                                    String? token = await FirebaseMessaging
+                                        .instance
+                                        .getToken();
+
+                                    if (token != null){
+                                      await Provider.of<UserNotifier>(
+                                          context,
+                                          listen: false).putToken(data!.id, token);
+                                    }
+*/
 
                                     if (message == UserNotifier.messageLogin) {
                                       progress?.dismiss();

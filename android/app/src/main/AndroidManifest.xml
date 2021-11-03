@@ -2,12 +2,12 @@
     package="ac.id.pnp.laporhoax">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
+<!--    <uses-permission android:name="android.permission.CAMERA" />-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <uses-feature
+   <!-- <uses-feature
         android:name="android.hardware.camera"
-        android:required="false" />
+        android:required="false" />-->
 
     <queries>
         <!-- If your app opens https URLs -->

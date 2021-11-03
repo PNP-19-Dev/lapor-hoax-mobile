@@ -19,9 +19,7 @@ abstract class Repository {
   Future<bool> isSessionActivated();
   Future<Either<Failure, List<Feed>>> getFeeds();
   Future<Either<Failure, Feed>> getFeedDetail(int id);
-
   Future<Either<Failure, String>> getPasswordReset(String email);
-
   Future<Either<Failure, List<Question>>> getQuestions();
   Future<Either<Failure, List<Report>>> getReports(String token, int id);
   Future<Either<Failure, List<Feed>>> getSavedFeeds();
@@ -31,6 +29,7 @@ abstract class Repository {
   Future<Either<Failure, String>> postChangePassword(
       String oldPass, String newPass, String token);
   Future<Either<Failure, String>> postFCMToken(int user, String fcmToken);
+  Future<Either<Failure, String>> putFCMToken(int user, String fcmToken);
   Future<Either<Failure, UserToken>> postLogin(
       String username, String password);
   Future<Either<Failure, UserResponse>> postRegister(RegisterModel user);

@@ -31,56 +31,44 @@ class MockFeedNotifier extends _i1.Mock implements _i3.FeedNotifier {
   }
 
   @override
-  _i2.GetFeeds get getFeeds =>
-      (super.noSuchMethod(Invocation.getter(#getFeeds),
-          returnValue: _FakeGetFeeds_0()) as _i2.GetFeeds);
-
+  _i2.GetFeeds get getFeeds => (super.noSuchMethod(Invocation.getter(#getFeeds),
+      returnValue: _FakeGetFeeds_0()) as _i2.GetFeeds);
   @override
   List<_i4.Feed> get feeds =>
       (super.noSuchMethod(Invocation.getter(#feeds), returnValue: <_i4.Feed>[])
-      as List<_i4.Feed>);
-
+          as List<_i4.Feed>);
   @override
   _i5.RequestState get feedState =>
       (super.noSuchMethod(Invocation.getter(#feedState),
           returnValue: _i5.RequestState.Empty) as _i5.RequestState);
-
   @override
   String get message =>
       (super.noSuchMethod(Invocation.getter(#message), returnValue: '')
-      as String);
-
+          as String);
   @override
   bool get hasListeners =>
       (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
-      as bool);
-
+          as bool);
   @override
   _i6.Future<void> fetchFeeds() =>
       (super.noSuchMethod(Invocation.method(#fetchFeeds, []),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i6.Future<void>);
-
   @override
   void addListener(_i7.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#addListener, [listener]),
           returnValueForMissingStub: null);
-
   @override
   void removeListener(_i7.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#removeListener, [listener]),
           returnValueForMissingStub: null);
-
   @override
-  void dispose() =>
-      super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValueForMissingStub: null);
-
+  void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
+      returnValueForMissingStub: null);
   @override
   void notifyListeners() =>
       super.noSuchMethod(Invocation.method(#notifyListeners, []),
           returnValueForMissingStub: null);
-
   @override
   String toString() => super.toString();
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -48,7 +49,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   di.init();
   await Firebase.initializeApp();
-
+  await FirebaseAppCheck.instance
+      .activate(webRecaptchaSiteKey: "312A80DA-78AF-4315-BF63-33DB9B315F4A");
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   if (!kIsWeb) {
