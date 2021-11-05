@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - dev-3
-      - dev-2
-      - dev-1
+      - main
       - ulil
+  pull_request:
+    branches:
+      - release
 
 jobs:
   build:
