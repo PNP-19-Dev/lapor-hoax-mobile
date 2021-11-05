@@ -12,9 +12,8 @@ import '../../../presentation/provider/news_detail_notifier.dart';
 
 class NewsWebViewData {
   final id;
-  final fromRoute;
 
-  NewsWebViewData(this.id, this.fromRoute);
+  NewsWebViewData(this.id);
 }
 
 class NewsWebView extends StatefulWidget {
@@ -49,7 +48,7 @@ class _NewsWebViewState extends State<NewsWebView> {
         children: [
           WebView(
             key: _key,
-            initialUrl: '${RemoteDataSourceImpl.baseUrl}/pages/${widget.id}',
+            initialUrl: '${RemoteDataSourceImpl.baseUrl}/news/${widget.id}',
             javascriptMode: JavascriptMode.unrestricted,
             onPageFinished: (finish) {
               setState(() {
@@ -85,9 +84,7 @@ class CustomScaffold extends StatelessWidget {
           children: [
             IconButton(
               icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
+              onPressed: () => Navigator.pop(context),
             ),
             Expanded(
               child: Text(

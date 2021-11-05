@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/domain/entities/feed.dart';
 import 'package:core/utils/datetime_helper.dart';
 import 'package:feed/presentation/pages/news_web_view.dart';
-import 'package:feed/presentation/pages/saved_news.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -17,9 +16,8 @@ class FeedCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
         onTap: () async {
-          await Navigator.pushNamed(
-              context, NewsWebView.ROUTE_NAME,
-              arguments: NewsWebViewData(feed.id, SavedNews.ROUTE_NAME));
+          await Navigator.pushNamed(context, NewsWebView.ROUTE_NAME,
+              arguments: feed.id);
         },
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),

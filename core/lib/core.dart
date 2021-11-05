@@ -53,6 +53,7 @@ export 'utils/datetime_helper.dart';
 export 'utils/exception.dart';
 export 'utils/failure.dart';
 export 'utils/navigation.dart';
+export 'utils/route_observer.dart';
 export 'utils/routes.dart';
 export 'utils/state_enum.dart';
 export 'utils/static_data_web.dart';

@@ -85,6 +85,7 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.light,
         navigatorKey: navigatorKey,
         home: HomePage(),
+        navigatorObservers: [routeObserver],
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case HomePage.ROUTE_NAME:

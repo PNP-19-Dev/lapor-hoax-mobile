@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/domain/entities/feed.dart';
 import 'package:core/utils/datetime_helper.dart';
+import 'package:core/utils/route_observer.dart';
 import 'package:core/utils/state_enum.dart';
+import 'package:feed/presentation/widget/feed_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +20,7 @@ class SavedNews extends StatefulWidget {
   _SavedNewsState createState() => _SavedNewsState();
 }
 
-class _SavedNewsState extends State<SavedNews> {
+class _SavedNewsState extends State<SavedNews> with RouteAware {
   @override
   void initState() {
     Future.microtask(() =>
@@ -27,15 +29,14 @@ class _SavedNewsState extends State<SavedNews> {
     super.initState();
   }
 
-  void refreshData() {
-    Future.microtask(() =>
-        Provider.of<SavedNewsNotifier>(context, listen: false)
-            .fetchSavedFeeds());
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
   }
 
-  FutureOr onGoBack(dynamic value) {
-    refreshData();
-    setState(() {});
+  void didPopNext() {
+    Provider.of<SavedNewsNotifier>(context, listen: false).fetchSavedFeeds();
   }
 
   List<Feed> news = [];
@@ -44,15 +45,8 @@ class _SavedNewsState extends State<SavedNews> {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
-        onTap: () async {
-          final result = await Navigator.pushNamed(
-                  context, NewsWebView.ROUTE_NAME,
-                  arguments: feed.id)
-              .then(onGoBack);
-          setState(() {
-            print('PrintResult ${result.runtimeType}');
-          });
-        },
+        onTap: () => Navigator.pushNamed(context, NewsWebView.ROUTE_NAME,
+            arguments: feed.id),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
           decoration: BoxDecoration(
@@ -165,7 +159,7 @@ class _SavedNewsState extends State<SavedNews> {
               return ListView.builder(
                 itemBuilder: (context, index) {
                   news = data.saveListFeeds;
-                  return _feedCard(news[index]);
+                  return FeedCard(news[index]);
                 },
                 itemCount: data.saveListFeeds.length,
               );
@@ -180,5 +174,11 @@ class _SavedNewsState extends State<SavedNews> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
   }
 }
