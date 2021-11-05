@@ -1,40 +1,15 @@
+import 'package:core/core.dart';
+import 'package:feed/feed.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:laporhoax/common/navigation.dart';
-import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/models/token_id.dart';
-import 'package:laporhoax/domain/entities/report.dart';
-import 'package:laporhoax/domain/entities/user.dart';
 import 'package:laporhoax/injection.dart' as di;
-import 'package:laporhoax/presentation/pages/account/change_user_question.dart';
-import 'package:laporhoax/presentation/pages/account/forgot_password_page.dart';
-import 'package:laporhoax/presentation/pages/account/login_page.dart';
-import 'package:laporhoax/presentation/pages/account/on_register_success.dart';
-import 'package:laporhoax/presentation/pages/account/password_change_page.dart';
-import 'package:laporhoax/presentation/pages/account/profile_page.dart';
-import 'package:laporhoax/presentation/pages/account/register_page.dart';
-import 'package:laporhoax/presentation/pages/account/tutorial_page.dart';
-import 'package:laporhoax/presentation/pages/account/user_challenge.dart';
-import 'package:laporhoax/presentation/pages/home_page.dart';
-import 'package:laporhoax/presentation/pages/news/news_web_view.dart';
-import 'package:laporhoax/presentation/pages/news/saved_news.dart';
-import 'package:laporhoax/presentation/pages/report/detail_report_page.dart';
-import 'package:laporhoax/presentation/pages/report/history_page.dart';
-import 'package:laporhoax/presentation/pages/report/on_loading_report.dart';
-import 'package:laporhoax/presentation/pages/report/report_page.dart';
-import 'package:laporhoax/presentation/provider/feed_notifier.dart';
-import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
-import 'package:laporhoax/presentation/provider/question_notifier.dart';
-import 'package:laporhoax/presentation/provider/report_notifier.dart';
-import 'package:laporhoax/presentation/provider/saved_news_notifier.dart';
-import 'package:laporhoax/presentation/provider/user_notifier.dart';
-import 'package:laporhoax/util/static_data_web.dart';
-import 'package:laporhoax/util/static_page_viewer.dart';
 import 'package:provider/provider.dart';
+
+import 'home_page.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -105,15 +80,17 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Lapor Hoax',
-        theme: mainTheme,
+        theme: secondaryTheme,
+        debugShowCheckedModeBanner: false,
         themeMode: ThemeMode.light,
         navigatorKey: navigatorKey,
         home: HomePage(),
+        navigatorObservers: [routeObserver],
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case HomePage.ROUTE_NAME:
               return MaterialPageRoute(builder: (_) => HomePage());
-            case LoginPage.ROUTE_NAME:
+            case LoginPage.routeName:
               return MaterialPageRoute(builder: (_) => LoginPage());
             case ForgotPasswordSectionOne.ROUTE_NAME:
               return MaterialPageRoute(
@@ -132,7 +109,7 @@ class MyApp extends StatelessWidget {
                 final id = settings.arguments as int;
                 return UserChallenge(id: id);
               });
-            case ChangeUserQuestion.ROUTE_NAME:
+            case ChangeUserQuestion.routeName:
               return MaterialPageRoute(builder: (_) {
                 final id = settings.arguments as int;
                 return ChangeUserQuestion(id: id);
@@ -170,7 +147,7 @@ class MyApp extends StatelessWidget {
               });
             case SavedNews.ROUTE_NAME:
               return MaterialPageRoute(builder: (_) => SavedNews());
-            case StaticPageViewer.ROUTE_NAME:
+            case StaticPageViewer.routeName:
               return MaterialPageRoute(builder: (_) {
                 final data = settings.arguments as StaticDataWeb;
                 return StaticPageViewer(data: data);
