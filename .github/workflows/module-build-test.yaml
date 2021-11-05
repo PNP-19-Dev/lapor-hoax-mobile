@@ -34,5 +34,5 @@ jobs:
           flutter test
       - name: Run Feed Test
         run: |
-          cd ../feed
+          cd feed
           flutter test
