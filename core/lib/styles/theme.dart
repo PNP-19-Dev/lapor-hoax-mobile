@@ -7,11 +7,18 @@ import 'text_styles.dart';
 final ButtonStyle redElevatedButton =
     ElevatedButton.styleFrom(onPrimary: Colors.white, primary: Colors.red);
 
+var secondaryTheme = ThemeData.light().copyWith(
+  colorScheme: kColorScheme,
+  primaryColor: orangeBlaze,
+  scaffoldBackgroundColor: Colors.white,
+);
+
 var mainTheme = ThemeData(
   visualDensity: VisualDensity.adaptivePlatformDensity,
   textTheme: myTextTheme,
   primaryTextTheme: myTextTheme,
   dividerColor: grey500,
+
   // outlined button
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(

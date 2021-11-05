@@ -381,7 +381,7 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                                             onPressed: () =>
                                                 Navigator.pushNamed(
                                               context,
-                                              LoginPage.ROUTE_NAME,
+                                              LoginPage.routeName,
                                             ),
                                             child: Text('Masuk'),
                                           ),

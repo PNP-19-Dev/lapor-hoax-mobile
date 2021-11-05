@@ -263,7 +263,7 @@ class _OnWelcome extends StatelessWidget {
             width: double.infinity,
             height: 42,
             child: ElevatedButton(
-              onPressed: () => Navigation.intent(LoginPage.ROUTE_NAME),
+              onPressed: () => Navigation.intent(LoginPage.routeName),
               child: const Text('Login Sekarang'),
             ),
           ),

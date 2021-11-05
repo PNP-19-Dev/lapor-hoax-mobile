@@ -444,7 +444,7 @@ class _Welcome extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                Navigation.intent(LoginPage.ROUTE_NAME);
+                Navigation.intent(LoginPage.routeName);
               },
               child: const Text('Login'),
             ),

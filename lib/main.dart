@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Lapor Hoax',
-        theme: mainTheme,
+        theme: secondaryTheme,
         debugShowCheckedModeBanner: false,
         themeMode: ThemeMode.light,
         navigatorKey: navigatorKey,
@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
           switch (settings.name) {
             case HomePage.ROUTE_NAME:
               return MaterialPageRoute(builder: (_) => HomePage());
-            case LoginPage.ROUTE_NAME:
+            case LoginPage.routeName:
               return MaterialPageRoute(builder: (_) => LoginPage());
             case ForgotPasswordSectionOne.ROUTE_NAME:
               return MaterialPageRoute(

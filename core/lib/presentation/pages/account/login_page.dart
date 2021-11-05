@@ -13,7 +13,9 @@ import 'forgot_password_page.dart';
 import 'register_page.dart';
 
 class LoginPage extends StatefulWidget {
-  static const String ROUTE_NAME = "/login_page";
+  static const String routeName = "/login_page";
+
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -21,8 +23,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _obscureText = true;
-  var _usernameController = TextEditingController();
-  var _passwordController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   GestureDetector(
                     onTap: () => Navigation.back(),
-                    child: Icon(Icons.arrow_back),
+                    child: const Icon(Icons.arrow_back),
                   ),
                   Center(
                     child: Column(
@@ -49,8 +51,9 @@ class _LoginPageState extends State<LoginPage> {
                           height: 80,
                           width: 80,
                         ),
-                        SizedBox(height: 10),
-                        Text("Login", style: TextStyle(fontSize: 30.0)),
+                        const SizedBox(height: 10),
+                        Text("Login",
+                            style: Theme.of(context).textTheme.headline4),
                       ],
                     ),
                   ),
