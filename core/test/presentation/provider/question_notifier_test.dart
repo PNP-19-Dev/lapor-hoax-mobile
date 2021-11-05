@@ -42,7 +42,7 @@ void main() {
       // act
       await provider.fetchQuestions();
       // assert
-      expect(provider.questionState, RequestState.Loaded);
+      expect(provider.questionState, RequestState.loaded);
       expect(provider.question, [testQuestion]);
       expect(listenerCallCount, 2);
     });
@@ -55,7 +55,7 @@ void main() {
       // act
       await provider.getUserSecurityQuestion(1);
       // assert
-      expect(provider.userQuestionState, RequestState.Loaded);
+      expect(provider.userQuestionState, RequestState.loaded);
       expect(provider.userQuestion, testUserChallenge);
       expect(listenerCallCount, 2);
     });
@@ -69,7 +69,7 @@ void main() {
       // act
       await provider.fetchQuestions();
       // assert
-      expect(provider.questionState, RequestState.Error);
+      expect(provider.questionState, RequestState.error);
       expect(provider.questionMessage, "Server Failure");
       expect(listenerCallCount, 2);
     });
@@ -82,7 +82,7 @@ void main() {
       // act
       await provider.getUserSecurityQuestion(1);
       // assert
-      expect(provider.userQuestionState, RequestState.Error);
+      expect(provider.userQuestionState, RequestState.error);
       expect(provider.userQuestionMessage, "Server Failure");
       expect(listenerCallCount, 2);
     });

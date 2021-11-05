@@ -10,9 +10,9 @@ import '../../domain/entities/session_data.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/entities/user_question.dart';
 import '../../domain/repositories/repository.dart';
-import '../../utils/NetworkInfoImpl.dart';
 import '../../utils/exception.dart';
 import '../../utils/failure.dart';
+import '../../utils/network_info_impl.dart';
 import '../datasources/local_data_source.dart';
 import '../datasources/remote_data_source.dart';
 import '../models/feed_table.dart';
@@ -38,9 +38,9 @@ class RepositoryImpl implements Repository {
       final result = await remoteDataSource.getFeeds();
       return Right(result.map((data) => data.toEntity()).toList());
     } on ServerException {
-      return Left(ServerFailure('Cant Retrieve Feed Data'));
+      return const Left(ServerFailure('Cant Retrieve Feed Data'));
     } on SocketException {
-      return Left(ConnectionFailure('Failed to connect to the network'));
+      return const Left(ConnectionFailure('Failed to connect to the network'));
     }
   }
 
@@ -94,9 +94,9 @@ class RepositoryImpl implements Repository {
             result.map((category) => Category.fromDTO(category)).toList());
         return Right(result.map((e) => e.toEntity()).toList());
       } on ServerException {
-        return Left(ServerFailure("Cant Fetch Categories"));
+        return const Left(ServerFailure("Cant Fetch Categories"));
       } on SocketException {
-        return Left(ConnectionFailure("Failed to connect to the network"));
+        return const Left(ConnectionFailure("Failed to connect to the network"));
       }
     } else {
       final result = await localDataSource.getCachedCategory();
@@ -110,9 +110,9 @@ class RepositoryImpl implements Repository {
       final result = await remoteDataSource.getReport(token, id);
       return Right(result.map((data) => data.toEntity()).toList());
     } on ServerException {
-      return Left(ServerFailure("Cant Fetch Reports"));
+      return const Left(ServerFailure("Cant Fetch Reports"));
     } on SocketException {
-      return Left(ConnectionFailure("Failed to connect to the network"));
+      return const Left(ConnectionFailure("Failed to connect to the network"));
     }
   }
 
@@ -122,9 +122,9 @@ class RepositoryImpl implements Repository {
       final result = await remoteDataSource.getUser(email);
       return Right(result.map((e) => e.toEntity()).first);
     } on ServerException {
-      return Left(ServerFailure("Not Found"));
+      return const Left(ServerFailure("Not Found"));
     } on SocketException {
-      return Left(ConnectionFailure("Failed to connect to the network"));
+      return const Left(ConnectionFailure("Failed to connect to the network"));
     }
   }
 
@@ -135,9 +135,9 @@ class RepositoryImpl implements Repository {
       final result = await remoteDataSource.postLogin(username, password);
       return Right(result);
     } on ServerException {
-      return Left(ServerFailure("UserName atau Password Salah!"));
+      return const Left(ServerFailure("UserName atau Password Salah!"));
     } on SocketException {
-      return Left(ConnectionFailure("Failed to connect to the network"));
+      return const Left(ConnectionFailure("Failed to connect to the network"));
     }
   }
 
@@ -147,9 +147,9 @@ class RepositoryImpl implements Repository {
       final result = await remoteDataSource.postRegister(user);
       return Right(result);
     } on ServerException {
-      return Left(ServerFailure("Invalid Data"));
+      return const Left(ServerFailure("Invalid Data"));
     } on SocketException {
-      return Left(ConnectionFailure("Failed to connect to the network"));
+      return const Left(ConnectionFailure("Failed to connect to the network"));
     }
   }
 
@@ -160,9 +160,9 @@ class RepositoryImpl implements Repository {
       final result = await remoteDataSource.postReport(token, report);
       return Right(result.toEntity());
     } on ServerException {
-      return Left(ServerFailure("Invalid"));
+      return const Left(ServerFailure("Invalid"));
     } on SocketException {
-      return Left(ConnectionFailure("Failed to connect to the network"));
+      return const Left(ConnectionFailure("Failed to connect to the network"));
     }
   }
 
@@ -171,12 +171,12 @@ class RepositoryImpl implements Repository {
       UserQuestion challenge) async {
     try {
       final result = await remoteDataSource.postChallenge(challenge);
-      print('Challenge Result $result');
+      // print('Challenge Result $result');
       return Right(result);
     } on ServerException {
-      return Left(ServerFailure("Invalid"));
+      return const Left(ServerFailure("Invalid"));
     } on SocketException {
-      return Left(ConnectionFailure("Failed to connect to the network"));
+      return const Left(ConnectionFailure("Failed to connect to the network"));
     }
   }
 
@@ -186,9 +186,9 @@ class RepositoryImpl implements Repository {
       final result = await remoteDataSource.deleteReport(token, id);
       return Right(result);
     } on ServerException {
-      return Left(ServerFailure("Cant Delete Report"));
+      return const Left(ServerFailure("Cant Delete Report"));
     } on SocketException {
-      return Left(ConnectionFailure("Failed to connect to the network"));
+      return const Left(ConnectionFailure("Failed to connect to the network"));
     }
   }
 
@@ -198,9 +198,9 @@ class RepositoryImpl implements Repository {
       final result = await remoteDataSource.getPasswordReset(email);
       return Right(result);
     } on ServerException {
-      return Left(ServerFailure("Cant Reset"));
+      return const Left(ServerFailure("Cant Reset"));
     } on SocketException {
-      return Left(ConnectionFailure("Failed to connect to the network"));
+      return const Left(ConnectionFailure("Failed to connect to the network"));
     }
   }
 
@@ -213,9 +213,9 @@ class RepositoryImpl implements Repository {
             result.map((question) => Question.fromDTO(question)).toList());
         return Right(result.map((e) => e.toEntity()).toList());
       } on ServerException {
-        return Left(ServerFailure("Cant Retrieve Data"));
+        return const Left(ServerFailure("Cant Retrieve Data"));
       } on SocketException {
-        return Left(ConnectionFailure("Failed to connect to the network"));
+        return const Left(ConnectionFailure("Failed to connect to the network"));
       }
     } else {
       final result = await localDataSource.getCachedQuestion();
@@ -231,9 +231,9 @@ class RepositoryImpl implements Repository {
       await remoteDataSource.postChangePassword(oldPass, newPass, token);
       return Right(result);
     } on ServerException {
-      return Left(ServerFailure("Cant Change Password"));
+      return const Left(ServerFailure("Cant Change Password"));
     } on SocketException {
-      return Left(ConnectionFailure("Failed to connect to the network"));
+      return const Left(ConnectionFailure("Failed to connect to the network"));
     }
   }
 
@@ -245,9 +245,9 @@ class RepositoryImpl implements Repository {
       await remoteDataSource.postFcmToken(user.toString(), fcmToken);
       return Right(result);
     } on ServerException {
-      return Left(ServerFailure("Cant To Send"));
+      return const Left(ServerFailure("Cant To Send"));
     } on SocketException {
-      return Left(ConnectionFailure("Failed to connect to the network"));
+      return const Left(ConnectionFailure("Failed to connect to the network"));
     }
   }
 
@@ -258,9 +258,9 @@ class RepositoryImpl implements Repository {
       await remoteDataSource.updateFcmToken(user.toString(), fcmToken);
       return Right(result);
     } on ServerException {
-      return Left(ServerFailure("Cant To Send"));
+      return const Left(ServerFailure("Cant To Send"));
     } on SocketException {
-      return Left(ConnectionFailure("Failed to connect to the network"));
+      return const Left(ConnectionFailure("Failed to connect to the network"));
     }
   }
 
@@ -270,7 +270,7 @@ class RepositoryImpl implements Repository {
     if (result != null) {
       return Right(result);
     } else {
-      return Left(CustomException('No Data'));
+      return const Left(CustomException('No Data'));
     }
   }
 
@@ -280,7 +280,7 @@ class RepositoryImpl implements Repository {
     if (result == 'Session Removed') {
       return Right(result);
     } else {
-      return Left(CustomException('No Data'));
+      return const Left(CustomException('No Data'));
     }
   }
 
@@ -290,7 +290,7 @@ class RepositoryImpl implements Repository {
     if (result == 'Session Saved') {
       return Right(result);
     } else {
-      return Left(CustomException('No Data'));
+      return const Left(CustomException('No Data'));
     }
   }
 
@@ -300,9 +300,9 @@ class RepositoryImpl implements Repository {
       final result = await remoteDataSource.getUserQuestions(id);
       return Right(result.toEntity());
     } on ServerException {
-      return Left(ServerFailure("Failed to Get Data"));
+      return const Left(ServerFailure("Failed to Get Data"));
     } on SocketException {
-      return Left(ConnectionFailure("Failed to connect to the network"));
+      return const Left(ConnectionFailure("Failed to connect to the network"));
     }
   }
 
@@ -312,9 +312,9 @@ class RepositoryImpl implements Repository {
       final result = await remoteDataSource.getFeedDetail(id);
       return Right(result.toEntity());
     } on ServerException {
-      return Left(ServerFailure("Failed To Get Detail"));
+      return const Left(ServerFailure("Failed To Get Detail"));
     } on SocketException {
-      return Left(ConnectionFailure("Failed to connect to the network"));
+      return const Left(ConnectionFailure("Failed to connect to the network"));
     }
   }
 }

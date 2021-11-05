@@ -52,7 +52,7 @@ class _HistoryPageState extends State<HistoryPage> {
             onDismissed: (actionType) async {
               setState(() {
                 // remove item pada report
-                if (provider.postReportState == RequestState.Success) {
+                if (provider.postReportState == RequestState.success) {
                   _showSnackBar(context, provider.deleteReportMessage);
                   reports.removeAt(index);
                 } else {
@@ -85,12 +85,12 @@ class _HistoryPageState extends State<HistoryPage> {
 
   Widget _buildReportItem() {
     return Consumer<ReportNotifier>(builder: (context, provider, widget) {
-      if (provider.fetchReportState == RequestState.Loading) {
+      if (provider.fetchReportState == RequestState.loading) {
         return Center(child: CircularProgressIndicator());
-      } else if (provider.fetchReportState == RequestState.Loaded) {
+      } else if (provider.fetchReportState == RequestState.loaded) {
         var reports = provider.reports;
         return _getSlidable(context, reports);
-      } else if (provider.fetchReportState == RequestState.Empty) {
+      } else if (provider.fetchReportState == RequestState.empty) {
         return Center(child: Text(provider.fetchReportMessage));
       } else {
         return Center(

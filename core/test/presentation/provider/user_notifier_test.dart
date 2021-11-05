@@ -115,7 +115,7 @@ void main() {
       // act
       await provider.getUserData(tEmail);
       // assert
-      expect(provider.userState, RequestState.Loaded);
+      expect(provider.userState, RequestState.loaded);
       expect(provider.user, testUser);
       expect(listenerCallCount, 2);
     });
@@ -126,7 +126,7 @@ void main() {
       // act
       await provider.getUserData(tEmail);
       // assert
-      expect(provider.userState, RequestState.Error);
+      expect(provider.userState, RequestState.error);
       expect(provider.userMessage, "Can't get data");
       expect(listenerCallCount, 1);
     });
@@ -304,7 +304,7 @@ void main() {
       // act
       await provider.register(tRegisterModel);
       // assert
-      expect(provider.registerState, RequestState.Loaded);
+      expect(provider.registerState, RequestState.loaded);
       expect(provider.userResponse, tUserResponse);
       expect(listenerCallCount, 2);
     });
@@ -315,7 +315,7 @@ void main() {
       // act
       await provider.register(tRegisterModel);
       // assert
-      expect(provider.registerState, RequestState.Error);
+      expect(provider.registerState, RequestState.error);
       expect(provider.registerMessage, "Invalid");
       expect(listenerCallCount, 1);
     });

@@ -55,7 +55,7 @@ class UserNotifier extends ChangeNotifier {
     required this.putFCMToken,
   });
 
-  RequestState _userState = RequestState.Empty;
+  RequestState _userState = RequestState.empty;
   RequestState get userState => _userState;
 
   String _sessionMessage = '';
@@ -95,64 +95,62 @@ class UserNotifier extends ChangeNotifier {
     });
   }
 
-  RequestState _fcmState = RequestState.Empty;
+  RequestState _fcmState = RequestState.empty;
   RequestState get fcmState => _fcmState;
 
   String _fcmMessage = '';
   String get fcmMessage => _fcmMessage;
 
   Future<void> postToken(int userid, String token) async {
-    _fcmState = RequestState.Loading;
+    _fcmState = RequestState.loading;
     notifyListeners();
 
     final result = await postFCMToken.execute(userid, token);
 
     result.fold((failure) {
       _fcmMessage = failure.message;
-      _fcmState = RequestState.Error;
+      _fcmState = RequestState.error;
     }, (message) {
       _fcmMessage = message;
-      _fcmState = RequestState.Loaded;
+      _fcmState = RequestState.loaded;
       notifyListeners();
     });
   }
 
   Future<void> putToken(int userid, String token) async {
-    _fcmState = RequestState.Loading;
+    _fcmState = RequestState.loading;
     notifyListeners();
 
     final result = await putFCMToken.execute(userid, token);
 
     result.fold((failure) {
       _fcmMessage = failure.message;
-      _fcmState = RequestState.Error;
+      _fcmState = RequestState.error;
     }, (message) {
       _fcmMessage = message;
-      _fcmState = RequestState.Loaded;
+      _fcmState = RequestState.loaded;
       notifyListeners();
     });
   }
 
   User? _user;
-
   User? get user => _user;
 
   String _userMessage = '';
-
   String get userMessage => _userMessage;
 
   Future<void> getUserData(String email) async {
-    _userState = RequestState.Loading;
+    _userState = RequestState.loading;
     notifyListeners();
 
     final result = await getUser.execute(email);
 
     result.fold((failure) {
-      _userState = RequestState.Error;
+      _userState = RequestState.error;
       _userMessage = failure.message;
       notifyListeners();
     }, (user) {
-      _userState = RequestState.Loaded;
+      _userState = RequestState.loaded;
       _user = user;
       notifyListeners();
     });
@@ -161,14 +159,14 @@ class UserNotifier extends ChangeNotifier {
   late UserToken _userToken;
   UserToken get userToken => _userToken;
 
-  RequestState _loginState = RequestState.Empty;
+  RequestState _loginState = RequestState.empty;
   RequestState get loginState => _loginState;
 
   String _loginMessage = '';
   String get loginMessage => _loginMessage;
 
   Future<void> login(String username, String password) async {
-    _loginState = RequestState.Loading;
+    _loginState = RequestState.loading;
     notifyListeners();
 
     final result = await postLogin.execute(username, password);
@@ -176,11 +174,11 @@ class UserNotifier extends ChangeNotifier {
 
     result.fold((failure) {
       _loginMessage = failure.message;
-      _loginState = RequestState.Error;
+      _loginState = RequestState.error;
     }, (userToken) {
       _userToken = userToken;
       user.fold((failure) {
-        _userState = RequestState.Error;
+        _userState = RequestState.error;
       }, (user) {
         var data = SessionData(
           email: user.email,
@@ -192,43 +190,39 @@ class UserNotifier extends ChangeNotifier {
         saveSessionData.execute(data);
         _loginMessage = messageLogin;
       });
-      _loginState = RequestState.Success;
+      _loginState = RequestState.success;
       notifyListeners();
     });
   }
 
   late UserResponse _userResponse;
-
   UserResponse get userResponse => _userResponse;
 
-  RequestState _registerState = RequestState.Empty;
-
+  RequestState _registerState = RequestState.empty;
   RequestState get registerState => _registerState;
 
   String _registerMessage = '';
-
   String get registerMessage => _registerMessage;
 
   Future<void> register(RegisterModel user) async {
-    _registerState = RequestState.Loading;
+    _registerState = RequestState.loading;
     notifyListeners();
 
     final result = await postRegister.execute(user);
 
     result.fold((failure) {
       _registerMessage = failure.message;
-      _registerState = RequestState.Error;
+      _registerState = RequestState.error;
     }, (userResponse) {
       _userResponse = userResponse;
       _registerMessage = messageRegister;
-      _registerState = RequestState.Loaded;
+      _registerState = RequestState.loaded;
       notifyListeners();
     });
   }
 
   static const String messageReset = 'RESETED';
   String _resetMessage = '';
-
   String get resetMessage => _resetMessage;
 
   Future<void> reset(String email) async {
@@ -243,11 +237,9 @@ class UserNotifier extends ChangeNotifier {
   }
 
   String _challengeMessage = '';
-
   String get challengeMessage => _challengeMessage;
 
-  RequestState _challengeState = RequestState.Empty;
-
+  RequestState _challengeState = RequestState.empty;
   RequestState get challengeState => _challengeState;
 
   Future<void> postChallenge(UserQuestion challenge) async {
@@ -258,7 +250,7 @@ class UserNotifier extends ChangeNotifier {
         _challengeMessage = failure.message;
       },
       (message) {
-        _challengeState = RequestState.Success;
+        _challengeState = RequestState.success;
         _challengeMessage = messageQuestion;
       },
     );
@@ -266,7 +258,6 @@ class UserNotifier extends ChangeNotifier {
   }
 
   String _passwordChangeMessage = '';
-
   String get passwordChangeMessage => _passwordChangeMessage;
   static const String messageChangePassword = 'password telah diganti';
 

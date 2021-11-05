@@ -10,7 +10,7 @@ import '../../utils/datetime_helper.dart';
 class ReportListItem extends StatelessWidget {
   final Report report;
 
-  ReportListItem({required this.report});
+  const ReportListItem({Key? key, required this.report}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class ReportListItem extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            SizedBox(width: 15),
+            const SizedBox(width: 15),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,9 +42,9 @@ class ReportListItem extends StatelessWidget {
                         'assets/icons/modified_date.svg',
                         height: 13,
                       ),
-                      SizedBox(width: 2),
+                      const SizedBox(width: 2),
                       Text(
-                        '${DateTimeHelper.formattedDate(report.dateReported.toString())}',
+                        DateTimeHelper.formattedDate(report.dateReported.toString()),
                         style: GoogleFonts.inter(
                           fontWeight: FontWeight.w400,
                           fontSize: 10,
@@ -61,11 +61,11 @@ class ReportListItem extends StatelessWidget {
               children: [
                 Text(
                   'Status : ${report.status}',
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Color(0xFFFF3333), fontWeight: FontWeight.bold),
                 ),
                 Text(
-                    'Tag : ${report.verdict == null ? 'N/A' : report.verdict}'),
+                    'Tag : ${report.verdict ?? 'N/A'}'),
               ],
             ),
           ],

@@ -42,7 +42,7 @@ void main() {
     // act
     await provider.fetchSavedFeeds();
     // assert
-    expect(provider.feedListState, RequestState.Loaded);
+    expect(provider.feedListState, RequestState.loaded);
     expect(provider.saveListFeeds, [tFeed]);
     expect(listenerCallCount, 2);
   });
@@ -54,7 +54,7 @@ void main() {
     // act
     await provider.fetchSavedFeeds();
     // assert
-    expect(provider.feedListState, RequestState.Error);
+    expect(provider.feedListState, RequestState.error);
     expect(provider.message, "Can't get data");
     expect(listenerCallCount, 2);
   });

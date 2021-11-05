@@ -81,7 +81,7 @@ void main() {
     // act
     await provider.fetchReports(TokenId(tId, tToken));
     // assert
-    expect(provider.fetchReportState, RequestState.Loaded);
+    expect(provider.fetchReportState, RequestState.loaded);
     expect(provider.reports, [testReport]);
     expect(listenerCallCount, 2);
   });
@@ -93,7 +93,7 @@ void main() {
     // act
     await provider.fetchReports(TokenId(tId, tToken));
     // assert
-    expect(provider.fetchReportState, RequestState.Error);
+    expect(provider.fetchReportState, RequestState.error);
     expect(provider.fetchReportMessage, "Can't get data");
     expect(listenerCallCount, 2);
   });
@@ -106,7 +106,7 @@ void main() {
     // act
     await provider.fetchCategories();
     // assert
-    expect(provider.fetchCategoryState, RequestState.Loaded);
+    expect(provider.fetchCategoryState, RequestState.loaded);
     expect(provider.category, [testCategory]);
     expect(listenerCallCount, 2);
   });
@@ -119,7 +119,7 @@ void main() {
     // act
     await provider.fetchCategories();
     // assert
-    expect(provider.fetchCategoryState, RequestState.Error);
+    expect(provider.fetchCategoryState, RequestState.error);
     expect(provider.fetchReportMessage, "");
     expect(listenerCallCount, 2);
   });
@@ -133,7 +133,7 @@ void main() {
     // act
     await provider.sendReport(tToken, tReportRequest);
     // assert
-    expect(provider.postReportState, RequestState.Success);
+    expect(provider.postReportState, RequestState.success);
     expect(provider.report, tReport);
     expect(listenerCallCount, 2);
   });
@@ -145,7 +145,7 @@ void main() {
     // act
     await provider.sendReport(tToken, tReportRequest);
     // assert
-    expect(provider.postReportState, RequestState.Error);
+    expect(provider.postReportState, RequestState.error);
     expect(provider.fetchReportMessage, "");
     expect(listenerCallCount, 2);
   });
@@ -159,7 +159,7 @@ void main() {
     // act
     await provider.removeReport(tToken, tId, 'belum diproses');
     // assert
-    expect(provider.deleteReportState, RequestState.Success);
+    expect(provider.deleteReportState, RequestState.success);
     expect(provider.deleteReportMessage, 'Laporan Telah Dihapus');
     expect(listenerCallCount, 2);
   });
@@ -171,7 +171,7 @@ void main() {
     // act
     await provider.removeReport(tToken, tId, 'belum diproses');
     // assert
-    expect(provider.deleteReportState, RequestState.Error);
+    expect(provider.deleteReportState, RequestState.error);
     expect(provider.deleteReportMessage, "");
     expect(listenerCallCount, 2);
   });

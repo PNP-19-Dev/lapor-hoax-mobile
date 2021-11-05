@@ -26,7 +26,7 @@ class NewsDetailNotifier extends ChangeNotifier {
   late Feed _feed;
   Feed get feed => _feed;
 
-  RequestState _feedState = RequestState.Empty;
+  RequestState _feedState = RequestState.empty;
   RequestState get feedState => _feedState;
 
   String _message = '';
@@ -36,19 +36,19 @@ class NewsDetailNotifier extends ChangeNotifier {
   bool get isAddedtoSavedFeed => _isAddedtoSavedFeed;
 
   Future<void> fetchFeedDetail(int id) async {
-    _feedState = RequestState.Loading;
+    _feedState = RequestState.loading;
     notifyListeners();
 
     final detailResult = await getFeedDetail.execute(id);
     detailResult.fold(
       (failure) {
-        _feedState = RequestState.Error;
+        _feedState = RequestState.error;
         _message = failure.message;
         notifyListeners();
       },
       (feed) {
         _feed = feed;
-        _feedState = RequestState.Loaded;
+        _feedState = RequestState.loaded;
         notifyListeners();
       },
     );

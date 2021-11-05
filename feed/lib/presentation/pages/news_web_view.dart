@@ -147,11 +147,11 @@ class CustomScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer<NewsDetailNotifier>(builder: (context, data, child) {
-        if (data.feedState == RequestState.Loading) {
+        if (data.feedState == RequestState.loading) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (data.feedState == RequestState.Loaded) {
+        } else if (data.feedState == RequestState.loaded) {
           return SafeArea(
             child: Stack(
               children: [

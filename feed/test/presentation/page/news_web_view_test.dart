@@ -75,7 +75,7 @@ void main() {
       // act
       provider.fetchFeedDetail(tId);
       // assert
-      expect(provider.feedState, RequestState.Loading);
+      expect(provider.feedState, RequestState.loading);
       expect(listenerCallCount, 1);
     });
 
@@ -85,7 +85,7 @@ void main() {
       // act
       await provider.fetchFeedDetail(tId);
       // assert
-      expect(provider.feedState, RequestState.Loaded);
+      expect(provider.feedState, RequestState.loaded);
       expect(provider.feed, tFeed);
       expect(listenerCallCount, 2);
     });
@@ -128,7 +128,7 @@ void main() {
     test('should update feedlist message success', () async {
       // arrange
       when(mockSaveFeed.execute(tFeed))
-          .thenAnswer((_) async => Right('Berita Telah Disimpan'));
+          .thenAnswer((_) async => const Right('Berita Telah Disimpan'));
       when(mockGetFeedSaveStatus.execute(tFeed.id))
           .thenAnswer((_) async => true);
       // act
@@ -162,7 +162,7 @@ void main() {
       // act
       await provider.fetchFeedDetail(tId);
       // assert
-      expect(provider.feedState, RequestState.Error);
+      expect(provider.feedState, RequestState.error);
       expect(provider.message, 'Server Failure');
       expect(listenerCallCount, 2);
     });

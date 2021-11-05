@@ -25,7 +25,7 @@ class DismissibleWidget<T> extends StatelessWidget {
   Widget build(BuildContext context) => Slidable(
         key: key,
         dismissal: SlidableDismissal(
-          child: SlidableDrawerDismissal(),
+          child: const SlidableDrawerDismissal(),
           onDismissed: (actionType) {
             _showSnackBar(context, 'Deleted');
           },
@@ -34,7 +34,7 @@ class DismissibleWidget<T> extends StatelessWidget {
           },
         ),
         actionExtentRatio: 0.25,
-        actionPane: SlidableBehindActionPane(),
+        actionPane: const SlidableBehindActionPane(),
         child: child,
         secondaryActions: [
           IconSlideAction(

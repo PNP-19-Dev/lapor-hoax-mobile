@@ -10,7 +10,7 @@ class FeedNotifier extends ChangeNotifier {
 
   List<Feed> get feeds => _feeds;
 
-  RequestState _feedState = RequestState.Empty;
+  RequestState _feedState = RequestState.empty;
   RequestState get feedState => _feedState;
 
   String _message = '';
@@ -24,17 +24,17 @@ class FeedNotifier extends ChangeNotifier {
   final GetFeeds getFeeds;
 
   Future<void> fetchFeeds() async {
-    _feedState = RequestState.Loading;
+    _feedState = RequestState.loading;
     notifyListeners();
 
     final result = await getFeeds.execute();
 
     result.fold((failure) {
       _message = failure.message;
-      _feedState = RequestState.Error;
+      _feedState = RequestState.error;
     }, (feedsData) {
       _feeds = feedsData;
-      _feedState = RequestState.Loaded;
+      _feedState = RequestState.loaded;
       notifyListeners();
     });
   }

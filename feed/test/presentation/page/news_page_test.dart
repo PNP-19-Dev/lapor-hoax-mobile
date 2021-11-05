@@ -28,7 +28,7 @@ void main() {
 
   testWidgets('Page should display progress bar when loading',
       (WidgetTester tester) async {
-    when(mockFeedNotifier.feedState).thenReturn(RequestState.Loading);
+    when(mockFeedNotifier.feedState).thenReturn(RequestState.loading);
 
     //final progressFinder = find.byType(CircularProgressIndicator);
     final centerFinder = find.byType(Center);

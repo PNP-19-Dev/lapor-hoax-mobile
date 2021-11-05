@@ -45,7 +45,7 @@ void main() {
     // act
     await provider.fetchFeeds();
     // assert
-    expect(provider.feedState, RequestState.Loaded);
+    expect(provider.feedState, RequestState.loaded);
     expect(provider.feeds, [tFeed]);
     expect(listenerCallCount, 2);
   });
@@ -57,7 +57,7 @@ void main() {
     // act
     await provider.fetchFeeds();
     // assert
-    expect(provider.feedState, RequestState.Error);
+    expect(provider.feedState, RequestState.error);
     expect(provider.message, "Can't get data");
     expect(listenerCallCount, 1);
   });

@@ -76,7 +76,7 @@ Future<void> main() async {
       // act
       provider.fetchFeedDetail(tId);
       // assert
-      expect(provider.feedState, RequestState.Loading);
+      expect(provider.feedState, RequestState.loading);
       expect(listenerCallCount, 1);
     });
 
@@ -86,7 +86,7 @@ Future<void> main() async {
       // act
       await provider.fetchFeedDetail(tId);
       // assert
-      expect(provider.feedState, RequestState.Loaded);
+      expect(provider.feedState, RequestState.loaded);
       expect(provider.feed, tFeed);
       expect(listenerCallCount, 2);
     });
@@ -164,7 +164,7 @@ Future<void> main() async {
       // act
       await provider.fetchFeedDetail(tId);
       // assert
-      expect(provider.feedState, RequestState.Error);
+      expect(provider.feedState, RequestState.error);
       expect(provider.message, 'Server Failure');
       expect(listenerCallCount, 2);
     });

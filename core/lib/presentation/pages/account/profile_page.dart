@@ -42,9 +42,9 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Consumer<UserNotifier>(
         builder: (_, data, child) {
-          if (data.userState == RequestState.Loading) {
+          if (data.userState == RequestState.loading) {
             return Center(child: CircularProgressIndicator());
-          } else if (data.userState == RequestState.Loaded) {
+          } else if (data.userState == RequestState.loaded) {
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   onPressed: () => Navigation.intentWithData(
-                                      ChangeUserQuestion.ROUTE_NAME,
+                                      ChangeUserQuestion.routeName,
                                       userData.id),
                                   child: Text('Ubah Pertanyaan Keamanan'),
                                 ),

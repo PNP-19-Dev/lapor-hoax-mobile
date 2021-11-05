@@ -347,11 +347,11 @@ class _ReportPageState extends State<ReportPage> with RouteAware {
                                           listen: false)
                                       .report;
 
-                                  if (state == RequestState.Success) {
+                                  if (state == RequestState.success) {
                                     progress!.dismiss();
                                     Navigation.intentWithData(
                                         OnSuccessReport.ROUTE_NAME, result!);
-                                  } else if (state == RequestState.Error) {
+                                  } else if (state == RequestState.error) {
                                     progress!.dismiss();
                                     toast(message);
                                     Navigation.intent(

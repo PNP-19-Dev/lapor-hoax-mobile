@@ -52,11 +52,11 @@ class _SavedNewsState extends State<SavedNews> with RouteAware {
         padding: const EdgeInsets.all(8.0),
         child: Consumer<SavedNewsNotifier>(
           builder: (context, data, child) {
-            if (data.feedListState == RequestState.Loading) {
+            if (data.feedListState == RequestState.loading) {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.feedListState == RequestState.Loaded) {
+            } else if (data.feedListState == RequestState.loaded) {
               return ListView.builder(
                 itemBuilder: (context, index) {
                   news = data.saveListFeeds;
@@ -64,7 +64,7 @@ class _SavedNewsState extends State<SavedNews> with RouteAware {
                 },
                 itemCount: data.saveListFeeds.length,
               );
-            } else if (data.feedListState == RequestState.Empty) {
+            } else if (data.feedListState == RequestState.empty) {
               return Center(
                   key: Key('error_message'), child: Text(data.message));
             } else {

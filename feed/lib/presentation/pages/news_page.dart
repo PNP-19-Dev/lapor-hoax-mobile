@@ -16,6 +16,8 @@ import 'news_web_view.dart';
 class NewsPage extends StatefulWidget {
   static const String pageName = 'Berita';
 
+  const NewsPage({Key? key}) : super(key: key);
+
   @override
   _NewsPageState createState() => _NewsPageState();
 }
@@ -25,7 +27,8 @@ class _NewsPageState extends State<NewsPage> {
   void initState() {
     super.initState();
     Future.microtask(
-        () => Provider.of<FeedNotifier>(context, listen: false)..fetchFeeds());
+        () => Provider.of<FeedNotifier>(context, listen: false).fetchFeeds()
+    );
   }
 
   @override
@@ -44,8 +47,9 @@ class _NewsPageState extends State<NewsPage> {
             padding: const EdgeInsets.all(8.0),
             child: Image.asset('assets/icons/logo_new.png', width: 60),
           ),
-          actions: [
-            /*IconButton(
+          actions: const [
+            /*TODO: ADDING NOTIFICATION
+               IconButton(
               onPressed: () {},
               icon: Icon(
                 Icons.notifications_none,
@@ -97,13 +101,10 @@ class _NewsPageState extends State<NewsPage> {
             child: Card(
               child: ListTile(
                 onTap: () => Navigation.intent(tutorialRoute),
-                leading: Icon(Icons.menu_book_sharp),
+                leading: const Icon(Icons.menu_book_sharp),
                 title: Text('Tutorial Penggunaan',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
-                    )),
-                trailing: Icon(Icons.chevron_right),
+                    style: Theme.of(context).textTheme.subtitle2),
+                trailing: const Icon(Icons.chevron_right),
               ),
             ),
           ),
@@ -113,10 +114,7 @@ class _NewsPageState extends State<NewsPage> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
               'Berita',
-              style: GoogleFonts.inter(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-              ),
+              style: Theme.of(context).textTheme.headline6,
             ),
           ),
         ),
@@ -124,20 +122,20 @@ class _NewsPageState extends State<NewsPage> {
         Consumer<FeedNotifier>(
           builder: (context, data, child) {
             final state = data.feedState;
-            if (state == RequestState.Loading) {
-              return SliverToBoxAdapter(
-                child: Container(
+            if (state == RequestState.loading) {
+              return const Expanded(
+                child: SliverToBoxAdapter(
                   child: Center(
                     child: CircularProgressIndicator(),
                   ),
                 ),
               );
-            } else if (state == RequestState.Loaded) {
+            } else if (state == RequestState.loaded) {
               return FeedList(data.feeds);
             } else {
               return SliverList(
                 delegate: SliverChildListDelegate([
-                  Icon(
+                  const Icon(
                     Icons.error,
                     size: 30,
                     color: grey200,
@@ -146,7 +144,7 @@ class _NewsPageState extends State<NewsPage> {
                     'Something Went wrong',
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
-                  Text('${data.message}'),
+                  Text(data.message),
                 ]),
               );
             }
@@ -160,13 +158,13 @@ class _NewsPageState extends State<NewsPage> {
 class FeedList extends StatelessWidget {
   final List<Feed> feeds;
 
-  FeedList(this.feeds);
+  const FeedList(this.feeds, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SliverGrid(
       gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       delegate: SliverChildBuilderDelegate(
         (_, index) {
           var feed = feeds[index];
@@ -181,7 +179,7 @@ class FeedList extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 elevation: 4,
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: Stack(
                     alignment: Alignment.bottomLeft,
@@ -189,10 +187,10 @@ class FeedList extends StatelessWidget {
                     children: [
                       CachedNetworkImage(
                         imageUrl: feed.thumbnail!,
-                        placeholder: (context, url) => Center(
+                        placeholder: (_, url) => const Center(
                           child: CircularProgressIndicator(),
                         ),
-                        errorWidget: (context, url, eror) => Icon(Icons.error),
+                        errorWidget: (_, url, error) => const Icon(Icons.error),
                         fit: BoxFit.fill,
                       ),
                       Positioned(
@@ -201,7 +199,7 @@ class FeedList extends StatelessWidget {
                         right: 0,
                         bottom: 0,
                         child: Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             gradient: LinearGradient(
                               begin: Alignment.bottomCenter,
                               end: Alignment.topCenter,
@@ -220,10 +218,9 @@ class FeedList extends StatelessWidget {
                           feed.title!,
                           softWrap: true,
                           overflow: TextOverflow.clip,
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -233,16 +230,14 @@ class FeedList extends StatelessWidget {
                         right: 0,
                         child: Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.access_time,
                               color: Colors.white,
                             ),
-                            SizedBox(width: 4),
+                            const SizedBox(width: 4),
                             Text(
                               DateTimeHelper.formattedDate(feed.date!),
-                              style: GoogleFonts.inter(
-                                fontSize: 10,
-                                fontWeight: FontWeight.normal,
+                              style: Theme.of(context).textTheme.overline!.copyWith(
                                 color: Colors.white,
                               ),
                             ),

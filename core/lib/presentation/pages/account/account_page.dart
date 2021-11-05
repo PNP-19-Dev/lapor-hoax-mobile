@@ -8,7 +8,6 @@ import 'package:share/share.dart';
 import '../../../data/models/token_id.dart';
 import '../../../domain/entities/session_data.dart';
 import '../../../utils/navigation.dart';
-import '../../../utils/static_data_web.dart';
 import '../../provider/user_notifier.dart';
 import '../../widget/static_page_viewer.dart';
 import '../../widget/toast.dart';
@@ -301,7 +300,7 @@ class _FooterStatement extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () => Navigation.intentWithData(
-            StaticPageViewer.ROUTE_NAME,
+            StaticPageViewer.routeName,
             StaticDataWeb(
               fileName: 'terms_of_service',
               title: 'Syarat Penggunaan',
@@ -318,7 +317,7 @@ class _FooterStatement extends StatelessWidget {
         const Text(' | '),
         GestureDetector(
           onTap: () => Navigation.intentWithData(
-            StaticPageViewer.ROUTE_NAME,
+            StaticPageViewer.routeName,
             StaticDataWeb(
               fileName: 'privacy_policy',
               title: 'Kebijakan Privasi',
@@ -337,3 +336,9 @@ class _FooterStatement extends StatelessWidget {
   }
 }
 
+class StaticDataWeb {
+  final String fileName;
+  final String title;
+
+  StaticDataWeb({required this.fileName, required this.title});
+}

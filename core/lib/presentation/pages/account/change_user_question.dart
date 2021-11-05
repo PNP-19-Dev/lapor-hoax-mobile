@@ -13,9 +13,9 @@ import '../../widget/toast.dart';
 class ChangeUserQuestion extends StatefulWidget {
   final int id;
 
-  static const String ROUTE_NAME = '/change_challenge';
+  static const String routeName = '/change_challenge';
 
-  ChangeUserQuestion({required this.id});
+  const ChangeUserQuestion({Key? key, required this.id}) : super(key: key);
 
   @override
   _ChangeUserQuestionState createState() => _ChangeUserQuestionState();
@@ -23,11 +23,11 @@ class ChangeUserQuestion extends StatefulWidget {
 
 class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
   final _formKey = GlobalKey<FormState>();
-  FocusNode _linkFocusNode = new FocusNode();
+  final FocusNode _linkFocusNode = FocusNode();
   var _selectedQ1, _selectedQ2, _selectedQ3;
-  var _ans1 = TextEditingController();
-  var _ans2 = TextEditingController();
-  var _ans3 = TextEditingController();
+  final _ans1 = TextEditingController();
+  final _ans2 = TextEditingController();
+  final _ans3 = TextEditingController();
   List<Question> questions = [];
 
   @override
@@ -47,13 +47,13 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        title: Text('Atur Pertanyaan Rahasia'),
+        title: const Text('Atur Pertanyaan Rahasia'),
       ),
       body: Consumer<QuestionNotifier>(
         builder: (_, data, child) {
-          if (data.questionState == RequestState.Loading) {
-            return Center(child: CircularProgressIndicator());
-          } else if (data.questionState == RequestState.Loaded) {
+          if (data.questionState == RequestState.loading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (data.questionState == RequestState.loaded) {
             questions =
                 Provider.of<QuestionNotifier>(context, listen: false).question;
 
@@ -133,9 +133,9 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                               iconSize: 0,
                               decoration: InputDecoration(
                                 icon: Image.asset('assets/icons/question.png'),
-                                suffixIcon: Icon(Icons.arrow_drop_down),
+                                suffixIcon: const Icon(Icons.arrow_drop_down),
                               ),
-                              hint: Text('Question 2'),
+                              hint: const Text('Question 2'),
                               value: _selectedQ2,
                               items: questions
                                   .map((value) {
@@ -159,8 +159,8 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                                 }
                               },
                             ),
-                            SizedBox(height: 8),
-                            Text('Jawaban',
+                            const SizedBox(height: 8),
+                            const Text('Jawaban',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             TextFormField(
                               keyboardType: TextInputType.text,
@@ -181,8 +181,8 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                                 }
                               },
                             ),
-                            SizedBox(height: 30),
-                            Text('Pertanyaan 3',
+                            const SizedBox(height: 30),
+                            const Text('Pertanyaan 3',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             DropdownButtonFormField<int>(
                               isExpanded: true,
@@ -215,8 +215,8 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                                 }
                               },
                             ),
-                            SizedBox(height: 8),
-                            Text('Jawaban',
+                            const SizedBox(height: 8),
+                            const Text('Jawaban',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             TextFormField(
                               keyboardType: TextInputType.text,
@@ -272,7 +272,7 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                                       _ans2.clear();
                                       _ans3.clear();
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
+                                          .showSnackBar(const SnackBar(
                                               content:
                                                   Text('Data Diperbarui!')));
                                     }).onError((error, stackTrace) {
@@ -287,7 +287,7 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                                     });
                                   }
                                 },
-                                child: Text('Perbarui Pertanyaan Keamanan'),
+                                child: const Text('Perbarui Pertanyaan Keamanan'),
                               ),
                             ),
                           ],
@@ -299,7 +299,7 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
               ),
             );
           } else {
-            return Center(child: Icon(Icons.error));
+            return const Center(child: Icon(Icons.error));
           }
         },
       ),

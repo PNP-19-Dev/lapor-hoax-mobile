@@ -109,7 +109,7 @@ class MyApp extends StatelessWidget {
                 final id = settings.arguments as int;
                 return UserChallenge(id: id);
               });
-            case ChangeUserQuestion.ROUTE_NAME:
+            case ChangeUserQuestion.routeName:
               return MaterialPageRoute(builder: (_) {
                 final id = settings.arguments as int;
                 return ChangeUserQuestion(id: id);
@@ -147,7 +147,7 @@ class MyApp extends StatelessWidget {
               });
             case SavedNews.ROUTE_NAME:
               return MaterialPageRoute(builder: (_) => SavedNews());
-            case StaticPageViewer.ROUTE_NAME:
+            case StaticPageViewer.routeName:
               return MaterialPageRoute(builder: (_) {
                 final data = settings.arguments as StaticDataWeb;
                 return StaticPageViewer(data: data);

@@ -9,7 +9,7 @@ class SavedNewsNotifier extends ChangeNotifier {
 
   List<Feed> get saveListFeeds => _saveListFeeds;
 
-  var _feedListState = RequestState.Empty;
+  var _feedListState = RequestState.empty;
 
   RequestState get feedListState => _feedListState;
 
@@ -22,22 +22,22 @@ class SavedNewsNotifier extends ChangeNotifier {
   final GetSavedFeeds getSavedFeeds;
 
   Future<void> fetchSavedFeeds() async {
-    _feedListState = RequestState.Loading;
+    _feedListState = RequestState.loading;
     notifyListeners();
 
     final result = await getSavedFeeds.execute();
     result.fold(
       (failure) {
-        _feedListState = RequestState.Error;
+        _feedListState = RequestState.error;
         _message = failure.message;
         notifyListeners();
       },
       (feedData) {
-        _feedListState = RequestState.Loaded;
+        _feedListState = RequestState.loaded;
         _saveListFeeds = feedData;
 
         if (feedData.isEmpty) {
-          _feedListState = RequestState.Empty;
+          _feedListState = RequestState.empty;
           _message = "Empty Data";
           notifyListeners();
         }

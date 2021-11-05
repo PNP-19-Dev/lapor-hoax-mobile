@@ -24,19 +24,18 @@ class ReportNotifier extends ChangeNotifier {
   TokenId? get tokenId => _tokenId;
 
   List<Report> _reports = [];
-
   List<Report> get reports => _reports;
 
-  RequestState _fetchReportState = RequestState.Empty;
+  RequestState _fetchReportState = RequestState.empty;
   RequestState get fetchReportState => _fetchReportState;
 
-  RequestState _postReportState = RequestState.Empty;
+  RequestState _postReportState = RequestState.empty;
   RequestState get postReportState => _postReportState;
 
-  RequestState _fetchCategoryState = RequestState.Empty;
+  RequestState _fetchCategoryState = RequestState.empty;
   RequestState get fetchCategoryState => _fetchCategoryState;
 
-  RequestState _deleteReportState = RequestState.Empty;
+  RequestState _deleteReportState = RequestState.empty;
   RequestState get deleteReportState => _deleteReportState;
 
   String _fetchReportMessage = '';
@@ -64,22 +63,22 @@ class ReportNotifier extends ChangeNotifier {
 
   Future<void> fetchReports(TokenId tokenId) async {
     _tokenId = tokenId;
-    _fetchReportState = RequestState.Loading;
+    _fetchReportState = RequestState.loading;
     notifyListeners();
 
     final result = await getReports.execute(tokenId.token, tokenId.id);
 
     result.fold((failure) {
-      _fetchReportState = RequestState.Error;
+      _fetchReportState = RequestState.error;
       _fetchReportMessage = failure.message;
       notifyListeners();
     }, (reportData) {
-      _fetchReportState = RequestState.Loaded;
+      _fetchReportState = RequestState.loaded;
       _reports = reportData;
       notifyListeners();
 
       if (_reports.isEmpty) {
-        _fetchReportState = RequestState.Empty;
+        _fetchReportState = RequestState.empty;
         _fetchReportMessage = "Tidak ada data saat ini";
         notifyListeners();
       }
@@ -87,17 +86,17 @@ class ReportNotifier extends ChangeNotifier {
   }
 
   Future<List<Category>> fetchCategories() async {
-    _fetchCategoryState = RequestState.Loading;
+    _fetchCategoryState = RequestState.loading;
     notifyListeners();
 
     final result = await getCategories.execute();
 
     result.fold((failure) {
-      _fetchCategoryState = RequestState.Error;
+      _fetchCategoryState = RequestState.error;
       _fetchCategoryMessage = failure.message;
       notifyListeners();
     }, (categoryData) {
-      _fetchCategoryState = RequestState.Loaded;
+      _fetchCategoryState = RequestState.loaded;
       _category = categoryData;
       notifyListeners();
     });
@@ -106,16 +105,16 @@ class ReportNotifier extends ChangeNotifier {
   }
 
   Future<void> sendReport(String token, ReportRequest request) async {
-    _postReportState = RequestState.Loading;
+    _postReportState = RequestState.loading;
     notifyListeners();
 
     final result = await postReport.execute(token, request);
     result.fold((failure) {
-      _postReportState = RequestState.Error;
+      _postReportState = RequestState.error;
       _postReportMessage = 'error: ${failure.message}';
       notifyListeners();
     }, (reportData) {
-      _postReportState = RequestState.Success;
+      _postReportState = RequestState.success;
       _report = reportData;
       _postReportMessage = 'Data Berhasil Diupload';
       notifyListeners();
@@ -123,7 +122,7 @@ class ReportNotifier extends ChangeNotifier {
   }
 
   Future<bool> removeReport(String token, int id, String status) async {
-    _deleteReportState = RequestState.Loading;
+    _deleteReportState = RequestState.loading;
     notifyListeners();
 
     if (status.toLowerCase() != 'belum diproses'){
@@ -133,11 +132,11 @@ class ReportNotifier extends ChangeNotifier {
     final result = await deleteReport.execute(token, id);
     result.fold((failure) {
       _deleteReportMessage = failure.message;
-      _deleteReportState = RequestState.Error;
+      _deleteReportState = RequestState.error;
       notifyListeners();
     }, (reportData) {
       _deleteReportMessage = reportRemoveSuccess;
-      _deleteReportState = RequestState.Success;
+      _deleteReportState = RequestState.success;
       notifyListeners();
     });
     return true;

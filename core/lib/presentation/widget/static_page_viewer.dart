@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../utils/static_data_web.dart';
+import '../pages/account/account_page.dart';
 
 class StaticPageViewer extends StatefulWidget {
-  static const String ROUTE_NAME = '/terms_of_service';
+  static const String routeName = '/terms_of_service';
 
   final StaticDataWeb data;
 
-  StaticPageViewer({required this.data});
+  const StaticPageViewer({Key? key, required this.data}) : super(key: key);
 
   @override
   _StaticPageViewerState createState() => _StaticPageViewerState();

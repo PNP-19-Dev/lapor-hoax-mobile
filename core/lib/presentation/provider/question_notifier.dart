@@ -21,7 +21,7 @@ class QuestionNotifier extends ChangeNotifier {
 
   List<Question> get question => _questions;
 
-  RequestState _questionState = RequestState.Empty;
+  RequestState _questionState = RequestState.empty;
 
   RequestState get questionState => _questionState;
 
@@ -30,17 +30,17 @@ class QuestionNotifier extends ChangeNotifier {
   String get questionMessage => _questionMessage;
 
   Future<void> fetchQuestions() async {
-    _questionState = RequestState.Loading;
+    _questionState = RequestState.loading;
     notifyListeners();
 
     final result = await getQuestions.execute();
 
     result.fold((failure) {
-      _questionState = RequestState.Error;
+      _questionState = RequestState.error;
       notifyListeners();
       _questionMessage = failure.message;
     }, (questions) {
-      _questionState = RequestState.Loaded;
+      _questionState = RequestState.loaded;
       notifyListeners();
       _questions = questions;
       _questionMap = _questionToMap();
@@ -49,9 +49,9 @@ class QuestionNotifier extends ChangeNotifier {
 
   Map<int, String> _questionToMap() {
     Map<int, String> map = {};
-    _questions.forEach((element) {
-      map[element.id] = '${element.question}';
-    });
+    for (var element in _questions) {
+      map[element.id] = element.question;
+    }
     return map;
   }
 
@@ -63,22 +63,22 @@ class QuestionNotifier extends ChangeNotifier {
 
   String get userQuestionMessage => _userQuestionMessage;
 
-  RequestState _userQuestionState = RequestState.Empty;
+  RequestState _userQuestionState = RequestState.empty;
 
   RequestState get userQuestionState => _userQuestionState;
 
   Future<void> getUserSecurityQuestion(int id) async {
-    _userQuestionState = RequestState.Loading;
+    _userQuestionState = RequestState.loading;
     notifyListeners();
 
     final result = await getUserChallenge.execute(id);
 
     result.fold((failure) {
-      _userQuestionState = RequestState.Error;
+      _userQuestionState = RequestState.error;
       _userQuestionMessage = failure.message;
       notifyListeners();
     }, (userQuestion) {
-      _userQuestionState = RequestState.Loaded;
+      _userQuestionState = RequestState.loaded;
       _userQuestion = userQuestion;
       notifyListeners();
     });

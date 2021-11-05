@@ -3,28 +3,25 @@ import 'package:core/domain/entities/feed.dart';
 import 'package:core/utils/datetime_helper.dart';
 import 'package:feed/presentation/pages/news_web_view.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class FeedCard extends StatelessWidget {
   final Feed feed;
 
-  FeedCard(this.feed);
+  const FeedCard(this.feed, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
-        onTap: () async {
-          await Navigator.pushNamed(context, NewsWebView.ROUTE_NAME,
-              arguments: feed.id);
-        },
+        onTap: () => Navigator.pushNamed(context, NewsWebView.ROUTE_NAME,
+            arguments: feed.id),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: Colors.white,
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: Color(0xFFBABABA),
                 blurRadius: 2.0,
@@ -48,10 +45,10 @@ class FeedCard extends StatelessWidget {
                       fit: BoxFit.cover,
                       width: 200,
                       height: 100,
-                      placeholder: (context, url) => Center(
+                      placeholder: (_, url) => const Center(
                         child: CircularProgressIndicator(),
                       ),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      errorWidget: (_, url, error) => const Icon(Icons.error),
                     ),
                   ),
                 ),
@@ -92,26 +89,18 @@ class _Description extends StatelessWidget {
           const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
           Text(
             title,
-            style: GoogleFonts.inter(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-              color: Colors.black,
-            ),
+            style: Theme.of(context).textTheme.bodyText2,
           ),
           const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
           Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.access_time,
                 color: Color(0xFFBABABA),
               ),
               Text(
                 DateTimeHelper.formattedDate(date),
-                style: GoogleFonts.inter(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 10,
-                  color: Color(0xFFBABABA),
-                ),
+                style: Theme.of(context).textTheme.overline,
               ),
             ],
           ),

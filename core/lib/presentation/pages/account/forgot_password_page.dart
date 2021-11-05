@@ -128,7 +128,7 @@ class _ForgotPasswordSectionOneState extends State<ForgotPasswordSectionOne> {
                                             listen: false)
                                         .userMessage;
 
-                                    if (state == RequestState.Loaded) {
+                                    if (state == RequestState.loaded) {
                                       progress.dismiss();
                                       var user = Provider.of<UserNotifier>(
                                               context,
@@ -239,7 +239,7 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                   ),
                   Consumer<QuestionNotifier>(
                     builder: (_, data, child) {
-                      if (data.userQuestionState == RequestState.Loading) {
+                      if (data.userQuestionState == RequestState.loading) {
                         _hint = 'mengambil data';
                         return TextField(
                           controller: _inputQuestion,
@@ -253,7 +253,7 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                           ),
                         );
                       } else if (data.userQuestionState ==
-                          RequestState.Loaded) {
+                          RequestState.loaded) {
                         questionMap = data.questionMap;
                         getAnsAndIndex(data.userQuestion);
                         return TextField(

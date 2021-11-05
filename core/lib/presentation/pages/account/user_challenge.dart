@@ -53,9 +53,9 @@ class _UserChallengeState extends State<UserChallenge> {
       ),
       body: Consumer<QuestionNotifier>(
         builder: (_, data, child) {
-          if (data.questionState == RequestState.Loading) {
+          if (data.questionState == RequestState.loading) {
             return Center(child: CircularProgressIndicator());
-          } else if (data.questionState == RequestState.Loaded) {
+          } else if (data.questionState == RequestState.loaded) {
             questions =
                 Provider.of<QuestionNotifier>(context, listen: false).question;
 
@@ -258,7 +258,7 @@ class _UserChallengeState extends State<UserChallenge> {
                                     listen: false)
                                 .challengeState;
 
-                            if (state == RequestState.Success) {
+                            if (state == RequestState.success) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text(message)));
                               Navigation.intentWithData(

@@ -40,7 +40,7 @@ class MockFeedNotifier extends _i1.Mock implements _i3.FeedNotifier {
   @override
   _i5.RequestState get feedState =>
       (super.noSuchMethod(Invocation.getter(#feedState),
-          returnValue: _i5.RequestState.Empty) as _i5.RequestState);
+          returnValue: _i5.RequestState.empty) as _i5.RequestState);
   @override
   String get message =>
       (super.noSuchMethod(Invocation.getter(#message), returnValue: '')
