@@ -37,8 +37,14 @@ jobs:
         run: flutter pub run flutter_launcher_icons:main
       - name: Generate splashscreen
         run: flutter pub run flutter_native_splash:create
-      - name: Run Tests
-        run: flutter test
+      - name: Run Core Tests
+        run: |
+          cd core
+          flutter test
+      - name: Run Feed Tests
+        run: |
+          cd feed
+          flutter test
       #      - name: Build Android App
       #        run: flutter build apk --split-per-abi
       - name: Build Android App
