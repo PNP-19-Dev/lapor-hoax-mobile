@@ -1,46 +1,10 @@
 import 'dart:io';
 
+import 'package:core/core.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:dio/dio.dart';
+import 'package:feed/feed.dart';
 import 'package:get_it/get_it.dart';
-import 'package:laporhoax/common/NetworkInfoImpl.dart';
-import 'package:laporhoax/data/datasources/db/database_helper.dart';
-import 'package:laporhoax/data/datasources/local_data_source.dart';
-import 'package:laporhoax/data/datasources/remote_data_source.dart';
-import 'package:laporhoax/data/repositories/repository_impl.dart';
-import 'package:laporhoax/domain/repositories/repository.dart';
-import 'package:laporhoax/domain/usecases/delete_report.dart';
-import 'package:laporhoax/domain/usecases/get_categories.dart';
-import 'package:laporhoax/domain/usecases/get_feed_detail.dart';
-import 'package:laporhoax/domain/usecases/get_feed_save_status.dart';
-import 'package:laporhoax/domain/usecases/get_feeds.dart';
-import 'package:laporhoax/domain/usecases/get_password_reset.dart';
-import 'package:laporhoax/domain/usecases/get_questions.dart';
-import 'package:laporhoax/domain/usecases/get_reports.dart';
-import 'package:laporhoax/domain/usecases/get_session_data.dart';
-import 'package:laporhoax/domain/usecases/get_session_status.dart';
-import 'package:laporhoax/domain/usecases/get_user.dart';
-import 'package:laporhoax/domain/usecases/get_user_challenge.dart';
-import 'package:laporhoax/domain/usecases/post_change_password.dart';
-import 'package:laporhoax/domain/usecases/post_fcm_token.dart';
-import 'package:laporhoax/domain/usecases/post_login.dart';
-import 'package:laporhoax/domain/usecases/post_register.dart';
-import 'package:laporhoax/domain/usecases/post_report.dart';
-import 'package:laporhoax/domain/usecases/post_user_challenge.dart';
-import 'package:laporhoax/domain/usecases/remove_session_data.dart';
-import 'package:laporhoax/domain/usecases/save_feed.dart';
-import 'package:laporhoax/domain/usecases/save_session_data.dart';
-import 'package:laporhoax/presentation/provider/feed_notifier.dart';
-import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
-import 'package:laporhoax/presentation/provider/question_notifier.dart';
-import 'package:laporhoax/presentation/provider/report_notifier.dart';
-import 'package:laporhoax/presentation/provider/saved_news_notifier.dart';
-import 'package:laporhoax/presentation/provider/user_notifier.dart';
-
-import 'data/datasources/preferences/preferences_helper.dart';
-import 'domain/usecases/get_saved_feeds.dart';
-import 'domain/usecases/put_fcm_token.dart';
-import 'domain/usecases/remove_feed.dart';
 
 final locator = GetIt.instance;
 

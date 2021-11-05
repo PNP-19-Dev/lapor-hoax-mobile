@@ -51,6 +51,12 @@ android {
             storePassword 'andideveloper'
             storeFile file('release-keystore.jks')
         }
+        debug {
+            keyAlias 'andi dev1'
+            keyPassword 'andideveloper'
+            storePassword 'andideveloper'
+            storeFile file('release-keystore.jks')
+        }
     }
 
     buildTypes {
@@ -60,7 +66,7 @@ android {
             signingConfig signingConfigs.release
         }
         debug {
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.debug
         }
     }
 }
