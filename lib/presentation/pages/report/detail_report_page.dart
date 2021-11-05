@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/domain/entities/report.dart';
-import 'package:laporhoax/util/datetime_helper.dart';
+import 'package:laporhoax/styles/colors.dart';
+import 'package:laporhoax/utils/datetime_helper.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 

@@ -1,9 +1,6 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:laporhoax/common/exception.dart';
-import 'package:laporhoax/common/failure.dart';
-import 'package:laporhoax/common/network_info_impl.dart';
 import 'package:laporhoax/data/datasources/local_data_source.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
 import 'package:laporhoax/data/models/category_table.dart';
@@ -23,6 +20,9 @@ import 'package:laporhoax/domain/entities/user.dart';
 import 'package:laporhoax/domain/entities/user_question.dart';
 import 'package:laporhoax/domain/entities/user_token.dart';
 import 'package:laporhoax/domain/repositories/repository.dart';
+import 'package:laporhoax/utils/exception.dart';
+import 'package:laporhoax/utils/failure.dart';
+import 'package:laporhoax/utils/network_info_impl.dart';
 
 class RepositoryImpl implements Repository {
   final RemoteDataSource remoteDataSource;

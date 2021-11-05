@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:laporhoax/common/state_enum.dart';
+import 'package:laporhoax/utils/state_enum.dart';
 import 'package:laporhoax/data/models/report_request.dart';
 import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/category.dart';

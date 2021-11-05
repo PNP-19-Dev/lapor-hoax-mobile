@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:laporhoax/common/failure.dart';
-import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/domain/usecases/get_questions.dart';
 import 'package:laporhoax/domain/usecases/get_user_challenge.dart';
 import 'package:laporhoax/presentation/provider/question_notifier.dart';
+import 'package:laporhoax/utils/failure.dart';
+import 'package:laporhoax/utils/state_enum.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

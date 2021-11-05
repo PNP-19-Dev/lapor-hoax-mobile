@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:laporhoax/common/failure.dart';
 import 'package:laporhoax/data/models/report_request.dart';
 import 'package:laporhoax/domain/entities/category.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
@@ -11,6 +10,7 @@ import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/domain/entities/user.dart';
 import 'package:laporhoax/domain/entities/user_question.dart';
 import 'package:laporhoax/domain/entities/user_token.dart';
+import 'package:laporhoax/utils/failure.dart';
 
 abstract class Repository {
   Future<Either<Failure, String>> deleteReport(String token, int id);

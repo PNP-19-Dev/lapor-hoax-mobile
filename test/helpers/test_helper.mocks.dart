@@ -6,8 +6,6 @@ import 'dart:async' as _i11;
 
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:dio/dio.dart' as _i9;
-import 'package:laporhoax/common/failure.dart' as _i12;
-import 'package:laporhoax/common/network_info_impl.dart' as _i36;
 import 'package:laporhoax/data/datasources/db/database_helper.dart' as _i33;
 import 'package:laporhoax/data/datasources/local_data_source.dart' as _i29;
 import 'package:laporhoax/data/datasources/preferences/preferences_helper.dart'
@@ -37,6 +35,8 @@ import 'package:laporhoax/domain/entities/user.dart' as _i18;
 import 'package:laporhoax/domain/entities/user_question.dart' as _i19;
 import 'package:laporhoax/domain/entities/user_token.dart' as _i20;
 import 'package:laporhoax/domain/repositories/repository.dart' as _i10;
+import 'package:laporhoax/utils/failure.dart' as _i12;
+import 'package:laporhoax/utils/network_info_impl.dart' as _i36;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:shared_preferences/shared_preferences.dart' as _i8;
 import 'package:sqflite/sqflite.dart' as _i34;

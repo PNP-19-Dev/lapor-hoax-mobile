@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:laporhoax/util/datetime_helper.dart';
+import 'package:laporhoax/utils/datetime_helper.dart';
 
 void main() {
   const date = '2021-10-13T01:34:58.831621+07:00';

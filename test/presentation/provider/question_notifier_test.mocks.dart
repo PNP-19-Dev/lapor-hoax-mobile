@@ -5,12 +5,12 @@
 import 'dart:async' as _i5;
 
 import 'package:dartz/dartz.dart' as _i3;
-import 'package:laporhoax/common/failure.dart' as _i6;
 import 'package:laporhoax/domain/entities/question.dart' as _i7;
 import 'package:laporhoax/domain/entities/user_question.dart' as _i9;
 import 'package:laporhoax/domain/repositories/repository.dart' as _i2;
 import 'package:laporhoax/domain/usecases/get_questions.dart' as _i4;
 import 'package:laporhoax/domain/usecases/get_user_challenge.dart' as _i8;
+import 'package:laporhoax/utils/failure.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values

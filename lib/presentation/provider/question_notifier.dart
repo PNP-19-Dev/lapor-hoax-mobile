@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/domain/entities/question.dart';
 import 'package:laporhoax/domain/entities/user_question.dart';
 import 'package:laporhoax/domain/usecases/get_questions.dart';
 import 'package:laporhoax/domain/usecases/get_user_challenge.dart';
+import 'package:laporhoax/utils/state_enum.dart';
 
 class QuestionNotifier extends ChangeNotifier {
   final GetQuestions getQuestions;

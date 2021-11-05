@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/presentation/pages/news/news_web_view.dart';
 import 'package:laporhoax/presentation/pages/news/saved_news.dart';
-import 'package:laporhoax/util/datetime_helper.dart';
+import 'package:laporhoax/utils/datetime_helper.dart';
 
 class FeedCard extends StatelessWidget {
   final Feed feed;
