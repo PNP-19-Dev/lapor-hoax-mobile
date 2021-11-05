@@ -128,7 +128,7 @@ void main() {
       // assert
       expect(provider.userState, RequestState.error);
       expect(provider.userMessage, "Can't get data");
-      expect(listenerCallCount, 1);
+      expect(listenerCallCount, 2);
     });
   });
   group('GetPasswordReset', () {
