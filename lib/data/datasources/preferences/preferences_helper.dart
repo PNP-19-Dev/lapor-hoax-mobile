@@ -1,4 +1,4 @@
-import 'package:laporhoax/util/datetime_helper.dart';
+import 'package:laporhoax/utils/datetime_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesHelper {

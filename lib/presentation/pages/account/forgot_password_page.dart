@@ -3,16 +3,15 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:laporhoax/common/navigation.dart';
-import 'package:laporhoax/common/state_enum.dart';
-import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/domain/entities/user.dart';
 import 'package:laporhoax/domain/entities/user_question.dart';
 import 'package:laporhoax/presentation/pages/account/login_page.dart';
 import 'package:laporhoax/presentation/provider/question_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
+import 'package:laporhoax/styles/colors.dart';
+import 'package:laporhoax/utils/navigation.dart';
+import 'package:laporhoax/utils/state_enum.dart';
 import 'package:provider/provider.dart';
 
 class ForgotPasswordSectionOne extends StatefulWidget {
@@ -82,10 +81,7 @@ class _ForgotPasswordSectionOneState extends State<ForgotPasswordSectionOne> {
                         children: [
                           Text(
                             'Email',
-                            style: GoogleFonts.inter(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15,
-                            ),
+                            style: Theme.of(context).textTheme.subtitle2,
                           ),
                           TextFormField(
                             controller: _inputEmail,
@@ -191,8 +187,9 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
 
     print('index: ${index.length}');
 
-    if (questionMap.isNotEmpty){
-      _inputQuestion.text = questionMap[index.isNotEmpty ? index[0] : 1] as String;
+    if (questionMap.isNotEmpty) {
+      _inputQuestion.text =
+          questionMap[index.isNotEmpty ? index[0] : 1] as String;
     }
   }
 
@@ -230,14 +227,11 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                 children: [
                   Text(
                     'Pertanyaan',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
-                    ),
+                    style: Theme.of(context).textTheme.subtitle2,
                   ),
                   Consumer<QuestionNotifier>(
-                    builder: (_, data, child){
-                      if (data.userQuestionState == RequestState.Loading){
+                    builder: (_, data, child) {
+                      if (data.userQuestionState == RequestState.Loading) {
                         _hint = 'mengambil data';
                         return TextField(
                           controller: _inputQuestion,
@@ -250,7 +244,8 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                             ),
                           ),
                         );
-                      } else if (data.userQuestionState == RequestState.Loaded){
+                      } else if (data.userQuestionState ==
+                          RequestState.Loaded) {
                         questionMap = data.questionMap;
                         getAnsAndIndex(data.userQuestion);
                         return TextField(
@@ -283,10 +278,7 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                   SizedBox(height: 20),
                   Text(
                     'Jawaban',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
-                    ),
+                    style: Theme.of(context).textTheme.subtitle2,
                   ),
                   TextField(
                     controller: _inputAnswer,
@@ -320,11 +312,10 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                     child: Container(
                       child: Text(
                         'Ganti Pertanyaan?',
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 15,
-                          color: orangeBlaze,
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle2!
+                            .copyWith(color: orangeBlaze),
                       ),
                     ),
                   ),

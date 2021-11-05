@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:laporhoax/common/exception.dart';
 import 'package:laporhoax/data/datasources/local_data_source.dart';
+import 'package:laporhoax/utils/exception.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy_data/dummy_objects.dart';

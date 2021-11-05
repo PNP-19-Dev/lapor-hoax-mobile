@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/presentation/pages/report/detail_report_page.dart';
-import 'package:laporhoax/util/datetime_helper.dart';
+import 'package:laporhoax/styles/colors.dart';
+import 'package:laporhoax/utils/datetime_helper.dart';
 
 class ReportListItem extends StatelessWidget {
   final Report report;
@@ -29,10 +28,7 @@ class ReportListItem extends StatelessWidget {
                 children: [
                   Text(
                     '${report.category}',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
-                    ),
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
@@ -44,11 +40,9 @@ class ReportListItem extends StatelessWidget {
                       SizedBox(width: 2),
                       Text(
                         '${DateTimeHelper.formattedDate(report.dateReported.toString())}',
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 10,
-                          color: grey700,
-                        ),
+                        style: Theme.of(context).textTheme.overline!.copyWith(
+                              color: grey700,
+                            ),
                       ),
                     ],
                   ),

@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:laporhoax/common/state_enum.dart';
-import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
+import 'package:laporhoax/styles/colors.dart';
+import 'package:laporhoax/utils/state_enum.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsWebViewData {
   final id;
-  final fromRoute;
 
-  NewsWebViewData(this.id, this.fromRoute);
+  NewsWebViewData(this.id);
 }
 
 class NewsWebView extends StatefulWidget {
@@ -84,9 +83,7 @@ class CustomScaffold extends StatelessWidget {
           children: [
             IconButton(
               icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
+              onPressed: () => Navigator.pop(context),
             ),
             Expanded(
               child: Text(
@@ -134,7 +131,7 @@ class CustomScaffold extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () => Share.share(
-                      'Ada berita di laporhoax ${RemoteDataSourceImpl.baseUrl}/news/${feed.id}'),
+                      'Ada berita di laporhoax ${RemoteDataSourceImpl.baseUrl}/pages/${feed.id}'),
                   icon: SvgPicture.asset('assets/icons/share.svg'),
                 )
               ],

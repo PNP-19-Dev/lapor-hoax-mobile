@@ -1,10 +1,10 @@
-import 'package:laporhoax/common/exception.dart';
 import 'package:laporhoax/data/datasources/db/database_helper.dart';
 import 'package:laporhoax/data/datasources/preferences/preferences_helper.dart';
 import 'package:laporhoax/data/models/category_table.dart';
 import 'package:laporhoax/data/models/feed_table.dart';
 import 'package:laporhoax/data/models/question_table.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
+import 'package:laporhoax/utils/exception.dart';
 
 abstract class LocalDataSource {
   Future<String> insertFeed(FeedTable feed);

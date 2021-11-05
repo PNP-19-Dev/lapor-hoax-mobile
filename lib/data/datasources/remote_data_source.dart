@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:laporhoax/common/exception.dart';
 import 'package:laporhoax/data/models/category_model.dart';
 import 'package:laporhoax/data/models/feed_model.dart';
 import 'package:laporhoax/data/models/feed_response.dart';
@@ -16,6 +15,7 @@ import 'package:laporhoax/data/models/report_response.dart';
 import 'package:laporhoax/data/models/user_model.dart';
 import 'package:laporhoax/data/models/user_question_model.dart';
 import 'package:laporhoax/data/models/user_token_model.dart';
+import 'package:laporhoax/utils/exception.dart';
 
 abstract class RemoteDataSource {
   Future<String> deleteReport(String token, int id);

@@ -5,7 +5,6 @@
 import 'dart:async' as _i5;
 
 import 'package:dartz/dartz.dart' as _i3;
-import 'package:laporhoax/common/failure.dart' as _i6;
 import 'package:laporhoax/domain/entities/register.dart' as _i12;
 import 'package:laporhoax/domain/entities/register_data.dart' as _i11;
 import 'package:laporhoax/domain/entities/session_data.dart' as _i15;
@@ -25,6 +24,7 @@ import 'package:laporhoax/domain/usecases/post_user_challenge.dart' as _i19;
 import 'package:laporhoax/domain/usecases/put_fcm_token.dart' as _i17;
 import 'package:laporhoax/domain/usecases/remove_session_data.dart' as _i21;
 import 'package:laporhoax/domain/usecases/save_session_data.dart' as _i22;
+import 'package:laporhoax/utils/failure.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values

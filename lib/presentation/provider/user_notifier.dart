@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/domain/entities/register.dart';
 import 'package:laporhoax/domain/entities/register_data.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
@@ -18,6 +17,7 @@ import 'package:laporhoax/domain/usecases/post_user_challenge.dart';
 import 'package:laporhoax/domain/usecases/put_fcm_token.dart';
 import 'package:laporhoax/domain/usecases/remove_session_data.dart';
 import 'package:laporhoax/domain/usecases/save_session_data.dart';
+import 'package:laporhoax/utils/state_enum.dart';
 
 class UserNotifier extends ChangeNotifier {
   static const String messageLogin = 'Anda Login';

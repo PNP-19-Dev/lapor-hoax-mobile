@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:laporhoax/common/exception.dart';
-import 'package:laporhoax/common/failure.dart';
 import 'package:laporhoax/data/models/feed_table.dart';
 import 'package:laporhoax/data/models/question_model.dart';
 import 'package:laporhoax/data/models/report_model.dart';
@@ -14,6 +12,8 @@ import 'package:laporhoax/data/models/user_question_model.dart';
 import 'package:laporhoax/data/repositories/repository_impl.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
+import 'package:laporhoax/utils/exception.dart';
+import 'package:laporhoax/utils/failure.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy_data/dummy_objects.dart';

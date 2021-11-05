@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:laporhoax/common/navigation.dart';
-import 'package:laporhoax/common/state_enum.dart';
-import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/presentation/pages/account/change_user_question.dart';
 import 'package:laporhoax/presentation/pages/account/password_change_page.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
+import 'package:laporhoax/styles/colors.dart';
+import 'package:laporhoax/utils/navigation.dart';
+import 'package:laporhoax/utils/state_enum.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {

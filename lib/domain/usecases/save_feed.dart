@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:laporhoax/common/failure.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/domain/repositories/repository.dart';
+import 'package:laporhoax/utils/failure.dart';
 
 class SaveFeed {
   final Repository repository;

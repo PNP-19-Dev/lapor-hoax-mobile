@@ -2,14 +2,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:laporhoax/common/navigation.dart';
-import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/presentation/pages/account/forgot_password_page.dart';
 import 'package:laporhoax/presentation/pages/account/register_page.dart';
 import 'package:laporhoax/presentation/pages/home_page.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
+import 'package:laporhoax/styles/colors.dart';
+import 'package:laporhoax/utils/navigation.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -122,10 +121,10 @@ class _LoginPageState extends State<LoginPage> {
                             },
                             child: Container(
                               child: Text('Lupa Password ?',
-                                  style: GoogleFonts.inter(
-                                      color: orangeBlaze,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle2!
+                                      .copyWith(color: orangeBlaze),
                                   textAlign: TextAlign.end),
                             ),
                           ),
@@ -176,10 +175,10 @@ class _LoginPageState extends State<LoginPage> {
                                         .instance
                                         .getToken();
 
-                                    if (token != null){
-                                      await Provider.of<UserNotifier>(
-                                          context,
-                                          listen: false).putToken(data!.id, token);
+                                    if (token != null) {
+                                      await Provider.of<UserNotifier>(context,
+                                              listen: false)
+                                          .putToken(data!.id, token);
                                     }
 
                                     if (message == UserNotifier.messageLogin) {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:laporhoax/common/state_enum.dart';
+import 'package:laporhoax/utils/state_enum.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/domain/usecases/get_feed_detail.dart';
 import 'package:laporhoax/domain/usecases/get_feed_save_status.dart';

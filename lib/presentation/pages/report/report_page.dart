@@ -5,11 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:laporhoax/common/navigation.dart';
-import 'package:laporhoax/common/state_enum.dart';
-import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/data/models/report_request.dart';
 import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/category.dart';
@@ -18,6 +14,9 @@ import 'package:laporhoax/presentation/pages/home_page.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
+import 'package:laporhoax/styles/colors.dart';
+import 'package:laporhoax/utils/navigation.dart';
+import 'package:laporhoax/utils/state_enum.dart';
 import 'package:provider/provider.dart';
 
 import 'history_page.dart';
@@ -153,8 +152,7 @@ class _ReportPageState extends State<ReportPage> {
                     child: Center(
                       child: Text(
                         'Buat Laporan',
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.headline5,
                       ),
                     ),
                   ),
@@ -407,10 +405,7 @@ class _ReportPageState extends State<ReportPage> {
           child: Center(
             child: Text(
               'Buat Laporan',
-              style: GoogleFonts.inter(
-                fontSize: 25,
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(context).textTheme.headline5,
             ),
           ),
         ),
@@ -429,16 +424,12 @@ class _ReportPageState extends State<ReportPage> {
                 SizedBox(height: 10),
                 Text(
                   'Kamu belum login!',
-                  style: GoogleFonts.inter(
-                      fontWeight: FontWeight.bold, fontSize: 20),
+                  style: Theme.of(context).textTheme.headline6,
                 ),
                 SizedBox(height: 10),
                 Text(
                   'Silahkan login untuk melanjutkan pelaporan',
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w200,
-                    fontSize: 12,
-                  ),
+                  style: Theme.of(context).textTheme.caption,
                 ),
               ],
             ),
@@ -449,9 +440,7 @@ class _ReportPageState extends State<ReportPage> {
           child: SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {
-                Navigation.intent(LoginPage.ROUTE_NAME);
-              },
+              onPressed: () => Navigation.intent(LoginPage.ROUTE_NAME),
               child: Text('Login'),
             ),
           ),
