@@ -123,11 +123,9 @@ class _NewsPageState extends State<NewsPage> {
           builder: (context, data, child) {
             final state = data.feedState;
             if (state == RequestState.loading) {
-              return const Expanded(
-                child: SliverToBoxAdapter(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+              return const SliverToBoxAdapter(
+                child: Center(
+                  child: CircularProgressIndicator(),
                 ),
               );
             } else if (state == RequestState.loaded) {
