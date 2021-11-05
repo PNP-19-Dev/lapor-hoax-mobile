@@ -12,15 +12,16 @@ import 'package:laporhoax/data/models/question_table.dart';
 import 'package:laporhoax/data/models/register_model.dart';
 import 'package:laporhoax/data/models/report_request.dart';
 import 'package:laporhoax/data/models/user_question_model.dart';
-import 'package:laporhoax/data/models/user_response.dart';
-import 'package:laporhoax/data/models/user_token.dart';
 import 'package:laporhoax/domain/entities/category.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/domain/entities/question.dart';
+import 'package:laporhoax/domain/entities/register.dart';
+import 'package:laporhoax/domain/entities/register_data.dart';
 import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/domain/entities/user.dart';
 import 'package:laporhoax/domain/entities/user_question.dart';
+import 'package:laporhoax/domain/entities/user_token.dart';
 import 'package:laporhoax/domain/repositories/repository.dart';
 
 class RepositoryImpl implements Repository {
@@ -133,7 +134,7 @@ class RepositoryImpl implements Repository {
       String username, String password) async {
     try {
       final result = await remoteDataSource.postLogin(username, password);
-      return Right(result);
+      return Right(result.toEntity());
     } on ServerException {
       return Left(ServerFailure("UserName atau Password Salah!"));
     } on SocketException {
@@ -142,10 +143,10 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, UserResponse>> postRegister(RegisterModel user) async {
+  Future<Either<Failure, RegisterData>> postRegister(Register user) async {
     try {
-      final result = await remoteDataSource.postRegister(user);
-      return Right(result);
+      final result = await remoteDataSource.postRegister(RegisterModel.fromDTO(user));
+      return Right(result.toEntity());
     } on ServerException {
       return Left(ServerFailure("Invalid Data"));
     } on SocketException {

@@ -6,12 +6,12 @@ import 'dart:async' as _i5;
 
 import 'package:dartz/dartz.dart' as _i3;
 import 'package:laporhoax/common/failure.dart' as _i6;
-import 'package:laporhoax/data/models/register_model.dart' as _i12;
-import 'package:laporhoax/data/models/user_response.dart' as _i11;
-import 'package:laporhoax/data/models/user_token.dart' as _i9;
+import 'package:laporhoax/domain/entities/register.dart' as _i12;
+import 'package:laporhoax/domain/entities/register_data.dart' as _i11;
 import 'package:laporhoax/domain/entities/session_data.dart' as _i15;
 import 'package:laporhoax/domain/entities/user.dart' as _i7;
 import 'package:laporhoax/domain/entities/user_question.dart' as _i20;
+import 'package:laporhoax/domain/entities/user_token.dart' as _i9;
 import 'package:laporhoax/domain/repositories/repository.dart' as _i2;
 import 'package:laporhoax/domain/usecases/get_password_reset.dart' as _i13;
 import 'package:laporhoax/domain/usecases/get_session_data.dart' as _i14;
@@ -98,12 +98,12 @@ class MockPostRegister extends _i1.Mock implements _i10.PostRegister {
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
   @override
-  _i5.Future<_i3.Either<_i6.Failure, _i11.UserResponse>> execute(
-          _i12.RegisterModel? user) =>
+  _i5.Future<_i3.Either<_i6.Failure, _i11.RegisterData>> execute(
+          _i12.Register? user) =>
       (super.noSuchMethod(Invocation.method(#execute, [user]),
-          returnValue: Future<_i3.Either<_i6.Failure, _i11.UserResponse>>.value(
-              _FakeEither_1<_i6.Failure, _i11.UserResponse>())) as _i5
-          .Future<_i3.Either<_i6.Failure, _i11.UserResponse>>);
+          returnValue: Future<_i3.Either<_i6.Failure, _i11.RegisterData>>.value(
+              _FakeEither_1<_i6.Failure, _i11.RegisterData>())) as _i5
+          .Future<_i3.Either<_i6.Failure, _i11.RegisterData>>);
   @override
   String toString() => super.toString();
 }

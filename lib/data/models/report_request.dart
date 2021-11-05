@@ -1,7 +1,6 @@
-import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ReportRequest extends Equatable {
+class ReportRequest {
   ReportRequest({
     required this.user,
     required this.url,
@@ -17,14 +16,4 @@ class ReportRequest extends Equatable {
   final bool isAnonym;
   final String description;
   final XFile img;
-
-  @override
-  List<Object?> get props => [
-        user,
-        url,
-        category,
-        isAnonym,
-        description,
-        img,
-      ];
 }

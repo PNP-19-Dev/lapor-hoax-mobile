@@ -1,10 +1,6 @@
-import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:laporhoax/data/models/report_model.dart';
-
-ReportResponse userReportFromJson(String str) =>
-    ReportResponse.fromJson(json.decode(str));
 
 class ReportResponse extends Equatable {
   ReportResponse({

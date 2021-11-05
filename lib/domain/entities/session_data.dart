@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-class SessionData extends Equatable {
+class SessionData {
   final String token;
   final int userid;
   final String expiry;
@@ -14,7 +12,4 @@ class SessionData extends Equatable {
     required this.email,
     required this.username,
   });
-
-  @override
-  List<Object?> get props => [token, userid, expiry, email, username];
 }

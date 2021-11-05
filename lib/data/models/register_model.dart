@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:laporhoax/domain/entities/register.dart';
 
 class RegisterModel extends Equatable {
   final String name;
@@ -10,6 +11,12 @@ class RegisterModel extends Equatable {
     required this.email,
     required this.password,
   });
+
+  factory RegisterModel.fromDTO(Register register) => RegisterModel(
+      name: register.name,
+      email: register.email,
+      password: register.password,
+  );
 
   Map<String, dynamic> toJson() => {
         'username': name,

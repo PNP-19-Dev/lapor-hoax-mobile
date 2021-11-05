@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:laporhoax/common/state_enum.dart';
-import 'package:laporhoax/data/models/register_model.dart';
-import 'package:laporhoax/data/models/user_response.dart';
-import 'package:laporhoax/data/models/user_token.dart';
+import 'package:laporhoax/domain/entities/register.dart';
+import 'package:laporhoax/domain/entities/register_data.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/domain/entities/user.dart';
 import 'package:laporhoax/domain/entities/user_question.dart';
+import 'package:laporhoax/domain/entities/user_token.dart';
 import 'package:laporhoax/domain/usecases/get_password_reset.dart';
 import 'package:laporhoax/domain/usecases/get_session_data.dart';
 import 'package:laporhoax/domain/usecases/get_session_status.dart';
@@ -55,23 +55,18 @@ class UserNotifier extends ChangeNotifier {
   });
 
   RequestState _sessionState = RequestState.Empty;
-
   RequestState get sessionState => _sessionState;
 
   RequestState _userState = RequestState.Empty;
-
   RequestState get userState => _userState;
 
   String _sessionMessage = '';
-
   String get sessionMessage => _sessionMessage;
 
   SessionData? _sessionData;
-
   SessionData? get sessionData => _sessionData;
 
   bool _isLoggedIn = false;
-
   bool get isLoggedIn => _isLoggedIn;
 
   Future<void> isLogin() async {
@@ -103,11 +98,9 @@ class UserNotifier extends ChangeNotifier {
   }
 
   RequestState _fcmState = RequestState.Empty;
-
   RequestState get fcmState => _fcmState;
 
   String _fcmMessage = '';
-
   String get fcmMessage => _fcmMessage;
 
   Future<void> postToken(int userid, String token) async {
@@ -145,11 +138,9 @@ class UserNotifier extends ChangeNotifier {
 
 
   User? _user;
-
   User? get user => _user;
 
   String _userMessage = '';
-
   String get userMessage => _userMessage;
 
   Future<void> getUserData(String email) async {
@@ -161,7 +152,7 @@ class UserNotifier extends ChangeNotifier {
     result.fold((failure) {
       _userState = RequestState.Error;
       _userMessage = failure.message;
-      print('failuremessage ${failure.message}');
+      notifyListeners();
     }, (user) {
       _userState = RequestState.Loaded;
       _user = user;
@@ -170,15 +161,12 @@ class UserNotifier extends ChangeNotifier {
   }
 
   late UserToken _userToken;
-
   UserToken get userToken => _userToken;
 
   RequestState _loginState = RequestState.Empty;
-
   RequestState get loginState => _loginState;
 
   String _loginMessage = '';
-
   String get loginMessage => _loginMessage;
 
   Future<void> login(String username, String password) async {
@@ -191,6 +179,7 @@ class UserNotifier extends ChangeNotifier {
     result.fold((failure) {
       _loginMessage = failure.message;
       _loginState = RequestState.Error;
+      notifyListeners();
     }, (userToken) {
       _userToken = userToken;
       user.fold((failure) {
@@ -211,19 +200,16 @@ class UserNotifier extends ChangeNotifier {
     });
   }
 
-  late UserResponse _userResponse;
-
-  UserResponse get userResponse => _userResponse;
+  late RegisterData _userResponse;
+  RegisterData get userResponse => _userResponse;
 
   RequestState _registerState = RequestState.Empty;
-
   RequestState get registerState => _registerState;
 
   String _registerMessage = '';
-
   String get registerMessage => _registerMessage;
 
-  Future<void> register(RegisterModel user) async {
+  Future<void> register(Register user) async {
     _registerState = RequestState.Loading;
     notifyListeners();
 
@@ -232,6 +218,7 @@ class UserNotifier extends ChangeNotifier {
     result.fold((failure) {
       _registerMessage = failure.message;
       _registerState = RequestState.Error;
+      notifyListeners();
     }, (userResponse) {
       _userResponse = userResponse;
       _registerMessage = messageRegister;
@@ -257,11 +244,9 @@ class UserNotifier extends ChangeNotifier {
   }
 
   String _challengeMessage = '';
-
   String get challengeMessage => _challengeMessage;
 
   RequestState _challengeState = RequestState.Empty;
-
   RequestState get challengeState => _challengeState;
 
   Future<void> postChallenge(UserQuestion challenge) async {
@@ -280,7 +265,6 @@ class UserNotifier extends ChangeNotifier {
   }
 
   String _passwordChangeMessage = '';
-
   String get passwordChangeMessage => _passwordChangeMessage;
   static const String messageChangePassword = 'password telah diganti';
 

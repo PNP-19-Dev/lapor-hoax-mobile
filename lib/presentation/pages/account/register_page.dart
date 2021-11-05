@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/common/navigation.dart';
 import 'package:laporhoax/common/theme.dart';
-import 'package:laporhoax/data/models/register_model.dart';
+import 'package:laporhoax/domain/entities/register.dart';
 import 'package:laporhoax/presentation/pages/account/user_challenge.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
@@ -209,7 +209,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                                     progress!.showWithText('Loading...');
 
-                                    var userData = RegisterModel(
+                                    var userData = Register(
                                       name: username,
                                       email: email,
                                       password: password,

@@ -738,7 +738,7 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.postLogin(tUsername, tOldPass))
-          .thenAnswer((_) async => testLogin);
+          .thenAnswer((_) async => testLoginModel);
       // act
       final result = await repository.postLogin(tUsername, tOldPass);
       // assert
@@ -778,36 +778,36 @@ void main() {
         'should return remote data when the call to remote data source is successful',
         () async {
       // arrange
-      when(mockRemoteDataSource.postRegister(testRegister))
+      when(mockRemoteDataSource.postRegister(testRegisterModel))
           .thenAnswer((_) async => testRegisterCallback);
       // act
       final result = await repository.postRegister(testRegister);
       // assert
-      verify(mockRemoteDataSource.postRegister(testRegister));
-      expect(result, equals(Right(testRegisterCallback)));
+      verify(mockRemoteDataSource.postRegister(testRegisterModel));
+      expect(result, equals(Right(testRegisterCallback.toEntity())));
     });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-      when(mockRemoteDataSource.postRegister(testRegister))
+      when(mockRemoteDataSource.postRegister(testRegisterModel))
           .thenThrow(ServerException());
       // act
       final result = await repository.postRegister(testRegister);
       // assert
-      verify(mockRemoteDataSource.postRegister(testRegister));
+      verify(mockRemoteDataSource.postRegister(testRegisterModel));
       expect(result, equals(Left(ServerFailure('Invalid Data'))));
     });
     test(
         'should return connection failure when the device is not connected to internet',
         () async {
       // arrange
-      when(mockRemoteDataSource.postRegister(testRegister))
+      when(mockRemoteDataSource.postRegister(testRegisterModel))
           .thenThrow(SocketException('Failed to connect to the network'));
       // act
       final result = await repository.postRegister(testRegister);
       // assert
-      verify(mockRemoteDataSource.postRegister(testRegister));
+      verify(mockRemoteDataSource.postRegister(testRegisterModel));
       expect(result,
           equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
