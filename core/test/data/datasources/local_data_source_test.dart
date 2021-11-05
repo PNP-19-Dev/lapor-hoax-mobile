@@ -110,6 +110,15 @@ void main() {
       // assert
       expect(result, true);
     });
+
+    test('should return login status', () async {
+      // arrange
+      when(mockPreferencesHelper.isLogin).thenAnswer((_) async => false);
+      // act
+      final result = await dataSource.isLoggedIn();
+      // assert
+      expect(result, false);
+    });
   });
 
   group('cache categories', () {

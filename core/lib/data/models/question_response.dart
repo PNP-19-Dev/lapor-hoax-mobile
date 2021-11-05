@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../data/models/question_model.dart';
 
 class QuestionResponse extends Equatable {
-  QuestionResponse({
+  const QuestionResponse({
     required this.count,
     required this.next,
     required this.previous,

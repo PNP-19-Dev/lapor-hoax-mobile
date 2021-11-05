@@ -9,7 +9,7 @@ class UserQuestion extends Equatable {
   final String? ans2;
   final String? ans3;
 
-  UserQuestion(
+  const UserQuestion(
       {required this.user,
       required this.quest1,
       required this.quest2,

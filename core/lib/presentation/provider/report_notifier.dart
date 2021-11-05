@@ -15,11 +15,9 @@ class ReportNotifier extends ChangeNotifier {
   static const reportFailure = 'Ups Ada Masalah';
 
   List<Category> _category = [];
-
   List<Category> get category => _category;
 
   Report? _report;
-
   Report? get report => _report;
 
   TokenId? _tokenId;
@@ -30,35 +28,27 @@ class ReportNotifier extends ChangeNotifier {
   List<Report> get reports => _reports;
 
   RequestState _fetchReportState = RequestState.Empty;
-
   RequestState get fetchReportState => _fetchReportState;
 
   RequestState _postReportState = RequestState.Empty;
-
   RequestState get postReportState => _postReportState;
 
   RequestState _fetchCategoryState = RequestState.Empty;
-
   RequestState get fetchCategoryState => _fetchCategoryState;
 
   RequestState _deleteReportState = RequestState.Empty;
-
   RequestState get deleteReportState => _deleteReportState;
 
   String _fetchReportMessage = '';
-
   String get fetchReportMessage => _fetchReportMessage;
 
   String _fetchCategoryMessage = '';
-
   String get fetchCategoryMessage => _fetchCategoryMessage;
 
   String _postReportMessage = '';
-
   String get postReportMessage => _postReportMessage;
 
   String _deleteReportMessage = '';
-
   String get deleteReportMessage => _deleteReportMessage;
 
   ReportNotifier(
@@ -88,7 +78,7 @@ class ReportNotifier extends ChangeNotifier {
       _reports = reportData;
       notifyListeners();
 
-      if (_reports.length == 0) {
+      if (_reports.isEmpty) {
         _fetchReportState = RequestState.Empty;
         _fetchReportMessage = "Tidak ada data saat ini";
         notifyListeners();

@@ -55,24 +55,16 @@ class UserNotifier extends ChangeNotifier {
     required this.putFCMToken,
   });
 
-  RequestState _sessionState = RequestState.Empty;
-
-  RequestState get sessionState => _sessionState;
-
   RequestState _userState = RequestState.Empty;
-
   RequestState get userState => _userState;
 
   String _sessionMessage = '';
-
   String get sessionMessage => _sessionMessage;
 
   SessionData? _sessionData;
-
   SessionData? get sessionData => _sessionData;
 
   bool _isLoggedIn = false;
-
   bool get isLoggedIn => _isLoggedIn;
 
   Future<void> isLogin() async {
@@ -104,11 +96,9 @@ class UserNotifier extends ChangeNotifier {
   }
 
   RequestState _fcmState = RequestState.Empty;
-
   RequestState get fcmState => _fcmState;
 
   String _fcmMessage = '';
-
   String get fcmMessage => _fcmMessage;
 
   Future<void> postToken(int userid, String token) async {
@@ -160,7 +150,7 @@ class UserNotifier extends ChangeNotifier {
     result.fold((failure) {
       _userState = RequestState.Error;
       _userMessage = failure.message;
-      print('failuremessage ${failure.message}');
+      notifyListeners();
     }, (user) {
       _userState = RequestState.Loaded;
       _user = user;
@@ -169,15 +159,12 @@ class UserNotifier extends ChangeNotifier {
   }
 
   late UserToken _userToken;
-
   UserToken get userToken => _userToken;
 
   RequestState _loginState = RequestState.Empty;
-
   RequestState get loginState => _loginState;
 
   String _loginMessage = '';
-
   String get loginMessage => _loginMessage;
 
   Future<void> login(String username, String password) async {

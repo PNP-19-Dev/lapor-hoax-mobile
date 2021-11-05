@@ -34,7 +34,7 @@ class OnRegisterSuccess extends StatelessWidget {
                   )),
               const SizedBox(height: 32),
               ElevatedButton(
-                onPressed: Navigation.intent(LOGIN_ROUTE),
+                onPressed: Navigation.intent(loginRoute),
                 child: const Text('Login'),
               ),
             ],

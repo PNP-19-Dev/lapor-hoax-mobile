@@ -46,9 +46,9 @@ class _HomePageState extends State<HomePage> {
 
   List<BottomNavigationBarItem> _bottomNavBarItems = [
     BottomNavigationBarItem(
-        icon: Icon(FontAwesomeIcons.newspaper), label: NEWS_PAGE_LABEL),
+        icon: Icon(FontAwesomeIcons.newspaper), label: newsPageLabel),
     BottomNavigationBarItem(
-        icon: Icon(FontAwesomeIcons.user), label: NEWS_PAGE_LABEL),
+        icon: Icon(FontAwesomeIcons.user), label: accountPageLabel),
   ];
 
   List<Widget> _listWidget = [
@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           tooltip: 'Tambah Laporan',
-          onPressed: () => Navigator.pushNamed(context, REPORT_ROUTE),
+          onPressed: () => Navigator.pushNamed(context, reportRoute),
         ),
       ),
     );

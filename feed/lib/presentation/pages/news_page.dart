@@ -76,7 +76,7 @@ class _NewsPageState extends State<NewsPage> {
                               fontWeight: FontWeight.w700,
                             )),
                         ElevatedButton(
-                          onPressed: () => Navigation.intent(REPORT_ROUTE),
+                          onPressed: () => Navigation.intent(reportRoute),
                           child: const Text('Lapor yuk!'),
                         ),
                       ],
@@ -96,7 +96,7 @@ class _NewsPageState extends State<NewsPage> {
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Card(
               child: ListTile(
-                onTap: () => Navigation.intent(TUTORIAL_ROUTE),
+                onTap: () => Navigation.intent(tutorialRoute),
                 leading: Icon(Icons.menu_book_sharp),
                 title: Text('Tutorial Penggunaan',
                     style: GoogleFonts.inter(

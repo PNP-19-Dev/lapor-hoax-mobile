@@ -186,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
 
                                     if (message == UserNotifier.messageLogin) {
                                       progress?.dismiss();
-                                      Navigation.intent(HOME_ROUTE);
+                                      Navigation.intent(homeRoute);
                                     } else {
                                       progress?.dismiss();
                                       toast(message);

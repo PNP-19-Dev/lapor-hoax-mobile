@@ -17,6 +17,7 @@ import 'login_page.dart';
 import 'profile_page.dart';
 
 class AccountPage extends StatefulWidget {
+  const AccountPage({Key? key}) : super(key: key);
 
   @override
   _AccountPageState createState() => _AccountPageState();
@@ -27,8 +28,8 @@ class _AccountPageState extends State<AccountPage> {
   void initState() {
     super.initState();
     Future.microtask(() => Provider.of<UserNotifier>(context, listen: false)
-      ..getSession()
-      ..isLogin());
+      ..isLogin()
+      ..getSession());
     getPlatformVersion();
   }
 
@@ -46,14 +47,14 @@ class _AccountPageState extends State<AccountPage> {
         padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 50.0),
         child: SingleChildScrollView(
           child: Consumer<UserNotifier>(
-            builder: (context, provider, child) {
-              if (provider.sessionData != null) {
-                if (provider.isLoggedIn) {
-                  return onLogin(provider.sessionData!);
-                } else
-                  return onWelcome();
+            builder: (context, data, child) {
+              if (data.isLoggedIn) {
+                if (data.sessionData != null) {
+                  return _OnLogin(data.sessionData!, _version);
+                }
+                return _OnWelcome(_version);
               } else {
-                return onWelcome();
+                return _OnWelcome(_version);
               }
             },
           ),
@@ -61,36 +62,69 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
   }
+}
 
-  void about() {
-    showAboutDialog(
-      context: context,
-      applicationIcon: Image.asset('assets/icons/logo_new.png', width: 50),
-      applicationName: 'LAPOR HOAX',
-      applicationVersion: _version,
-      children: [
-        Text(
-            'Aplikasi pelaporan hoax yang ditangani langsung oleh pihak yang berwewenang'),
-        SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/icons/pnp_logo.png',
-              width: 50,
-            ),
-            Image.asset(
-              'assets/icons/polda_sumbar_logo.png',
-              width: 50,
-            ),
-          ],
-        ),
-      ],
+class _Card extends StatelessWidget {
+  final IconData leading;
+  final String name;
+  final Function() navigate;
+
+  const _Card({
+    required this.leading,
+    required this.name,
+    required this.navigate,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 4,
+      child: ListTile(
+        leading: Icon(leading),
+        title: Text(name),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: navigate,
+      ),
     );
   }
+}
 
-  Widget onLogin(SessionData sessionData) {
+class _OnLogin extends StatelessWidget {
+  final SessionData sessionData;
+  final String version;
+
+  const _OnLogin(this.sessionData, this.version);
+
+  @override
+  Widget build(BuildContext context) {
+    void about() {
+      showAboutDialog(
+        context: context,
+        applicationIcon: Image.asset('assets/icons/logo_new.png', width: 50),
+        applicationName: 'LAPOR HOAX',
+        applicationVersion: version,
+        children: [
+          const Text(
+              'Aplikasi pelaporan hoax yang ditangani langsung oleh pihak yang berwewenang'),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/icons/pnp_logo.png',
+                width: 50,
+              ),
+              Image.asset(
+                'assets/icons/polda_sumbar_logo.png',
+                width: 50,
+              ),
+            ],
+          ),
+        ],
+      );
+    }
+
     return Column(
       children: [
         Padding(
@@ -102,7 +136,7 @@ class _AccountPageState extends State<AccountPage> {
                 height: 80,
                 width: 80,
               ),
-              SizedBox(width: 16),
+              const SizedBox(width: 16),
               Expanded(
                 child: Text(
                   sessionData.username,
@@ -121,12 +155,12 @@ class _AccountPageState extends State<AccountPage> {
                           .sessionMessage;
 
                   if (message == UserNotifier.messageLogout) {
-                    Navigation.intent(HOME_ROUTE);
+                    Navigation.intent(homeRoute);
                   } else {
                     toast('ada masalah');
                   }
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.exit_to_app,
                   color: Colors.red,
                 ),
@@ -134,108 +168,82 @@ class _AccountPageState extends State<AccountPage> {
             ],
           ),
         ),
-        SizedBox(height: 70),
-        Card(
-          elevation: 4,
-          child: ListTile(
-            leading: Icon(Icons.person_outline_rounded),
-            title: Text('Profil'),
-            trailing: Icon(Icons.chevron_right),
-            onTap: () => Navigation.intentWithData(
-                ProfilePage.ROUTE_NAME, sessionData.email),
-          ),
+        const SizedBox(height: 70),
+        _Card(
+          leading: Icons.person_outline_rounded,
+          name: 'Profil',
+          navigate: () => Navigation.intentWithData(
+              ProfilePage.ROUTE_NAME, sessionData.email),
         ),
-        Card(
-          elevation: 4,
-          child: ListTile(
-            leading: Icon(Icons.history),
-            title: Text('Riwayat Pelaporan'),
-            trailing: Icon(Icons.chevron_right),
-            onTap: () => Navigation.intentWithData(
-              HistoryPage.ROUTE_NAME,
-              TokenId(
-                sessionData.userid,
-                sessionData.token,
-              ),
+        _Card(
+          leading: Icons.history,
+          name: 'Riwayat Pelaporan',
+          navigate: () => Navigation.intentWithData(
+            HistoryPage.ROUTE_NAME,
+            TokenId(
+              sessionData.userid,
+              sessionData.token,
             ),
           ),
         ),
-        Card(
-          elevation: 4,
-          child: ListTile(
-            leading: Icon(Icons.bookmark_outline),
-            title: Text('Berita Tersimpan'),
-            trailing: Icon(Icons.chevron_right),
-            onTap: () => Navigation.intent(SAVED_NEWS_ROUTE),
-          ),
+        _Card(
+          leading: Icons.bookmark_outline,
+          name: 'Berita Tersimpan',
+          navigate: () => Navigation.intent(savedNewsRoute),
         ),
-        Card(
-          elevation: 4,
-          child: ListTile(
-            leading: Icon(Icons.info_outline),
-            title: Text('Tentang Laporhoax'),
-            trailing: Icon(Icons.chevron_right),
-            onTap: () => about(),
-          ),
+        _Card(
+          leading: Icons.info_outline,
+          name: 'Tentang Laporhoax',
+          navigate: () => about(),
         ),
-        Card(
-          elevation: 4,
-          child: ListTile(
-            leading: Icon(Icons.share_rounded),
-            title: Text('Bagikan Laporhoax'),
-            trailing: Icon(Icons.chevron_right),
-            onTap: () => Share.share(
-                'Ayo berantas hoaks bersama LaporHoax! di https://s.id/LAPORHOAX'),
-          ),
+        _Card(
+          leading: Icons.share_rounded,
+          name: 'Bagikan Laporhoax',
+          navigate: () => Share.share(
+              'Ayo berantas hoaks bersama LaporHoax! di https://s.id/LAPORHOAX'),
         ),
-        SizedBox(height: 20),
-        Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () => Navigation.intentWithData(
-                StaticPageViewer.ROUTE_NAME,
-                StaticDataWeb(
-                  fileName: 'terms_of_service',
-                  title: 'Syarat Penggunaan',
-                ),
-              ),
-              child: Container(
-                child: Text(
-                  'Syarat Penggunaan',
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-            ),
-            Text(' | '),
-            GestureDetector(
-              onTap: () => Navigation.intentWithData(
-                StaticPageViewer.ROUTE_NAME,
-                StaticDataWeb(
-                  fileName: 'privacy_policy',
-                  title: 'Kebijakan Privasi',
-                ),
-              ),
-              child: Container(
-                child: Text(
-                  'Kebijakan Privasi',
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+        const SizedBox(height: 20),
+        _FooterStatement(),
       ],
     );
   }
+}
 
-  Widget onWelcome() {
+class _OnWelcome extends StatelessWidget {
+  final String version;
+
+  const _OnWelcome(this.version);
+
+  @override
+  Widget build(BuildContext context) {
+    void about() {
+      showAboutDialog(
+        context: context,
+        applicationIcon: Image.asset('assets/icons/logo_new.png', width: 50),
+        applicationName: 'LAPOR HOAX',
+        applicationVersion: version,
+        children: [
+          const Text(
+              'Aplikasi pelaporan hoax yang ditangani langsung oleh pihak yang berwewenang'),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/icons/pnp_logo.png',
+                width: 50,
+              ),
+              Image.asset(
+                'assets/icons/polda_sumbar_logo.png',
+                width: 50,
+              ),
+            ],
+          ),
+        ],
+      );
+    }
+
     return Column(
       children: [
         Center(
@@ -246,7 +254,7 @@ class _AccountPageState extends State<AccountPage> {
                 height: 80,
                 width: 80,
               ),
-              SizedBox(height: 46),
+              const SizedBox(height: 46),
             ],
           ),
         ),
@@ -257,83 +265,75 @@ class _AccountPageState extends State<AccountPage> {
             height: 42,
             child: ElevatedButton(
               onPressed: () => Navigation.intent(LoginPage.ROUTE_NAME),
-              child: Text('Login Sekarang'),
+              child: const Text('Login Sekarang'),
             ),
           ),
         ),
-        SizedBox(height: 20),
-        Card(
-          elevation: 4,
-          child: ListTile(
-            leading: Icon(Icons.info_outline),
-            title: Text('Tentang Laporhoax'),
-            trailing: Icon(Icons.chevron_right),
-            onTap: () => about(),
-          ),
+        const SizedBox(height: 20),
+        _Card(
+          leading: Icons.info_outline,
+          name: 'Tentang Laporhoax',
+          navigate: () => about(),
         ),
-        Card(
-          elevation: 4,
-          child: ListTile(
-            leading: Icon(Icons.bookmark_outline),
-            title: Text('Berita Tersimpan'),
-            trailing: Icon(Icons.chevron_right),
-            onTap: () => Navigation.intent(SAVED_NEWS_ROUTE),
-          ),
+        _Card(
+          leading: Icons.bookmark_outline,
+          name: 'Berita Tersimpan',
+          navigate: () => Navigation.intent(savedNewsRoute),
         ),
-        Card(
-          elevation: 4,
-          child: ListTile(
-            leading: Icon(Icons.share_rounded),
-            title: Text('Bagikan LaporHoax'),
-            trailing: Icon(Icons.chevron_right),
-            onTap: () => Share.share(
-                'Ayo berantas hoaks bersama LaporHoax! di https://s.id/LAPORHOAX'),
-          ),
+        _Card(
+          leading: Icons.share_rounded,
+          name: 'Bagikan Laporhoax',
+          navigate: () => Share.share(
+              'Ayo berantas hoaks bersama LaporHoax! di https://s.id/LAPORHOAX'),
         ),
-        SizedBox(height: 20),
-        Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () => Navigation.intentWithData(
-                StaticPageViewer.ROUTE_NAME,
-                StaticDataWeb(
-                  fileName: 'terms_of_service',
-                  title: 'Syarat Penggunaan',
-                ),
-              ),
-              child: Container(
-                child: Text(
-                  'Syarat Penggunaan',
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
+        const SizedBox(height: 20),
+        _FooterStatement(),
+      ],
+    );
+  }
+}
+
+class _FooterStatement extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: () => Navigation.intentWithData(
+            StaticPageViewer.ROUTE_NAME,
+            StaticDataWeb(
+              fileName: 'terms_of_service',
+              title: 'Syarat Penggunaan',
             ),
-            Text(' | '),
-            GestureDetector(
-              onTap: () => Navigation.intentWithData(
-                StaticPageViewer.ROUTE_NAME,
-                StaticDataWeb(
-                  fileName: 'privacy_policy',
-                  title: 'Kebijakan Privasi',
-                ),
-              ),
-              child: Container(
-                child: Text(
-                  'Kebijakan Privasi',
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
+          ),
+          child: Text(
+            'Syarat Penggunaan',
+            style: GoogleFonts.inter(
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
             ),
-          ],
+          ),
+        ),
+        const Text(' | '),
+        GestureDetector(
+          onTap: () => Navigation.intentWithData(
+            StaticPageViewer.ROUTE_NAME,
+            StaticDataWeb(
+              fileName: 'privacy_policy',
+              title: 'Kebijakan Privasi',
+            ),
+          ),
+          child: Text(
+            'Kebijakan Privasi',
+            style: GoogleFonts.inter(
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+            ),
+          ),
         ),
       ],
     );
   }
 }
+

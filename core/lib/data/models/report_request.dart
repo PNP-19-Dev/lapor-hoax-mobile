@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ReportRequest extends Equatable {
-  ReportRequest({
+  const ReportRequest({
     required this.user,
     required this.url,
     required this.category,

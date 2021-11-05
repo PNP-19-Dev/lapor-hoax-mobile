@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'feed_model.dart';
 
 class FeedResponse extends Equatable {
-  FeedResponse({
+  const FeedResponse({
     required this.count,
     required this.next,
     required this.previous,

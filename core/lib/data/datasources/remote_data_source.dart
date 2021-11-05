@@ -55,18 +55,18 @@ abstract class RemoteDataSource {
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
-  static final String baseUrl = 'https://laporhoaxpolda.herokuapp.com';
-  static final String loginEndpoint = 'auth/api/login';
-  static final String registerEndpoint = 'auth/api/register';
-  static final String getUserEndpint = 'auth/api/users/get';
-  static final String questionEndpoint = 'auth/api/question';
-  static final String firebaseTokenEndpoint = 'auth/api/fcmToken';
-  static final String passwordChangeEndpoint = 'auth/api/change-password';
-  static final String passwordResetEndpoint = 'auth/api/reset';
+  static const String baseUrl = 'https://laporhoaxpolda.herokuapp.com';
+  static const String loginEndpoint = 'auth/api/login';
+  static const String registerEndpoint = 'auth/api/register';
+  static const String getUserEndpint = 'auth/api/users/get';
+  static const String questionEndpoint = 'auth/api/question';
+  static const String firebaseTokenEndpoint = 'auth/api/fcmToken';
+  static const String passwordChangeEndpoint = 'auth/api/change-password';
+  static const String passwordResetEndpoint = 'auth/api/reset';
 
-  static final String reportsEndpoint = 'api/reports';
-  static final String reportCatEndpoint = 'api/reports/cat';
-  static final String feedsEndpoint = 'api/feeds';
+  static const String reportsEndpoint = 'api/reports';
+  static const String reportCatEndpoint = 'api/reports/cat';
+  static const String feedsEndpoint = 'api/feeds';
 
   final Dio dio;
 
