@@ -13,83 +13,85 @@ class PreferencesHelper {
 
   factory PreferencesHelper() => _instance ?? PreferencesHelper.getInstance();
 
-  static const LOGIN = 'LOGIN';
-  static const EXPIRE = 'EXPIRE';
-  static const TOKEN = 'TOKEN';
-  static const ID = 'ID';
-  static const EMAIL = 'EMAIL';
-  static const USERNAME = 'USERNAME';
+  static const login = 'LOGIN';
+  static const expire = 'EXPIRE';
+  static const tokenString = 'TOKEN';
+  static const idData = 'ID';
+  static const emailData = 'EMAIL';
+  static const usernameData = 'USERNAME';
 
   String? _expire;
 
   Future<String> get expireDate async {
     final prefs = await sharedPreferences;
-    _expire = prefs.getString(EXPIRE) ?? '';
-    return prefs.getString(EXPIRE) ?? '';
+    _expire = prefs.getString(expire) ?? '';
+    return prefs.getString(expire) ?? '';
   }
 
   void setExpire(String? value) async {
     final prefs = await sharedPreferences;
     _expire = value;
-    prefs.setString(EXPIRE, value ?? '');
+    prefs.setString(expire, value ?? '');
   }
 
   Future<String> get token async {
     final prefs = await sharedPreferences;
-    return prefs.getString(TOKEN) ?? '';
+    return prefs.getString(tokenString) ?? '';
   }
 
   void setToken(String? value) async {
     final prefs = await sharedPreferences;
-    prefs.setString(TOKEN, value ?? '');
+    prefs.setString(tokenString, value ?? '');
   }
 
   Future<String> get email async {
     final prefs = await sharedPreferences;
-    return prefs.getString(EMAIL) ?? '';
+    return prefs.getString(emailData) ?? '';
   }
 
   void setEmail(String? value) async {
     final prefs = await sharedPreferences;
-    prefs.setString(EMAIL, value ?? '');
+    prefs.setString(emailData, value ?? '');
   }
 
   Future<int> get id async {
     final prefs = await sharedPreferences;
-    return prefs.getInt(ID) ?? -1;
+    return prefs.getInt(idData) ?? -1;
   }
 
   void setId(int value) async {
     final prefs = await sharedPreferences;
-    prefs.setInt(ID, value);
+    prefs.setInt(idData, value);
   }
 
   get username async {
     final prefs = await sharedPreferences;
-    return prefs.getString(USERNAME) ?? '';
+    return prefs.getString(usernameData) ?? '';
   }
 
   void setUsername(String? value) async {
     final prefs = await sharedPreferences;
-    prefs.setString(USERNAME, value ?? '');
+    prefs.setString(usernameData, value ?? '');
   }
 
   Future<bool> get isLogin async {
     final prefs = await sharedPreferences;
     if (_expire != null) {
-      if (_expire!.length != 0 &&
-          DateTime.now().isAfter(DateTimeHelper.formattedDateToken(_expire!))) {
+      if (_expire!.isNotEmpty &&
+          DateTime.now()
+              .toUtc()
+              .isAfter(DateTimeHelper.formattedDateToken(_expire!))) {
         setExpire(null);
         setLogin(false);
         return false;
       }
-      return prefs.getBool(LOGIN) ?? false;
+      return prefs.getBool(login) ?? false;
     }
-    return prefs.getBool(LOGIN) ?? false;
+    return prefs.getBool(login) ?? false;
   }
 
   void setLogin(bool value) async {
     final prefs = await sharedPreferences;
-    prefs.setBool(LOGIN, value);
+    prefs.setBool(login, value);
   }
 }

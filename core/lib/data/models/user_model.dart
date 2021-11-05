@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../domain/entities/user.dart';
 
 class UserModel extends Equatable {
-  UserModel({
+  const UserModel({
     required this.id,
     required this.username,
     required this.email,

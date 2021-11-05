@@ -15,6 +15,7 @@ import '../../../data/models/token_id.dart';
 import '../../../domain/entities/category.dart';
 import '../../../styles/colors.dart';
 import '../../../utils/navigation.dart';
+import '../../../utils/route_observer.dart';
 import '../../../utils/state_enum.dart';
 import '../../provider/report_notifier.dart';
 import '../../provider/user_notifier.dart';
@@ -26,22 +27,46 @@ import 'on_loading_report.dart';
 class ReportPage extends StatefulWidget {
   static const ROUTE_NAME = '/lapor_page';
 
+  const ReportPage({Key? key}) : super(key: key);
+
   @override
   _ReportPageState createState() => _ReportPageState();
 }
 
-class _ReportPageState extends State<ReportPage> {
+class _ReportPageState extends State<ReportPage> with RouteAware {
   var _selectedCategory;
   bool _anonym = false;
   XFile? _image;
   List<Category> _categories = [];
   String filename = '';
 
-  var _urlController = TextEditingController();
-  var _descController = TextEditingController();
+  final _urlController = TextEditingController();
+  final _descController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      Provider.of<ReportNotifier>(context, listen: false).fetchCategories();
+      Provider.of<UserNotifier>(context, listen: false)
+        ..isLogin()
+        ..getSession();
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void didPopNext() {
+    Provider.of<UserNotifier>(context, listen: false).isLogin();
+  }
 
   // ignore : deprecation
-  Future<Null> getImage(ImageSource source) async {
+  Future<void> getImage(ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(
         source: source,
@@ -52,10 +77,11 @@ class _ReportPageState extends State<ReportPage> {
         // cropImage(image.path);
         setState(() {
           filename = image.path.trim().split('/').last;
-          this._image = image;
+          _image = image;
         });
       }
     } on PlatformException catch (e) {
+      toast('Gagal Mengambil Gambar');
       print('failed to pick image: $e');
     }
   }
@@ -93,17 +119,6 @@ class _ReportPageState extends State<ReportPage> {
   }*/
 
   @override
-  void initState() {
-    super.initState();
-    Future.microtask(() {
-      Provider.of<ReportNotifier>(context, listen: false).fetchCategories();
-      Provider.of<UserNotifier>(context, listen: false)
-        ..isLogin()
-        ..getSession();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -111,15 +126,16 @@ class _ReportPageState extends State<ReportPage> {
           builder: (context, provider, child) {
             if (provider.isLoggedIn) {
               return lapor();
-            } else
-              return welcome();
+            } else {
+              return _Welcome();
+            }
           },
         ),
       ),
     );
   }
 
-  FocusNode _linkFocusNode = new FocusNode();
+  final FocusNode _linkFocusNode = FocusNode();
   final _formKey = GlobalKey<FormState>();
 
   Stream<List<Category>> _data() async* {
@@ -140,38 +156,30 @@ class _ReportPageState extends State<ReportPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.only(top: 11),
-                    child: GestureDetector(
-                      child: Icon(Icons.arrow_back, size: 32),
-                      onTap: () => Navigation.intent(HOME_ROUTE),
-                    ),
-                  ),
-                  Container(
-                    padding:
-                        const EdgeInsets.only(top: 30, left: 15, right: 15),
-                    child: Center(
-                      child: Text(
-                        'Buat Laporan',
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 45,
-                  ),
+                  _Header(),
                   Form(
                     key: _formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Container(
+                          padding:
+                          const EdgeInsets.only(top: 30, left: 15, right: 15),
+                          child: const Center(
+                            child: Text(
+                              'Buat Laporan',
+                              style: TextStyle(
+                                  fontSize: 25, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 45),
                         Row(
                           children: [
                             OutlinedButton(
                               onPressed: () async =>
                                   getImage(ImageSource.gallery),
-                              child: Text('Gambar'),
+                              child: const Text('Gambar'),
                             ),
                             /* TODO FITUR TAMBAHAN
                                 CircleAvatar(
@@ -191,7 +199,7 @@ class _ReportPageState extends State<ReportPage> {
                                     icon: Icon(Icons.camera_alt),
                                   ),
                                 ),*/
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             Flexible(
                               child: Text(
                                 _image == null
@@ -227,14 +235,14 @@ class _ReportPageState extends State<ReportPage> {
                               decoration: InputDecoration(
                                 icon: SvgPicture.asset(
                                     'assets/icons/category_alt.svg'),
-                                suffixIcon: Icon(Icons.arrow_drop_down),
+                                suffixIcon: const Icon(Icons.arrow_drop_down),
                               ),
                               hint: Consumer<ReportNotifier>(
                                   builder: (_, data, child) {
                                 if (data.category.isEmpty) {
-                                  return Text('Mengambil data');
+                                  return const Text('Mengambil data');
                                 } else {
-                                  return Text('Category');
+                                  return const Text('Category');
                                 }
                               }),
                               value: _selectedCategory,
@@ -263,12 +271,13 @@ class _ReportPageState extends State<ReportPage> {
                             alignLabelWithHint: true,
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
+                              borderSide: const BorderSide(
                                   style: BorderStyle.solid, color: orangeBlaze),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(style: BorderStyle.solid),
+                              borderSide:
+                                  const BorderSide(style: BorderStyle.solid),
                             ),
                           ),
                         ),
@@ -284,7 +293,7 @@ class _ReportPageState extends State<ReportPage> {
                               },
                               value: _anonym,
                             ),
-                            Text('Lapor Secara Anonim'),
+                            const Text('Lapor Secara Anonim'),
                           ],
                         ),
                         SizedBox(
@@ -299,7 +308,7 @@ class _ReportPageState extends State<ReportPage> {
                                 if (_formKey.currentState!.validate()) {
                                   int id = data.userid;
                                   String url = _urlController.text.toString();
-                                  String desc = _descController.text.length == 0
+                                  String desc = _descController.text.isEmpty
                                       ? "tidak ada deskripsi"
                                       : _descController.text.toString();
                                   XFile img = _image!;
@@ -353,35 +362,13 @@ class _ReportPageState extends State<ReportPage> {
                                 }
                               }
                             },
-                            child: Text('Lapor'),
+                            child: const Text('Lapor'),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      var data =
-                          Provider.of<UserNotifier>(context, listen: false)
-                              .sessionData;
-                      if (data != null) {
-                        return Navigation.intentWithData(HistoryPage.ROUTE_NAME,
-                            TokenId(data.userid, data.token));
-                      }
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      child: Center(
-                        child: Text(
-                          'Lihat riwayat pelaporan',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: orangeBlaze,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  _ButtonHistory(),
                 ],
               ),
             ),
@@ -391,15 +378,24 @@ class _ReportPageState extends State<ReportPage> {
     );
   }
 
-  Widget welcome() {
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+}
+
+class _Welcome extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           padding: const EdgeInsets.only(top: 11, left: 15),
           child: GestureDetector(
-            child: Icon(Icons.arrow_back, size: 32),
-            onTap: () => Navigation.back(),
+            child: const Icon(Icons.arrow_back, size: 32),
+            onTap: () => Navigator.pop(context),
           ),
         ),
         Container(
@@ -414,34 +410,32 @@ class _ReportPageState extends State<ReportPage> {
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 45,
         ),
-        Container(
-          child: Center(
-            child: Column(
-              children: [
-                SvgPicture.asset(
-                  'assets/illustration/not_login.svg',
-                  width: 250,
-                  height: 250,
+        Center(
+          child: Column(
+            children: [
+              SvgPicture.asset(
+                'assets/illustration/not_login.svg',
+                width: 250,
+                height: 250,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Kamu belum login!',
+                style: GoogleFonts.inter(
+                    fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Silahkan login untuk melanjutkan pelaporan',
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w200,
+                  fontSize: 12,
                 ),
-                SizedBox(height: 10),
-                Text(
-                  'Kamu belum login!',
-                  style: GoogleFonts.inter(
-                      fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Silahkan login untuk melanjutkan pelaporan',
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w200,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         Container(
@@ -452,11 +446,55 @@ class _ReportPageState extends State<ReportPage> {
               onPressed: () {
                 Navigation.intent(LoginPage.ROUTE_NAME);
               },
-              child: Text('Login'),
+              child: const Text('Login'),
             ),
           ),
         ),
       ],
     );
   }
+}
+
+class _Header extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(top: 11),
+      child: GestureDetector(
+        child: const Icon(Icons.arrow_back, size: 32),
+        onTap: () => Navigation.intent(HOME_ROUTE),
+      ),
+    );
+  }
+
+}
+
+class _ButtonHistory extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        var data =
+            Provider.of<UserNotifier>(context, listen: false)
+                .sessionData;
+        if (data != null) {
+          Navigation.intentWithData(HistoryPage.ROUTE_NAME,
+              TokenId(data.userid, data.token));
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(top: 20),
+        child: const Center(
+          child: Text(
+            'Lihat riwayat pelaporan',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: orangeBlaze,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
 }

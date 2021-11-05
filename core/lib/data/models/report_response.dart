@@ -8,7 +8,7 @@ ReportResponse userReportFromJson(String str) =>
     ReportResponse.fromJson(json.decode(str));
 
 class ReportResponse extends Equatable {
-  ReportResponse({
+  const ReportResponse({
     required this.count,
     required this.next,
     required this.previous,

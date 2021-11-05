@@ -130,7 +130,7 @@ class LocalDataSourceImpl implements LocalDataSource {
   @override
   Future<List<Category>> getCachedCategory() async {
     final result = await databaseHelper.getCategoryCache();
-    if (result.length > 0) {
+    if (result.isNotEmpty) {
       return result.map((data) => Category.fromMap(data)).toList();
     } else {
       throw CacheException("Can't get the data :(");
@@ -140,7 +140,7 @@ class LocalDataSourceImpl implements LocalDataSource {
   @override
   Future<List<Question>> getCachedQuestion() async {
     final result = await databaseHelper.getQuestionCache();
-    if (result.length > 0) {
+    if (result.isNotEmpty) {
       return result.map((data) => Question.fromMap(data)).toList();
     } else {
       throw CacheException("Can't get the data :(");

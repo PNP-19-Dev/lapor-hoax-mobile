@@ -8,7 +8,7 @@ class FeedTable extends Equatable {
   final String? thumbnail;
   final String? date;
 
-  FeedTable({
+  const FeedTable({
     required this.id,
     required this.title,
     required this.thumbnail,

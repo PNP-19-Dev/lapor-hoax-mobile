@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../domain/entities/category.dart';
 
 class CategoryModel extends Equatable {
-  CategoryModel({
+  const CategoryModel({
     required this.id,
     required this.name,
   });

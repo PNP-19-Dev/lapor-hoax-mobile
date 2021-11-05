@@ -2,9 +2,8 @@ import 'package:equatable/equatable.dart';
 
 import '../../data/models/category_model.dart';
 
-// ignore: must_be_immutable
 class Category extends Equatable {
-  Category({
+  const Category({
     required this.id,
     required this.name,
   });

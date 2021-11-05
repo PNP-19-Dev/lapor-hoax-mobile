@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../domain/entities/report.dart';
 
 class ReportModel extends Equatable {
-  ReportModel({
+  const ReportModel({
     required this.id,
     required this.url,
     required this.img,

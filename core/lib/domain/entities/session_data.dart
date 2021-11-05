@@ -7,7 +7,7 @@ class SessionData extends Equatable {
   final String email;
   final String username;
 
-  SessionData({
+  const SessionData({
     required this.token,
     required this.userid,
     required this.expiry,

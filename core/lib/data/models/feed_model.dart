@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../domain/entities/feed.dart';
 
 class FeedModel extends Equatable {
-  FeedModel({
+  const FeedModel({
     required this.id,
     required this.title,
     required this.content,
@@ -52,13 +52,13 @@ class FeedModel extends Equatable {
       );
 
   Feed toEntity() => Feed(
-        id: this.id,
-        title: this.title,
-        content: this.content,
-        thumbnail: this.thumbnail,
-        date: this.date,
-        view: this.view,
-        author: this.author,
+        id: id,
+        title: title,
+        content: content,
+        thumbnail: thumbnail,
+        date: date,
+        view: view,
+        author: author,
       );
 
   @override

@@ -5,7 +5,7 @@ class RegisterModel extends Equatable {
   final String email;
   final String password;
 
-  RegisterModel({
+  const RegisterModel({
     required this.name,
     required this.email,
     required this.password,
