@@ -153,11 +153,6 @@ void main() {
     const questionEndpoint = 'auth/api/question';
     final tQuestionModels = [
       QuestionModel(id: 1, question: "Dimana anda lahir?"),
-      QuestionModel(id: 2, question: "Apa nama hewan peliharaan pertamamu?"),
-      QuestionModel(id: 3, question: "Siapa nama teman dekat masa kecilmu?"),
-      QuestionModel(id: 4, question: "Apa makanan kesukaanmu?"),
-      QuestionModel(id: 5, question: "Apa warna favoritmu?"),
-      QuestionModel(id: 6, question: "Apa nama masa kecilmu?")
     ];
     test('should get list of question when response status code 200', () async {
       // arrange

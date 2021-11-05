@@ -19,14 +19,6 @@ class Report extends Equatable {
     required this.verdictJudge,
   });
 
-  Report.shortInformation({
-    required this.id,
-    required this.category,
-    required this.status,
-    required this.verdict,
-    required this.dateReported,
-  });
-
   int id;
   String? url;
   String? img;

@@ -135,6 +135,7 @@ class UserNotifier extends ChangeNotifier {
     result.fold((failure) {
       _fcmMessage = failure.message;
       _fcmState = RequestState.Error;
+      notifyListeners();
     }, (message) {
       _fcmMessage = message;
       _fcmState = RequestState.Loaded;

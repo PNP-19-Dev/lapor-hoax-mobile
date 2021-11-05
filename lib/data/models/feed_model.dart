@@ -40,16 +40,6 @@ class FeedModel extends Equatable {
         "author": author
       };
 
-  Feed entity() => Feed(
-        id: id,
-        title: title,
-        content: content,
-        thumbnail: thumbnail,
-        date: date,
-        view: view,
-        author: author,
-      );
-
   Feed toEntity() => Feed(
         id: this.id,
         title: this.title,

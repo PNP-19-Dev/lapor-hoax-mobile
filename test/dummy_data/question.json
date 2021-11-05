@@ -6,26 +6,6 @@
     {
       "id": 1,
       "question": "Dimana anda lahir?"
-    },
-    {
-      "id": 2,
-      "question": "Apa nama hewan peliharaan pertamamu?"
-    },
-    {
-      "id": 3,
-      "question": "Siapa nama teman dekat masa kecilmu?"
-    },
-    {
-      "id": 4,
-      "question": "Apa makanan kesukaanmu?"
-    },
-    {
-      "id": 5,
-      "question": "Apa warna favoritmu?"
-    },
-    {
-      "id": 6,
-      "question": "Apa nama masa kecilmu?"
     }
   ]
 }

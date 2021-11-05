@@ -16,41 +16,25 @@ import 'package:laporhoax/data/models/user_model.dart';
 import 'package:laporhoax/data/models/user_question_model.dart';
 import 'package:laporhoax/data/models/user_response.dart';
 import 'package:laporhoax/data/models/user_token.dart';
-import 'package:laporhoax/domain/entities/user_question.dart';
 
 abstract class RemoteDataSource {
   Future<String> deleteReport(String token, int id);
-
   Future<List<CategoryModel>> getCategory();
-
   Future<FeedModel> getFeedDetail(int id);
-
   Future<List<FeedModel>> getFeeds();
-
   Future<String> getPasswordReset(String email);
-
   Future<List<QuestionModel>> getQuestions();
-
   Future<List<ReportModel>> getReport(String token, int id);
-
   Future<List<UserModel>> getUser(String email);
-
   Future<UserQuestionModel> getUserQuestions(int id);
-
   Future<String> postChangePassword(
       String oldPass, String newPass, String token);
-
   Future postFcmToken(String user, String fcmToken);
-
   Future updateFcmToken(String user, String fcmToken);
-
   Future<UserToken> postLogin(String username, String password);
-
   Future<UserResponse> postRegister(RegisterModel user);
-
   Future<ReportModel> postReport(String token, ReportRequest report);
-
-  Future<String> postChallenge(UserQuestion challenge);
+  Future<String> postChallenge(UserQuestionModel challenge);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -242,7 +226,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<String> postChallenge(UserQuestion challenge) async {
+  Future<String> postChallenge(UserQuestionModel challenge) async {
     final response = await dio.post(
       '/$questionEndpoint/user/',
       options: Options(contentType: Headers.jsonContentType),

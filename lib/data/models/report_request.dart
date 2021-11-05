@@ -18,15 +18,6 @@ class ReportRequest extends Equatable {
   final String description;
   final XFile img;
 
-  Map<String, dynamic> toJson() => {
-        "user": user,
-        "url": url,
-        "category": category,
-        "isAnonym": isAnonym,
-        "report": description,
-        "img": img,
-      };
-
   @override
   List<Object?> get props => [
         user,

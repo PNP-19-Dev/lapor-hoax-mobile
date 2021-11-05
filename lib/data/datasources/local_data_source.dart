@@ -1,35 +1,24 @@
 import 'package:laporhoax/common/exception.dart';
 import 'package:laporhoax/data/datasources/db/database_helper.dart';
 import 'package:laporhoax/data/datasources/preferences/preferences_helper.dart';
+import 'package:laporhoax/data/models/category_table.dart';
 import 'package:laporhoax/data/models/feed_table.dart';
-import 'package:laporhoax/domain/entities/category.dart';
-import 'package:laporhoax/domain/entities/question.dart';
+import 'package:laporhoax/data/models/question_table.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
 
 abstract class LocalDataSource {
   Future<String> insertFeed(FeedTable feed);
-
   Future<String> removeFeed(FeedTable feed);
-
   Future<FeedTable?> getFeedById(int id);
-
   Future<List<FeedTable>> getFeeds();
-
   Future<bool> isLoggedIn();
-
   Future<SessionData?> getSession();
-
   Future<String> insertSession(SessionData data);
-
   Future<String> removeSession(SessionData data);
-
-  Future<void> cacheQuestions(List<Question> questions);
-
-  Future<List<Question>> getCachedQuestion();
-
-  Future<void> cacheCategory(List<Category> category);
-
-  Future<List<Category>> getCachedCategory();
+  Future<void> cacheQuestions(List<QuestionTable> questions);
+  Future<List<QuestionTable>> getCachedQuestion();
+  Future<void> cacheCategory(List<CategoryTable> category);
+  Future<List<CategoryTable>> getCachedCategory();
 }
 
 class LocalDataSourceImpl implements LocalDataSource {
@@ -127,32 +116,32 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  Future<void> cacheCategory(List<Category> categories) async {
+  Future<void> cacheCategory(List<CategoryTable> categories) async {
     await databaseHelper.clearCategoryCache();
     await databaseHelper.insertCategoryTransaction(categories);
   }
 
   @override
-  Future<void> cacheQuestions(List<Question> questions) async {
+  Future<void> cacheQuestions(List<QuestionTable> questions) async {
     await databaseHelper.clearQuestionCache();
     await databaseHelper.insertQuestionTransaction(questions);
   }
 
   @override
-  Future<List<Category>> getCachedCategory() async {
+  Future<List<CategoryTable>> getCachedCategory() async {
     final result = await databaseHelper.getCategoryCache();
     if (result.length > 0) {
-      return result.map((data) => Category.fromMap(data)).toList();
+      return result.map((data) => CategoryTable.fromMap(data)).toList();
     } else {
       throw CacheException("Can't get the data :(");
     }
   }
 
   @override
-  Future<List<Question>> getCachedQuestion() async {
+  Future<List<QuestionTable>> getCachedQuestion() async {
     final result = await databaseHelper.getQuestionCache();
     if (result.length > 0) {
-      return result.map((data) => Question.fromMap(data)).toList();
+      return result.map((data) => QuestionTable.fromMap(data)).toList();
     } else {
       throw CacheException("Can't get the data :(");
     }

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:laporhoax/common/NetworkInfoImpl.dart';
+import 'package:laporhoax/common/network_info_impl.dart';
 import 'package:laporhoax/data/datasources/db/database_helper.dart';
 import 'package:laporhoax/data/datasources/local_data_source.dart';
 import 'package:laporhoax/data/datasources/preferences/preferences_helper.dart';
