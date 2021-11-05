@@ -21,8 +21,30 @@ void main() {
       view: 0,
       author: 1);
 
-  test('should be a subclass of Feed entity', () async {
-    final result = tFeedModel.toEntity();
-    expect(result, tFeed);
+  final feedMap = {
+    'id' : 1,
+    'title' : 'title',
+    'content' : 'content',
+    'thumbnail' : 'thumbnail',
+    'date' : 'date',
+    'view' : 0,
+    'author' : 1,
+  };
+
+  group('Feed Model', (){
+    test('should be a subclass of Feed entity', () async {
+      final result = tFeedModel.toEntity();
+      expect(result, tFeed);
+    });
+
+    test('should be a valid JSON', () async {
+      final result = tFeedModel.toJson();
+      expect(result, feedMap);
+    });
+
+    test('should be a valid FeedModel', () async {
+      final result = FeedModel.fromJson(feedMap);
+      expect(result, tFeedModel);
+    });
   });
 }

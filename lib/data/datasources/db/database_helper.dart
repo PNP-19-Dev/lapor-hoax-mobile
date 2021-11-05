@@ -1,6 +1,6 @@
+import 'package:laporhoax/data/models/category_table.dart';
 import 'package:laporhoax/data/models/feed_table.dart';
-import 'package:laporhoax/domain/entities/category.dart';
-import 'package:laporhoax/domain/entities/question.dart';
+import 'package:laporhoax/data/models/question_table.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
@@ -89,7 +89,7 @@ class DatabaseHelper {
     );
   }
 
-  Future<void> insertQuestionTransaction(List<Question> questions) async {
+  Future<void> insertQuestionTransaction(List<QuestionTable> questions) async {
     final db = await database;
     db!.transaction((txn) async {
       for (final question in questions) {
@@ -99,7 +99,7 @@ class DatabaseHelper {
     });
   }
 
-  Future<void> insertCategoryTransaction(List<Category> categories) async {
+  Future<void> insertCategoryTransaction(List<CategoryTable> categories) async {
     final db = await database;
     db!.transaction((txn) async {
       for (final category in categories) {

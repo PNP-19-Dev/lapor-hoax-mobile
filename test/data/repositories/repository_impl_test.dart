@@ -84,6 +84,7 @@ void main() {
           equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
+
   group('Get Categories', () {
     test('should check if the device is online', () async {
       // arrange
@@ -125,7 +126,7 @@ void main() {
         await repository.getCategories();
         // assert
         verify(mockRemoteDataSource.getCategory());
-        verify(mockLocalDataSource.cacheCategory([testCategory]));
+        verify(mockLocalDataSource.cacheCategory([testCategoryTable]));
       });
 
       test('should return server failure', () async {
@@ -147,7 +148,7 @@ void main() {
       test(
           'should return connection failure when the device is not connected to internet',
           () async {
-            /*// arrange
+        /*     // arrange
         when(mockRemoteDataSource.getCategory())
             .thenThrow(SocketException('Failed to connect to the network'));
         // act
@@ -163,7 +164,7 @@ void main() {
       test('should return cached data when device is offline', () async {
         // arrange
         when(mockLocalDataSource.getCachedCategory())
-            .thenAnswer((_) async => [testCategory]);
+            .thenAnswer((_) async => [testCategoryTable]);
         // act
         final result = await repository.getCategories();
         // assert
@@ -173,6 +174,7 @@ void main() {
       });
     });
   });
+
   group('Get Feed Detail', () {
     test(
         'should return Feed data when the call to remote data source is successful',
@@ -190,7 +192,7 @@ void main() {
         'should return Server Failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-          when(mockRemoteDataSource.getFeedDetail(tId))
+      when(mockRemoteDataSource.getFeedDetail(tId))
           .thenThrow(ServerException());
       // act
       final result = await repository.getFeedDetail(tId);
@@ -198,7 +200,19 @@ void main() {
       verify(mockRemoteDataSource.getFeedDetail(tId));
       expect(result, equals(Left(ServerFailure('Failed To Get Detail'))));
     });
+    test('should return Server Failure when device is offline', () async {
+      // arrange
+      when(mockRemoteDataSource.getFeedDetail(tId))
+          .thenThrow(SocketException('Failed to connect to the network'));
+      // act
+      final result = await repository.getFeedDetail(tId);
+      // assert
+      verify(mockRemoteDataSource.getFeedDetail(tId));
+      expect(result,
+          equals(Left(ConnectionFailure('Failed to connect to the network'))));
+    });
   });
+
   group('Get Feed Save Status', () {
     test('should return save status whether data is found', () async {
       // arrange
@@ -210,12 +224,13 @@ void main() {
       expect(result, false);
     });
   });
+
   group('Get Feeds', () {
     test(
         'should return remote data when the call to remote data source is successful',
         () async {
       // arrange
-          when(mockRemoteDataSource.getFeeds())
+      when(mockRemoteDataSource.getFeeds())
           .thenAnswer((_) async => [testFeedModel]);
       // act
       final result = await repository.getFeeds();
@@ -229,7 +244,7 @@ void main() {
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-          when(mockRemoteDataSource.getFeeds()).thenThrow(ServerException());
+      when(mockRemoteDataSource.getFeeds()).thenThrow(ServerException());
       // act
       final result = await repository.getFeeds();
       // assert
@@ -250,6 +265,7 @@ void main() {
           equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
+
   group('Get Password Reset', () {
     test(
         'should return remote data when the call to remote data source is successful',
@@ -269,7 +285,7 @@ void main() {
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-          when(mockRemoteDataSource.getPasswordReset(tEmail))
+      when(mockRemoteDataSource.getPasswordReset(tEmail))
           .thenThrow(ServerException());
       // act
       final result = await repository.getPasswordReset(tEmail);
@@ -281,7 +297,7 @@ void main() {
         'should return connection failure when the device is not connected to internet',
         () async {
       // arrange
-          when(mockRemoteDataSource.getPasswordReset(tEmail))
+      when(mockRemoteDataSource.getPasswordReset(tEmail))
           .thenThrow(SocketException('Failed to connect to the network'));
       // act
       final result = await repository.getPasswordReset(tEmail);
@@ -291,6 +307,7 @@ void main() {
           equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
+
   group('Get Questions', () {
     test('should check if the device is online', () async {
       // arrange
@@ -328,7 +345,7 @@ void main() {
           'should return server failure when the call to remote data source is unsuccessful',
           () async {
         // arrange
-            when(mockRemoteDataSource.getQuestions()).thenThrow(ServerException());
+        when(mockRemoteDataSource.getQuestions()).thenThrow(ServerException());
         // act
         final result = await repository.getQuestions();
         // assert
@@ -346,7 +363,7 @@ void main() {
         await repository.getQuestions();
         // assert
         verify(mockRemoteDataSource.getQuestions());
-        verify(mockLocalDataSource.cacheQuestions([testQuestion]));
+        verify(mockLocalDataSource.cacheQuestions([testQuestionTable]));
       });
 
       test('should return server failure', () async {});
@@ -378,7 +395,7 @@ void main() {
       test('should return cached data when device is offline', () async {
         // arrange
         when(mockLocalDataSource.getCachedQuestion())
-            .thenAnswer((_) async => [testQuestion]);
+            .thenAnswer((_) async => [testQuestionTable]);
         // act
         final result = await repository.getQuestions();
         // assert
@@ -396,7 +413,8 @@ void main() {
       final tReportResponse = ReportModel(
         id: 59,
         url: "www.aslihoax.com",
-        img: "https://django-lapor-hoax.s3.amazonaws.com/reports/Capture.PNG?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=6eGLu1R0U3qsyUf5sb%2B2up%2B9DzU%3D&Expires=1634827154",
+        img:
+            "https://django-lapor-hoax.s3.amazonaws.com/reports/Capture.PNG?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=6eGLu1R0U3qsyUf5sb%2B2up%2B9DzU%3D&Expires=1634827154",
         category: "Isu SARA",
         status: "Selesai",
         isAnonym: false,
@@ -424,7 +442,7 @@ void main() {
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-          when(mockRemoteDataSource.getReport(tToken, tId))
+      when(mockRemoteDataSource.getReport(tToken, tId))
           .thenThrow(ServerException());
       // act
       final result = await repository.getReports(tToken, tId);
@@ -446,6 +464,7 @@ void main() {
           equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
+
   group('Get Saved Feeds', () {
     final tFeed = Feed(
       id: 1,
@@ -467,6 +486,7 @@ void main() {
       expect(resultList, [tFeed]);
     });
   });
+
   group('Get Session Data', () {
     test('should return session status', () async {
       final sessionData = SessionData(
@@ -485,6 +505,7 @@ void main() {
       expect(result, Right(sessionData));
     });
   });
+
   group('Get Session Status', () {
     test('should return true whether data is found', () async {
       // arrange
@@ -495,6 +516,7 @@ void main() {
       expect(result, true);
     });
   });
+
   group('Get User', () {
     test(
         'should return remote data when the call to remote data source is successful',
@@ -513,7 +535,7 @@ void main() {
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-          when(mockRemoteDataSource.getUser(tEmail)).thenThrow(ServerException());
+      when(mockRemoteDataSource.getUser(tEmail)).thenThrow(ServerException());
       // act
       final result = await repository.getUser(tEmail);
       // assert
@@ -534,6 +556,7 @@ void main() {
           equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
+
   group('Get User Challenge', () {
     test(
         'should return remote data when the call to remote data source is successful',
@@ -560,7 +583,7 @@ void main() {
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-          when(mockRemoteDataSource.getUserQuestions(tId))
+      when(mockRemoteDataSource.getUserQuestions(tId))
           .thenThrow(ServerException());
       // act
       final result = await repository.getUserChallenge(tId);
@@ -582,6 +605,7 @@ void main() {
           equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
+
   group('Post Change Password', () {
     test(
         'should return remote data when the call to remote data source is successful',
@@ -601,7 +625,7 @@ void main() {
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-          when(mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken))
+      when(mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken))
           .thenThrow(ServerException());
       // act
       final result =
@@ -627,6 +651,7 @@ void main() {
           equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
+
   group('Post FCM Token', () {
     test(
         'should return remote data when the call to remote data source is successful',
@@ -644,7 +669,7 @@ void main() {
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-          when(mockRemoteDataSource.postFcmToken(tId.toString(), tToken))
+      when(mockRemoteDataSource.postFcmToken(tId.toString(), tToken))
           .thenThrow(ServerException());
       // act
       final result = await repository.postFCMToken(tId, tToken);
@@ -666,6 +691,47 @@ void main() {
           equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
+
+  group('Put FCM Token', () {
+    test(
+        'should return remote data when the call to remote data source is successful',
+        () async {
+      // arrange
+      when(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken))
+          .thenAnswer((_) async => 'Success');
+      // act
+      final result = await repository.putFCMToken(tId, tToken);
+      // assert
+      verify(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken));
+      expect(result, equals(Right('Success')));
+    });
+    test(
+        'should return server failure when the call to remote data source is unsuccessful',
+        () async {
+      // arrange
+      when(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken))
+          .thenThrow(ServerException());
+      // act
+      final result = await repository.putFCMToken(tId, tToken);
+      // assert
+      verify(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken));
+      expect(result, equals(Left(ServerFailure('Cant To Send'))));
+    });
+    test(
+        'should return connection failure when the device is not connected to internet',
+        () async {
+      // arrange
+      when(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken))
+          .thenThrow(SocketException('Failed to connect to the network'));
+      // act
+      final result = await repository.putFCMToken(tId, tToken);
+      // assert
+      verify(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken));
+      expect(result,
+          equals(Left(ConnectionFailure('Failed to connect to the network'))));
+    });
+  });
+
   group('Post Login', () {
     test(
         'should return remote data when the call to remote data source is successful',
@@ -683,7 +749,7 @@ void main() {
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-          when(mockRemoteDataSource.postLogin(tUsername, tOldPass))
+      when(mockRemoteDataSource.postLogin(tUsername, tOldPass))
           .thenThrow(ServerException());
       // act
       final result = await repository.postLogin(tUsername, tOldPass);
@@ -706,6 +772,7 @@ void main() {
           equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
+
   group('Post Register', () {
     test(
         'should return remote data when the call to remote data source is successful',
@@ -723,7 +790,7 @@ void main() {
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-          when(mockRemoteDataSource.postRegister(testRegister))
+      when(mockRemoteDataSource.postRegister(testRegister))
           .thenThrow(ServerException());
       // act
       final result = await repository.postRegister(testRegister);
@@ -745,6 +812,7 @@ void main() {
           equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
+
   group('Post Report', () {
     final tReportCompose = ReportRequest(
       user: 1,
@@ -770,7 +838,7 @@ void main() {
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-          when(mockRemoteDataSource.postReport(tToken, tReportCompose))
+      when(mockRemoteDataSource.postReport(tToken, tReportCompose))
           .thenThrow(ServerException());
       // act
       final result = await repository.postReport(tToken, tReportCompose);
@@ -792,45 +860,47 @@ void main() {
           equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
+
   group('Post User Challenge', () {
     test(
         'should return remote data when the call to remote data source is successful',
         () async {
       // arrange
-          when(mockRemoteDataSource.postChallenge(testUserChallenge))
+      when(mockRemoteDataSource.postChallenge(testUserChallengeModel))
           .thenAnswer((_) async => 'Success');
       // act
       final result = await repository.postUserChallenge(testUserChallenge);
       // assert
-      verify(mockRemoteDataSource.postChallenge(testUserChallenge));
+      verify(mockRemoteDataSource.postChallenge(testUserChallengeModel));
       expect(result, equals(Right('Success')));
     });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-          when(mockRemoteDataSource.postChallenge(testUserChallenge))
+      when(mockRemoteDataSource.postChallenge(testUserChallengeModel))
           .thenThrow(ServerException());
       // act
       final result = await repository.postUserChallenge(testUserChallenge);
       // assert
-      verify(mockRemoteDataSource.postChallenge(testUserChallenge));
+      verify(mockRemoteDataSource.postChallenge(testUserChallengeModel));
       expect(result, equals(Left(ServerFailure('Invalid'))));
     });
     test(
         'should return connection failure when the device is not connected to internet',
         () async {
       // arrange
-      when(mockRemoteDataSource.postChallenge(testUserChallenge))
+      when(mockRemoteDataSource.postChallenge(testUserChallengeModel))
           .thenThrow(SocketException('Failed to connect to the network'));
       // act
       final result = await repository.postUserChallenge(testUserChallenge);
       // assert
-      verify(mockRemoteDataSource.postChallenge(testUserChallenge));
+      verify(mockRemoteDataSource.postChallenge(testUserChallengeModel));
       expect(result,
           equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
+
   group('Remove Feed', () {
     test('should return success message when remove successful', () async {
       // arrange
@@ -852,6 +922,7 @@ void main() {
       expect(result, Left(DatabaseFailure('Failed to remove Feed')));
     });
   });
+
   group('Remove Session Data', () {
     test('should return success message when remove successful', () async {
       // arrange
@@ -863,6 +934,7 @@ void main() {
       expect(result, Right('Session Removed'));
     });
   });
+
   group('Save Feed', () {
     test('should return success message when saving successful', () async {
       // arrange
@@ -883,6 +955,7 @@ void main() {
       expect(result, Left(DatabaseFailure('Failed to save Feed')));
     });
   });
+
   group('Save Session Data', () {
     test('should return success message when saving successful', () async {
       // arrange
@@ -891,7 +964,7 @@ void main() {
       // act
       final result = await repository.saveSessionData(testSessionData);
       // assert
-      expect(result, Right('Session Saved'));
+      expect(result, 'Session Saved');
     });
   });
 }

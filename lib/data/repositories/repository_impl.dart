@@ -1,14 +1,17 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:laporhoax/common/NetworkInfoImpl.dart';
 import 'package:laporhoax/common/exception.dart';
 import 'package:laporhoax/common/failure.dart';
+import 'package:laporhoax/common/network_info_impl.dart';
 import 'package:laporhoax/data/datasources/local_data_source.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
+import 'package:laporhoax/data/models/category_table.dart';
 import 'package:laporhoax/data/models/feed_table.dart';
+import 'package:laporhoax/data/models/question_table.dart';
 import 'package:laporhoax/data/models/register_model.dart';
 import 'package:laporhoax/data/models/report_request.dart';
+import 'package:laporhoax/data/models/user_question_model.dart';
 import 'package:laporhoax/data/models/user_response.dart';
 import 'package:laporhoax/data/models/user_token.dart';
 import 'package:laporhoax/domain/entities/category.dart';
@@ -90,12 +93,10 @@ class RepositoryImpl implements Repository {
       try {
         final result = await remoteDataSource.getCategory();
         localDataSource.cacheCategory(
-            result.map((category) => Category.fromDTO(category)).toList());
+            result.map((category) => CategoryTable.fromDTO(category)).toList());
         return Right(result.map((e) => e.toEntity()).toList());
       } on ServerException {
         return Left(ServerFailure("Cant Fetch Categories"));
-      } on SocketException {
-        return Left(ConnectionFailure("Failed to connect to the network"));
       }
     } else {
       final result = await localDataSource.getCachedCategory();
@@ -169,7 +170,8 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, String>> postUserChallenge(
       UserQuestion challenge) async {
     try {
-      final result = await remoteDataSource.postChallenge(challenge);
+      final result = await remoteDataSource
+          .postChallenge(UserQuestionModel.fromDTO(challenge));
       print('Challenge Result $result');
       return Right(result);
     } on ServerException {
@@ -209,12 +211,10 @@ class RepositoryImpl implements Repository {
       try {
         final result = await remoteDataSource.getQuestions();
         localDataSource.cacheQuestions(
-            result.map((question) => Question.fromDTO(question)).toList());
+            result.map((question) => QuestionTable.fromDTO(question)).toList());
         return Right(result.map((e) => e.toEntity()).toList());
       } on ServerException {
         return Left(ServerFailure("Cant Retrieve Data"));
-      } on SocketException {
-        return Left(ConnectionFailure("Failed to connect to the network"));
       }
     } else {
       final result = await localDataSource.getCachedQuestion();
@@ -284,13 +284,9 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, String>> saveSessionData(SessionData data) async {
+  Future<String> saveSessionData(SessionData data) async {
     final result = await localDataSource.insertSession(data);
-    if (result == 'Session Saved') {
-      return Right(result);
-    } else {
-      return Left(CustomException('No Data'));
-    }
+    return result;
   }
 
   @override

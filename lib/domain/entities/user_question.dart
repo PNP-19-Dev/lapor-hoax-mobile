@@ -18,26 +18,6 @@ class UserQuestion extends Equatable {
       required this.ans2,
       required this.ans3});
 
-  factory UserQuestion.fromJson(Map<String, dynamic> json) => UserQuestion(
-        user: json['user'],
-        quest1: json['quest1'],
-        quest2: json['quest2'],
-        quest3: json['quest3'],
-        ans1: json['ans1'],
-        ans2: json['ans2'],
-        ans3: json['ans3'],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "user": user,
-        "ans1": ans1,
-        "ans2": ans2,
-        "ans3": ans3,
-        "quest1": quest1,
-        "quest2": quest2,
-        "quest3": quest3,
-      };
-
   @override
   List<Object?> get props => [user, ans1, ans2, ans3, quest1, quest2, quest3];
 }

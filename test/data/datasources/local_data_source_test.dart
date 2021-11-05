@@ -117,10 +117,10 @@ void main() {
       // arrange
       when(mockDatabaseHelper.clearCategoryCache()).thenAnswer((_) async => 1);
       // act
-      await dataSource.cacheCategory([testCategory]);
+      await dataSource.cacheCategory([testCategoryTable]);
       // assert
       verify(mockDatabaseHelper.clearCategoryCache());
-      verify(mockDatabaseHelper.insertCategoryTransaction([testCategory]));
+      verify(mockDatabaseHelper.insertCategoryTransaction([testCategoryTable]));
     });
 
     test('should return list of categories when data exist', () async {
@@ -130,7 +130,7 @@ void main() {
       // act
       final result = await dataSource.getCachedCategory();
       // assert
-      expect(result, [testCategory]);
+      expect(result, [testCategoryTable]);
     });
 
     test('should throw CacheException when data is not exist', () async {
@@ -148,10 +148,10 @@ void main() {
       // arrange
       when(mockDatabaseHelper.clearQuestionCache()).thenAnswer((_) async => 1);
       // act
-      await dataSource.cacheQuestions([testQuestion]);
+      await dataSource.cacheQuestions([testQuestionTable]);
       // assert
       verify(mockDatabaseHelper.clearQuestionCache());
-      verify(mockDatabaseHelper.insertQuestionTransaction([testQuestion]));
+      verify(mockDatabaseHelper.insertQuestionTransaction([testQuestionTable]));
     });
 
     test('should return list of categories when data exist', () async {
@@ -161,7 +161,7 @@ void main() {
       // act
       final result = await dataSource.getCachedQuestion();
       // assert
-      expect(result, [testQuestion]);
+      expect(result, [testQuestionTable]);
     });
 
     test('should throw CacheException when data is not exist', () async {

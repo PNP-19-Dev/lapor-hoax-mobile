@@ -1,10 +1,13 @@
 import 'package:laporhoax/data/models/category_model.dart';
+import 'package:laporhoax/data/models/category_table.dart';
 import 'package:laporhoax/data/models/feed_model.dart';
 import 'package:laporhoax/data/models/feed_table.dart';
 import 'package:laporhoax/data/models/question_model.dart';
+import 'package:laporhoax/data/models/question_table.dart';
 import 'package:laporhoax/data/models/register_model.dart';
 import 'package:laporhoax/data/models/report_model.dart';
 import 'package:laporhoax/data/models/user_model.dart';
+import 'package:laporhoax/data/models/user_question_model.dart';
 import 'package:laporhoax/data/models/user_response.dart';
 import 'package:laporhoax/data/models/user_token.dart';
 import 'package:laporhoax/domain/entities/category.dart';
@@ -95,6 +98,16 @@ final testUserChallenge = UserQuestion(
   ans3: "ans3",
 );
 
+final testUserChallengeModel = UserQuestionModel(
+  user: "user",
+  quest1: 1,
+  quest2: 2,
+  quest3: 3,
+  ans1: "ans1",
+  ans2: "ans2",
+  ans3: "ans3",
+);
+
 final testUser = User(
   id: 1,
   username: "username",
@@ -139,11 +152,15 @@ final testFeedMap = {
 
 final testCategory = Category(id: 1, name: 'name');
 
+final testCategoryTable = CategoryTable(id: 1, name: 'name');
+
 final testCategoryModel = CategoryModel(id: 1, name: 'name');
 
 final testCategoryMap = {'id': 1, 'name': 'name'};
 
 final testQuestion = Question(id: 1, question: 'question');
+
+final testQuestionTable = QuestionTable(id: 1, question: 'question');
 
 final testQuestionModel = QuestionModel(id: 1, question: 'question');
 

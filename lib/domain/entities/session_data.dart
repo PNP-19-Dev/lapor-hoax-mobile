@@ -15,22 +15,6 @@ class SessionData extends Equatable {
     required this.username,
   });
 
-  Map<String, dynamic> toJson() => {
-        "token": token,
-        "userId": userid,
-        "expiry": expiry,
-        "email": email,
-        "username": username,
-      };
-
-  factory SessionData.fromMap(Map<String, dynamic> map) => SessionData(
-        token: map["token"],
-        userid: map["userid"],
-        expiry: map["expiry"],
-        email: map["email"],
-        username: map["username"],
-      );
-
   @override
   List<Object?> get props => [token, userid, expiry, email, username];
 }

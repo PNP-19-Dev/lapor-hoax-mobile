@@ -30,6 +30,16 @@ class UserQuestionModel extends Equatable {
         ans3: json['ans3'],
       );
 
+  factory UserQuestionModel.fromDTO(UserQuestion model) => UserQuestionModel(
+      user: model.user,
+      quest1: model.quest1,
+      quest2: model.quest2,
+      quest3: model.quest3,
+      ans1: model.ans1,
+      ans2: model.ans2,
+      ans3: model.ans3,
+  );
+
   Map<String, dynamic> toJson() => {
         "user": user,
         "ans1": ans1,

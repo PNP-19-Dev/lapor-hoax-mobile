@@ -218,7 +218,7 @@ void main() {
       await provider.putToken(tId, tToken);
       // assert
       expect(provider.fcmMessage, "Can't get data");
-      expect(listenerCallCount, 1);
+      expect(listenerCallCount, 2);
     });
   });
 
