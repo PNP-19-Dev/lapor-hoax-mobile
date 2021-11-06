@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:laporhoax/utils/state_enum.dart';
 import 'package:laporhoax/data/models/report_request.dart';
 import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/category.dart';
@@ -8,6 +7,7 @@ import 'package:laporhoax/domain/usecases/delete_report.dart';
 import 'package:laporhoax/domain/usecases/get_categories.dart';
 import 'package:laporhoax/domain/usecases/get_reports.dart';
 import 'package:laporhoax/domain/usecases/post_report.dart';
+import 'package:laporhoax/utils/state_enum.dart';
 
 class ReportNotifier extends ChangeNotifier {
   static const reportRemoveSuccess = 'Laporan Telah Dihapus';
@@ -89,7 +89,7 @@ class ReportNotifier extends ChangeNotifier {
 
       if (_reports.length == 0) {
         _fetchReportState = RequestState.Empty;
-        _fetchReportMessage = "Tidak ada data saat ini";
+        _fetchReportMessage = "Tidak ada data laporan saat ini";
         notifyListeners();
       }
     });

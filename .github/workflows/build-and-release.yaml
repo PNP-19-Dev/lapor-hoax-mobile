@@ -59,7 +59,7 @@ jobs:
       - name: Release Apps
         uses: ncipollo/release-action@v1
         with:
-          tag: v1.0.${{ github.run_number }}-alpha
-          name: 'Release v1.0.${{ github.run_number }}-alpha'
+          tag: v1.1.${{ github.run_number }}
+          name: 'Release v1.1.${{ github.run_number }}'
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: 'build/app/outputs/flutter-apk/*.apk,build/ios/iphoneos/app.ipa,build/app/outputs/bundle/release/*'

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:laporhoax/styles/colors.dart';
 
 final TextTheme myTextTheme = TextTheme(
   headline1: GoogleFonts.inter(
@@ -47,4 +48,7 @@ final TextTheme myTextTheme = TextTheme(
       fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.4),
   overline: GoogleFonts.inter(
       fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
+).apply(
+  bodyColor: Colors.black,
+  displayColor: grey600,
 );

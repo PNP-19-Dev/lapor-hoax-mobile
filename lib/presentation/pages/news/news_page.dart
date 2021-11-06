@@ -37,7 +37,10 @@ class _NewsPageState extends State<NewsPage> {
           foregroundColor: Colors.black,
           title: Text(
             'LAPOR HOAX',
-            style: Theme.of(context).textTheme.headline5,
+            style: Theme.of(context)
+                .textTheme
+                .headline5!
+                .copyWith(color: Colors.black),
           ),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),

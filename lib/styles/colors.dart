@@ -23,7 +23,7 @@ const kColorScheme = ColorScheme(
   // darker version of secondary
   secondaryVariant: orangeBlazeVariant,
   // background color for card
-  surface: Colors.white,
+  surface: Colors.grey,
   // color appear behind scrollable content
   background: Colors.white,
   // color for input validation error

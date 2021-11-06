@@ -32,6 +32,7 @@ import 'package:laporhoax/presentation/provider/saved_news_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/styles/theme.dart';
 import 'package:laporhoax/utils/navigation.dart';
+import 'package:laporhoax/utils/route_observer.dart';
 import 'package:laporhoax/utils/static_page_viewer.dart';
 import 'package:provider/provider.dart';
 
@@ -107,6 +108,7 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.light,
         navigatorKey: navigatorKey,
         home: HomePage(),
+        navigatorObservers: [routeObserver],
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case HomePage.ROUTE_NAME:
