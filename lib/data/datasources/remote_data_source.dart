@@ -80,242 +80,306 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     if (response.statusCode == 200) {
       return UserTokenModel.fromJson(response.data);
     } else {
-      throw ServerException();
+      throw ServerException('Username atau Password salah!');
     }
   }
 
   @override
   Future<RegisterResponse> postRegister(RegisterModel user) async {
-    final response = await dio.post(
-      '/$registerEndpoint/',
-      options: Options(contentType: Headers.jsonContentType),
-      data: user.toJson(),
-    );
+    try {
+      final response = await dio.post(
+        '/$registerEndpoint/',
+        options: Options(contentType: Headers.jsonContentType),
+        data: user.toJson(),
+      );
 
-    if (response.statusCode == 200) {
-      return RegisterResponse.fromJson(response.data);
-    } else {
-      throw ServerException();
+      if (response.statusCode == 200) {
+        return RegisterResponse.fromJson(response.data);
+      } else {
+        throw ServerException('Register Gagal! \nMohon periksa lagi');
+      }
+    } on DioError catch (e) {
+      throw ServerException('Terjadi masalah ${e.message}');
     }
   }
 
   @override
   Future<List<CategoryModel>> getCategory() async {
-    final response = await dio.get('/$reportCatEndpoint');
+    try {
+      final response = await dio.get('/$reportCatEndpoint');
 
-    if (response.statusCode == 200) {
-      return List<CategoryModel>.from(
-          (response.data).map((x) => CategoryModel.fromJson(x)));
-    } else {
-      throw ServerException();
+      if (response.statusCode == 200) {
+        return List<CategoryModel>.from(
+            (response.data).map((x) => CategoryModel.fromJson(x)));
+      } else {
+        throw ServerException(
+            'Gagal Mendapatkan Category (${response.statusCode})');
+      }
+    } on DioError catch (e) {
+      throw ServerException('Terjadi masalah ${e.message}');
     }
   }
 
   @override
   Future<List<UserModel>> getUser(String email) async {
-    final response = await dio.get(
-      '/$getUserEndpint',
-      options: Options(headers: <String, String>{
-        "email": email,
-      }),
-    );
+    try {
+      final response = await dio.get(
+        '/$getUserEndpint',
+        options: Options(headers: <String, String>{
+          "email": email,
+        }),
+      );
 
-    if (response.statusCode == 200) {
-      // return on list, but still only 1 entry
-      return List<UserModel>.from(
-          (response.data).map((x) => UserModel.fromJson(x)));
-    } else {
-      throw ServerException();
+      if (response.statusCode == 200) {
+        // return on list, but still only 1 entry
+        return List<UserModel>.from(
+            (response.data).map((x) => UserModel.fromJson(x)));
+      } else {
+        throw ServerException(
+            'Gagal mendapatkan data (${response.statusCode})');
+      }
+    } on DioError catch (e) {
+      throw ServerException('Terjadi masalah ${e.message}');
     }
   }
 
   @override
   Future<List<ReportModel>> getReport(String token, int id) async {
-    final response = await dio.get(
-      '/$reportsEndpoint/user/$id/',
-      options: Options(headers: {
-        HttpHeaders.authorizationHeader: "Token $token",
-      }),
-    );
-    if (response.statusCode == 200) {
-      return ReportResponse.fromJson(response.data).reportList;
-    } else {
-      throw ServerException();
+    try {
+      final response = await dio.get(
+        '/$reportsEndpoint/user/$id/',
+        options: Options(headers: {
+          HttpHeaders.authorizationHeader: "Token $token",
+        }),
+      );
+      if (response.statusCode == 200) {
+        return ReportResponse.fromJson(response.data).reportList;
+      } else {
+        throw ServerException(
+            'Gagal Mendapatkan Data Laporan (${response.statusCode})');
+      }
+    } on DioError catch (e) {
+      throw ServerException('Terjadi masalah ${e.message}');
     }
   }
 
   @override
   Future<ReportModel> postReport(String token, ReportRequest report) async {
-    var formData = FormData.fromMap({
-      'user': report.user.toString(),
-      'url': '"${report.url}"',
-      'category': report.category,
-      'isAnonym': report.isAnonym.toString(),
-      'description': report.description,
-      'img': await MultipartFile.fromFile(report.img.path,
-          filename: report.img.name),
-    });
+    try {
+      var formData = FormData.fromMap({
+        'user': report.user.toString(),
+        'url': '"${report.url}"',
+        'category': report.category,
+        'isAnonym': report.isAnonym.toString(),
+        'description': report.description,
+        'img': await MultipartFile.fromFile(report.img.path,
+            filename: report.img.name),
+      });
 
-    final response = await dio.post('/$reportsEndpoint/',
-        data: formData,
-        options: Options(
-          headers: {
-            HttpHeaders.authorizationHeader: 'Token $token',
-          },
-        ));
+      final response = await dio.post('/$reportsEndpoint/',
+          data: formData,
+          options: Options(
+            headers: {
+              HttpHeaders.authorizationHeader: 'Token $token',
+            },
+          ));
 
-    print('status code ${response.statusCode}');
-
-    if (response.statusCode == 201) {
-      return ReportModel.fromJson(response.data);
-    } else {
-      throw ServerException();
+      if (response.statusCode == 201) {
+        return ReportModel.fromJson(response.data);
+      } else {
+        throw ServerException('Gagal Mengirimkan Data');
+      }
+    } on DioError catch (e) {
+      throw ServerException('Terjadi masalah ${e.message}');
     }
   }
 
   @override
   Future<String> deleteReport(String token, int id) async {
-    final response = await dio.delete(
-      '/$reportsEndpoint/$id/',
-      options: Options(
-        headers: {
-          HttpHeaders.authorizationHeader: "Token $token",
-        },
-      ),
-    );
-    print(
-        'delete status code ${response.statusCode} ${response.statusMessage}');
-    if (response.statusCode == 204) {
-      return 'success';
-    } else {
-      throw ServerException();
+    try {
+      final response = await dio.delete(
+        '/$reportsEndpoint/$id/',
+        options: Options(
+          headers: {
+            HttpHeaders.authorizationHeader: "Token $token",
+          },
+        ),
+      );
+
+      if (response.statusCode == 204) {
+        return 'success';
+      } else {
+        throw ServerException('Gagal Menghapus Data (${response.statusCode})');
+      }
+    } on DioError catch (e) {
+      throw ServerException('Terjadi masalah ${e.message}');
     }
   }
 
   @override
   Future<List<FeedModel>> getFeeds() async {
-    final response = await dio.get('/$feedsEndpoint/');
+    try {
+      final response = await dio.get('/$feedsEndpoint/');
 
-    if (response.statusCode == 200) {
-      return FeedResponse.fromJson(response.data).feedList;
-    } else {
-      throw ServerException();
+      if (response.statusCode == 200) {
+        return FeedResponse.fromJson(response.data).feedList;
+      } else {
+        throw ServerException(
+            'Gagal Mendapatkan data (${response.statusCode})');
+      }
+    } on DioError catch (e) {
+      throw ServerException('Terjadi masalah ${e.message}');
     }
   }
 
   @override
   Future<List<QuestionModel>> getQuestions() async {
-    final response = await dio.get('/$questionEndpoint');
+    try {
+      final response = await dio.get('/$questionEndpoint');
 
-    if (response.statusCode == 200) {
-      return QuestionResponse.fromJson(response.data).questionList;
-    } else {
-      throw ServerException();
+      if (response.statusCode == 200) {
+        return QuestionResponse.fromJson(response.data).questionList;
+      } else {
+        throw ServerException(
+            'Gagal Mendapatkan data (${response.statusCode})');
+      }
+    } on DioError catch (e) {
+      throw ServerException('Terjadi masalah ${e.message}');
     }
   }
 
   @override
   Future<UserQuestionModel> getUserQuestions(int id) async {
-    final response = await dio.get('/$questionEndpoint/user/$id');
+    try {
+      final response = await dio.get('/$questionEndpoint/user/$id');
 
-    if (response.statusCode == 200) {
-      return UserQuestionModel.fromJson(response.data);
-    } else {
-      throw ServerException();
+      if (response.statusCode == 200) {
+        return UserQuestionModel.fromJson(response.data);
+      } else {
+        throw ServerException(
+            'Gagal Mendapatkan data (${response.statusCode})');
+      }
+    } on DioError catch (e) {
+      throw ServerException('Terjadi masalah ${e.message}');
     }
   }
 
   @override
   Future<String> postChallenge(UserQuestionModel challenge) async {
-    final response = await dio.post(
-      '/$questionEndpoint/user/',
-      options: Options(contentType: Headers.jsonContentType),
-      data: challenge.toJson(),
-    );
+    try {
+      final response = await dio.post(
+        '/$questionEndpoint/user/',
+        options: Options(contentType: Headers.jsonContentType),
+        data: challenge.toJson(),
+      );
 
-    if (response.statusCode == 200) {
-      return "Success";
-    } else {
-      throw ServerException();
+      if (response.statusCode == 200) {
+        return "Success";
+      } else {
+        throw ServerException('Gagal Mengirim data (${response.statusCode})');
+      }
+    } on DioError catch (e) {
+      throw ServerException('Terjadi masalah ${e.message}');
     }
   }
 
   @override
   Future postFcmToken(String user, String fcmToken) async {
-    final response = await dio.post(
-      '/$firebaseTokenEndpoint',
-      options: Options(contentType: Headers.jsonContentType),
-      data: <String, String>{
-        'user': user,
-        'token': fcmToken,
-      },
-    );
+    try {
+      final response = await dio.post(
+        '/$firebaseTokenEndpoint',
+        options: Options(contentType: Headers.jsonContentType),
+        data: <String, String>{
+          'user': user,
+          'token': fcmToken,
+        },
+      );
 
-    if (response.statusCode == 200) {
-      return "Success";
-    } else {
-      throw ServerException();
+      if (response.statusCode == 200) {
+        return "Success";
+      } else {
+        throw ServerException('Gagal Mengirim data (${response.statusCode})');
+      }
+    } on DioError catch (e) {
+      throw ServerException('Terjadi masalah ${e.message}');
     }
   }
 
   @override
   Future updateFcmToken(String user, String fcmToken) async {
-    final response = await dio.put(
-      '/$firebaseTokenEndpoint',
-      options: Options(contentType: Headers.jsonContentType),
-      data: <String, String>{
-        'user': user,
-        'token': fcmToken,
-      },
-    );
+    try {
+      final response = await dio.put(
+        '/$firebaseTokenEndpoint',
+        options: Options(contentType: Headers.jsonContentType),
+        data: <String, String>{
+          'user': user,
+          'token': fcmToken,
+        },
+      );
 
-    if (response.statusCode == 200) {
-      return "Success";
-    } else {
-      throw ServerException();
+      if (response.statusCode == 200) {
+        return "Success";
+      } else {
+        throw ServerException('Gagal Mengirim data (${response.statusCode})');
+      }
+    } on DioError catch (e) {
+      throw ServerException('Terjadi masalah ${e.message}');
     }
   }
 
   @override
   Future<String> postChangePassword(
       String oldPass, String newPass, String token) async {
-    final response = await dio.put('/$passwordChangeEndpoint/',
-        options: Options(contentType: Headers.jsonContentType, headers: {
-          HttpHeaders.authorizationHeader: "Token $token",
-        }),
-        data: <String, String>{
-          "old_password": oldPass,
-          "new_password": newPass,
-        });
+    try {
+      final response = await dio.put('/$passwordChangeEndpoint/',
+          options: Options(contentType: Headers.jsonContentType, headers: {
+            HttpHeaders.authorizationHeader: "Token $token",
+          }),
+          data: <String, String>{
+            "old_password": oldPass,
+            "new_password": newPass,
+          });
 
-    if (response.statusCode == 200) {
-      return 'Success';
-    } else {
-      throw ServerException();
+      if (response.statusCode == 200) {
+        return 'Success';
+      } else {
+        throw ServerException('Gagal Mengirim data (${response.statusCode})');
+      }
+    } on DioError catch (e) {
+      throw ServerException('Terjadi masalah ${e.message}');
     }
   }
 
   @override
   Future<String> getPasswordReset(String email) async {
-    final response = await dio.get(
-      '/$passwordResetEndpoint/$email',
-      options: Options(contentType: Headers.jsonContentType),
-    );
-    if (response.statusCode == 201) {
-      return 'Success';
-    } else {
-      throw ServerException();
+    try {
+      final response = await dio.get(
+        '/$passwordResetEndpoint/$email',
+        options: Options(contentType: Headers.jsonContentType),
+      );
+      if (response.statusCode == 201) {
+        return 'Success';
+      } else {
+        throw ServerException('Gagal Mengirim data (${response.statusCode})');
+      }
+    } on DioError catch (e) {
+      throw ServerException('Terjadi masalah ${e.message}');
     }
   }
 
   @override
   Future<FeedModel> getFeedDetail(int id) async {
-    final response = await dio.get('/$feedsEndpoint/$id');
+    try {
+      final response = await dio.get('/$feedsEndpoint/$id');
 
-    if (response.statusCode == 200) {
-      return FeedModel.fromJson(response.data);
-    } else {
-      throw ServerException();
+      if (response.statusCode == 200) {
+        return FeedModel.fromJson(response.data);
+      } else {
+        throw ServerException(
+            'Gagal Mendapatkan data (${response.statusCode})');
+      }
+    } on DioError catch (e) {
+      throw ServerException('Terjadi masalah ${e.message}');
     }
   }
 }

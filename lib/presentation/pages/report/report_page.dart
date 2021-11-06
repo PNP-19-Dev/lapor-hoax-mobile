@@ -60,15 +60,15 @@ class _ReportPageState extends State<ReportPage> {
         throw ('Terjadi Masalah Saat Mengupload Gambar!');
       }
       return image;
-
     } else if (status == PermissionStatus.denied) {
-      print('Permission denied. Show a dialog and again ask for the permission');
+      print(
+          'Permission denied. Show a dialog and again ask for the permission');
       throw ('Kamera tidak diizinkan');
     } else if (status == PermissionStatus.permanentlyDenied) {
       print('Take the user to the settings page.');
       await openAppSettings();
     }
-    throw('Kamera tidak diizinkan');
+    throw ('Kamera tidak diizinkan');
   }
 
   /* TODO SOON ADDING CROP
@@ -134,9 +134,7 @@ class _ReportPageState extends State<ReportPage> {
   final _formKey = GlobalKey<FormState>();
 
   Stream<List<Category>> _data() async* {
-    var data = Provider
-        .of<ReportNotifier>(context, listen: false)
-        .category;
+    var data = Provider.of<ReportNotifier>(context, listen: false).category;
     setState(() {
       _categories = data;
     });
@@ -162,14 +160,11 @@ class _ReportPageState extends State<ReportPage> {
                   ),
                   Container(
                     padding:
-                    const EdgeInsets.only(top: 30, left: 15, right: 15),
+                        const EdgeInsets.only(top: 30, left: 15, right: 15),
                     child: Center(
                       child: Text(
                         'Buat Laporan',
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline5,
+                        style: Theme.of(context).textTheme.headline5,
                       ),
                     ),
                   ),
@@ -183,44 +178,31 @@ class _ReportPageState extends State<ReportPage> {
                       children: [
                         Row(
                           children: [
-                           /* OutlinedButton(
-                              onPressed: () {
-                                var get = getImage(ImageSource.gallery);
-                                get.then((value) {
-                                  return _image = value;
-                                }).onError(
-                                        (error, _) => toast('$error'));
-                              },
-                              child: Text('Gambar'),
-                            ),*/
-                            // TODO FITUR TAMBAHAN
-                                CircleAvatar(
-                                  backgroundColor: orangeBlaze,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      var get = getImage(ImageSource.gallery);
-                                      get.then((value) {
-                                        return _image = value;
-                                      }).onError(
-                                              (error, _) => toast('$error'));
-                                    },
-                                    icon: Icon(Icons.image),
-                                  ),
-                                ),
-                                SizedBox(width: 10),
-                                CircleAvatar(
-                                  backgroundColor: orangeBlaze,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      var get = getImage(ImageSource.camera);
-                                      get.then((value) {
-                                        return _image = value;
-                                      }).onError(
-                                              (error, _) => toast('$error'));
-                                    },
-                                    icon: Icon(Icons.camera_alt),
-                                  ),
-                                ),
+                            CircleAvatar(
+                              backgroundColor: orangeBlaze,
+                              child: IconButton(
+                                onPressed: () {
+                                  var get = getImage(ImageSource.gallery);
+                                  get.then((value) {
+                                    return _image = value;
+                                  }).onError((error, _) => toast('$error'));
+                                },
+                                icon: Icon(Icons.image),
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            CircleAvatar(
+                              backgroundColor: orangeBlaze,
+                              child: IconButton(
+                                onPressed: () {
+                                  var get = getImage(ImageSource.camera);
+                                  get.then((value) {
+                                    return _image = value;
+                                  }).onError((error, _) => toast('$error'));
+                                },
+                                icon: Icon(Icons.camera_alt),
+                              ),
+                            ),
                             SizedBox(width: 8),
                             Flexible(
                               child: Text(
@@ -240,7 +222,7 @@ class _ReportPageState extends State<ReportPage> {
                           decoration: InputDecoration(
                               labelText: 'URL / Link (optional)',
                               icon:
-                              SvgPicture.asset('assets/icons/link_on.svg'),
+                                  SvgPicture.asset('assets/icons/link_on.svg'),
                               labelStyle: TextStyle(
                                 color: _linkFocusNode.hasFocus
                                     ? orangeBlaze
@@ -261,12 +243,12 @@ class _ReportPageState extends State<ReportPage> {
                               ),
                               hint: Consumer<ReportNotifier>(
                                   builder: (_, data, child) {
-                                    if (data.category.isEmpty) {
-                                      return Text('Mengambil data');
-                                    } else {
-                                      return Text('Category');
-                                    }
-                                  }),
+                                if (data.category.isEmpty) {
+                                  return Text('Mengambil data');
+                                } else {
+                                  return Text('Category');
+                                }
+                              }),
                               value: _selectedCategory,
                               items: _categories.map((value) {
                                 return DropdownMenuItem<String>(
@@ -321,13 +303,12 @@ class _ReportPageState extends State<ReportPage> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () async {
-                              var data = Provider
-                                  .of<UserNotifier>(context,
-                                  listen: false)
+                              var data = Provider.of<UserNotifier>(context,
+                                      listen: false)
                                   .sessionData;
 
                               if (data != null) {
-                                if (_formKey.currentState!.validate()) {
+                                if (_formKey.currentState!.validate() && _image != null) {
                                   int id = data.userid;
                                   String url = _urlController.text.toString();
                                   String desc = _descController.text.length == 0
@@ -354,22 +335,19 @@ class _ReportPageState extends State<ReportPage> {
                                     listen: false,
                                   ).sendReport(data.token, report);
 
-                                  final state = Provider
-                                      .of<ReportNotifier>(
-                                      context,
-                                      listen: false)
+                                  final state = Provider.of<ReportNotifier>(
+                                          context,
+                                          listen: false)
                                       .postReportState;
 
-                                  final message = Provider
-                                      .of<ReportNotifier>(
-                                      context,
-                                      listen: false)
+                                  final message = Provider.of<ReportNotifier>(
+                                          context,
+                                          listen: false)
                                       .postReportMessage;
 
-                                  final result = Provider
-                                      .of<ReportNotifier>(
-                                      context,
-                                      listen: false)
+                                  final result = Provider.of<ReportNotifier>(
+                                          context,
+                                          listen: false)
                                       .report;
 
                                   if (state == RequestState.Success) {
@@ -396,8 +374,7 @@ class _ReportPageState extends State<ReportPage> {
                   GestureDetector(
                     onTap: () {
                       var data =
-                          Provider
-                              .of<UserNotifier>(context, listen: false)
+                          Provider.of<UserNotifier>(context, listen: false)
                               .sessionData;
                       if (data != null) {
                         return Navigation.intentWithData(HistoryPage.ROUTE_NAME,
@@ -442,10 +419,7 @@ class _ReportPageState extends State<ReportPage> {
           child: Center(
             child: Text(
               'Buat Laporan',
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .headline5,
+              style: Theme.of(context).textTheme.headline5,
             ),
           ),
         ),
@@ -464,18 +438,12 @@ class _ReportPageState extends State<ReportPage> {
                 SizedBox(height: 10),
                 Text(
                   'Kamu belum login!',
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .headline6,
+                  style: Theme.of(context).textTheme.headline6,
                 ),
                 SizedBox(height: 10),
                 Text(
                   'Silahkan login untuk melanjutkan pelaporan',
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .caption,
+                  style: Theme.of(context).textTheme.caption,
                 ),
               ],
             ),

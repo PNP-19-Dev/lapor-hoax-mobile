@@ -1,8 +1,9 @@
-import 'dart:convert';
+import  'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
+import 'package:laporhoax/data/datasources/remote_data_source.dart';
 import 'package:laporhoax/data/models/category_model.dart';
 import 'package:laporhoax/data/models/feed_response.dart';
 import 'package:laporhoax/data/models/question_model.dart';
@@ -17,11 +18,13 @@ void main() {
 
   late Dio dio;
   late DioAdapter dioAdapter;
+  late RemoteDataSourceImpl datasource;
   Response<dynamic> response;
 
   setUp(() {
     dio = Dio(BaseOptions(baseUrl: baseUrl));
     dioAdapter = DioAdapter(dio: dio);
+    datasource = RemoteDataSourceImpl(dio: dio);
   });
 
   group('get feeds', () {
@@ -110,11 +113,12 @@ void main() {
       CategoryModel(id: 2, name: "Isu SARA"),
       CategoryModel(id: 1, name: "Ujaran Kebencian"),
     ];
-    test('should get list of categories when response status code 200', () async {
+    test('should get list of categories when response status code 200',
+        () async {
       // arrange
       dioAdapter.onGet(
         reportCatEndpoint,
-            (server) => server.reply(200, data),
+        (server) => server.reply(200, data),
       );
       // act
       response = await dio.get(reportCatEndpoint);
@@ -122,30 +126,31 @@ void main() {
       expect(response.statusCode, 200);
       expect(
           List<CategoryModel>.from(
-              (response.data).map((x) => CategoryModel.fromJson(x))), tCategoryModels);
+              (response.data).map((x) => CategoryModel.fromJson(x))),
+          tCategoryModels);
     });
     test(
         'should throw a ServerException when the response code is 404 or other',
-            () async {
-          // arrange
-          dioAdapter.onGet(
-            reportCatEndpoint,
-                (server) => server.throws(
-              404,
-              DioError(
-                requestOptions: RequestOptions(
-                  path: reportCatEndpoint,
-                ),
-              ),
+        () async {
+      // arrange
+      dioAdapter.onGet(
+        reportCatEndpoint,
+        (server) => server.throws(
+          404,
+          DioError(
+            requestOptions: RequestOptions(
+              path: reportCatEndpoint,
             ),
-          );
-          // act
-          // assert
-          expect(
-                () async => await dio.get(reportCatEndpoint),
-            throwsA(isA<DioError>()),
-          );
-        });
+          ),
+        ),
+      );
+      // act
+      // assert
+      expect(
+        () async => await dio.get(reportCatEndpoint),
+        throwsA(isA<DioError>()),
+      );
+    });
   });
 
   group('get question', () {
@@ -158,37 +163,37 @@ void main() {
       // arrange
       dioAdapter.onGet(
         questionEndpoint,
-            (server) => server.reply(200, data),
+        (server) => server.reply(200, data),
       );
       // act
       response = await dio.get(questionEndpoint);
       // assert
       expect(response.statusCode, 200);
-      expect(
-          QuestionResponse.fromJson(response.data).questionList, tQuestionModels);
+      expect(QuestionResponse.fromJson(response.data).questionList,
+          tQuestionModels);
     });
     test(
         'should throw a ServerException when the response code is 404 or other',
-            () async {
-          // arrange
-          dioAdapter.onGet(
-            questionEndpoint,
-                (server) => server.throws(
-              404,
-              DioError(
-                requestOptions: RequestOptions(
-                  path: questionEndpoint,
-                ),
-              ),
+        () async {
+      // arrange
+      dioAdapter.onGet(
+        questionEndpoint,
+        (server) => server.throws(
+          404,
+          DioError(
+            requestOptions: RequestOptions(
+              path: questionEndpoint,
             ),
-          );
-          // act
-          // assert
-          expect(
-                () async => await dio.get(questionEndpoint),
-            throwsA(isA<DioError>()),
-          );
-        });
+          ),
+        ),
+      );
+      // act
+      // assert
+      expect(
+        () async => await dio.get(questionEndpoint),
+        throwsA(isA<DioError>()),
+      );
+    });
   });
 
   group('get user', () {
@@ -199,7 +204,7 @@ void main() {
       // arrange
       dioAdapter.onGet(
         '$getUserEndpoint/$tUserName',
-            (server) => server.reply(200, data),
+        (server) => server.reply(200, data),
       );
       // act
       response = await dio.get('$getUserEndpoint/$tUserName');
@@ -209,26 +214,26 @@ void main() {
     });
     test(
         'should throw a ServerException when the response code is 404 or other',
-            () async {
-          // arrange
-          dioAdapter.onGet(
-            getUserEndpoint,
-                (server) => server.throws(
-              404,
-              DioError(
-                requestOptions: RequestOptions(
-                  path: getUserEndpoint,
-                ),
-              ),
+        () async {
+      // arrange
+      dioAdapter.onGet(
+        getUserEndpoint,
+        (server) => server.throws(
+          404,
+          DioError(
+            requestOptions: RequestOptions(
+              path: getUserEndpoint,
             ),
-          );
-          // act
-          // assert
-          expect(
-                () async => await dio.get(getUserEndpoint),
-            throwsA(isA<DioError>()),
-          );
-        });
+          ),
+        ),
+      );
+      // act
+      // assert
+      expect(
+        () async => await dio.get(getUserEndpoint),
+        throwsA(isA<DioError>()),
+      );
+    });
   });
 
   group('post login', () {

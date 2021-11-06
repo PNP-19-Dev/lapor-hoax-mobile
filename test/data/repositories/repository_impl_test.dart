@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
@@ -63,25 +61,12 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.deleteReport(tToken, tId))
-          .thenThrow(ServerException());
+          .thenThrow(ServerException('Cant Delete Report'));
       // act
       final result = await repository.deleteReport(tToken, tId);
       // assert
       verify(mockRemoteDataSource.deleteReport(tToken, tId));
       expect(result, equals(Left(ServerFailure('Cant Delete Report'))));
-    });
-    test(
-        'should return connection failure when the device is not connected to internet',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.deleteReport(tToken, tId))
-          .thenThrow(SocketException('Failed to connect to the network'));
-      // act
-      final result = await repository.deleteReport(tToken, tId);
-      // assert
-      verify(mockRemoteDataSource.deleteReport(tToken, tId));
-      expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -131,7 +116,7 @@ void main() {
 
       test('should return server failure', () async {
         // arrange
-        when(mockRemoteDataSource.getCategory()).thenThrow(ServerException());
+        when(mockRemoteDataSource.getCategory()).thenThrow(ServerException('Cant Fetch Categories'));
         // act
         final result = await repository.getCategories();
         // assert
@@ -145,22 +130,6 @@ void main() {
         when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
       });
 
-      test(
-          'should return connection failure when the device is not connected to internet',
-          () async {
-        /*     // arrange
-        when(mockRemoteDataSource.getCategory())
-            .thenThrow(SocketException('Failed to connect to the network'));
-        // act
-        final result = await repository.getCategories();
-        // assert
-        verify(mockRemoteDataSource.getCategory());
-        expect(
-            result,
-            equals(
-                Left(ConnectionFailure('Failed to connect to the network'))));*/
-      });
-
       test('should return cached data when device is offline', () async {
         // arrange
         when(mockLocalDataSource.getCachedCategory())
@@ -171,6 +140,17 @@ void main() {
         verify(mockLocalDataSource.getCachedCategory());
         final resultList = result.getOrElse(() => []);
         expect(resultList, [testCategory]);
+      });
+
+      test('should return failure when device cache is unavailable', () async {
+        // arrange
+        when(mockLocalDataSource.getCachedCategory())
+            .thenThrow(CacheException("Can't get the data :("));
+        // act
+        final result = await repository.getCategories();
+        // assert
+        verify(mockLocalDataSource.getCachedCategory());
+        expect(result, equals(Left(CacheFailure("Can't get the data :("))));
       });
     });
   });
@@ -193,23 +173,12 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getFeedDetail(tId))
-          .thenThrow(ServerException());
+          .thenThrow(ServerException('Failed To Get Detail'));
       // act
       final result = await repository.getFeedDetail(tId);
       // assert
       verify(mockRemoteDataSource.getFeedDetail(tId));
       expect(result, equals(Left(ServerFailure('Failed To Get Detail'))));
-    });
-    test('should return Server Failure when device is offline', () async {
-      // arrange
-      when(mockRemoteDataSource.getFeedDetail(tId))
-          .thenThrow(SocketException('Failed to connect to the network'));
-      // act
-      final result = await repository.getFeedDetail(tId);
-      // assert
-      verify(mockRemoteDataSource.getFeedDetail(tId));
-      expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -244,25 +213,12 @@ void main() {
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-      when(mockRemoteDataSource.getFeeds()).thenThrow(ServerException());
+      when(mockRemoteDataSource.getFeeds()).thenThrow(ServerException('Cant Retrieve Feed Data'));
       // act
       final result = await repository.getFeeds();
       // assert
       verify(mockRemoteDataSource.getFeeds());
       expect(result, equals(Left(ServerFailure('Cant Retrieve Feed Data'))));
-    });
-    test(
-        'should return connection failure when the device is not connected to internet',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getFeeds())
-          .thenThrow(SocketException('Failed to connect to the network'));
-      // act
-      final result = await repository.getFeeds();
-      // assert
-      verify(mockRemoteDataSource.getFeeds());
-      expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -286,25 +242,12 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getPasswordReset(tEmail))
-          .thenThrow(ServerException());
+          .thenThrow(ServerException('Cant Reset'));
       // act
       final result = await repository.getPasswordReset(tEmail);
       // assert
       verify(mockRemoteDataSource.getPasswordReset(tEmail));
       expect(result, equals(Left(ServerFailure('Cant Reset'))));
-    });
-    test(
-        'should return connection failure when the device is not connected to internet',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getPasswordReset(tEmail))
-          .thenThrow(SocketException('Failed to connect to the network'));
-      // act
-      final result = await repository.getPasswordReset(tEmail);
-      // assert
-      verify(mockRemoteDataSource.getPasswordReset(tEmail));
-      expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -345,7 +288,7 @@ void main() {
           'should return server failure when the call to remote data source is unsuccessful',
           () async {
         // arrange
-        when(mockRemoteDataSource.getQuestions()).thenThrow(ServerException());
+        when(mockRemoteDataSource.getQuestions()).thenThrow(ServerException('Cant Retrieve Data'));
         // act
         final result = await repository.getQuestions();
         // assert
@@ -374,24 +317,6 @@ void main() {
         when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
       });
 
-      test(
-          'should return connection failure when the device is not connected to internet',
-          () async {
-/*
-        // arrange
-        when(mockRemoteDataSource.getQuestions())
-            .thenThrow(SocketException('Failed to connect to the network'));
-        // act
-        final result = await repository.getQuestions();
-        // assert
-        verify(mockRemoteDataSource.getQuestions());
-        expect(
-            result,
-            equals(
-                Left(ConnectionFailure('Failed to connect to the network'))));
-*/
-      });
-
       test('should return cached data when device is offline', () async {
         // arrange
         when(mockLocalDataSource.getCachedQuestion())
@@ -402,6 +327,17 @@ void main() {
         verify(mockLocalDataSource.getCachedQuestion());
         final resultList = result.getOrElse(() => []);
         expect(resultList, [testQuestion]);
+      });
+
+      test('should return failure when device cache is unavailable', () async {
+        // arrange
+        when(mockLocalDataSource.getCachedQuestion())
+            .thenThrow(CacheException("Can't get the data :("));
+        // act
+        final result = await repository.getQuestions();
+        // assert
+        verify(mockLocalDataSource.getCachedQuestion());
+        expect(result, equals(Left(CacheFailure("Can't get the data :("))));
       });
     });
   });
@@ -443,25 +379,12 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getReport(tToken, tId))
-          .thenThrow(ServerException());
+          .thenThrow(ServerException('Cant Fetch Reports'));
       // act
       final result = await repository.getReports(tToken, tId);
       // assert
       verify(mockRemoteDataSource.getReport(tToken, tId));
       expect(result, equals(Left(ServerFailure('Cant Fetch Reports'))));
-    });
-    test(
-        'should return connection failure when the device is not connected to internet',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getReport(tToken, tId))
-          .thenThrow(SocketException('Failed to connect to the network'));
-      // act
-      final result = await repository.getReports(tToken, tId);
-      // assert
-      verify(mockRemoteDataSource.getReport(tToken, tId));
-      expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -502,7 +425,18 @@ void main() {
       // act
       final result = await repository.getSessionData();
       // assert
+      verify(mockLocalDataSource.getSession());
       expect(result, Right(sessionData));
+    });
+
+    test('should error when result is null', () async {
+      // arrange
+      when(mockLocalDataSource.getSession())
+          .thenAnswer((_) async => null);
+      // act
+      final result = await repository.getSessionData();
+      // assert
+      expect(result, Left(CustomException('No Data')));
     });
   });
 
@@ -535,25 +469,12 @@ void main() {
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-      when(mockRemoteDataSource.getUser(tEmail)).thenThrow(ServerException());
+      when(mockRemoteDataSource.getUser(tEmail)).thenThrow(ServerException('Not Found'));
       // act
       final result = await repository.getUser(tEmail);
       // assert
       verify(mockRemoteDataSource..getUser(tEmail));
       expect(result, equals(Left(ServerFailure('Not Found'))));
-    });
-    test(
-        'should return connection failure when the device is not connected to internet',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getUser(tEmail))
-          .thenThrow(SocketException('Failed to connect to the network'));
-      // act
-      final result = await repository.getUser(tEmail);
-      // assert
-      verify(mockRemoteDataSource.getUser(tEmail));
-      expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -584,25 +505,12 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getUserQuestions(tId))
-          .thenThrow(ServerException());
+          .thenThrow(ServerException('Failed to Get Data'));
       // act
       final result = await repository.getUserChallenge(tId);
       // assert
       verify(mockRemoteDataSource.getUserQuestions(tId));
       expect(result, equals(Left(ServerFailure('Failed to Get Data'))));
-    });
-    test(
-        'should return connection failure when the device is not connected to internet',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getUser(tEmail))
-          .thenThrow(SocketException('Failed to connect to the network'));
-      // act
-      final result = await repository.getUser(tEmail);
-      // assert
-      verify(mockRemoteDataSource.getUser(tEmail));
-      expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -626,7 +534,7 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken))
-          .thenThrow(ServerException());
+          .thenThrow(ServerException('Cant Change Password'));
       // act
       final result =
           await repository.postChangePassword(tOldPass, tNewPass, tToken);
@@ -634,21 +542,6 @@ void main() {
       verify(
           mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken));
       expect(result, equals(Left(ServerFailure('Cant Change Password'))));
-    });
-    test(
-        'should return connection failure when the device is not connected to internet',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken))
-          .thenThrow(SocketException('Failed to connect to the network'));
-      // act
-      final result =
-          await repository.postChangePassword(tOldPass, tNewPass, tToken);
-      // assert
-      verify(
-          mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken));
-      expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -670,25 +563,12 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.postFcmToken(tId.toString(), tToken))
-          .thenThrow(ServerException());
+          .thenThrow(ServerException('Cant To Send'));
       // act
       final result = await repository.postFCMToken(tId, tToken);
       // assert
       verify(mockRemoteDataSource.postFcmToken(tId.toString(), tToken));
       expect(result, equals(Left(ServerFailure('Cant To Send'))));
-    });
-    test(
-        'should return connection failure when the device is not connected to internet',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postFcmToken(tId.toString(), tToken))
-          .thenThrow(SocketException('Failed to connect to the network'));
-      // act
-      final result = await repository.postFCMToken(tId, tToken);
-      // assert
-      verify(mockRemoteDataSource.postFcmToken(tId.toString(), tToken));
-      expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -710,25 +590,12 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken))
-          .thenThrow(ServerException());
+          .thenThrow(ServerException('Cant To Send'));
       // act
       final result = await repository.putFCMToken(tId, tToken);
       // assert
       verify(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken));
       expect(result, equals(Left(ServerFailure('Cant To Send'))));
-    });
-    test(
-        'should return connection failure when the device is not connected to internet',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken))
-          .thenThrow(SocketException('Failed to connect to the network'));
-      // act
-      final result = await repository.putFCMToken(tId, tToken);
-      // assert
-      verify(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken));
-      expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -750,26 +617,13 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.postLogin(tUsername, tOldPass))
-          .thenThrow(ServerException());
+          .thenThrow(ServerException('UserName atau Password Salah!'));
       // act
       final result = await repository.postLogin(tUsername, tOldPass);
       // assert
       verify(mockRemoteDataSource.postLogin(tUsername, tOldPass));
       expect(
           result, equals(Left(ServerFailure('UserName atau Password Salah!'))));
-    });
-    test(
-        'should return connection failure when the device is not connected to internet',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postLogin(tUsername, tOldPass))
-          .thenThrow(SocketException('Failed to connect to the network'));
-      // act
-      final result = await repository.postLogin(tUsername, tOldPass);
-      // assert
-      verify(mockRemoteDataSource.postLogin(tUsername, tOldPass));
-      expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -791,25 +645,12 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.postRegister(testRegisterModel))
-          .thenThrow(ServerException());
+          .thenThrow(ServerException('Invalid Data'));
       // act
       final result = await repository.postRegister(testRegister);
       // assert
       verify(mockRemoteDataSource.postRegister(testRegisterModel));
       expect(result, equals(Left(ServerFailure('Invalid Data'))));
-    });
-    test(
-        'should return connection failure when the device is not connected to internet',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postRegister(testRegisterModel))
-          .thenThrow(SocketException('Failed to connect to the network'));
-      // act
-      final result = await repository.postRegister(testRegister);
-      // assert
-      verify(mockRemoteDataSource.postRegister(testRegisterModel));
-      expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -839,25 +680,12 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.postReport(tToken, tReportCompose))
-          .thenThrow(ServerException());
+          .thenThrow(ServerException('Invalid'));
       // act
       final result = await repository.postReport(tToken, tReportCompose);
       // assert
       verify(mockRemoteDataSource.postReport(tToken, tReportCompose));
       expect(result, equals(Left(ServerFailure('Invalid'))));
-    });
-    test(
-        'should return connection failure when the device is not connected to internet',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postReport(tToken, tReportCompose))
-          .thenThrow(SocketException('Failed to connect to the network'));
-      // act
-      final result = await repository.postReport(tToken, tReportCompose);
-      // assert
-      verify(mockRemoteDataSource.postReport(tToken, tReportCompose));
-      expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -879,25 +707,12 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.postChallenge(testUserChallengeModel))
-          .thenThrow(ServerException());
+          .thenThrow(ServerException('Invalid'));
       // act
       final result = await repository.postUserChallenge(testUserChallenge);
       // assert
       verify(mockRemoteDataSource.postChallenge(testUserChallengeModel));
       expect(result, equals(Left(ServerFailure('Invalid'))));
-    });
-    test(
-        'should return connection failure when the device is not connected to internet',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postChallenge(testUserChallengeModel))
-          .thenThrow(SocketException('Failed to connect to the network'));
-      // act
-      final result = await repository.postUserChallenge(testUserChallenge);
-      // assert
-      verify(mockRemoteDataSource.postChallenge(testUserChallengeModel));
-      expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -931,7 +746,7 @@ void main() {
       // act
       final result = await repository.removeSessionData(testSessionData);
       // assert
-      expect(result, Right('Session Removed'));
+      expect(result, 'Session Removed');
     });
   });
 

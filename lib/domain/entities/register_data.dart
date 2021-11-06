@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:laporhoax/data/models/user_model.dart';
+import 'package:laporhoax/domain/entities/user.dart';
 
 class RegisterData extends Equatable {
   RegisterData({
@@ -7,7 +7,7 @@ class RegisterData extends Equatable {
     required this.token,
   });
 
-  final UserModel user;
+  final User user;
   final String token;
 
   @override

@@ -259,11 +259,9 @@ class MockRemoveSessionData extends _i1.Mock implements _i21.RemoveSessionData {
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeRepository_0()) as _i2.Repository);
   @override
-  _i5.Future<_i3.Either<_i6.Failure, String>> execute(_i15.SessionData? data) =>
+  _i5.Future<String> execute(_i15.SessionData? data) =>
       (super.noSuchMethod(Invocation.method(#execute, [data]),
-              returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
-                  _FakeEither_1<_i6.Failure, String>()))
-          as _i5.Future<_i3.Either<_i6.Failure, String>>);
+          returnValue: Future<String>.value('')) as _i5.Future<String>);
   @override
   String toString() => super.toString();
 }

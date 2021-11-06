@@ -16,7 +16,7 @@ class RegisterResponse extends Equatable {
         token: json["token"],
       );
 
-  RegisterData toEntity() => RegisterData(user: user, token: token);
+  RegisterData toEntity() => RegisterData(user: user.toEntity(), token: token);
 
   @override
   List<Object?> get props => [user, token];

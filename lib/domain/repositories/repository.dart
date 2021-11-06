@@ -37,7 +37,7 @@ abstract class Repository {
       String token, ReportRequest report);
   Future<Either<Failure, String>> postUserChallenge(UserQuestion challenge);
   Future<Either<Failure, String>> removeFeed(Feed feed);
-  Future<Either<Failure, String>> removeSessionData(SessionData data);
+  Future<String> removeSessionData(SessionData data);
   Future<Either<Failure, String>> saveFeed(Feed feed);
   Future<String> saveSessionData(SessionData data);
 }
