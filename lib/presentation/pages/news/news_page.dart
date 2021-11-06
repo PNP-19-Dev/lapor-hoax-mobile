@@ -33,14 +33,11 @@ class _NewsPageState extends State<NewsPage> {
     return CustomScrollView(
       slivers: <Widget>[
         SliverAppBar(
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
           title: Text(
             'LAPOR HOAX',
             style: Theme.of(context)
                 .textTheme
-                .headline5!
-                .copyWith(color: Colors.black),
+                .headline5!,
           ),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -74,12 +71,21 @@ class _NewsPageState extends State<NewsPage> {
                       children: [
                         Text(
                           'Udah nemuin \nHoax?',
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6!
+                              .copyWith(color: Colors.black),
                         ),
                         ElevatedButton(
                           onPressed: () =>
                               Navigation.intent(ReportPage.ROUTE_NAME),
-                          child: Text('Lapor yuk!'),
+                          child: Text(
+                            'Lapor yuk!',
+                            style: Theme.of(context)
+                                .textTheme
+                                .button!
+                                .copyWith(color: Colors.white),
+                          ),
                         ),
                       ],
                     ),
@@ -97,6 +103,8 @@ class _NewsPageState extends State<NewsPage> {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Card(
+              elevation: 4,
+              clipBehavior: Clip.hardEdge,
               child: ListTile(
                 onTap: () => Navigation.intent(TutorialPage.ROUTE_NAME),
                 leading: Icon(Icons.menu_book_sharp),

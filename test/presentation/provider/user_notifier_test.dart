@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:laporhoax/domain/entities/register.dart';
 import 'package:laporhoax/domain/entities/register_data.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
+import 'package:laporhoax/domain/entities/user.dart';
+import 'package:laporhoax/domain/entities/user_token.dart';
 import 'package:laporhoax/domain/usecases/get_password_reset.dart';
 import 'package:laporhoax/domain/usecases/get_session_data.dart';
 import 'package:laporhoax/domain/usecases/get_session_status.dart';
@@ -93,6 +95,10 @@ void main() {
   final tEmail = 'email';
   final tOldPass = 'oldPass';
   final tNewPass = 'newPass';
+  final tUserToken = UserToken(
+    token: 'token',
+    expiry: 'expiry',
+  );
   final tSessionData = SessionData(
     token: "token",
     userid: 1,
@@ -100,7 +106,11 @@ void main() {
     email: "email",
     username: "username",
   );
-
+  final tUser = User(
+      id: 1,
+      username: 'username',
+      email: 'email',
+  );
   final tRegister = Register(
     name: "name",
     email: "email",
@@ -269,22 +279,49 @@ void main() {
       expect(listenerCallCount, 1);
     });
   });
+
+
+
+  void _arrangeUseCases(){
+    when(mockPostLogin.execute(tEmail, tOldPass))
+        .thenAnswer((_) async => Right(tUserToken));
+    when(mockGetUser.execute(tEmail))
+        .thenAnswer((_) async => Right(tUser));
+    }
+
   group('Login', () {
-    test('should return callback when data is gotten successfully', () async {
-      /*  // arrange
-      when(mockPostLogin.execute(tUsername, tOldPass))
-          .thenAnswer((_) async => Right(tUserToken));
-      when(mockGetUser.execute(tUsername))
-          .thenAnswer((_) async => Right(testUser));
-      when(mockSaveSessionData.execute(testSessionData))
-          .thenAnswer((_) async => Right(UserNotifier.messageLogin));
+/*
+    test('should post and get data from the usecase', () async {
+      // arrange
+      _arrangeUseCases();
       // act
-      final result = await provider.login(tUsername, tOldPass);
+      await provider.login(tEmail, tOldPass);
+      // assert
+      verify(mockPostLogin.execute(tEmail, tOldPass));
+      verify(mockGetUser.execute(tEmail));
+    });
+
+    test('should change state to Loading when usecase is called', () async {
+      // arrange
+      _arrangeUseCases();
+      // act
+      provider.login(tEmail, tOldPass);
+      // assert
+      expect(provider.loginState, RequestState.Loading);
+      expect(listenerCallCount, 1);
+    });
+*/
+
+    /*test('should change user when data is sent successfully', () async {
+      // arrange
+      _arrangeUseCases();
+      // act
+      await provider.login(tEmail, tOldPass);
       // assert
       expect(provider.loginState, RequestState.Success);
       expect(provider.loginMessage, UserNotifier.messageLogin);
-      expect(listenerCallCount, 1);*/
-    });
+      expect(listenerCallCount, 2);
+    });*/
     test('should return error when data is unsuccessful', () async {
       /* // arrange
       when(mockPostLogin.execute(tUsername, tOldPass))

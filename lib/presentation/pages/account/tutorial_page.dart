@@ -10,12 +10,14 @@ class TutorialPage extends StatefulWidget {
 }
 
 class _TutorialPageState extends State<TutorialPage> {
+
+
+
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
         title: Text('Tutorial Penggunaan'),
       ),
       body: Container(
@@ -39,7 +41,7 @@ class _TutorialPageState extends State<TutorialPage> {
                       child: Text(
                         itemData[index].headerItem,
                         style: TextStyle(
-                          color: itemData[index].colorsItem,
+                          color: isDark ? Colors.deepOrange : Colors.black,
                           fontSize: 18,
                         ),
                       ),
@@ -65,7 +67,6 @@ class _TutorialPageState extends State<TutorialPage> {
   List<_ItemModel> itemData = <_ItemModel>[
     _ItemModel(
       headerItem: 'Cara Memberikan Laporan',
-      colorsItem: Colors.black,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -85,18 +86,12 @@ class _TutorialPageState extends State<TutorialPage> {
               children: [
                 TextSpan(
                   text: 'atau bisa juga dengan klik icon ',
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
                 ),
                 WidgetSpan(
                   child: SvgPicture.asset('$_localPath/btn_add_report.svg'),
                 ),
                 TextSpan(
                   text: ' pada navbar di bawah',
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
                 ),
               ],
             ),
@@ -110,9 +105,6 @@ class _TutorialPageState extends State<TutorialPage> {
           SizedBox(height: 10),
           RichText(
             text: TextSpan(
-              style: TextStyle(
-                color: Colors.black,
-              ),
               children: [
                 TextSpan(
                   text:
@@ -132,9 +124,6 @@ class _TutorialPageState extends State<TutorialPage> {
           SizedBox(height: 10),
           RichText(
             text: TextSpan(
-              style: TextStyle(
-                color: Colors.black,
-              ),
               children: [
                 TextSpan(
                   text:
@@ -156,7 +145,6 @@ class _TutorialPageState extends State<TutorialPage> {
     ),
     _ItemModel(
       headerItem: 'Cara ResetPassword',
-      colorsItem: Colors.black,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -167,9 +155,6 @@ class _TutorialPageState extends State<TutorialPage> {
           SizedBox(height: 5),
           RichText(
             text: TextSpan(
-                style: TextStyle(
-                  color: Colors.black,
-                ),
                 children: [
                   TextSpan(
                     text: 'a. Tekan tombol ',
@@ -204,9 +189,6 @@ class _TutorialPageState extends State<TutorialPage> {
           Image.asset('$_localPath/forgot_psw2.png'),
           RichText(
             text: TextSpan(
-                style: TextStyle(
-                  color: Colors.black,
-                ),
                 children: [
                   TextSpan(
                       text:
@@ -222,9 +204,6 @@ class _TutorialPageState extends State<TutorialPage> {
           Image.asset('$_localPath/forgot_psw3.png'),
           RichText(
             text: TextSpan(
-                style: TextStyle(
-                  color: Colors.black,
-                ),
                 children: [
                   TextSpan(
                     text: 'd. Selamat! ',
@@ -247,12 +226,10 @@ class _ItemModel {
   bool expanded;
   String headerItem;
   Widget child;
-  Color colorsItem;
 
   _ItemModel({
     this.expanded: false,
     required this.headerItem,
     required this.child,
-    required this.colorsItem,
   });
 }

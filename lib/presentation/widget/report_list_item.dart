@@ -12,11 +12,13 @@ class ReportListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isDark = Theme.of(context).brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, DetailReportPage.ROUTE_NAME,
           arguments: report),
       child: Container(
-        color: Colors.white,
+        color: isDark ? Colors.grey : Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,

@@ -107,7 +107,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Lapor Hoax',
         theme: mainTheme,
-        themeMode: ThemeMode.light,
+        darkTheme: darkTheme,
+        themeMode: ThemeMode.system,
         navigatorKey: navigatorKey,
         home: HomePage(),
         navigatorObservers: [routeObserver],

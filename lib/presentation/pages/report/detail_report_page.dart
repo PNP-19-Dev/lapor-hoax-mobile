@@ -17,11 +17,9 @@ class DetailReportPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var verdictDesc = report.verdictDesc ?? "";
-
+    var isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
         title: Text('${report.category}'),
         actions: [
           IconButton(
@@ -61,7 +59,7 @@ class DetailReportPage extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 'Umpan Balik : ',
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.bodyText2!,
               ),
             ),
             Container(
@@ -73,12 +71,13 @@ class DetailReportPage extends StatelessWidget {
               child: Text(
                 "${verdictDesc.isEmpty ? '--- Belum ada feedback, ditunggu ya ! ---' : verdictDesc}",
                 style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      color: Colors.black,
+                      color: isDark ? Colors.white : Colors.grey,
                     ),
                 textAlign: TextAlign.justify,
               ),
             ),
-            Divider(),
+            const Divider(),
+            SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
               child: Text(
