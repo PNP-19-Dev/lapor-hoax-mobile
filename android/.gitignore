@@ -10,18 +10,6 @@ GeneratedPluginRegistrant.java
 # See https://flutter.dev/docs/deployment/android#reference-the-keystore-from-the-app
 key.properties
 /app/build/
-
-# Keystore files
-# Uncomment the following line if you do not want to check your keystore files in.
-/app/*.jks
+/app/private-keystore.jks
+/app/release-keystore.jks
 /app/google-services.json
-
-# Built application files
-*.apk
-*.ap_
-
-# Android Studio Navigation editor temp files
-.navigation/
-
-# Android Studio captures folder
-captures/
