@@ -20,6 +20,11 @@ final mainTheme = ThemeData(
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     foregroundColor: Colors.white,
   ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+    ),
+  )
 );
 
 final darkTheme = ThemeData(
