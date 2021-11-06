@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:laporhoax/common/theme.dart';
+import 'package:laporhoax/styles/colors.dart';
 
 class TutorialPage extends StatefulWidget {
   static const String ROUTE_NAME = '/tutorial_page';

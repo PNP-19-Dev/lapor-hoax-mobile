@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:laporhoax/common/exception.dart';
-import 'package:laporhoax/common/failure.dart';
 import 'package:laporhoax/data/models/feed_table.dart';
 import 'package:laporhoax/data/models/question_model.dart';
 import 'package:laporhoax/data/models/report_model.dart';
@@ -14,6 +12,8 @@ import 'package:laporhoax/data/models/user_question_model.dart';
 import 'package:laporhoax/data/repositories/repository_impl.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
+import 'package:laporhoax/utils/exception.dart';
+import 'package:laporhoax/utils/failure.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy_data/dummy_objects.dart';
@@ -738,7 +738,7 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.postLogin(tUsername, tOldPass))
-          .thenAnswer((_) async => testLogin);
+          .thenAnswer((_) async => testLoginModel);
       // act
       final result = await repository.postLogin(tUsername, tOldPass);
       // assert
@@ -778,36 +778,36 @@ void main() {
         'should return remote data when the call to remote data source is successful',
         () async {
       // arrange
-      when(mockRemoteDataSource.postRegister(testRegister))
+      when(mockRemoteDataSource.postRegister(testRegisterModel))
           .thenAnswer((_) async => testRegisterCallback);
       // act
       final result = await repository.postRegister(testRegister);
       // assert
-      verify(mockRemoteDataSource.postRegister(testRegister));
-      expect(result, equals(Right(testRegisterCallback)));
+      verify(mockRemoteDataSource.postRegister(testRegisterModel));
+      expect(result, equals(Right(testRegisterCallback.toEntity())));
     });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-      when(mockRemoteDataSource.postRegister(testRegister))
+      when(mockRemoteDataSource.postRegister(testRegisterModel))
           .thenThrow(ServerException());
       // act
       final result = await repository.postRegister(testRegister);
       // assert
-      verify(mockRemoteDataSource.postRegister(testRegister));
+      verify(mockRemoteDataSource.postRegister(testRegisterModel));
       expect(result, equals(Left(ServerFailure('Invalid Data'))));
     });
     test(
         'should return connection failure when the device is not connected to internet',
         () async {
       // arrange
-      when(mockRemoteDataSource.postRegister(testRegister))
+      when(mockRemoteDataSource.postRegister(testRegisterModel))
           .thenThrow(SocketException('Failed to connect to the network'));
       // act
       final result = await repository.postRegister(testRegister);
       // assert
-      verify(mockRemoteDataSource.postRegister(testRegister));
+      verify(mockRemoteDataSource.postRegister(testRegisterModel));
       expect(result,
           equals(Left(ConnectionFailure('Failed to connect to the network'))));
     });

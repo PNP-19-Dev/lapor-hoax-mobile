@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
+import 'package:laporhoax/utils/state_enum.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

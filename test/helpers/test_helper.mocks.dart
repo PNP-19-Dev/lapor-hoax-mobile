@@ -6,37 +6,40 @@ import 'dart:async' as _i11;
 
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:dio/dio.dart' as _i9;
-import 'package:laporhoax/common/failure.dart' as _i12;
-import 'package:laporhoax/common/network_info_impl.dart' as _i33;
-import 'package:laporhoax/data/datasources/db/database_helper.dart' as _i30;
-import 'package:laporhoax/data/datasources/local_data_source.dart' as _i26;
+import 'package:laporhoax/data/datasources/db/database_helper.dart' as _i33;
+import 'package:laporhoax/data/datasources/local_data_source.dart' as _i29;
 import 'package:laporhoax/data/datasources/preferences/preferences_helper.dart'
-    as _i32;
-import 'package:laporhoax/data/datasources/remote_data_source.dart' as _i22;
-import 'package:laporhoax/data/models/category_model.dart' as _i23;
-import 'package:laporhoax/data/models/category_table.dart' as _i29;
+    as _i35;
+import 'package:laporhoax/data/datasources/remote_data_source.dart' as _i24;
+import 'package:laporhoax/data/models/category_model.dart' as _i25;
+import 'package:laporhoax/data/models/category_table.dart' as _i32;
 import 'package:laporhoax/data/models/feed_model.dart' as _i3;
-import 'package:laporhoax/data/models/feed_table.dart' as _i27;
-import 'package:laporhoax/data/models/question_model.dart' as _i24;
-import 'package:laporhoax/data/models/question_table.dart' as _i28;
-import 'package:laporhoax/data/models/register_model.dart' as _i20;
+import 'package:laporhoax/data/models/feed_table.dart' as _i30;
+import 'package:laporhoax/data/models/question_model.dart' as _i26;
+import 'package:laporhoax/data/models/question_table.dart' as _i31;
+import 'package:laporhoax/data/models/register_model.dart' as _i28;
+import 'package:laporhoax/data/models/register_response.dart' as _i6;
 import 'package:laporhoax/data/models/report_model.dart' as _i7;
-import 'package:laporhoax/data/models/report_request.dart' as _i21;
-import 'package:laporhoax/data/models/user_model.dart' as _i25;
+import 'package:laporhoax/data/models/report_request.dart' as _i23;
+import 'package:laporhoax/data/models/user_model.dart' as _i27;
 import 'package:laporhoax/data/models/user_question_model.dart' as _i4;
-import 'package:laporhoax/data/models/user_response.dart' as _i6;
-import 'package:laporhoax/data/models/user_token.dart' as _i5;
+import 'package:laporhoax/data/models/user_token_model.dart' as _i5;
 import 'package:laporhoax/domain/entities/category.dart' as _i13;
 import 'package:laporhoax/domain/entities/feed.dart' as _i14;
 import 'package:laporhoax/domain/entities/question.dart' as _i15;
+import 'package:laporhoax/domain/entities/register.dart' as _i22;
+import 'package:laporhoax/domain/entities/register_data.dart' as _i21;
 import 'package:laporhoax/domain/entities/report.dart' as _i16;
 import 'package:laporhoax/domain/entities/session_data.dart' as _i17;
 import 'package:laporhoax/domain/entities/user.dart' as _i18;
 import 'package:laporhoax/domain/entities/user_question.dart' as _i19;
+import 'package:laporhoax/domain/entities/user_token.dart' as _i20;
 import 'package:laporhoax/domain/repositories/repository.dart' as _i10;
+import 'package:laporhoax/utils/failure.dart' as _i12;
+import 'package:laporhoax/utils/network_info_impl.dart' as _i36;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:shared_preferences/shared_preferences.dart' as _i8;
-import 'package:sqflite/sqflite.dart' as _i31;
+import 'package:sqflite/sqflite.dart' as _i34;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: avoid_setters_without_getters
@@ -54,9 +57,10 @@ class _FakeFeedModel_1 extends _i1.Fake implements _i3.FeedModel {}
 class _FakeUserQuestionModel_2 extends _i1.Fake
     implements _i4.UserQuestionModel {}
 
-class _FakeUserToken_3 extends _i1.Fake implements _i5.UserToken {}
+class _FakeUserTokenModel_3 extends _i1.Fake implements _i5.UserTokenModel {}
 
-class _FakeUserResponse_4 extends _i1.Fake implements _i6.UserResponse {}
+class _FakeRegisterResponse_4 extends _i1.Fake implements _i6.RegisterResponse {
+}
 
 class _FakeReportModel_5 extends _i1.Fake implements _i7.ReportModel {}
 
@@ -187,22 +191,23 @@ class MockRepository extends _i1.Mock implements _i10.Repository {
                   _FakeEither_0<_i12.Failure, String>()))
           as _i11.Future<_i2.Either<_i12.Failure, String>>);
   @override
-  _i11.Future<_i2.Either<_i12.Failure, _i5.UserToken>> postLogin(
+  _i11.Future<_i2.Either<_i12.Failure, _i20.UserToken>> postLogin(
           String? username, String? password) =>
       (super.noSuchMethod(Invocation.method(#postLogin, [username, password]),
-          returnValue: Future<_i2.Either<_i12.Failure, _i5.UserToken>>.value(
-              _FakeEither_0<_i12.Failure, _i5.UserToken>())) as _i11
-          .Future<_i2.Either<_i12.Failure, _i5.UserToken>>);
+          returnValue: Future<_i2.Either<_i12.Failure, _i20.UserToken>>.value(
+              _FakeEither_0<_i12.Failure, _i20.UserToken>())) as _i11
+          .Future<_i2.Either<_i12.Failure, _i20.UserToken>>);
   @override
-  _i11.Future<_i2.Either<_i12.Failure, _i6.UserResponse>> postRegister(
-          _i20.RegisterModel? user) =>
+  _i11.Future<_i2.Either<_i12.Failure, _i21.RegisterData>> postRegister(
+          _i22.Register? user) =>
       (super.noSuchMethod(Invocation.method(#postRegister, [user]),
-          returnValue: Future<_i2.Either<_i12.Failure, _i6.UserResponse>>.value(
-              _FakeEither_0<_i12.Failure, _i6.UserResponse>())) as _i11
-          .Future<_i2.Either<_i12.Failure, _i6.UserResponse>>);
+              returnValue:
+                  Future<_i2.Either<_i12.Failure, _i21.RegisterData>>.value(
+                      _FakeEither_0<_i12.Failure, _i21.RegisterData>()))
+          as _i11.Future<_i2.Either<_i12.Failure, _i21.RegisterData>>);
   @override
   _i11.Future<_i2.Either<_i12.Failure, _i16.Report>> postReport(
-          String? token, _i21.ReportRequest? report) =>
+          String? token, _i23.ReportRequest? report) =>
       (super.noSuchMethod(Invocation.method(#postReport, [token, report]),
               returnValue: Future<_i2.Either<_i12.Failure, _i16.Report>>.value(
                   _FakeEither_0<_i12.Failure, _i16.Report>()))
@@ -244,7 +249,7 @@ class MockRepository extends _i1.Mock implements _i10.Repository {
 /// A class which mocks [RemoteDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockRemoteDataSource extends _i1.Mock implements _i22.RemoteDataSource {
+class MockRemoteDataSource extends _i1.Mock implements _i24.RemoteDataSource {
   MockRemoteDataSource() {
     _i1.throwOnMissingStub(this);
   }
@@ -254,11 +259,11 @@ class MockRemoteDataSource extends _i1.Mock implements _i22.RemoteDataSource {
       (super.noSuchMethod(Invocation.method(#deleteReport, [token, id]),
           returnValue: Future<String>.value('')) as _i11.Future<String>);
   @override
-  _i11.Future<List<_i23.CategoryModel>> getCategory() => (super.noSuchMethod(
+  _i11.Future<List<_i25.CategoryModel>> getCategory() => (super.noSuchMethod(
           Invocation.method(#getCategory, []),
           returnValue:
-              Future<List<_i23.CategoryModel>>.value(<_i23.CategoryModel>[]))
-      as _i11.Future<List<_i23.CategoryModel>>);
+              Future<List<_i25.CategoryModel>>.value(<_i25.CategoryModel>[]))
+      as _i11.Future<List<_i25.CategoryModel>>);
   @override
   _i11.Future<_i3.FeedModel> getFeedDetail(int? id) =>
       (super.noSuchMethod(Invocation.method(#getFeedDetail, [id]),
@@ -274,11 +279,11 @@ class MockRemoteDataSource extends _i1.Mock implements _i22.RemoteDataSource {
       (super.noSuchMethod(Invocation.method(#getPasswordReset, [email]),
           returnValue: Future<String>.value('')) as _i11.Future<String>);
   @override
-  _i11.Future<List<_i24.QuestionModel>> getQuestions() => (super.noSuchMethod(
+  _i11.Future<List<_i26.QuestionModel>> getQuestions() => (super.noSuchMethod(
           Invocation.method(#getQuestions, []),
           returnValue:
-              Future<List<_i24.QuestionModel>>.value(<_i24.QuestionModel>[]))
-      as _i11.Future<List<_i24.QuestionModel>>);
+              Future<List<_i26.QuestionModel>>.value(<_i26.QuestionModel>[]))
+      as _i11.Future<List<_i26.QuestionModel>>);
   @override
   _i11.Future<List<_i7.ReportModel>> getReport(String? token, int? id) =>
       (super.noSuchMethod(Invocation.method(#getReport, [token, id]),
@@ -286,11 +291,11 @@ class MockRemoteDataSource extends _i1.Mock implements _i22.RemoteDataSource {
                   Future<List<_i7.ReportModel>>.value(<_i7.ReportModel>[]))
           as _i11.Future<List<_i7.ReportModel>>);
   @override
-  _i11.Future<List<_i25.UserModel>> getUser(String? email) =>
+  _i11.Future<List<_i27.UserModel>> getUser(String? email) =>
       (super.noSuchMethod(Invocation.method(#getUser, [email]),
               returnValue:
-                  Future<List<_i25.UserModel>>.value(<_i25.UserModel>[]))
-          as _i11.Future<List<_i25.UserModel>>);
+                  Future<List<_i27.UserModel>>.value(<_i27.UserModel>[]))
+          as _i11.Future<List<_i27.UserModel>>);
   @override
   _i11.Future<_i4.UserQuestionModel> getUserQuestions(int? id) =>
       (super.noSuchMethod(Invocation.method(#getUserQuestions, [id]),
@@ -312,19 +317,21 @@ class MockRemoteDataSource extends _i1.Mock implements _i22.RemoteDataSource {
       (super.noSuchMethod(Invocation.method(#updateFcmToken, [user, fcmToken]),
           returnValue: Future<dynamic>.value()) as _i11.Future<dynamic>);
   @override
-  _i11.Future<_i5.UserToken> postLogin(String? username, String? password) =>
+  _i11.Future<_i5.UserTokenModel> postLogin(
+          String? username, String? password) =>
       (super.noSuchMethod(Invocation.method(#postLogin, [username, password]),
-              returnValue: Future<_i5.UserToken>.value(_FakeUserToken_3()))
-          as _i11.Future<_i5.UserToken>);
+              returnValue:
+                  Future<_i5.UserTokenModel>.value(_FakeUserTokenModel_3()))
+          as _i11.Future<_i5.UserTokenModel>);
   @override
-  _i11.Future<_i6.UserResponse> postRegister(_i20.RegisterModel? user) =>
+  _i11.Future<_i6.RegisterResponse> postRegister(_i28.RegisterModel? user) =>
       (super.noSuchMethod(Invocation.method(#postRegister, [user]),
               returnValue:
-                  Future<_i6.UserResponse>.value(_FakeUserResponse_4()))
-          as _i11.Future<_i6.UserResponse>);
+                  Future<_i6.RegisterResponse>.value(_FakeRegisterResponse_4()))
+          as _i11.Future<_i6.RegisterResponse>);
   @override
   _i11.Future<_i7.ReportModel> postReport(
-          String? token, _i21.ReportRequest? report) =>
+          String? token, _i23.ReportRequest? report) =>
       (super.noSuchMethod(Invocation.method(#postReport, [token, report]),
               returnValue: Future<_i7.ReportModel>.value(_FakeReportModel_5()))
           as _i11.Future<_i7.ReportModel>);
@@ -339,29 +346,29 @@ class MockRemoteDataSource extends _i1.Mock implements _i22.RemoteDataSource {
 /// A class which mocks [LocalDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLocalDataSource extends _i1.Mock implements _i26.LocalDataSource {
+class MockLocalDataSource extends _i1.Mock implements _i29.LocalDataSource {
   MockLocalDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i11.Future<String> insertFeed(_i27.FeedTable? feed) =>
+  _i11.Future<String> insertFeed(_i30.FeedTable? feed) =>
       (super.noSuchMethod(Invocation.method(#insertFeed, [feed]),
           returnValue: Future<String>.value('')) as _i11.Future<String>);
   @override
-  _i11.Future<String> removeFeed(_i27.FeedTable? feed) =>
+  _i11.Future<String> removeFeed(_i30.FeedTable? feed) =>
       (super.noSuchMethod(Invocation.method(#removeFeed, [feed]),
           returnValue: Future<String>.value('')) as _i11.Future<String>);
   @override
-  _i11.Future<_i27.FeedTable?> getFeedById(int? id) =>
+  _i11.Future<_i30.FeedTable?> getFeedById(int? id) =>
       (super.noSuchMethod(Invocation.method(#getFeedById, [id]),
-              returnValue: Future<_i27.FeedTable?>.value())
-          as _i11.Future<_i27.FeedTable?>);
+              returnValue: Future<_i30.FeedTable?>.value())
+          as _i11.Future<_i30.FeedTable?>);
   @override
-  _i11.Future<List<_i27.FeedTable>> getFeeds() => (super.noSuchMethod(
+  _i11.Future<List<_i30.FeedTable>> getFeeds() => (super.noSuchMethod(
           Invocation.method(#getFeeds, []),
-          returnValue: Future<List<_i27.FeedTable>>.value(<_i27.FeedTable>[]))
-      as _i11.Future<List<_i27.FeedTable>>);
+          returnValue: Future<List<_i30.FeedTable>>.value(<_i30.FeedTable>[]))
+      as _i11.Future<List<_i30.FeedTable>>);
   @override
   _i11.Future<bool> isLoggedIn() =>
       (super.noSuchMethod(Invocation.method(#isLoggedIn, []),
@@ -380,29 +387,29 @@ class MockLocalDataSource extends _i1.Mock implements _i26.LocalDataSource {
       (super.noSuchMethod(Invocation.method(#removeSession, [data]),
           returnValue: Future<String>.value('')) as _i11.Future<String>);
   @override
-  _i11.Future<void> cacheQuestions(List<_i28.QuestionTable>? questions) =>
+  _i11.Future<void> cacheQuestions(List<_i31.QuestionTable>? questions) =>
       (super.noSuchMethod(Invocation.method(#cacheQuestions, [questions]),
               returnValue: Future<void>.value(),
               returnValueForMissingStub: Future<void>.value())
           as _i11.Future<void>);
   @override
-  _i11.Future<List<_i28.QuestionTable>> getCachedQuestion() =>
+  _i11.Future<List<_i31.QuestionTable>> getCachedQuestion() =>
       (super.noSuchMethod(Invocation.method(#getCachedQuestion, []),
-              returnValue: Future<List<_i28.QuestionTable>>.value(
-                  <_i28.QuestionTable>[]))
-          as _i11.Future<List<_i28.QuestionTable>>);
+              returnValue: Future<List<_i31.QuestionTable>>.value(
+                  <_i31.QuestionTable>[]))
+          as _i11.Future<List<_i31.QuestionTable>>);
   @override
-  _i11.Future<void> cacheCategory(List<_i29.CategoryTable>? category) =>
+  _i11.Future<void> cacheCategory(List<_i32.CategoryTable>? category) =>
       (super.noSuchMethod(Invocation.method(#cacheCategory, [category]),
               returnValue: Future<void>.value(),
               returnValueForMissingStub: Future<void>.value())
           as _i11.Future<void>);
   @override
-  _i11.Future<List<_i29.CategoryTable>> getCachedCategory() =>
+  _i11.Future<List<_i32.CategoryTable>> getCachedCategory() =>
       (super.noSuchMethod(Invocation.method(#getCachedCategory, []),
-              returnValue: Future<List<_i29.CategoryTable>>.value(
-                  <_i29.CategoryTable>[]))
-          as _i11.Future<List<_i29.CategoryTable>>);
+              returnValue: Future<List<_i32.CategoryTable>>.value(
+                  <_i32.CategoryTable>[]))
+          as _i11.Future<List<_i32.CategoryTable>>);
   @override
   String toString() => super.toString();
 }
@@ -410,18 +417,18 @@ class MockLocalDataSource extends _i1.Mock implements _i26.LocalDataSource {
 /// A class which mocks [DatabaseHelper].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDatabaseHelper extends _i1.Mock implements _i30.DatabaseHelper {
+class MockDatabaseHelper extends _i1.Mock implements _i33.DatabaseHelper {
   MockDatabaseHelper() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i11.Future<_i31.Database?> get database =>
+  _i11.Future<_i34.Database?> get database =>
       (super.noSuchMethod(Invocation.getter(#database),
-              returnValue: Future<_i31.Database?>.value())
-          as _i11.Future<_i31.Database?>);
+              returnValue: Future<_i34.Database?>.value())
+          as _i11.Future<_i34.Database?>);
   @override
-  _i11.Future<void> insertNews(_i27.FeedTable? feed) => (super.noSuchMethod(
+  _i11.Future<void> insertNews(_i30.FeedTable? feed) => (super.noSuchMethod(
       Invocation.method(#insertNews, [feed]),
       returnValue: Future<void>.value(),
       returnValueForMissingStub: Future<void>.value()) as _i11.Future<void>);
@@ -437,13 +444,13 @@ class MockDatabaseHelper extends _i1.Mock implements _i30.DatabaseHelper {
               returnValue: Future<Map<String, dynamic>?>.value())
           as _i11.Future<Map<String, dynamic>?>);
   @override
-  _i11.Future<void> removeFeed(_i27.FeedTable? feed) => (super.noSuchMethod(
+  _i11.Future<void> removeFeed(_i30.FeedTable? feed) => (super.noSuchMethod(
       Invocation.method(#removeFeed, [feed]),
       returnValue: Future<void>.value(),
       returnValueForMissingStub: Future<void>.value()) as _i11.Future<void>);
   @override
   _i11.Future<void> insertQuestionTransaction(
-          List<_i28.QuestionTable>? questions) =>
+          List<_i31.QuestionTable>? questions) =>
       (super.noSuchMethod(
               Invocation.method(#insertQuestionTransaction, [questions]),
               returnValue: Future<void>.value(),
@@ -451,7 +458,7 @@ class MockDatabaseHelper extends _i1.Mock implements _i30.DatabaseHelper {
           as _i11.Future<void>);
   @override
   _i11.Future<void> insertCategoryTransaction(
-          List<_i29.CategoryTable>? categories) =>
+          List<_i32.CategoryTable>? categories) =>
       (super.noSuchMethod(
               Invocation.method(#insertCategoryTransaction, [categories]),
               returnValue: Future<void>.value(),
@@ -484,7 +491,7 @@ class MockDatabaseHelper extends _i1.Mock implements _i30.DatabaseHelper {
 /// A class which mocks [PreferencesHelper].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPreferencesHelper extends _i1.Mock implements _i32.PreferencesHelper {
+class MockPreferencesHelper extends _i1.Mock implements _i35.PreferencesHelper {
   MockPreferencesHelper() {
     _i1.throwOnMissingStub(this);
   }
@@ -551,7 +558,7 @@ class MockPreferencesHelper extends _i1.Mock implements _i32.PreferencesHelper {
 /// A class which mocks [NetworkInfo].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNetworkInfo extends _i1.Mock implements _i33.NetworkInfo {
+class MockNetworkInfo extends _i1.Mock implements _i36.NetworkInfo {
   MockNetworkInfo() {
     _i1.throwOnMissingStub(this);
   }

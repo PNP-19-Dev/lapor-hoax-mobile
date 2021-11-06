@@ -1,15 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:laporhoax/common/navigation.dart';
-import 'package:laporhoax/common/state_enum.dart';
-import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/presentation/pages/account/tutorial_page.dart';
 import 'package:laporhoax/presentation/pages/report/report_page.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
-import 'package:laporhoax/util/datetime_helper.dart';
+import 'package:laporhoax/styles/colors.dart';
+import 'package:laporhoax/utils/datetime_helper.dart';
+import 'package:laporhoax/utils/navigation.dart';
+import 'package:laporhoax/utils/state_enum.dart';
 import 'package:provider/provider.dart';
 
 import 'news_web_view.dart';
@@ -36,11 +35,13 @@ class _NewsPageState extends State<NewsPage> {
         SliverAppBar(
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
-          title: Text('LAPOR HOAX',
-              style: GoogleFonts.inter(
-                fontSize: 24,
-                fontWeight: FontWeight.w700,
-              )),
+          title: Text(
+            'LAPOR HOAX',
+            style: Theme.of(context)
+                .textTheme
+                .headline5!
+                .copyWith(color: Colors.black),
+          ),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Image.asset('assets/icons/logo_new.png', width: 60),
@@ -71,11 +72,10 @@ class _NewsPageState extends State<NewsPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Udah nemuin \nHoax?',
-                            style: GoogleFonts.inter(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                            )),
+                        Text(
+                          'Udah nemuin \nHoax?',
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
                         ElevatedButton(
                           onPressed: () =>
                               Navigation.intent(ReportPage.ROUTE_NAME),
@@ -100,11 +100,10 @@ class _NewsPageState extends State<NewsPage> {
               child: ListTile(
                 onTap: () => Navigation.intent(TutorialPage.ROUTE_NAME),
                 leading: Icon(Icons.menu_book_sharp),
-                title: Text('Tutorial Penggunaan',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
-                    )),
+                title: Text(
+                  'Tutorial Penggunaan',
+                  style: Theme.of(context).textTheme.subtitle2,
+                ),
                 trailing: Icon(Icons.chevron_right),
               ),
             ),
@@ -115,14 +114,10 @@ class _NewsPageState extends State<NewsPage> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
               'Berita',
-              style: GoogleFonts.inter(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-              ),
+              style: Theme.of(context).textTheme.headline6,
             ),
           ),
         ),
-        // _buildFeedItem(),
         Consumer<FeedNotifier>(
           builder: (context, data, child) {
             final state = data.feedState;
@@ -191,10 +186,10 @@ class FeedList extends StatelessWidget {
                     children: [
                       CachedNetworkImage(
                         imageUrl: feed.thumbnail!,
-                        placeholder: (context, url) => Center(
+                        placeholder: (_, url) => Center(
                           child: CircularProgressIndicator(),
                         ),
-                        errorWidget: (context, url, eror) => Icon(Icons.error),
+                        errorWidget: (_, url, error) => Icon(Icons.error),
                         fit: BoxFit.fill,
                       ),
                       Positioned(
@@ -222,11 +217,11 @@ class FeedList extends StatelessWidget {
                           feed.title!,
                           softWrap: true,
                           overflow: TextOverflow.clip,
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                       ),
                       Positioned(
@@ -242,11 +237,12 @@ class FeedList extends StatelessWidget {
                             SizedBox(width: 4),
                             Text(
                               DateTimeHelper.formattedDate(feed.date!),
-                              style: GoogleFonts.inter(
-                                fontSize: 10,
-                                fontWeight: FontWeight.normal,
-                                color: Colors.white,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .overline!
+                                  .copyWith(
+                                    color: Colors.white,
+                                  ),
                             ),
                           ],
                         ),

@@ -1,10 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/presentation/pages/news/news_web_view.dart';
-import 'package:laporhoax/presentation/pages/news/saved_news.dart';
-import 'package:laporhoax/util/datetime_helper.dart';
+import 'package:laporhoax/utils/datetime_helper.dart';
 
 class FeedCard extends StatelessWidget {
   final Feed feed;
@@ -16,11 +14,11 @@ class FeedCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
-        onTap: () async {
-          await Navigator.pushNamed(
-              context, NewsWebView.ROUTE_NAME,
-              arguments: NewsWebViewData(feed.id, SavedNews.ROUTE_NAME));
-        },
+        onTap: () => Navigator.pushNamed(
+          context,
+          NewsWebView.ROUTE_NAME,
+          arguments: feed.id,
+        ),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
           decoration: BoxDecoration(
@@ -94,11 +92,9 @@ class _Description extends StatelessWidget {
           const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
           Text(
             title,
-            style: GoogleFonts.inter(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-              color: Colors.black,
-            ),
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  color: Colors.black,
+                ),
           ),
           const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
           Row(
@@ -109,11 +105,9 @@ class _Description extends StatelessWidget {
               ),
               Text(
                 DateTimeHelper.formattedDate(date),
-                style: GoogleFonts.inter(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 10,
-                  color: Color(0xFFBABABA),
-                ),
+                style: Theme.of(context).textTheme.overline!.copyWith(
+                      color: Color(0xFFBABABA),
+                    ),
               ),
             ],
           ),

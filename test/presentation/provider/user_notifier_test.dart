@@ -1,9 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:laporhoax/common/failure.dart';
-import 'package:laporhoax/common/state_enum.dart';
-import 'package:laporhoax/data/models/register_model.dart';
-import 'package:laporhoax/data/models/user_response.dart';
+import 'package:laporhoax/domain/entities/register.dart';
+import 'package:laporhoax/domain/entities/register_data.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/domain/usecases/get_password_reset.dart';
 import 'package:laporhoax/domain/usecases/get_session_data.dart';
@@ -18,6 +16,8 @@ import 'package:laporhoax/domain/usecases/put_fcm_token.dart';
 import 'package:laporhoax/domain/usecases/remove_session_data.dart';
 import 'package:laporhoax/domain/usecases/save_session_data.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
+import 'package:laporhoax/utils/failure.dart';
+import 'package:laporhoax/utils/state_enum.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -100,12 +100,14 @@ void main() {
     email: "email",
     username: "username",
   );
-  final tRegisterModel = RegisterModel(
+
+  final tRegister = Register(
     name: "name",
     email: "email",
     password: "password",
   );
-  final tUserResponse = UserResponse(user: testUserModel, token: tToken);
+
+  final tUserResponse = RegisterData(user: testUserModel, token: tToken);
 
   group('GetUser', () {
     test('should change user data when data is gotten successfully', () async {
@@ -128,7 +130,7 @@ void main() {
       // assert
       expect(provider.userState, RequestState.Error);
       expect(provider.userMessage, "Can't get data");
-      expect(listenerCallCount, 1);
+      expect(listenerCallCount, 2);
     });
   });
   group('GetPasswordReset', () {
@@ -299,10 +301,10 @@ void main() {
   group('PostRegister', () {
     test('should return callback when data is gotten successfully', () async {
       // arrange
-      when(mockPostRegister.execute(tRegisterModel))
+      when(mockPostRegister.execute(tRegister))
           .thenAnswer((_) async => Right(tUserResponse));
       // act
-      await provider.register(tRegisterModel);
+      await provider.register(tRegister);
       // assert
       expect(provider.registerState, RequestState.Loaded);
       expect(provider.userResponse, tUserResponse);
@@ -310,14 +312,14 @@ void main() {
     });
     test('should return error when data is unsuccessful', () async {
       // arrange
-      when(mockPostRegister.execute(tRegisterModel))
+      when(mockPostRegister.execute(tRegister))
           .thenAnswer((_) async => Left(ServerFailure("Invalid")));
       // act
-      await provider.register(tRegisterModel);
+      await provider.register(tRegister);
       // assert
       expect(provider.registerState, RequestState.Error);
       expect(provider.registerMessage, "Invalid");
-      expect(listenerCallCount, 1);
+      expect(listenerCallCount, 2);
     });
   });
 }

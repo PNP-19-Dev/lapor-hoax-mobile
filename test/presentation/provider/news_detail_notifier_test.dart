@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:laporhoax/common/failure.dart';
-import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/domain/usecases/get_feed_detail.dart';
 import 'package:laporhoax/domain/usecases/get_feed_save_status.dart';
 import 'package:laporhoax/domain/usecases/remove_feed.dart';
 import 'package:laporhoax/domain/usecases/save_feed.dart';
 import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
+import 'package:laporhoax/utils/failure.dart';
+import 'package:laporhoax/utils/state_enum.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

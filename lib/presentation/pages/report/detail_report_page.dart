@@ -1,10 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/domain/entities/report.dart';
-import 'package:laporhoax/util/datetime_helper.dart';
+import 'package:laporhoax/styles/colors.dart';
+import 'package:laporhoax/utils/datetime_helper.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -41,7 +40,7 @@ class DetailReportPage extends StatelessWidget {
               placeholder: (context, url) => Center(
                 child: CircularProgressIndicator(),
               ),
-              errorWidget: (context, url, eror) => Icon(Icons.error),
+              errorWidget: (_, url, error) => Icon(Icons.error),
               width: double.infinity,
               height: 250,
               fit: BoxFit.cover,
@@ -52,20 +51,18 @@ class DetailReportPage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Keputusan : ${report.verdict ?? "Menunggu"}',
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  )),
+              child: Text(
+                'Keputusan : ${report.verdict ?? "Menunggu"}',
+                style: Theme.of(context).textTheme.headline6,
+              ),
             ),
             SizedBox(height: 2),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Umpan Balik : ',
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                  )),
+              child: Text(
+                'Umpan Balik : ',
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -75,30 +72,26 @@ class DetailReportPage extends StatelessWidget {
               width: double.infinity,
               child: Text(
                 "${verdictDesc.isEmpty ? '--- Belum ada feedback, ditunggu ya ! ---' : verdictDesc}",
-                style: GoogleFonts.inter(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                  color: Colors.black,
-                ),
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      color: Colors.black,
+                    ),
                 textAlign: TextAlign.justify,
               ),
             ),
             Divider(),
             Padding(
               padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
-              child: Text('Informasi Laporanmu',
-                  style: GoogleFonts.inter(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                  )),
+              child: Text(
+                'Informasi Laporanmu',
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
-              child: Text('Url',
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12,
-                  )),
+              child: Text(
+                'Url',
+                style: Theme.of(context).textTheme.caption,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
@@ -108,12 +101,12 @@ class DetailReportPage extends StatelessWidget {
                   Icon(Icons.link),
                   SizedBox(width: 5),
                   InkWell(
-                    child: Text('${report.url}',
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                          color: orangeBlaze,
-                        )),
+                    child: Text(
+                      '${report.url}',
+                      style: Theme.of(context).textTheme.caption!.copyWith(
+                            color: orangeBlaze,
+                          ),
+                    ),
                     onTap: () {
                       final url = report.url!.replaceAll('"', '');
                       if (url.contains('://')) {
@@ -146,11 +139,10 @@ class DetailReportPage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8.0, top: 8.0),
-              child: Text('Deskripsi',
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12,
-                  )),
+              child: Text(
+                'Deskripsi',
+                style: Theme.of(context).textTheme.caption,
+              ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -160,11 +152,9 @@ class DetailReportPage extends StatelessWidget {
               width: double.infinity,
               child: Text(
                 '${report.description}',
-                style: GoogleFonts.inter(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                  color: grey700,
-                ),
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      color: grey700,
+                    ),
                 textAlign: TextAlign.justify,
               ),
             ),

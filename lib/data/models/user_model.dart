@@ -18,18 +18,6 @@ class UserModel extends Equatable {
         email: json["email"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "username": username,
-        "email": email,
-      };
-
-  factory UserModel.fromEntity(User user) => UserModel(
-        id: user.id,
-        username: user.username,
-        email: user.email,
-      );
-
   User toEntity() => User(id: id, username: username, email: email);
 
   @override

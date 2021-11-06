@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-// ignore: must_be_immutable
 class User extends Equatable {
   User({
     required this.id,
@@ -8,12 +7,10 @@ class User extends Equatable {
     required this.email,
   });
 
-  int id;
-  String username;
-  String email;
+  final int id;
+  final String username;
+  final String email;
 
   @override
   List<Object?> get props => [id, username, email];
-
-  static User empty() => User(id: -1, username: '', email: '');
 }

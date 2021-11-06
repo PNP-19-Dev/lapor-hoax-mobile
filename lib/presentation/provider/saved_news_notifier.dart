@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:laporhoax/common/state_enum.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/domain/usecases/get_saved_feeds.dart';
+import 'package:laporhoax/utils/state_enum.dart';
 
 class SavedNewsNotifier extends ChangeNotifier {
   var _saveListFeeds = <Feed>[];
@@ -37,7 +37,7 @@ class SavedNewsNotifier extends ChangeNotifier {
 
         if (feedData.isEmpty) {
           _feedListState = RequestState.Empty;
-          _message = "Empty Data";
+          _message = "Kamu belum menyimpan berita apapun!";
           notifyListeners();
         }
 

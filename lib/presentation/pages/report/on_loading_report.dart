@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:laporhoax/common/navigation.dart';
-import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/presentation/pages/report/report_page.dart';
+import 'package:laporhoax/styles/colors.dart';
+import 'package:laporhoax/styles/theme.dart';
+import 'package:laporhoax/utils/navigation.dart';
 
 import 'detail_report_page.dart';
 
@@ -27,23 +27,27 @@ class OnSuccessReport extends StatelessWidget {
             children: [
               SvgPicture.asset('assets/icons/success.svg', width: 100),
               SizedBox(height: 30),
-              Text('Selamat !',
-                  style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 30,
-                      color: success)),
+              Text(
+                'Selamat !',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline4!
+                    .copyWith(color: success),
+              ),
               SizedBox(height: 10),
-              Text('Laporan berhasil dikirimkan',
-                  style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20,
-                      color: success)),
+              Text(
+                'Laporan berhasil dikirimkan',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6!
+                    .copyWith(color: success),
+              ),
               SizedBox(height: 15),
               Text(
-                  'Laporanmu akan segera diproses oleh ahli yang bersangkutan, jadi tunggu ya !',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w400, fontSize: 20)),
+                'Laporanmu akan segera diproses oleh ahli yang bersangkutan, jadi tunggu ya !',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline6,
+              ),
               SizedBox(height: 25),
               ElevatedButton(
                 onPressed: () => Navigation.intent(ReportPage.ROUTE_NAME),
@@ -53,11 +57,13 @@ class OnSuccessReport extends StatelessWidget {
               GestureDetector(
                 onTap: () => Navigation.intentWithData(
                     DetailReportPage.ROUTE_NAME, reportItem),
-                child: Text('Lihat laporan yang barusan',
-                    style: GoogleFonts.inter(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14,
-                        color: orangeBlaze)),
+                child: Text(
+                  'Lihat laporan yang barusan',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(color: orangeBlaze),
+                ),
               ),
             ],
           ),
@@ -80,21 +86,26 @@ class OnFailureReport extends StatelessWidget {
           children: [
             SvgPicture.asset('assets/icons/fail.svg', width: 100),
             SizedBox(height: 25),
-            Text('Oops...!',
-                style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 30,
-                    color: Colors.red)),
+            Text(
+              'Oops...!',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline4!
+                  .copyWith(color: failure),
+            ),
             SizedBox(height: 10),
-            Text('Sepertinya Ada Kesalahan',
-                style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
-                    color: Colors.red)),
+            Text(
+              'Sepertinya Ada Kesalahan',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline6!
+                  .copyWith(color: failure),
+            ),
             SizedBox(height: 15),
-            Text('Hmmm, sepertinya ada kesalahan. Ayo laporkan ulang !',
-                style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w400, fontSize: 12)),
+            Text(
+              'Hmmm, sepertinya ada kesalahan. Ayo laporkan ulang !',
+              style: Theme.of(context).textTheme.headline6,
+            ),
             SizedBox(height: 25),
             ElevatedButton(
               onPressed: () => Navigation.intent(ReportPage.ROUTE_NAME),

@@ -2,20 +2,20 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:laporhoax/common/exception.dart';
 import 'package:laporhoax/data/models/category_model.dart';
 import 'package:laporhoax/data/models/feed_model.dart';
 import 'package:laporhoax/data/models/feed_response.dart';
 import 'package:laporhoax/data/models/question_model.dart';
 import 'package:laporhoax/data/models/question_response.dart';
 import 'package:laporhoax/data/models/register_model.dart';
+import 'package:laporhoax/data/models/register_response.dart';
 import 'package:laporhoax/data/models/report_model.dart';
 import 'package:laporhoax/data/models/report_request.dart';
 import 'package:laporhoax/data/models/report_response.dart';
 import 'package:laporhoax/data/models/user_model.dart';
 import 'package:laporhoax/data/models/user_question_model.dart';
-import 'package:laporhoax/data/models/user_response.dart';
-import 'package:laporhoax/data/models/user_token.dart';
+import 'package:laporhoax/data/models/user_token_model.dart';
+import 'package:laporhoax/utils/exception.dart';
 
 abstract class RemoteDataSource {
   Future<String> deleteReport(String token, int id);
@@ -31,8 +31,8 @@ abstract class RemoteDataSource {
       String oldPass, String newPass, String token);
   Future postFcmToken(String user, String fcmToken);
   Future updateFcmToken(String user, String fcmToken);
-  Future<UserToken> postLogin(String username, String password);
-  Future<UserResponse> postRegister(RegisterModel user);
+  Future<UserTokenModel> postLogin(String username, String password);
+  Future<RegisterResponse> postRegister(RegisterModel user);
   Future<ReportModel> postReport(String token, ReportRequest report);
   Future<String> postChallenge(UserQuestionModel challenge);
 }
@@ -65,7 +65,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<UserToken> postLogin(String username, String password) async {
+  Future<UserTokenModel> postLogin(String username, String password) async {
     final response = await dio.post(
       '/$loginEndpoint/',
       options: Options(contentType: Headers.jsonContentType),
@@ -78,14 +78,14 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     );
 
     if (response.statusCode == 200) {
-      return UserToken.fromJson(response.data);
+      return UserTokenModel.fromJson(response.data);
     } else {
       throw ServerException();
     }
   }
 
   @override
-  Future<UserResponse> postRegister(RegisterModel user) async {
+  Future<RegisterResponse> postRegister(RegisterModel user) async {
     final response = await dio.post(
       '/$registerEndpoint/',
       options: Options(contentType: Headers.jsonContentType),
@@ -93,7 +93,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     );
 
     if (response.statusCode == 200) {
-      return UserResponse.fromJson(response.data);
+      return RegisterResponse.fromJson(response.data);
     } else {
       throw ServerException();
     }

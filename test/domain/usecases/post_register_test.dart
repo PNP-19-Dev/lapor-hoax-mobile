@@ -21,11 +21,11 @@ void main() {
           () async {
         // arrange
         when(mockRepository.postRegister(testRegister))
-            .thenAnswer((_) async => Right(testRegisterCallback));
+            .thenAnswer((_) async => Right(testRegisterData));
         // act
         final result = await usecase.execute(testRegister);
         // assert
-        expect(result, Right(testRegisterCallback));
+        expect(result, Right(testRegisterData));
       });
     });
   });

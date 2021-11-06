@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:laporhoax/util/static_data_web.dart';
+import 'package:laporhoax/presentation/pages/account/account_page.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class StaticPageViewer extends StatefulWidget {

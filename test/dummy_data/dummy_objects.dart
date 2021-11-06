@@ -5,25 +5,28 @@ import 'package:laporhoax/data/models/feed_table.dart';
 import 'package:laporhoax/data/models/question_model.dart';
 import 'package:laporhoax/data/models/question_table.dart';
 import 'package:laporhoax/data/models/register_model.dart';
+import 'package:laporhoax/data/models/register_response.dart';
 import 'package:laporhoax/data/models/report_model.dart';
 import 'package:laporhoax/data/models/user_model.dart';
 import 'package:laporhoax/data/models/user_question_model.dart';
-import 'package:laporhoax/data/models/user_response.dart';
-import 'package:laporhoax/data/models/user_token.dart';
+import 'package:laporhoax/data/models/user_token_model.dart';
 import 'package:laporhoax/domain/entities/category.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/domain/entities/question.dart';
+import 'package:laporhoax/domain/entities/register.dart';
+import 'package:laporhoax/domain/entities/register_data.dart';
 import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/domain/entities/user.dart';
 import 'package:laporhoax/domain/entities/user_question.dart';
+import 'package:laporhoax/domain/entities/user_token.dart';
 
 final testFeed = Feed(
   id: 26,
   title: "Libur Maulid Nabi 2021 Digeser: Tanggal dan Alasannya",
   content: "content",
   thumbnail:
-  "https://django-lapor-hoax.s3.amazonaws.com/feeds/1.jpeg?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=yXthBiGVfwxxC%2Flai%2FvL0PZAMz4%3D&Expires=1634826461",
+      "https://django-lapor-hoax.s3.amazonaws.com/feeds/1.jpeg?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=yXthBiGVfwxxC%2Flai%2FvL0PZAMz4%3D&Expires=1634826461",
   date: "2021-10-13T01:34:58.831621+07:00",
   view: 0,
   author: 1,
@@ -34,7 +37,7 @@ final testFeedModel = FeedModel(
   title: "Libur Maulid Nabi 2021 Digeser: Tanggal dan Alasannya",
   content: "content",
   thumbnail:
-  "https://django-lapor-hoax.s3.amazonaws.com/feeds/1.jpeg?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=yXthBiGVfwxxC%2Flai%2FvL0PZAMz4%3D&Expires=1634826461",
+      "https://django-lapor-hoax.s3.amazonaws.com/feeds/1.jpeg?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=yXthBiGVfwxxC%2Flai%2FvL0PZAMz4%3D&Expires=1634826461",
   date: "2021-10-13T01:34:58.831621+07:00",
   view: 0,
   author: 1,
@@ -47,7 +50,8 @@ final testFeedModelList = [testFeedModel];
 final testReportModel = ReportModel(
   id: 59,
   url: "www.aslihoax.com",
-  img: "https://django-lapor-hoax.s3.amazonaws.com/reports/Capture.PNG?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=6eGLu1R0U3qsyUf5sb%2B2up%2B9DzU%3D&Expires=1634827154",
+  img:
+      "https://django-lapor-hoax.s3.amazonaws.com/reports/Capture.PNG?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=6eGLu1R0U3qsyUf5sb%2B2up%2B9DzU%3D&Expires=1634827154",
   category: "Isu SARA",
   status: "Selesai",
   isAnonym: false,
@@ -64,7 +68,8 @@ final testReportModel = ReportModel(
 final testReport = Report(
   id: 59,
   url: "www.aslihoax.com",
-  img: "https://django-lapor-hoax.s3.amazonaws.com/reports/Capture.PNG?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=6eGLu1R0U3qsyUf5sb%2B2up%2B9DzU%3D&Expires=1634827154",
+  img:
+      "https://django-lapor-hoax.s3.amazonaws.com/reports/Capture.PNG?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=6eGLu1R0U3qsyUf5sb%2B2up%2B9DzU%3D&Expires=1634827154",
   category: "Isu SARA",
   status: "Selesai",
   isAnonym: false,
@@ -120,18 +125,34 @@ final testUserModel = UserModel(
   email: "email",
 );
 
+final testLoginModel = UserTokenModel(
+  token: "token",
+  expiry: "expiry",
+);
+
 final testLogin = UserToken(
   token: "token",
   expiry: "expiry",
 );
 
-final testRegister = RegisterModel(
+final testRegisterModel = RegisterModel(
   name: "name",
   email: "email",
   password: "password",
 );
 
-final testRegisterCallback = UserResponse(
+final testRegister = Register(
+  name: "name",
+  email: "email",
+  password: "password",
+);
+
+final testRegisterCallback = RegisterResponse(
+  user: testUserModel,
+  token: "token",
+);
+
+final testRegisterData = RegisterData(
   user: testUserModel,
   token: "token",
 );
@@ -164,7 +185,4 @@ final testQuestionTable = QuestionTable(id: 1, question: 'question');
 
 final testQuestionModel = QuestionModel(id: 1, question: 'question');
 
-final testQuestionMap = {
-  'id': 1,
-  'question': 'question',
-};
+final testQuestionMap = {'id': 1, 'question': 'question'};

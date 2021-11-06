@@ -5,7 +5,6 @@
 import 'dart:async' as _i5;
 
 import 'package:dartz/dartz.dart' as _i3;
-import 'package:laporhoax/common/failure.dart' as _i6;
 import 'package:laporhoax/data/models/report_request.dart' as _i9;
 import 'package:laporhoax/domain/entities/category.dart' as _i12;
 import 'package:laporhoax/domain/entities/report.dart' as _i7;
@@ -14,6 +13,7 @@ import 'package:laporhoax/domain/usecases/delete_report.dart' as _i10;
 import 'package:laporhoax/domain/usecases/get_categories.dart' as _i11;
 import 'package:laporhoax/domain/usecases/get_reports.dart' as _i4;
 import 'package:laporhoax/domain/usecases/post_report.dart' as _i8;
+import 'package:laporhoax/utils/failure.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
