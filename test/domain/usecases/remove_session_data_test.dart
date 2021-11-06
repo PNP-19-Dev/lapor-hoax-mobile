@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laporhoax/domain/usecases/remove_session_data.dart';
 import 'package:mockito/mockito.dart';
@@ -18,11 +17,11 @@ void main() {
   test("should remove user's session in repository", () async {
     // arrange
     when(mockRepository.removeSessionData(testSessionData))
-        .thenAnswer((_) async => Right('Anda Logout'));
+        .thenAnswer((_) async => 'Anda Logout');
     // act
     final result = await usecase.execute(testSessionData);
     // assert
     verify(mockRepository.removeSessionData(testSessionData));
-    expect(result, Right('Anda Logout'));
+    expect(result, 'Anda Logout');
   });
 }

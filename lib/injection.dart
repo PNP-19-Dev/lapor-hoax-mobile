@@ -154,6 +154,7 @@ void init() {
         HttpHeaders.acceptEncodingHeader: 'gzip, deflate, br'
       })
       ..options.baseUrl = RemoteDataSourceImpl.baseUrl
+      ..options.sendTimeout = 60 * 1000
       ..options.validateStatus = (int? status) => status != null && status > 0;
     // ..interceptors.add(LogInterceptor())
   });

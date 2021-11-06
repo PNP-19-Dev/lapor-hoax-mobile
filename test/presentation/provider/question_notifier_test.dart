@@ -44,6 +44,7 @@ void main() {
       // assert
       expect(provider.questionState, RequestState.Loaded);
       expect(provider.question, [testQuestion]);
+      expect(provider.questionMap, testQuestionToMap);
       expect(listenerCallCount, 2);
     });
 

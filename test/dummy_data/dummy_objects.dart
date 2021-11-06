@@ -153,7 +153,7 @@ final testRegisterCallback = RegisterResponse(
 );
 
 final testRegisterData = RegisterData(
-  user: testUserModel,
+  user: testUser,
   token: "token",
 );
 
@@ -186,3 +186,5 @@ final testQuestionTable = QuestionTable(id: 1, question: 'question');
 final testQuestionModel = QuestionModel(id: 1, question: 'question');
 
 final testQuestionMap = {'id': 1, 'question': 'question'};
+
+final testQuestionToMap = {1 : 'question'};

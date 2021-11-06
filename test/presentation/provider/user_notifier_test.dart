@@ -107,7 +107,7 @@ void main() {
     password: "password",
   );
 
-  final tUserResponse = RegisterData(user: testUserModel, token: tToken);
+  final tUserResponse = RegisterData(user: testUser, token: tToken);
 
   group('GetUser', () {
     test('should change user data when data is gotten successfully', () async {

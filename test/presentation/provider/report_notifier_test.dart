@@ -86,6 +86,18 @@ void main() {
     expect(listenerCallCount, 2);
   });
 
+  test('should change report data when data is gotten successfully, but empty', () async {
+    // arrange
+    when(mockGetReports.execute(tToken, tId))
+        .thenAnswer((_) async => Right([]));
+    // act
+    await provider.fetchReports(TokenId(tId, tToken));
+    // assert
+    expect(provider.fetchReportState, RequestState.Empty);
+    expect(provider.fetchReportMessage, "Tidak ada data laporan saat ini");
+    expect(listenerCallCount, 2);
+  });
+
   test('should return error when data is unsuccessful', () async {
     // arrange
     when(mockGetReports.execute(tToken, tId))
@@ -118,7 +130,7 @@ void main() {
     await provider.fetchCategories();
     // assert
     expect(provider.fetchCategoryState, RequestState.Error);
-    expect(provider.fetchReportMessage, "");
+    expect(provider.fetchCategoryMessage, "");
     expect(listenerCallCount, 2);
   });
 

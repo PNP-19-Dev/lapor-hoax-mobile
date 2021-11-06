@@ -116,6 +116,20 @@ void main() {
       verify(mockRemoveFeed.execute(testFeed));
     });
 
+    test('should give error callback when function error', () async {
+      // arrange
+      when(mockRemoveFeed.execute(testFeed))
+          .thenAnswer((_) async => Left(DatabaseFailure('Error')));
+      when(mockGetFeedSaveStatus.execute(testFeed.id))
+          .thenAnswer((_) async => true);
+      // act
+      await provider.deleteFeed(testFeed);
+      // assert
+      verify(mockRemoveFeed.execute(testFeed));
+      expect(provider.saveMessage, 'Error');
+    });
+
+
     test('should update feed bookmark list when function called', () async {
       // arrange
       when(mockSaveFeed.execute(testFeed))

@@ -9,23 +9,21 @@ class QuestionNotifier extends ChangeNotifier {
   final GetQuestions getQuestions;
   final GetUserChallenge getUserChallenge;
 
-  QuestionNotifier(
-      {required this.getQuestions, required this.getUserChallenge});
+  QuestionNotifier({
+    required this.getQuestions,
+    required this.getUserChallenge,
+  });
 
   Map<int, String> _questionMap = {};
-
   Map<int, String> get questionMap => _questionMap;
 
   List<Question> _questions = [];
-
   List<Question> get question => _questions;
 
   RequestState _questionState = RequestState.Empty;
-
   RequestState get questionState => _questionState;
 
   String _questionMessage = '';
-
   String get questionMessage => _questionMessage;
 
   Future<void> fetchQuestions() async {
@@ -55,15 +53,12 @@ class QuestionNotifier extends ChangeNotifier {
   }
 
   late UserQuestion _userQuestion;
-
   UserQuestion get userQuestion => _userQuestion;
 
   String _userQuestionMessage = '';
-
   String get userQuestionMessage => _userQuestionMessage;
 
   RequestState _userQuestionState = RequestState.Empty;
-
   RequestState get userQuestionState => _userQuestionState;
 
   Future<void> getUserSecurityQuestion(int id) async {

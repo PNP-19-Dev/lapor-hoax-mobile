@@ -21,9 +21,6 @@ class ReportNotifier extends ChangeNotifier {
 
   Report? get report => _report;
 
-  TokenId? _tokenId;
-  TokenId? get tokenId => _tokenId;
-
   List<Report> _reports = [];
 
   List<Report> get reports => _reports;
@@ -60,11 +57,12 @@ class ReportNotifier extends ChangeNotifier {
 
   String get deleteReportMessage => _deleteReportMessage;
 
-  ReportNotifier(
-      {required this.getReports,
-        required this.postReport,
-        required this.deleteReport,
-        required this.getCategories});
+  ReportNotifier({
+    required this.getReports,
+    required this.postReport,
+    required this.deleteReport,
+    required this.getCategories,
+  });
 
   final GetReports getReports;
   final PostReport postReport;
@@ -72,7 +70,6 @@ class ReportNotifier extends ChangeNotifier {
   final GetCategories getCategories;
 
   Future<void> fetchReports(TokenId tokenId) async {
-    _tokenId = tokenId;
     _fetchReportState = RequestState.Loading;
     notifyListeners();
 
@@ -83,13 +80,13 @@ class ReportNotifier extends ChangeNotifier {
       _fetchReportMessage = failure.message;
       notifyListeners();
     }, (reportData) {
-      _fetchReportState = RequestState.Loaded;
-      _reports = reportData;
-      notifyListeners();
-
-      if (_reports.length == 0) {
+      if (reportData.isEmpty) {
         _fetchReportState = RequestState.Empty;
         _fetchReportMessage = "Tidak ada data laporan saat ini";
+        notifyListeners();
+      } else {
+        _fetchReportState = RequestState.Loaded;
+        _reports = reportData;
         notifyListeners();
       }
     });
@@ -135,7 +132,7 @@ class ReportNotifier extends ChangeNotifier {
     _deleteReportState = RequestState.Loading;
     notifyListeners();
 
-    if (status.toLowerCase() != 'belum diproses'){
+    if (status.toLowerCase() != 'belum diproses') {
       return false;
     }
 

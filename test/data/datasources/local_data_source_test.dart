@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laporhoax/data/datasources/local_data_source.dart';
+import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/utils/exception.dart';
 import 'package:mockito/mockito.dart';
 
@@ -171,6 +172,44 @@ void main() {
       final call = dataSource.getCachedQuestion();
       // assert
       expect(() => call, throwsA(isA<CacheException>()));
+    });
+  });
+
+  group('Get Session', (){
+    final data = SessionData(
+        token: 'token',
+        userid: 1,
+        expiry: 'expiry',
+        email: 'email',
+        username: 'username',
+    );
+
+    test('should return a valid session data when login is true', () async {
+      // arrange
+      when(mockPreferencesHelper.isLogin).thenAnswer((_) async => true);
+      when(mockPreferencesHelper.id).thenAnswer((_) async => 1);
+      when(mockPreferencesHelper.token).thenAnswer((_) async => 'token');
+      when(mockPreferencesHelper.expireDate).thenAnswer((_) async => 'expiry');
+      when(mockPreferencesHelper.email).thenAnswer((_) async => 'email');
+      when(mockPreferencesHelper.username).thenAnswer((_) async => 'username');
+      // act
+      final result = await dataSource.getSession();
+      // assert
+      expect(result.runtimeType, data.runtimeType);
+    });
+
+    test('should return a null when login is false', () async {
+      // arrange
+      when(mockPreferencesHelper.isLogin).thenAnswer((_) async => false);
+      when(mockPreferencesHelper.id).thenAnswer((_) async => 1);
+      when(mockPreferencesHelper.token).thenAnswer((_) async => 'token');
+      when(mockPreferencesHelper.expireDate).thenAnswer((_) async => 'expiry');
+      when(mockPreferencesHelper.email).thenAnswer((_) async => 'email');
+      when(mockPreferencesHelper.username).thenAnswer((_) async => 'username');
+      // act
+      final result = await dataSource.getSession();
+      // assert
+      expect(result, null);
     });
   });
 }
