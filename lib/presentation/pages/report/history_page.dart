@@ -43,39 +43,43 @@ class _HistoryPageState extends State<HistoryPage> {
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
         final report = reports[index];
-        return Slidable(
-          key: Key(report.id.toString()),
-          direction: Axis.horizontal,
-          dismissal: SlidableDismissal(
-            child: SlidableDrawerDismissal(),
-            onDismissed: (actionType) async {
-              setState((){
-                // remove item pada report
-                if (provider.postReportState == RequestState.Success) {
-                  _showSnackBar(context, provider.deleteReportMessage);
-                  reports.removeAt(index);
-                } else {
-                  _showSnackBar(context, provider.deleteReportMessage);
-                }
-              });
-            },
-            onWillDismiss: (actionType) {
-              return provider.removeReport(widget.tokenId.token, report.id, report.status!);
-            },
-          ),
-          actionPane: SlidableBehindActionPane(),
-          actionExtentRatio: 0.25,
-          child: ReportListItem(report: report),
-          secondaryActions: [
-            IconSlideAction(
-              caption: 'Hapus',
-              color: Colors.red,
-              icon: Icons.delete,
-              onTap: () {
-                _showSnackBar(context, "Geser untuk ke kiri menghapus");
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          elevation: 4,
+          child: Slidable(
+            key: Key(report.id.toString()),
+            direction: Axis.horizontal,
+            dismissal: SlidableDismissal(
+              child: SlidableDrawerDismissal(),
+              onDismissed: (actionType) async {
+                setState((){
+                  // remove item pada report
+                  if (provider.postReportState == RequestState.Success) {
+                    _showSnackBar(context, provider.deleteReportMessage);
+                    reports.removeAt(index);
+                  } else {
+                    _showSnackBar(context, provider.deleteReportMessage);
+                  }
+                });
+              },
+              onWillDismiss: (actionType) {
+                return provider.removeReport(widget.tokenId.token, report.id, report.status!);
               },
             ),
-          ],
+            actionPane: SlidableBehindActionPane(),
+            actionExtentRatio: 0.25,
+            child: ReportListItem(report: report),
+            secondaryActions: [
+              IconSlideAction(
+                caption: 'Hapus',
+                color: Colors.red,
+                icon: Icons.delete,
+                onTap: () {
+                  _showSnackBar(context, "Geser untuk ke kiri menghapus");
+                },
+              ),
+            ],
+          ),
         );
       },
     );
