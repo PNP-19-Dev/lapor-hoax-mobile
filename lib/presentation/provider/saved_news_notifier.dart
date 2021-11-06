@@ -32,16 +32,15 @@ class SavedNewsNotifier extends ChangeNotifier {
         notifyListeners();
       },
       (feedData) {
-        _feedListState = RequestState.Loaded;
-        _saveListFeeds = feedData;
-
         if (feedData.isEmpty) {
           _feedListState = RequestState.Empty;
           _message = "Kamu belum menyimpan berita apapun!";
           notifyListeners();
+        } else {
+          _feedListState = RequestState.Loaded;
+          _saveListFeeds = feedData;
+          notifyListeners();
         }
-
-        notifyListeners();
       },
     );
   }

@@ -1,6 +1,6 @@
-import 'package:equatable/equatable.dart';
 
-class Register extends Equatable {
+
+class Register {
   final String name;
   final String email;
   final String password;
@@ -10,7 +10,4 @@ class Register extends Equatable {
     required this.email,
     required this.password,
   });
-
-  @override
-  List<Object?> get props => [name, email, password];
 }

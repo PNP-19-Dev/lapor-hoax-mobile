@@ -40,6 +40,18 @@ void main() {
     expect(listenerCallCount, 2);
   });
 
+  test('should change empty data when data is gotten successfully', () async {
+    // arrange
+    when(mockGetSavedFeeds.execute())
+        .thenAnswer((_) async => Right([]));
+    // act
+    await provider.fetchSavedFeeds();
+    // assert
+    expect(provider.feedListState, RequestState.Empty);
+    expect(provider.message, "Kamu belum menyimpan berita apapun!");
+    expect(listenerCallCount, 2);
+  });
+
   test('should return error when data is unsuccessful', () async {
     // arrange
     when(mockGetSavedFeeds.execute())

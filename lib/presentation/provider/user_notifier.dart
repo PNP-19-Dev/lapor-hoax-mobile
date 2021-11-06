@@ -87,14 +87,9 @@ class UserNotifier extends ChangeNotifier {
   }
 
   Future<void> logout(SessionData data) async {
-    final result = await removeSessionData.execute(data);
-
-    result.fold((failure) {
-      _sessionMessage = failure.message;
-    }, (session) {
-      _sessionMessage = messageLogout;
-      notifyListeners();
-    });
+    await removeSessionData.execute(data);
+    _sessionMessage = messageLogout;
+    notifyListeners();
   }
 
   RequestState _fcmState = RequestState.Empty;
@@ -135,7 +130,6 @@ class UserNotifier extends ChangeNotifier {
       notifyListeners();
     });
   }
-
 
   User? _user;
   User? get user => _user;
@@ -229,7 +223,6 @@ class UserNotifier extends ChangeNotifier {
 
   static const String messageReset = 'RESETED';
   String _resetMessage = '';
-
   String get resetMessage => _resetMessage;
 
   Future<void> reset(String email) async {
