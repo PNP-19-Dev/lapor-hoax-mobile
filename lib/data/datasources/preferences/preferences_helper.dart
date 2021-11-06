@@ -19,13 +19,17 @@ class PreferencesHelper {
   static const EMAIL = 'EMAIL';
   static const USERNAME = 'USERNAME';
 
+  String? _expire;
+
   Future<String> get expireDate async {
     final prefs = await sharedPreferences;
+    _expire = prefs.getString(EXPIRE) ?? '';
     return prefs.getString(EXPIRE) ?? '';
   }
 
   void setExpire(String? value) async {
     final prefs = await sharedPreferences;
+    _expire = value;
     prefs.setString(EXPIRE, value ?? '');
   }
 
@@ -71,15 +75,14 @@ class PreferencesHelper {
 
   Future<bool> get isLogin async {
     final prefs = await sharedPreferences;
-    final session = prefs.getString(EXPIRE) ?? '';
-    if (session.isNotEmpty &&
-        DateTime.now()
-            .toUtc()
-            .isAfter(DateTimeHelper.formattedDateToken(session)))
-    {
-      setExpire(null);
-      setLogin(false);
-      return false;
+    if (_expire != null) {
+      if (_expire!.length != 0 &&
+          DateTime.now().isAfter(DateTimeHelper.formattedDateToken(_expire!))) {
+        setExpire(null);
+        setLogin(false);
+        return false;
+      }
+      return prefs.getBool(LOGIN) ?? false;
     }
     return prefs.getBool(LOGIN) ?? false;
   }

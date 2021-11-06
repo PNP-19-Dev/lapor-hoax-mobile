@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                             hintText: 'Email',
                             icon:
-                                Icon(Icons.person_outline, color: orangeBlaze),
+                            Icon(Icons.person_outline, color: orangeBlaze),
                           ),
                           validator: (value) {
                             if (value!.trim().isEmpty) {
@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                             hintText: 'Kata Sandi',
                             icon:
-                                Icon(FontAwesomeIcons.key, color: orangeBlaze),
+                            Icon(FontAwesomeIcons.key, color: orangeBlaze),
                             suffixIcon: IconButton(
                               icon: Icon(_obscureText
                                   ? FontAwesomeIcons.eyeSlash
@@ -150,20 +150,20 @@ class _LoginPageState extends State<LoginPage> {
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
                                     var username =
-                                        _usernameController.text.toString();
+                                    _usernameController.text.toString();
                                     var password =
-                                        _passwordController.text.toString();
+                                    _passwordController.text.toString();
 
                                     final progress = ProgressHUD.of(context);
                                     progress?.showWithText('Loading...');
 
                                     await Provider.of<UserNotifier>(context,
-                                            listen: false)
+                                        listen: false)
                                         .login(username, password);
 
                                     final message = Provider.of<UserNotifier>(
-                                            context,
-                                            listen: false)
+                                        context,
+                                        listen: false)
                                         .loginMessage;
 
                                     /*TODO UPDATE THE FCM TOKEN
@@ -171,11 +171,9 @@ class _LoginPageState extends State<LoginPage> {
                                             context,
                                             listen: false)
                                         .user;
-
                                     String? token = await FirebaseMessaging
                                         .instance
                                         .getToken();
-
                                     if (token != null) {
                                       await Provider.of<UserNotifier>(context,
                                               listen: false)
