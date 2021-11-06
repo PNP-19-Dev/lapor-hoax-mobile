@@ -308,7 +308,7 @@ class _ReportPageState extends State<ReportPage> {
                                   .sessionData;
 
                               if (data != null) {
-                                if (_formKey.currentState!.validate()) {
+                                if (_formKey.currentState!.validate() && _image != null) {
                                   int id = data.userid;
                                   String url = _urlController.text.toString();
                                   String desc = _descController.text.length == 0
