@@ -91,9 +91,7 @@ class _ReportPageState extends State<ReportPage> {
             lockAspectRatio: false),
         compressQuality: 80,
       );
-
       print('path : ${fileImage!.path}');
-
       setState(() {
         filename = fileImage.path.trim().split('/').last;
         this._image = XFile(fileImage.path, name: filename);
@@ -160,7 +158,7 @@ class _ReportPageState extends State<ReportPage> {
                   ),
                   Container(
                     padding:
-                        const EdgeInsets.only(top: 30, left: 15, right: 15),
+                    const EdgeInsets.only(top: 30, left: 15, right: 15),
                     child: Center(
                       child: Text(
                         'Buat Laporan',
@@ -222,7 +220,7 @@ class _ReportPageState extends State<ReportPage> {
                           decoration: InputDecoration(
                               labelText: 'URL / Link (optional)',
                               icon:
-                                  SvgPicture.asset('assets/icons/link_on.svg'),
+                              SvgPicture.asset('assets/icons/link_on.svg'),
                               labelStyle: TextStyle(
                                 color: _linkFocusNode.hasFocus
                                     ? orangeBlaze
@@ -243,12 +241,12 @@ class _ReportPageState extends State<ReportPage> {
                               ),
                               hint: Consumer<ReportNotifier>(
                                   builder: (_, data, child) {
-                                if (data.category.isEmpty) {
-                                  return Text('Mengambil data');
-                                } else {
-                                  return Text('Category');
-                                }
-                              }),
+                                    if (data.category.isEmpty) {
+                                      return Text('Mengambil data');
+                                    } else {
+                                      return Text('Category');
+                                    }
+                                  }),
                               value: _selectedCategory,
                               items: _categories.map((value) {
                                 return DropdownMenuItem<String>(
@@ -304,7 +302,7 @@ class _ReportPageState extends State<ReportPage> {
                           child: ElevatedButton(
                             onPressed: () async {
                               var data = Provider.of<UserNotifier>(context,
-                                      listen: false)
+                                  listen: false)
                                   .sessionData;
 
                               if (data != null) {
@@ -336,18 +334,18 @@ class _ReportPageState extends State<ReportPage> {
                                   ).sendReport(data.token, report);
 
                                   final state = Provider.of<ReportNotifier>(
-                                          context,
-                                          listen: false)
+                                      context,
+                                      listen: false)
                                       .postReportState;
 
                                   final message = Provider.of<ReportNotifier>(
-                                          context,
-                                          listen: false)
+                                      context,
+                                      listen: false)
                                       .postReportMessage;
 
                                   final result = Provider.of<ReportNotifier>(
-                                          context,
-                                          listen: false)
+                                      context,
+                                      listen: false)
                                       .report;
 
                                   if (state == RequestState.Success) {

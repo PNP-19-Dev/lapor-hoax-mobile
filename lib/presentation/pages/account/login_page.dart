@@ -1,15 +1,13 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:laporhoax/common/navigation.dart';
-import 'package:laporhoax/common/theme.dart';
 import 'package:laporhoax/presentation/pages/account/forgot_password_page.dart';
 import 'package:laporhoax/presentation/pages/account/register_page.dart';
 import 'package:laporhoax/presentation/pages/home_page.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
+import 'package:laporhoax/styles/colors.dart';
+import 'package:laporhoax/utils/navigation.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -70,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                             hintText: 'Email',
                             icon:
-                                Icon(Icons.person_outline, color: orangeBlaze),
+                            Icon(Icons.person_outline, color: orangeBlaze),
                           ),
                           validator: (value) {
                             if (value!.trim().isEmpty) {
@@ -93,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                             hintText: 'Kata Sandi',
                             icon:
-                                Icon(FontAwesomeIcons.key, color: orangeBlaze),
+                            Icon(FontAwesomeIcons.key, color: orangeBlaze),
                             suffixIcon: IconButton(
                               icon: Icon(_obscureText
                                   ? FontAwesomeIcons.eyeSlash
@@ -122,10 +120,10 @@ class _LoginPageState extends State<LoginPage> {
                             },
                             child: Container(
                               child: Text('Lupa Password ?',
-                                  style: GoogleFonts.inter(
-                                      color: orangeBlaze,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle2!
+                                      .copyWith(color: orangeBlaze),
                                   textAlign: TextAlign.end),
                             ),
                           ),
@@ -152,37 +150,35 @@ class _LoginPageState extends State<LoginPage> {
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
                                     var username =
-                                        _usernameController.text.toString();
+                                    _usernameController.text.toString();
                                     var password =
-                                        _passwordController.text.toString();
+                                    _passwordController.text.toString();
 
                                     final progress = ProgressHUD.of(context);
                                     progress?.showWithText('Loading...');
 
                                     await Provider.of<UserNotifier>(context,
-                                            listen: false)
+                                        listen: false)
                                         .login(username, password);
 
                                     final message = Provider.of<UserNotifier>(
-                                            context,
-                                            listen: false)
+                                        context,
+                                        listen: false)
                                         .loginMessage;
+
+                                    /*TODO UPDATE THE FCM TOKEN
                                     final data = Provider.of<UserNotifier>(
                                             context,
                                             listen: false)
                                         .user;
-
-/*
                                     String? token = await FirebaseMessaging
                                         .instance
                                         .getToken();
-
-                                    if (token != null){
-                                      await Provider.of<UserNotifier>(
-                                          context,
-                                          listen: false).putToken(data!.id, token);
-                                    }
-*/
+                                    if (token != null) {
+                                      await Provider.of<UserNotifier>(context,
+                                              listen: false)
+                                          .putToken(data!.id, token);
+                                    }*/
 
                                     if (message == UserNotifier.messageLogin) {
                                       progress?.dismiss();
