@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
-import 'package:laporhoax/presentation/pages/account/tutorial_page.dart';
 import 'package:laporhoax/presentation/pages/report/report_page.dart';
+import 'package:laporhoax/presentation/pages/static/tutorial_page.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
 import 'package:laporhoax/styles/colors.dart';
 import 'package:laporhoax/utils/datetime_helper.dart';
@@ -35,96 +35,24 @@ class _NewsPageState extends State<NewsPage> {
         SliverAppBar(
           title: Text(
             'LAPOR HOAX',
-            style: Theme.of(context)
-                .textTheme
-                .headline5!,
+            style: Theme.of(context).textTheme.headline5!,
           ),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Image.asset('assets/icons/logo_new.png', width: 60),
           ),
-          actions: [
-            /*IconButton(
+/*          actions: [
+            IconButton(
               onPressed: () {},
               icon: Icon(
                 Icons.notifications_none,
                 color: orangeBlaze,
               ),
-            ),*/
-          ],
+            ),
+          ],*/
         ),
         SliverToBoxAdapter(
-          child: Container(
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
-            child: Card(
-              borderOnForeground: true,
-              color: orange200,
-              child: Container(
-                width: double.infinity,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Udah nemuin \nHoax?',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(color: Colors.black),
-                        ),
-                        ElevatedButton(
-                          onPressed: () =>
-                              Navigation.intent(ReportPage.ROUTE_NAME),
-                          child: Text(
-                            'Lapor yuk!',
-                            style: Theme.of(context)
-                                .textTheme
-                                .button!
-                                .copyWith(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SvgPicture.asset(
-                      'assets/illustration/reporting_illust.svg',
-                      width: 120,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Card(
-              elevation: 4,
-              clipBehavior: Clip.hardEdge,
-              child: ListTile(
-                onTap: () => Navigation.intent(TutorialPage.ROUTE_NAME),
-                leading: Icon(Icons.menu_book_sharp),
-                title: Text(
-                  'Tutorial Penggunaan',
-                  style: Theme.of(context).textTheme.subtitle2,
-                ),
-                trailing: Icon(Icons.chevron_right),
-              ),
-            ),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              'Berita',
-              style: Theme.of(context).textTheme.headline6,
-            ),
-          ),
+          child: _BannerCard(),
         ),
         Consumer<FeedNotifier>(
           builder: (context, data, child) {
@@ -138,7 +66,7 @@ class _NewsPageState extends State<NewsPage> {
                 ),
               );
             } else if (state == RequestState.Loaded) {
-              return FeedList(data.feeds);
+              return _FeedList(data.feeds);
             } else {
               return SliverList(
                 delegate: SliverChildListDelegate([
@@ -162,10 +90,10 @@ class _NewsPageState extends State<NewsPage> {
   }
 }
 
-class FeedList extends StatelessWidget {
+class _FeedList extends StatelessWidget {
   final List<Feed> feeds;
 
-  FeedList(this.feeds);
+  _FeedList(this.feeds);
 
   @override
   Widget build(BuildContext context) {
@@ -264,6 +192,85 @@ class FeedList extends StatelessWidget {
         },
         childCount: feeds.length,
       ),
+    );
+  }
+}
+
+class _BannerCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding:
+          const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+          child: Card(
+            borderOnForeground: true,
+            color: orange200,
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 16, vertical: 18),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Udah nemuin \nHoax?',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6!
+                            .copyWith(color: Colors.black),
+                      ),
+                      ElevatedButton(
+                        onPressed: () =>
+                            Navigation.intent(ReportPage.ROUTE_NAME),
+                        child: Text(
+                          'Lapor yuk!',
+                          style: Theme.of(context)
+                              .textTheme
+                              .button!
+                              .copyWith(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SvgPicture.asset(
+                    'assets/illustration/reporting_illust.svg',
+                    width: 120,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          child: Card(
+            elevation: 4,
+            clipBehavior: Clip.hardEdge,
+            child: ListTile(
+              onTap: () => Navigation.intent(TutorialPage.ROUTE_NAME),
+              leading: Icon(Icons.menu_book_sharp),
+              title: Text(
+                'Tutorial Penggunaan',
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+              trailing: Icon(Icons.chevron_right),
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            'Berita',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+        ),
+      ],
     );
   }
 }

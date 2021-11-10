@@ -64,6 +64,8 @@ dependencies:
     git:
       url: https://github.com/chornthorn/data_connection_checker.git
       ref: master
+  flutter_bloc: ^7.3.3
+  firebase_crashlytics: ^2.3.0
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +73,7 @@ dev_dependencies:
   flutter_lints: ^1.0.4
   mockito: ^5.0.16
   build_runner: ^2.1.1
+  bloc_test: ^8.5.0
   flutter_app_name: ^0.1.0
   flutter_native_splash: ^1.1.8+4
   flutter_launcher_icons: ^0.9.2

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:laporhoax/utils/navigation.dart';
 import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/presentation/pages/home_page.dart';
 import 'package:laporhoax/presentation/pages/news/saved_news.dart';
 import 'package:laporhoax/presentation/pages/report/history_page.dart';
+import 'package:laporhoax/presentation/pages/static/about_page.dart';
+import 'package:laporhoax/presentation/pages/static/static_page_viewer.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
-import 'package:laporhoax/utils/static_page_viewer.dart';
+import 'package:laporhoax/utils/navigation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -52,9 +53,9 @@ class _AccountPageState extends State<AccountPage> {
                 if (provider.isLoggedIn) {
                   return onLogin(provider.sessionData!);
                 } else
-                  return onWelcome();
+                  return _OnWelCome();
               } else {
-                return onWelcome();
+                return _OnWelCome();
               }
             },
           ),
@@ -63,11 +64,10 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  void about(){
+  void about() {
     showAboutDialog(
       context: context,
-      applicationIcon:
-      Image.asset('assets/icons/logo_new.png', width: 50),
+      applicationIcon: Image.asset('assets/icons/logo_new.png', width: 50),
       applicationName: 'LAPOR HOAX',
       applicationVersion: _version,
       children: [
@@ -191,53 +191,42 @@ class _AccountPageState extends State<AccountPage> {
           ),
         ),
         SizedBox(height: 20),
-        Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () => Navigation.intentWithData(
-                StaticPageViewer.ROUTE_NAME,
-                StaticDataWeb(
-                  fileName: 'terms_of_service',
-                  title: 'Syarat Penggunaan',
-                ),
-              ),
-              child: Container(
-                child: Text(
-                  'Syarat Penggunaan',
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-            ),
-            Text(' | '),
-            GestureDetector(
-              onTap: () => Navigation.intentWithData(
-                StaticPageViewer.ROUTE_NAME,
-                StaticDataWeb(
-                  fileName: 'privacy_policy',
-                  title: 'Kebijakan Privasi',
-                ),
-              ),
-              child: Container(
-                child: Text(
-                  'Kebijakan Privasi',
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+        _Footer(),
       ],
     );
   }
+}
 
-  Widget onWelcome() {
+class _BuildCard extends StatelessWidget {
+  final IconData icon;
+  final String name;
+  final Function() onTap;
+
+  _BuildCard(this.icon, this.name, this.onTap);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+
+      elevation: 4,
+      child: ListTile(
+        leading: Icon(icon),
+        title: Text(
+          name,
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        trailing: Icon(Icons.chevron_right),
+        onTap: onTap,
+      ),
+    );
+  }
+}
+
+class _OnWelCome extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         Center(
@@ -248,7 +237,17 @@ class _AccountPageState extends State<AccountPage> {
                 height: 80,
                 width: 80,
               ),
-              SizedBox(height: 46),
+              SizedBox(height: 20),
+              Text(
+                'Kamu Belum Login !',
+                style: Theme.of(context).textTheme.headline5,
+              ),
+              SizedBox(height: 5),
+              Text(
+                'Silahkan login untuk mengakses semua fitur dari aplikasi LAPOR HOAX ',
+                style: Theme.of(context).textTheme.bodyText2,
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
         ),
@@ -263,77 +262,62 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ),
         ),
-        SizedBox(height: 20),
-        Card(
-          elevation: 4,
-          child: ListTile(
-            leading: Icon(Icons.info_outline),
-            title: Text('Tentang Laporhoax'),
-            trailing: Icon(Icons.chevron_right),
-            onTap: () => about(),
-          ),
+        Divider(thickness: 2, indent: 30, endIndent: 30),
+        SizedBox(height: 30),
+        _BuildCard(
+          Icons.info_outline,
+          'Tentang LaporHoax',
+          () => Navigator.pushNamed(context, About.routeName),
         ),
-        Card(
-          elevation: 4,
-          child: ListTile(
-            leading: Icon(Icons.bookmark_outline),
-            title: Text('Berita Tersimpan'),
-            trailing: Icon(Icons.chevron_right),
-            onTap: () => Navigation.intent(SavedNews.ROUTE_NAME),
-          ),
-        ),
-        Card(
-          elevation: 4,
-          child: ListTile(
-            leading: Icon(Icons.share_rounded),
-            title: Text('Bagikan LaporHoax'),
-            trailing: Icon(Icons.chevron_right),
-            onTap: () => Share.share(
-                'Ayo berantas hoaks bersama LaporHoax! di https://s.id/LAPORHOAX'),
-          ),
+        _BuildCard(
+          Icons.share_rounded,
+          'Bagikan LaporHoax',
+          () => Share.share(
+              'Ayo berantas hoaks bersama LaporHoax! di https://s.id/LAPORHOAX'),
         ),
         SizedBox(height: 20),
-        Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () => Navigation.intentWithData(
-                StaticPageViewer.ROUTE_NAME,
-                StaticDataWeb(
-                  fileName: 'terms_of_service',
-                  title: 'Syarat Penggunaan',
-                ),
-              ),
-              child: Container(
-                child: Text(
-                  'Syarat Penggunaan',
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
+        _Footer(),
+      ],
+    );
+  }
+}
+
+class _Footer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: () => Navigation.intentWithData(
+            StaticPageViewer.ROUTE_NAME,
+            StaticDataWeb(
+              fileName: 'terms_of_service',
+              title: 'Syarat Penggunaan',
             ),
-            Text(' | '),
-            GestureDetector(
-              onTap: () => Navigation.intentWithData(
-                StaticPageViewer.ROUTE_NAME,
-                StaticDataWeb(
-                  fileName: 'privacy_policy',
-                  title: 'Kebijakan Privasi',
-                ),
-              ),
-              child: Container(
-                child: Text(
-                  'Kebijakan Privasi',
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
+          ),
+          child: Container(
+            child: Text(
+              'Syarat Penggunaan',
+              style: Theme.of(context).textTheme.bodyText2,
             ),
-          ],
+          ),
+        ),
+        Text(' | ', style: Theme.of(context).textTheme.bodyText1),
+        GestureDetector(
+          onTap: () => Navigation.intentWithData(
+            StaticPageViewer.ROUTE_NAME,
+            StaticDataWeb(
+              fileName: 'privacy_policy',
+              title: 'Kebijakan Privasi',
+            ),
+          ),
+          child: Container(
+            child: Text(
+              'Kebijakan Privasi',
+              style: Theme.of(context).textTheme.bodyText2,
+            ),
+          ),
         ),
       ],
     );
@@ -346,4 +330,3 @@ class StaticDataWeb {
 
   StaticDataWeb({required this.fileName, required this.title});
 }
-

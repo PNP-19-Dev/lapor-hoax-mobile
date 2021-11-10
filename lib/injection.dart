@@ -29,10 +29,12 @@ import 'package:laporhoax/domain/usecases/post_user_challenge.dart';
 import 'package:laporhoax/domain/usecases/remove_session_data.dart';
 import 'package:laporhoax/domain/usecases/save_feed.dart';
 import 'package:laporhoax/domain/usecases/save_session_data.dart';
+import 'package:laporhoax/presentation/provider/about_cubit.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
 import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
 import 'package:laporhoax/presentation/provider/question_notifier.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
+import 'package:laporhoax/presentation/provider/saved_feed_cubit.dart';
 import 'package:laporhoax/presentation/provider/saved_news_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/utils/network_info_impl.dart';
@@ -87,8 +89,13 @@ void init() {
       getFeedDetail: locator(),
     ),
   );
+
+  // bloc
   locator.registerFactory(
-    () => SavedNewsNotifier(getSavedFeeds: locator()),
+    () => AboutCubit(),
+  );
+  locator.registerFactory(
+        () => SavedFeedCubit(locator()),
   );
 
   // use case
