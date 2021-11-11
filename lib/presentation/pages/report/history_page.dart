@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/report.dart';
-import 'package:laporhoax/presentation/provider/report_notifier.dart';
+import 'package:laporhoax/presentation/provider/history_cubit.dart';
 import 'package:laporhoax/presentation/widget/report_list_item.dart';
 import 'package:laporhoax/utils/navigation.dart';
-import 'package:laporhoax/utils/state_enum.dart';
 import 'package:provider/provider.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -23,10 +23,7 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-          () => Provider.of<ReportNotifier>(context, listen: false)
-        ..fetchReports(widget.tokenId),
-    );
+    context.read<HistoryCubit>().getHistory(widget.tokenId);
   }
 
   void _showSnackBar(BuildContext context, String text) {
@@ -35,66 +32,70 @@ class _HistoryPageState extends State<HistoryPage> {
       ..showSnackBar(SnackBar(content: Text(text)));
   }
 
-  Widget _getSlidable(BuildContext context, List<Report> reports) {
-    var provider = Provider.of<ReportNotifier>(context, listen: false);
-    return ListView.builder(
-      itemCount: reports.length,
-      shrinkWrap: true,
-      scrollDirection: Axis.vertical,
-      itemBuilder: (context, index) {
-        final report = reports[index];
-        return Card(
-          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          elevation: 4,
-          child: Slidable(
-            key: Key(report.id.toString()),
-            direction: Axis.horizontal,
-            dismissal: SlidableDismissal(
-              child: SlidableDrawerDismissal(),
-              onDismissed: (actionType) async {
-                setState((){
-                  // remove item pada report
-                  if (provider.postReportState == RequestState.Success) {
-                    _showSnackBar(context, provider.deleteReportMessage);
-                    reports.removeAt(index);
-                  } else {
-                    _showSnackBar(context, provider.deleteReportMessage);
-                  }
-                });
-              },
-              onWillDismiss: (actionType) {
-                return provider.removeReport(widget.tokenId.token, report.id, report.status!);
-              },
-            ),
-            actionPane: SlidableBehindActionPane(),
-            actionExtentRatio: 0.25,
-            child: ReportListItem(report: report),
-            secondaryActions: [
-              IconSlideAction(
-                caption: 'Hapus',
-                color: Colors.red,
-                icon: Icons.delete,
-                onTap: () {
-                  _showSnackBar(context, "Geser untuk ke kiri menghapus");
-                },
-              ),
-            ],
+  Widget _getSlidable(BuildContext context, Report report) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      elevation: 4,
+      child: Slidable(
+        key: Key(report.id.toString()),
+        direction: Axis.horizontal,
+        dismissal: SlidableDismissal(
+          child: SlidableDrawerDismissal(),
+          onDismissed: (actionType) async {
+            setState(() {
+              // remove item pada report
+              context.read<HistoryCubit>().removeReport(widget.tokenId, report.status!);
+            });
+          },
+          onWillDismiss: (actionType) {
+            return context.read<HistoryCubit>().removeReport(widget.tokenId, report.status!);
+          },
+        ),
+        actionPane: SlidableBehindActionPane(),
+        actionExtentRatio: 0.25,
+        child: ReportListItem(report: report),
+        secondaryActions: [
+          IconSlideAction(
+            caption: 'Hapus',
+            color: Colors.red,
+            icon: Icons.delete,
+            onTap: () {
+              _showSnackBar(context, "Geser untuk ke kiri menghapus");
+            },
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 
   Widget _buildReportItem() {
-    return Consumer<ReportNotifier>(builder: (context, provider, widget) {
-      if (provider.fetchReportState == RequestState.Loading) {
-        return Center(child: CircularProgressIndicator());
-      } else if (provider.fetchReportState == RequestState.Loaded) {
-        var reports = provider.reports;
-        return _getSlidable(context, reports);
-      } else if (provider.fetchReportState == RequestState.Empty) {
-        return Center(child: Text(provider.fetchReportMessage));
-      } else {
+    var reports = <Report>[];
+    return BlocConsumer<HistoryCubit, HistoryState>(listener: (context, state) {
+      if (state is HistoryDeleteSomeData){
+        reports = state.reports;
+        _showSnackBar(context, state.message);
+      }
+
+    }, builder: (_, state) {
+      print(state);
+      if (state is HistoryLoading) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (state is HistoryHasData) {
+        reports = state.reports;
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            return ListView.builder(
+              itemCount: reports.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, index) {
+                final report = reports[index];
+                return _getSlidable(context, report);
+              },
+            );
+          },
+        );
+      } else if (state is HistoryError) {
         return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -106,12 +107,14 @@ class _HistoryPageState extends State<HistoryPage> {
                 color: Color(0xFFBDBDBD),
               ),
               Text(
-                'Terjadi masalah ${provider.fetchReportMessage}',
+                'Terjadi masalah ${state.message}',
                 style: Theme.of(context).textTheme.bodyText2,
               ),
             ],
           ),
         );
+      } else {
+        return Container();
       }
     });
   }

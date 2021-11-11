@@ -31,11 +31,12 @@ import 'package:laporhoax/domain/usecases/save_feed.dart';
 import 'package:laporhoax/domain/usecases/save_session_data.dart';
 import 'package:laporhoax/presentation/provider/about_cubit.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
+import 'package:laporhoax/presentation/provider/history_cubit.dart';
+import 'package:laporhoax/presentation/provider/login_cubit.dart';
 import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
 import 'package:laporhoax/presentation/provider/question_notifier.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
 import 'package:laporhoax/presentation/provider/saved_feed_cubit.dart';
-import 'package:laporhoax/presentation/provider/saved_news_notifier.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/utils/network_info_impl.dart';
 
@@ -95,7 +96,20 @@ void init() {
     () => AboutCubit(),
   );
   locator.registerFactory(
-        () => SavedFeedCubit(locator()),
+    () => SavedFeedCubit(locator()),
+  );
+  locator.registerFactory(
+    () => HistoryCubit(
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => LoginCubit(
+      locator(),
+      locator(),
+      locator(),
+    ),
   );
 
   // use case

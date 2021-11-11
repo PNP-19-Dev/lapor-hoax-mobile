@@ -30,6 +30,8 @@ import 'package:laporhoax/presentation/pages/static/static_page_viewer.dart';
 import 'package:laporhoax/presentation/pages/static/tutorial_page.dart';
 import 'package:laporhoax/presentation/provider/about_cubit.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
+import 'package:laporhoax/presentation/provider/history_cubit.dart';
+import 'package:laporhoax/presentation/provider/login_cubit.dart';
 import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
 import 'package:laporhoax/presentation/provider/question_notifier.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
@@ -107,6 +109,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => di.locator<QuestionNotifier>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<HistoryCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<LoginCubit>(),
         ),
         BlocProvider(
           create: (_) => di.locator<AboutCubit>(),

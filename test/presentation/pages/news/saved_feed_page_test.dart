@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:laporhoax/utils/failure.dart';
-import 'package:laporhoax/utils/state_enum.dart';
 import 'package:laporhoax/domain/usecases/get_saved_feeds.dart';
 import 'package:laporhoax/presentation/provider/saved_news_notifier.dart';
+import 'package:laporhoax/utils/failure.dart';
+import 'package:laporhoax/utils/state_enum.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -45,7 +45,7 @@ void main() {
     await provider.fetchSavedFeeds();
     // assert
     expect(provider.feedListState, RequestState.Error);
-    expect(provider.message, "Can't get data");
+    expect(provider.report, "Can't get data");
     expect(listenerCallCount, 2);
   });
 }

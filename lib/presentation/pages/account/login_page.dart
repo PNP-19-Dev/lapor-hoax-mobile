@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:laporhoax/presentation/pages/account/forgot_password_page.dart';
 import 'package:laporhoax/presentation/pages/account/register_page.dart';
 import 'package:laporhoax/presentation/pages/home_page.dart';
-import 'package:laporhoax/presentation/provider/user_notifier.dart';
-import 'package:laporhoax/presentation/widget/toast.dart';
+import 'package:laporhoax/presentation/provider/login_cubit.dart';
 import 'package:laporhoax/styles/colors.dart';
 import 'package:laporhoax/utils/navigation.dart';
-import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   static const String ROUTE_NAME = "/login_page";
@@ -68,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                             hintText: 'Email',
                             icon:
-                            Icon(Icons.person_outline, color: orangeBlaze),
+                                Icon(Icons.person_outline, color: orangeBlaze),
                           ),
                           validator: (value) {
                             if (value!.trim().isEmpty) {
@@ -91,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                             hintText: 'Kata Sandi',
                             icon:
-                            Icon(FontAwesomeIcons.key, color: orangeBlaze),
+                                Icon(FontAwesomeIcons.key, color: orangeBlaze),
                             suffixIcon: IconButton(
                               icon: Icon(_obscureText
                                   ? FontAwesomeIcons.eyeSlash
@@ -146,50 +145,37 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                               ),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    var username =
-                                    _usernameController.text.toString();
-                                    var password =
-                                    _passwordController.text.toString();
-
-                                    final progress = ProgressHUD.of(context);
+                              BlocListener<LoginCubit, LoginState>(
+                                listener: (context, state) {
+                                  final progress = ProgressHUD.of(context);
+                                  if (state is Login) {
                                     progress?.showWithText('Loading...');
-
-                                    await Provider.of<UserNotifier>(context,
-                                        listen: false)
-                                        .login(username, password);
-
-                                    final message = Provider.of<UserNotifier>(
-                                        context,
-                                        listen: false)
-                                        .loginMessage;
-
-                                    /*TODO UPDATE THE FCM TOKEN
-                                    final data = Provider.of<UserNotifier>(
-                                            context,
-                                            listen: false)
-                                        .user;
-                                    String? token = await FirebaseMessaging
-                                        .instance
-                                        .getToken();
-                                    if (token != null) {
-                                      await Provider.of<UserNotifier>(context,
-                                              listen: false)
-                                          .putToken(data!.id, token);
-                                    }*/
-
-                                    if (message == UserNotifier.messageLogin) {
-                                      progress?.dismiss();
-                                      Navigation.intent(HomePage.ROUTE_NAME);
-                                    } else {
-                                      progress?.dismiss();
-                                      toast(message);
-                                    }
+                                  } else if (state is LoginFailure) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(state.message),
+                                      ),
+                                    );
+                                    progress!.dismiss();
+                                  } else if (state is LoginSuccess) {
+                                    Navigation.intent(HomePage.ROUTE_NAME);
                                   }
                                 },
-                                child: Text('Login'),
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      var username =
+                                          _usernameController.text.toString();
+                                      var password =
+                                          _passwordController.text.toString();
+
+                                      context
+                                          .read<LoginCubit>()
+                                          .login(username, password);
+                                    }
+                                  },
+                                  child: Text('Login'),
+                                ),
                               ),
                             ],
                           ),

@@ -48,7 +48,7 @@ void main() {
     await provider.fetchSavedFeeds();
     // assert
     expect(provider.feedListState, RequestState.Empty);
-    expect(provider.message, "Kamu belum menyimpan berita apapun!");
+    expect(provider.report, "Kamu belum menyimpan berita apapun!");
     expect(listenerCallCount, 2);
   });
 
@@ -60,7 +60,7 @@ void main() {
     await provider.fetchSavedFeeds();
     // assert
     expect(provider.feedListState, RequestState.Error);
-    expect(provider.message, "Can't get data");
+    expect(provider.report, "Can't get data");
     expect(listenerCallCount, 2);
   });
 }

@@ -1,11 +1,10 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:laporhoax/domain/entities/register.dart';
 import 'package:laporhoax/presentation/pages/account/user_challenge.dart';
-import 'package:laporhoax/presentation/provider/user_notifier.dart';
-import 'package:laporhoax/presentation/widget/toast.dart';
+import 'package:laporhoax/presentation/provider/register_cubit.dart';
 import 'package:laporhoax/styles/colors.dart';
 import 'package:laporhoax/utils/navigation.dart';
 import 'package:provider/provider.dart';
@@ -194,64 +193,44 @@ class _RegisterPageState extends State<RegisterPage> {
                                       color: orangeBlaze),
                                 ),
                               ),
-                              ElevatedButton(
-                                onPressed: () async {
+                              BlocListener<RegisterCubit, RegisterState>(
+                                listener: (context, state) {
                                   final progress = ProgressHUD.of(context);
-                                  if (_formKey.currentState!.validate()) {
-                                    var username =
-                                        _usernameController.text.toString();
-                                    var email =
-                                        _emailController.text.toString();
-                                    var password =
-                                        _passwordController.text.toString();
-
+                                  if (state is Registering) {
                                     progress!.showWithText('Loading...');
+                                  }
 
-                                    var userData = Register(
-                                      name: username,
-                                      email: email,
-                                      password: password,
+                                  if (state is RegisterError) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(state.message),
+                                      ),
                                     );
-
-                                    await Provider.of<UserNotifier>(context,
-                                            listen: false)
-                                        .register(userData);
-
-                                    final user = Provider.of<UserNotifier>(
-                                            context,
-                                            listen: false)
-                                        .userResponse;
-
-                                    String? token = await FirebaseMessaging
-                                        .instance
-                                        .getToken();
-
-                                    if (token != null) {
-                                      await Provider.of<UserNotifier>(context,
-                                              listen: false)
-                                          .postToken(user.user.id, token);
-                                    }
-
-                                    final message = Provider.of<UserNotifier>(
-                                            context,
-                                            listen: false)
-                                        .registerMessage;
-
-                                    if (message ==
-                                        UserNotifier.messageRegister) {
-                                      progress.dismiss();
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                              SnackBar(content: Text(message)));
-                                      Navigation.intentWithData(
-                                          UserChallenge.ROUTE_NAME,
-                                          user.user.id);
-                                    } else {
-                                      toast(message);
-                                    }
+                                  } else if (state is RegisterSuccess) {
+                                    Navigation.intentWithData(
+                                      UserChallenge.ROUTE_NAME,
+                                      state.id,
+                                    );
                                   }
                                 },
-                                child: Text('Selanjutnya'),
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      var userData = Register(
+                                        name:
+                                            _usernameController.text.toString(),
+                                        email: _emailController.text.toString(),
+                                        password:
+                                            _passwordController.text.toString(),
+                                      );
+
+                                      context
+                                          .read<RegisterCubit>()
+                                          .register(userData);
+                                    }
+                                  },
+                                  child: Text('Selanjutnya'),
+                                ),
                               ),
                             ],
                           ),
