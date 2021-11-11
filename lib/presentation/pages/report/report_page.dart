@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,10 +7,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/category.dart';
+import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/presentation/pages/account/login_page.dart';
 import 'package:laporhoax/presentation/pages/home_page.dart';
+import 'package:laporhoax/presentation/provider/login_cubit.dart';
 import 'package:laporhoax/presentation/provider/report_cubit.dart';
-import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:laporhoax/styles/colors.dart';
 import 'package:laporhoax/utils/navigation.dart';
@@ -32,23 +31,20 @@ class _ReportPageState extends State<ReportPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      Provider.of<UserNotifier>(context, listen: false)
-        ..isLogin()
-        ..getSession();
-    });
+    context.read<LoginCubit>().fetchSession();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Consumer<UserNotifier>(
-          builder: (context, provider, child) {
-            if (provider.isLoggedIn) {
-              return _OnLapor();
-            } else
+        body: BlocBuilder<LoginCubit, LoginState>(
+          builder: (_, state) {
+            if (state is LoginSuccessWithData) {
+              return _OnLapor(state.data);
+            } else {
               return _OnWelcome();
+            }
           },
         ),
       ),
@@ -120,6 +116,10 @@ class _OnWelcome extends StatelessWidget {
 }
 
 class _OnLapor extends StatefulWidget {
+  final SessionData data;
+
+  _OnLapor(this.data, {Key? key}) : super(key: key);
+
   @override
   _OnLaporState createState() => _OnLaporState();
 }
@@ -127,8 +127,8 @@ class _OnLapor extends StatefulWidget {
 class _OnLaporState extends State<_OnLapor> {
   @override
   void initState() {
-    context.read<ReportCubit>().fetchCategory();
     super.initState();
+    context.read<ReportCubit>().fetchCategory();
   }
 
   var _selectedCategory;
@@ -143,20 +143,16 @@ class _OnLaporState extends State<_OnLapor> {
   final _formKey = GlobalKey<FormState>();
 
   sendData() {
-    var data = Provider.of<UserNotifier>(context, listen: false).sessionData;
-
-    if (data != null) {
-      if (_formKey.currentState!.validate() && _image != null) {
-        context.read<ReportCubit>().sendReport(
-              data.token,
-              data.userid,
-              _urlController.text.toString(),
-              _descController.text.toString(),
-              _image!,
-              _selectedCategory,
-              _anonym,
-            );
-      }
+    if (_formKey.currentState!.validate() && _image != null) {
+      context.read<ReportCubit>().sendReport(
+            widget.data.token,
+            widget.data.userid,
+            _urlController.text.toString(),
+            _descController.text.toString(),
+            _image!,
+            _selectedCategory,
+            _anonym,
+          );
     }
   }
 
@@ -185,12 +181,12 @@ class _OnLaporState extends State<_OnLapor> {
                               backgroundColor: orangeBlaze,
                               child: IconButton(
                                 onPressed: () {
-                                  var get = context
+                                  final get = context
                                       .read<ReportCubit>()
                                       .getImage(ImageSource.gallery);
-                                  get.then((value) {
-                                    return _image = value;
-                                  }).onError((error, _) => toast('$error'));
+                                  get
+                                      .then((value) => setState(()=> _image = value))
+                                      .onError((error, _) => toast('$error'));
                                 },
                                 icon: Icon(
                                   Icons.image,
@@ -203,12 +199,12 @@ class _OnLaporState extends State<_OnLapor> {
                               backgroundColor: orangeBlaze,
                               child: IconButton(
                                 onPressed: () {
-                                  var get = context
+                                  final get = context
                                       .read<ReportCubit>()
                                       .getImage(ImageSource.camera);
-                                  get.then((value) {
-                                    return _image = value;
-                                  }).onError((error, _) => toast('$error'));
+                                  get
+                                      .then((value) => setState(()=> _image = value))
+                                      .onError((error, _) => toast('$error'));
                                 },
                                 icon: Icon(
                                   Icons.camera_alt,
@@ -242,7 +238,7 @@ class _OnLaporState extends State<_OnLapor> {
                                     : Colors.black,
                               )),
                         ),
-                        BlocBuilder(
+                        BlocBuilder<ReportCubit, ReportState>(
                           builder: (_, state) {
                             List<Category> _categories = [];
                             String message = '';
@@ -348,7 +344,7 @@ class _OnLaporState extends State<_OnLapor> {
                       ],
                     ),
                   ),
-                  _ReportPageFooter()
+                  _ReportPageFooter(widget.data),
                 ],
               ),
             ),
@@ -387,16 +383,16 @@ class _ReportPageHeader extends StatelessWidget {
 }
 
 class _ReportPageFooter extends StatelessWidget {
+  final SessionData data;
+
+  _ReportPageFooter(this.data);
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        var data =
-            Provider.of<UserNotifier>(context, listen: false).sessionData;
-        if (data != null) {
-          return Navigation.intentWithData(
-              HistoryPage.ROUTE_NAME, TokenId(data.userid, data.token));
-        }
+        return Navigation.intentWithData(
+            HistoryPage.ROUTE_NAME, TokenId(data.userid, data.token));
       },
       child: Container(
         margin: const EdgeInsets.only(top: 20),

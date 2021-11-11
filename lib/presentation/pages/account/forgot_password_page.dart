@@ -185,8 +185,6 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
     index.add(userQuestion.quest2 ?? 1);
     index.add(userQuestion.quest3 ?? 1);
 
-    print('index: ${index.length}');
-
     if (questionMap.isNotEmpty) {
       _inputQuestion.text =
           questionMap[index.isNotEmpty ? index[0] : 1] as String;

@@ -34,7 +34,11 @@ import 'package:laporhoax/presentation/provider/feed_notifier.dart';
 import 'package:laporhoax/presentation/provider/history_cubit.dart';
 import 'package:laporhoax/presentation/provider/login_cubit.dart';
 import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
+import 'package:laporhoax/presentation/provider/password_cubit.dart';
+import 'package:laporhoax/presentation/provider/question_cubit.dart';
 import 'package:laporhoax/presentation/provider/question_notifier.dart';
+import 'package:laporhoax/presentation/provider/register_cubit.dart';
+import 'package:laporhoax/presentation/provider/report_cubit.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
 import 'package:laporhoax/presentation/provider/saved_feed_cubit.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
@@ -107,6 +111,34 @@ void init() {
   locator.registerFactory(
     () => LoginCubit(
       locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => RegisterCubit(
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+        () => PasswordCubit(
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+        () => QuestionCubit(
+      locator(),
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+        () => ReportCubit(
       locator(),
       locator(),
     ),
