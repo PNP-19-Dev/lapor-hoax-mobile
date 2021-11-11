@@ -34,7 +34,6 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(ModalRoute.of(context)!.settings);
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 50.0),
@@ -42,10 +41,8 @@ class _AccountPageState extends State<AccountPage> {
           builder: (_, state) {
             if (state is LoginSuccessWithData) {
               return _OnAccountLogin(state.data);
-            } else if (state is LoginEnded) {
-              return _OnWelCome();
             } else
-              return Container();
+              return _OnWelCome();
           },
         ),
       ),

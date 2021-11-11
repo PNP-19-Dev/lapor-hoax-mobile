@@ -30,12 +30,13 @@ class QuestionCubit extends Cubit<QuestionState> {
   }
 
   Future<void> fetchQuestionWithChallenge(int id) async {
-    emit(QuestionLoading());
     final result = await _questions.execute();
+    final data = await _challenge.execute(id);
+    emit(QuestionLoading());
+
     result.fold(
       (failure) => emit(QuestionError(failure.message)),
       (question) async {
-        final data = await _challenge.execute(id);
         data.fold(
           (failure) => emit(QuestionError(failure.message)),
           (data) => emit(QuestionHasData(question, _questionToMap(question),

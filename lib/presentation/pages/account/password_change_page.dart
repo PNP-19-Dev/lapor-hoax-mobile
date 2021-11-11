@@ -4,7 +4,6 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:laporhoax/presentation/provider/login_cubit.dart';
 import 'package:laporhoax/presentation/provider/password_cubit.dart';
-import 'package:laporhoax/styles/colors.dart';
 import 'package:provider/provider.dart';
 
 class PasswordChangePage extends StatefulWidget {
@@ -86,11 +85,6 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                       obscureText: _obscureText,
                       enableSuggestions: false,
                       decoration: InputDecoration(
-                        hintText: 'Old Password',
-                        icon: Icon(
-                          FontAwesomeIcons.key,
-                          color: orangeBlaze,
-                        ),
                         suffixIcon: IconButton(
                           icon: Icon(_obscureText
                               ? FontAwesomeIcons.eyeSlash
@@ -119,11 +113,6 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                       obscureText: _obscureText,
                       enableSuggestions: false,
                       decoration: InputDecoration(
-                        hintText: 'New Password',
-                        icon: Icon(
-                          FontAwesomeIcons.key,
-                          color: orangeBlaze,
-                        ),
                         suffixIcon: IconButton(
                           icon: Icon(_obscureText
                               ? FontAwesomeIcons.eyeSlash
@@ -152,11 +141,6 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                       obscureText: _obscureText,
                       enableSuggestions: false,
                       decoration: InputDecoration(
-                        hintText: 'Confirm Password',
-                        icon: Icon(
-                          FontAwesomeIcons.key,
-                          color: orangeBlaze,
-                        ),
                         suffixIcon: IconButton(
                           icon: Icon(_obscureText
                               ? FontAwesomeIcons.eyeSlash
@@ -182,6 +166,7 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                     SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
+                      height: 45,
                       child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
@@ -195,7 +180,7 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                                 .changePassword(oldPass, newPass, token!);
                           }
                         },
-                        child: Text('Kirim'),
+                        child: Text('Ganti Kata Sandi'),
                       ),
                     ),
                   ],

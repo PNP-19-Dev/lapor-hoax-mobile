@@ -130,6 +130,7 @@ void init() {
         () => PasswordCubit(
       locator(),
       locator(),
+      locator(),
     ),
   );
   locator.registerFactory(
