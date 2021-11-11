@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,10 +7,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/category.dart';
+import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/presentation/pages/account/login_page.dart';
 import 'package:laporhoax/presentation/pages/home_page.dart';
+import 'package:laporhoax/presentation/provider/login_cubit.dart';
 import 'package:laporhoax/presentation/provider/report_cubit.dart';
-import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:laporhoax/styles/colors.dart';
 import 'package:laporhoax/utils/navigation.dart';
@@ -32,23 +31,20 @@ class _ReportPageState extends State<ReportPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      Provider.of<UserNotifier>(context, listen: false)
-        ..isLogin()
-        ..getSession();
-    });
+    context.read<LoginCubit>().fetchSession();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Consumer<UserNotifier>(
-          builder: (context, provider, child) {
-            if (provider.isLoggedIn) {
-              return _OnLapor();
-            } else
+    return Scaffold(
+      body: SafeArea(
+        child: BlocBuilder<LoginCubit, LoginState>(
+          builder: (_, state) {
+            if (state is LoginSuccessWithData) {
+              return _OnLapor(state.data);
+            } else {
               return _OnWelcome();
+            }
           },
         ),
       ),
@@ -96,9 +92,13 @@ class _OnWelcome extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 SizedBox(height: 10),
-                Text(
-                  'Silahkan login untuk melanjutkan pelaporan',
-                  style: Theme.of(context).textTheme.caption,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    'Silahkan login untuk mengakses semua fitur dari aplikasi LAPOR HOAX ',
+                    style: Theme.of(context).textTheme.caption,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ],
             ),
@@ -120,6 +120,10 @@ class _OnWelcome extends StatelessWidget {
 }
 
 class _OnLapor extends StatefulWidget {
+  final SessionData data;
+
+  _OnLapor(this.data, {Key? key}) : super(key: key);
+
   @override
   _OnLaporState createState() => _OnLaporState();
 }
@@ -127,8 +131,8 @@ class _OnLapor extends StatefulWidget {
 class _OnLaporState extends State<_OnLapor> {
   @override
   void initState() {
-    context.read<ReportCubit>().fetchCategory();
     super.initState();
+    context.read<ReportCubit>().fetchCategory();
   }
 
   var _selectedCategory;
@@ -143,20 +147,16 @@ class _OnLaporState extends State<_OnLapor> {
   final _formKey = GlobalKey<FormState>();
 
   sendData() {
-    var data = Provider.of<UserNotifier>(context, listen: false).sessionData;
-
-    if (data != null) {
-      if (_formKey.currentState!.validate() && _image != null) {
-        context.read<ReportCubit>().sendReport(
-              data.token,
-              data.userid,
-              _urlController.text.toString(),
-              _descController.text.toString(),
-              _image!,
-              _selectedCategory,
-              _anonym,
-            );
-      }
+    if (_formKey.currentState!.validate() && _image != null) {
+      context.read<ReportCubit>().sendReport(
+            widget.data.token,
+            widget.data.userid,
+            _urlController.text.toString(),
+            _descController.text.toString(),
+            _image!,
+            _selectedCategory,
+            _anonym,
+          );
     }
   }
 
@@ -173,24 +173,29 @@ class _OnLaporState extends State<_OnLapor> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _ReportPageHeader(),
-                  const SizedBox(height: 45),
+                  const SizedBox(height: 20),
                   Form(
                     key: _formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text(
+                          'Screenshoot',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
                         Row(
                           children: [
                             CircleAvatar(
                               backgroundColor: orangeBlaze,
                               child: IconButton(
                                 onPressed: () {
-                                  var get = context
+                                  final get = context
                                       .read<ReportCubit>()
                                       .getImage(ImageSource.gallery);
-                                  get.then((value) {
-                                    return _image = value;
-                                  }).onError((error, _) => toast('$error'));
+                                  get
+                                      .then((value) =>
+                                          setState(() => _image = value))
+                                      .onError((error, _) => toast('$error'));
                                 },
                                 icon: Icon(
                                   Icons.image,
@@ -203,12 +208,13 @@ class _OnLaporState extends State<_OnLapor> {
                               backgroundColor: orangeBlaze,
                               child: IconButton(
                                 onPressed: () {
-                                  var get = context
+                                  final get = context
                                       .read<ReportCubit>()
                                       .getImage(ImageSource.camera);
-                                  get.then((value) {
-                                    return _image = value;
-                                  }).onError((error, _) => toast('$error'));
+                                  get
+                                      .then((value) =>
+                                          setState(() => _image = value))
+                                      .onError((error, _) => toast('$error'));
                                 },
                                 icon: Icon(
                                   Icons.camera_alt,
@@ -227,22 +233,29 @@ class _OnLaporState extends State<_OnLapor> {
                             ),
                           ],
                         ),
+                        const SizedBox(height: 20),
+                        Text(
+                          'Url / Link',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
                         TextField(
                           keyboardType: TextInputType.url,
                           textInputAction: TextInputAction.done,
                           controller: _urlController,
                           focusNode: _linkFocusNode,
                           decoration: InputDecoration(
-                              labelText: 'URL / Link (optional)',
-                              icon:
-                                  SvgPicture.asset('assets/icons/link_on.svg'),
                               labelStyle: TextStyle(
-                                color: _linkFocusNode.hasFocus
-                                    ? orangeBlaze
-                                    : Colors.black,
-                              )),
+                            color: _linkFocusNode.hasFocus
+                                ? orangeBlaze
+                                : Colors.black,
+                          )),
                         ),
-                        BlocBuilder(
+                        const SizedBox(height: 20),
+                        Text(
+                          'Kategori',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                        BlocBuilder<ReportCubit, ReportState>(
                           builder: (_, state) {
                             List<Category> _categories = [];
                             String message = '';
@@ -251,21 +264,16 @@ class _OnLaporState extends State<_OnLapor> {
                               message = state.message;
                             } else if (state is CategoryError) {
                               message = state.message;
-                            } else {
-                              message = 'category';
                             }
 
                             if (state is CategoryFetched) {
                               _categories = state.category;
-                              message = 'category';
+                              message = 'Pilih Kategori';
                             }
-
                             return DropdownButtonFormField<String>(
                               isExpanded: true,
                               iconSize: 0,
                               decoration: InputDecoration(
-                                icon: SvgPicture.asset(
-                                    'assets/icons/category_alt.svg'),
                                 suffixIcon: Icon(Icons.arrow_drop_down),
                               ),
                               hint: Text(message),
@@ -284,14 +292,18 @@ class _OnLaporState extends State<_OnLapor> {
                             );
                           },
                         ),
+                        const SizedBox(height: 20),
+                        Text(
+                          'Deskripsi laporan ( Opsional )',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
                         TextField(
                           keyboardType: TextInputType.multiline,
                           textInputAction: TextInputAction.done,
                           controller: _descController,
-                          minLines: 5,
+                          minLines: 4,
                           maxLines: null,
                           decoration: InputDecoration(
-                            labelText: 'Deskripsi laporan ( Opsional )',
                             alignLabelWithHint: true,
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5),
@@ -348,7 +360,7 @@ class _OnLaporState extends State<_OnLapor> {
                       ],
                     ),
                   ),
-                  _ReportPageFooter()
+                  _ReportPageFooter(widget.data),
                 ],
               ),
             ),
@@ -373,7 +385,7 @@ class _ReportPageHeader extends StatelessWidget {
           ),
         ),
         Container(
-          padding: const EdgeInsets.only(top: 30, left: 15, right: 15),
+          padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
           child: Center(
             child: Text(
               'Buat Laporan',
@@ -387,19 +399,19 @@ class _ReportPageHeader extends StatelessWidget {
 }
 
 class _ReportPageFooter extends StatelessWidget {
+  final SessionData data;
+
+  _ReportPageFooter(this.data);
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        var data =
-            Provider.of<UserNotifier>(context, listen: false).sessionData;
-        if (data != null) {
-          return Navigation.intentWithData(
-              HistoryPage.ROUTE_NAME, TokenId(data.userid, data.token));
-        }
+        return Navigation.intentWithData(
+            HistoryPage.ROUTE_NAME, TokenId(data.userid, data.token));
       },
       child: Container(
-        margin: const EdgeInsets.only(top: 20),
+        margin: const EdgeInsets.only(top: 10),
         child: Center(
           child: Text(
             'Lihat riwayat pelaporan',

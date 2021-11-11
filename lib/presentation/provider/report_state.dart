@@ -36,6 +36,24 @@ class CategoryFetched extends ReportState {
   List<Object> get props => [category];
 }
 
+class ImageFetched extends ReportState {
+  final XFile file;
+
+  ImageFetched(this.file);
+
+  @override
+  List<Object> get props => [file];
+}
+
+class ImageError extends ReportState {
+  final String message;
+
+  ImageError(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
 class ReportUploading extends ReportState {}
 
 class ReportError extends ReportState {

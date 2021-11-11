@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:laporhoax/presentation/provider/user_notifier.dart';
-import 'package:laporhoax/presentation/widget/toast.dart';
+import 'package:laporhoax/presentation/provider/login_cubit.dart';
+import 'package:laporhoax/presentation/provider/password_cubit.dart';
 import 'package:laporhoax/styles/colors.dart';
 import 'package:provider/provider.dart';
 
@@ -24,11 +25,10 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-        () => Provider.of<UserNotifier>(context, listen: false)..getSession());
+    context.read<LoginCubit>().fetchSession();
   }
 
-  void clearAll(){
+  void clearAll() {
     _oldPassword.clear();
     _newPassword.clear();
     _confirmPassword.clear();
@@ -36,6 +36,11 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
 
   @override
   Widget build(BuildContext context) {
+    showSnackBar(String message) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -48,158 +53,154 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
         child: Builder(
           builder: (context) => Container(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Consumer<UserNotifier>(
-              builder: (context, provider, widget) {
+            child: BlocListener<PasswordCubit, PasswordState>(
+              listener: (context, state) {
                 final progress = ProgressHUD.of(context);
 
-                return Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 20),
-                      Text(
-                        'Password Lama',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      TextFormField(
-                        controller: _oldPassword,
-                        obscureText: _obscureText,
-                        enableSuggestions: false,
-                        decoration: InputDecoration(
-                          hintText: 'Old Password',
-                          icon: Icon(
-                            FontAwesomeIcons.key,
-                            color: orangeBlaze,
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(_obscureText
-                                ? FontAwesomeIcons.eyeSlash
-                                : FontAwesomeIcons.eye),
-                            onPressed: () {
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return 'Mohon isikan password lama!';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 30),
-                      Text(
-                        'Password Baru',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      TextFormField(
-                        controller: _newPassword,
-                        obscureText: _obscureText,
-                        enableSuggestions: false,
-                        decoration: InputDecoration(
-                          hintText: 'New Password',
-                          icon: Icon(
-                            FontAwesomeIcons.key,
-                            color: orangeBlaze,
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(_obscureText
-                                ? FontAwesomeIcons.eyeSlash
-                                : FontAwesomeIcons.eye),
-                            onPressed: () {
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return 'Mohon isikan password lama!';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 30),
-                      Text(
-                        'Password Konfirmasi Password',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      TextFormField(
-                        controller: _confirmPassword,
-                        obscureText: _obscureText,
-                        enableSuggestions: false,
-                        decoration: InputDecoration(
-                          hintText: 'Confirm Password',
-                          icon: Icon(
-                            FontAwesomeIcons.key,
-                            color: orangeBlaze,
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(_obscureText
-                                ? FontAwesomeIcons.eyeSlash
-                                : FontAwesomeIcons.eye),
-                            onPressed: () {
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value!.toString() != _newPassword.text) {
-                            return 'Password tidak sama!';
-                          }
+                if (state is PasswordLoading) {
+                  progress!.showWithText('Loading...');
+                }
 
-                          if (value.trim().isEmpty) {
-                            return 'Mohon isikan password!';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              String oldPass = _oldPassword.text;
-                              String newPass = _newPassword.text;
-                              String? token = provider.sessionData?.token;
-
-                              progress!.showWithText('Loading...');
-
-                              print('loading password...');
-
-                              await Provider.of<UserNotifier>(context,
-                                      listen: false)
-                                  .changePassword(oldPass, newPass, token!);
-
-                              final message = Provider.of<UserNotifier>(context,
-                                      listen: false)
-                                  .passwordChangeMessage;
-
-                              if (message == UserNotifier.messageChangePassword) {
-                                progress.dismiss();
-                                clearAll();
-                                toast(message);
-                              } else {
-                                progress.dismiss();
-                                clearAll();
-                                toast(message);
-                              }
-                            }
-                          },
-                          child: Text('Kirim'),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
+                if (state is PasswordChanged) {
+                  progress!.dismiss();
+                  clearAll();
+                  showSnackBar('Password telah diganti!');
+                } else if (state is PasswordError) {
+                  progress!.dismiss();
+                  clearAll();
+                  showSnackBar(state.message);
+                }
               },
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 20),
+                    Text(
+                      'Password Lama',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextFormField(
+                      controller: _oldPassword,
+                      obscureText: _obscureText,
+                      enableSuggestions: false,
+                      decoration: InputDecoration(
+                        hintText: 'Old Password',
+                        icon: Icon(
+                          FontAwesomeIcons.key,
+                          color: orangeBlaze,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(_obscureText
+                              ? FontAwesomeIcons.eyeSlash
+                              : FontAwesomeIcons.eye),
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return 'Mohon isikan password lama!';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 30),
+                    Text(
+                      'Password Baru',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextFormField(
+                      controller: _newPassword,
+                      obscureText: _obscureText,
+                      enableSuggestions: false,
+                      decoration: InputDecoration(
+                        hintText: 'New Password',
+                        icon: Icon(
+                          FontAwesomeIcons.key,
+                          color: orangeBlaze,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(_obscureText
+                              ? FontAwesomeIcons.eyeSlash
+                              : FontAwesomeIcons.eye),
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return 'Mohon isikan password lama!';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 30),
+                    Text(
+                      'Password Konfirmasi Password',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextFormField(
+                      controller: _confirmPassword,
+                      obscureText: _obscureText,
+                      enableSuggestions: false,
+                      decoration: InputDecoration(
+                        hintText: 'Confirm Password',
+                        icon: Icon(
+                          FontAwesomeIcons.key,
+                          color: orangeBlaze,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(_obscureText
+                              ? FontAwesomeIcons.eyeSlash
+                              : FontAwesomeIcons.eye),
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.toString() != _newPassword.text) {
+                          return 'Password tidak sama!';
+                        }
+
+                        if (value.trim().isEmpty) {
+                          return 'Mohon isikan password!';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            String oldPass = _oldPassword.text;
+                            String newPass = _newPassword.text;
+                            String? token =
+                                context.read<LoginCubit>().session?.token;
+
+                            context
+                                .read<PasswordCubit>()
+                                .changePassword(oldPass, newPass, token!);
+                          }
+                        },
+                        child: Text('Kirim'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),

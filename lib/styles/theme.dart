@@ -24,7 +24,10 @@ final mainTheme = ThemeData(
     style: ButtonStyle(
       foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
     ),
-  )
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    border: OutlineInputBorder(),
+  ),
 );
 
 final darkTheme = ThemeData(

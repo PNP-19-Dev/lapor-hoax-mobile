@@ -47,7 +47,19 @@ class _LoginPageState extends State<LoginPage> {
                           width: 80,
                         ),
                         SizedBox(height: 10),
-                        Text("Login", style: TextStyle(fontSize: 30.0)),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 35,
+                            left: 50,
+                            right: 50,
+                            bottom: 40,
+                          ),
+                          child: Text(
+                            "Selamat Datang Kembali",
+                            style: Theme.of(context).textTheme.headline5,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -64,11 +76,6 @@ class _LoginPageState extends State<LoginPage> {
                           enableSuggestions: true,
                           autofillHints: [AutofillHints.username],
                           textInputAction: TextInputAction.next,
-                          decoration: InputDecoration(
-                            hintText: 'Email',
-                            icon:
-                                Icon(Icons.person_outline, color: orangeBlaze),
-                          ),
                           validator: (value) {
                             if (value!.trim().isEmpty) {
                               return 'Mohon isikan alamat email anda!';
@@ -76,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(height: 25),
                         Text('Kata Sandi',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                         TextFormField(
@@ -88,9 +95,6 @@ class _LoginPageState extends State<LoginPage> {
                           autocorrect: false,
                           textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
-                            hintText: 'Kata Sandi',
-                            icon:
-                                Icon(FontAwesomeIcons.key, color: orangeBlaze),
                             suffixIcon: IconButton(
                               icon: Icon(_obscureText
                                   ? FontAwesomeIcons.eyeSlash
@@ -127,10 +131,12 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
+                        SizedBox(height: 25),
                         Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               GestureDetector(
                                 onTap: () {
@@ -139,10 +145,13 @@ class _LoginPageState extends State<LoginPage> {
                                 },
                                 child: Text(
                                   'Daftar Akun',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: orangeBlaze,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(
+                                        color: orangeBlaze,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                 ),
                               ),
                               BlocListener<LoginCubit, LoginState>(
@@ -161,20 +170,22 @@ class _LoginPageState extends State<LoginPage> {
                                     Navigation.intent(HomePage.ROUTE_NAME);
                                   }
                                 },
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      var username =
-                                          _usernameController.text.toString();
-                                      var password =
-                                          _passwordController.text.toString();
-
-                                      context
-                                          .read<LoginCubit>()
-                                          .login(username, password);
-                                    }
-                                  },
-                                  child: Text('Login'),
+                                child: SizedBox(
+                                  width: 130.0,
+                                  height: 42.0,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        context.read<LoginCubit>().login(
+                                              _usernameController.text
+                                                  .toString(),
+                                              _passwordController.text
+                                                  .toString(),
+                                            );
+                                      }
+                                    },
+                                    child: Text('Login'),
+                                  ),
                                 ),
                               ),
                             ],

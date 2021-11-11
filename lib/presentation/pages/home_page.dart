@@ -65,25 +65,23 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        key: Key("home_page_scaffold"),
-        body: _listWidget[_bottomNavIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          key: Key('bottom_bar'),
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _bottomNavIndex,
-          items: _bottomNavBarItems,
-          onTap: _onBottomNavTapped,
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          tooltip: 'Tambah Laporan',
-          onPressed: () {
-            Navigation.intent(ReportPage.ROUTE_NAME);
-          },
-        ),
+    return Scaffold(
+      key: Key("home_page_scaffold"),
+      body: SafeArea(child: _listWidget[_bottomNavIndex]),
+      bottomNavigationBar: BottomNavigationBar(
+        key: Key('bottom_bar'),
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _bottomNavIndex,
+        items: _bottomNavBarItems,
+        onTap: _onBottomNavTapped,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        tooltip: 'Tambah Laporan',
+        onPressed: () {
+          Navigation.intent(ReportPage.ROUTE_NAME);
+        },
       ),
     );
   }

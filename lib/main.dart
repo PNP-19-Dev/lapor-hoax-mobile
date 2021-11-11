@@ -29,12 +29,16 @@ import 'package:laporhoax/presentation/pages/static/about_page.dart';
 import 'package:laporhoax/presentation/pages/static/static_page_viewer.dart';
 import 'package:laporhoax/presentation/pages/static/tutorial_page.dart';
 import 'package:laporhoax/presentation/provider/about_cubit.dart';
+import 'package:laporhoax/presentation/provider/detail_cubit.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
 import 'package:laporhoax/presentation/provider/history_cubit.dart';
+import 'package:laporhoax/presentation/provider/item_cubit.dart';
 import 'package:laporhoax/presentation/provider/login_cubit.dart';
 import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
-import 'package:laporhoax/presentation/provider/question_notifier.dart';
-import 'package:laporhoax/presentation/provider/report_notifier.dart';
+import 'package:laporhoax/presentation/provider/password_cubit.dart';
+import 'package:laporhoax/presentation/provider/question_cubit.dart';
+import 'package:laporhoax/presentation/provider/register_cubit.dart';
+import 'package:laporhoax/presentation/provider/report_cubit.dart';
 import 'package:laporhoax/presentation/provider/saved_feed_cubit.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/styles/theme.dart';
@@ -101,20 +105,32 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => di.locator<SavedFeedCubit>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<ReportNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<ReportCubit>(),
         ),
         ChangeNotifierProvider(
           create: (_) => di.locator<UserNotifier>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<QuestionNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<PasswordCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<QuestionCubit>(),
         ),
         BlocProvider(
           create: (_) => di.locator<HistoryCubit>(),
         ),
         BlocProvider(
+          create: (_) => di.locator<DetailCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<ItemCubit>(),
+        ),
+        BlocProvider(
           create: (_) => di.locator<LoginCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<RegisterCubit>(),
         ),
         BlocProvider(
           create: (_) => di.locator<AboutCubit>(),

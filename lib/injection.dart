@@ -30,11 +30,17 @@ import 'package:laporhoax/domain/usecases/remove_session_data.dart';
 import 'package:laporhoax/domain/usecases/save_feed.dart';
 import 'package:laporhoax/domain/usecases/save_session_data.dart';
 import 'package:laporhoax/presentation/provider/about_cubit.dart';
+import 'package:laporhoax/presentation/provider/detail_cubit.dart';
 import 'package:laporhoax/presentation/provider/feed_notifier.dart';
 import 'package:laporhoax/presentation/provider/history_cubit.dart';
+import 'package:laporhoax/presentation/provider/item_cubit.dart';
 import 'package:laporhoax/presentation/provider/login_cubit.dart';
 import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
+import 'package:laporhoax/presentation/provider/password_cubit.dart';
+import 'package:laporhoax/presentation/provider/question_cubit.dart';
 import 'package:laporhoax/presentation/provider/question_notifier.dart';
+import 'package:laporhoax/presentation/provider/register_cubit.dart';
+import 'package:laporhoax/presentation/provider/report_cubit.dart';
 import 'package:laporhoax/presentation/provider/report_notifier.dart';
 import 'package:laporhoax/presentation/provider/saved_feed_cubit.dart';
 import 'package:laporhoax/presentation/provider/user_notifier.dart';
@@ -106,6 +112,46 @@ void init() {
   );
   locator.registerFactory(
     () => LoginCubit(
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => RegisterCubit(
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+        () => PasswordCubit(
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+        () => QuestionCubit(
+      locator(),
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+        () => ReportCubit(
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+        () => DetailCubit(
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+        () => ItemCubit(
       locator(),
       locator(),
       locator(),

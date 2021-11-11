@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
-import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
+import 'package:laporhoax/presentation/provider/detail_cubit.dart';
+import 'package:laporhoax/presentation/provider/item_cubit.dart';
 import 'package:laporhoax/styles/colors.dart';
-import 'package:laporhoax/utils/state_enum.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -29,12 +30,8 @@ class _NewsWebViewState extends State<NewsWebView> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      Provider.of<NewsDetailNotifier>(context, listen: false)
-          .fetchFeedDetail(widget.id);
-      Provider.of<NewsDetailNotifier>(context, listen: false)
-          .loadFeedStatus(widget.id);
-    });
+    context.read<DetailCubit>().getDetail(widget.id);
+    context.read<ItemCubit>().getStatus(widget.id);
   }
 
   final _key = UniqueKey();
@@ -71,8 +68,12 @@ class CustomScaffold extends StatelessWidget {
 
   CustomScaffold({required this.body});
 
-  Widget _buildShortAppBar(
-      BuildContext context, Feed feed, bool isAddedToFeedlist) {
+  void showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  Widget _buildShortAppBar(BuildContext context, Feed feed) {
     return Card(
       elevation: 3,
       margin: EdgeInsets.all(0),
@@ -93,41 +94,43 @@ class CustomScaffold extends StatelessWidget {
             ),
             Row(
               children: [
-                IconButton(
-                  onPressed: () async {
-                    if (!isAddedToFeedlist) {
-                      await Provider.of<NewsDetailNotifier>(
-                        context,
-                        listen: false,
-                      ).storeFeed(feed);
-                    } else {
-                      await Provider.of<NewsDetailNotifier>(
-                        context,
-                        listen: false,
-                      ).deleteFeed(feed);
+                BlocConsumer<ItemCubit, ItemState>(
+                  listener: (context, state) {
+                    if (state is ItemSaved) {
+                      showSnackBar(context, state.message);
+                    } else if (state is ItemRemoved) {
+                      showSnackBar(context, state.message);
                     }
 
-                    final message =
-                        Provider.of<NewsDetailNotifier>(context, listen: false)
-                            .saveMessage;
-
-                    if (message == NewsDetailNotifier.feedSavedMessage ||
-                        message == NewsDetailNotifier.feedRemovedMessage) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text(message)));
-                    } else {
+                    if (state is ItemSaveError) {
                       showDialog(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              content: Text(message),
+                              content: Text(state.message),
                             );
                           });
                     }
                   },
-                  icon: isAddedToFeedlist
-                      ? Icon(Icons.bookmark, color: orangeBlaze)
-                      : Icon(Icons.bookmark_outline, color: orangeBlaze),
+                  builder: (context, state) {
+                    if (state is ItemIsSave || state is ItemSaved) {
+                      return IconButton(
+                          onPressed: (){
+                            print('unsave tapped!');
+                            context.read<ItemCubit>().removeFeed(feed);
+                          },
+                          icon: Icon(Icons.bookmark, color: orangeBlaze));
+                    } else if (state is ItemUnsaved || state is ItemRemoved) {
+                      return IconButton(
+                        onPressed: () {
+                          print('save tapped!');
+                          context.read<ItemCubit>().saveFeed(feed);
+                        },
+                        icon: Icon(Icons.bookmark_outline, color: orangeBlaze),
+                      );
+                    } else
+                      return Container();
+                  },
                 ),
                 IconButton(
                   onPressed: () => Share.share(
@@ -145,23 +148,25 @@ class CustomScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<NewsDetailNotifier>(builder: (context, data, child) {
-        if (data.feedState == RequestState.Loading) {
+      body: BlocBuilder<DetailCubit, DetailState>(builder: (context, state) {
+        print(state);
+        if (state is DetailLoading) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (data.feedState == RequestState.Loaded) {
+        } else if (state is DetailHasData) {
           return SafeArea(
             child: Stack(
               children: [
                 body,
-                _buildShortAppBar(context, data.feed, data.isAddedtoSavedFeed),
+                _buildShortAppBar(context, state.data),
               ],
             ),
           );
-        } else {
-          return Center(child: Text(data.message));
-        }
+        } else if (state is DetailError) {
+          return Center(child: Text(state.message));
+        } else
+          return Container();
       }),
     );
   }
