@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laporhoax/presentation/provider/about_cubit.dart';
@@ -62,7 +68,7 @@ class _AboutState extends State<About> {
                   onTap: () => showAboutDialog(
                     context: context,
                     applicationIcon:
-                        Image.asset('assets/icons/logo_new.png', width: 50),
+                    Image.asset('assets/icons/logo_new.png', width: 50),
                     applicationName: 'LAPOR HOAX',
                     applicationVersion: state.data,
                   ),

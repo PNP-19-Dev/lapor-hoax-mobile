@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
@@ -13,8 +19,8 @@ class FeedCubit extends Cubit<FeedState> {
     final result = await _feeds.execute();
 
     result.fold(
-      (failure) => emit(FeedError(failure.message)),
-      (feeds) => emit(FeedHasData(feeds)),
+          (failure) => emit(FeedError(failure.message)),
+          (feeds) => emit(FeedHasData(feeds)),
     );
   }
 }

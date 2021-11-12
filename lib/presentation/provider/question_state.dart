@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 part of 'question_cubit.dart';
 
 abstract class QuestionState extends Equatable {
@@ -26,12 +32,10 @@ class QuestionHasData extends QuestionState {
   List<int>? index;
   List<String>? userQuestion;
 
-  QuestionHasData(
-    this.questions,
-    this.questionMap,
-    this.index,
-    this.userQuestion,
-  );
+  QuestionHasData(this.questions,
+      this.questionMap,
+      this.index,
+      this.userQuestion,);
 
   factory QuestionHasData.question(List<Question> questions) =>
       QuestionHasData(questions, null, null, null);

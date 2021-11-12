@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -101,9 +107,9 @@ class _FeedList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverGrid(
       gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       delegate: SliverChildBuilderDelegate(
-        (_, index) {
+            (_, index) {
           var feed = feeds[index];
           return Padding(
             padding: const EdgeInsets.all(8.0),
@@ -156,10 +162,10 @@ class _FeedList extends StatelessWidget {
                           softWrap: true,
                           overflow: TextOverflow.clip,
                           style:
-                              Theme.of(context).textTheme.bodyText2!.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          Theme.of(context).textTheme.bodyText2!.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       Positioned(
@@ -179,8 +185,8 @@ class _FeedList extends StatelessWidget {
                                   .textTheme
                                   .overline!
                                   .copyWith(
-                                    color: Colors.white,
-                                  ),
+                                color: Colors.white,
+                              ),
                             ),
                           ],
                         ),

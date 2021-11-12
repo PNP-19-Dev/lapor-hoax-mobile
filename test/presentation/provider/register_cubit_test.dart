@@ -1,7 +1,13 @@
+/*
+ * Created by andii on 12/11/21 22.48
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.43
+ */
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:laporhoax/domain/entities/register.dart';
+import 'package:laporhoax/data/models/register.dart';
 import 'package:laporhoax/domain/usecases/post_fcm_token.dart';
 import 'package:laporhoax/domain/usecases/post_register.dart';
 import 'package:laporhoax/presentation/provider/register_cubit.dart';

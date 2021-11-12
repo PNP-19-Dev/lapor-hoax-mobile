@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -74,7 +80,7 @@ Future<void> main() async {
 
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+        AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     await FirebaseMessaging.instance
@@ -207,8 +213,8 @@ class MyApp extends StatelessWidget {
             case OnRegisterSuccess.ROUTE_NAME:
               return MaterialPageRoute(
                   builder: (_) => OnRegisterSuccess(
-                        settings.arguments as String,
-                      ));
+                    settings.arguments as String,
+                  ));
             case About.routeName:
               return MaterialPageRoute(builder: (_) => About());
             default:

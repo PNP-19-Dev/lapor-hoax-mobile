@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.53
+ */
+
 import 'package:flutter/material.dart';
 
 const Color grey100 = Color(0x33C4C4C4);

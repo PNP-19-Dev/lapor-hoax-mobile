@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'dart:io';
 
 import 'package:data_connection_checker/data_connection_checker.dart';
@@ -51,19 +57,19 @@ final locator = GetIt.instance;
 void init() {
   // bloc
   locator.registerFactory(
-    () => AboutCubit(),
+        () => AboutCubit(),
   );
   locator.registerFactory(
-    () => SavedFeedCubit(locator()),
+        () => SavedFeedCubit(locator()),
   );
   locator.registerFactory(
-    () => HistoryCubit(
+        () => HistoryCubit(
       locator(),
       locator(),
     ),
   );
   locator.registerFactory(
-    () => LoginCubit(
+        () => LoginCubit(
       locator(),
       locator(),
       locator(),
@@ -72,7 +78,7 @@ void init() {
     ),
   );
   locator.registerFactory(
-    () => RegisterCubit(
+        () => RegisterCubit(
       locator(),
       locator(),
     ),
@@ -138,7 +144,7 @@ void init() {
 
   // repository
   locator.registerLazySingleton<Repository>(
-    () => RepositoryImpl(
+        () => RepositoryImpl(
       remoteDataSource: locator(),
       localDataSource: locator(),
       networkInfo: locator(),
@@ -147,10 +153,10 @@ void init() {
 
   // data sources
   locator.registerLazySingleton<RemoteDataSource>(
-    () => RemoteDataSourceImpl(dio: locator()),
+        () => RemoteDataSourceImpl(dio: locator()),
   );
   locator.registerLazySingleton<LocalDataSource>(
-    () => LocalDataSourceImpl(
+        () => LocalDataSourceImpl(
       databaseHelper: locator(),
       preferencesHelper: locator(),
     ),

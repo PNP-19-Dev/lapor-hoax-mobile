@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -51,7 +57,7 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
               child: Container(
                 margin: const EdgeInsets.only(top: 10),
                 padding:
-                    const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -68,14 +74,14 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                       value: _selectedQ1,
                       items: questions
                           .map((value) {
-                            return DropdownMenuItem<int>(
-                              child: Text(value.question),
-                              value: value.id,
-                            );
-                          })
+                        return DropdownMenuItem<int>(
+                          child: Text(value.question),
+                          value: value.id,
+                        );
+                      })
                           .where((item) =>
-                              item.value != _selectedQ2 &&
-                              item.value != _selectedQ3)
+                      item.value != _selectedQ2 &&
+                          item.value != _selectedQ3)
                           .toList(),
                       onChanged: (v) {
                         setState(() {
@@ -124,14 +130,14 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                       value: _selectedQ2,
                       items: questions
                           .map((value) {
-                            return DropdownMenuItem<int>(
-                              child: Text(value.question),
-                              value: value.id,
-                            );
-                          })
+                        return DropdownMenuItem<int>(
+                          child: Text(value.question),
+                          value: value.id,
+                        );
+                      })
                           .where((item) =>
-                              item.value != _selectedQ1 &&
-                              item.value != _selectedQ3)
+                      item.value != _selectedQ1 &&
+                          item.value != _selectedQ3)
                           .toList(),
                       onChanged: (v) {
                         setState(() {
@@ -180,14 +186,14 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                       value: _selectedQ3,
                       items: questions
                           .map((value) {
-                            return DropdownMenuItem<int>(
-                              child: Text(value.question),
-                              value: value.id,
-                            );
-                          })
+                        return DropdownMenuItem<int>(
+                          child: Text(value.question),
+                          value: value.id,
+                        );
+                      })
                           .where((item) =>
-                              item.value != _selectedQ1 &&
-                              item.value != _selectedQ2)
+                      item.value != _selectedQ1 &&
+                          item.value != _selectedQ2)
                           .toList(),
                       onChanged: (v) {
                         setState(() {
@@ -251,8 +257,8 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                             showDialog(
                                 context: context,
                                 builder: (_) => AlertDialog(
-                                      content: Text('Error ${state.message}'),
-                                    ));
+                                  content: Text('Error ${state.message}'),
+                                ));
                           }
                         },
                         child: ElevatedButton(

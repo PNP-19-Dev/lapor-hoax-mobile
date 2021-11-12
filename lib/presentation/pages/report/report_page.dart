@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -155,14 +161,14 @@ class _OnLaporState extends State<_OnLapor> {
   sendData() {
     if (_formKey.currentState!.validate() && _image != null) {
       context.read<ReportCubit>().sendReport(
-            widget.data.token,
-            widget.data.userid,
-            _urlController.text.toString(),
-            _descController.text.toString(),
-            _image!,
-            _selectedCategory,
-            _anonym,
-          );
+        widget.data.token,
+        widget.data.userid,
+        _urlController.text.toString(),
+        _descController.text.toString(),
+        _image!,
+        _selectedCategory,
+        _anonym,
+      );
     }
   }
 
@@ -200,7 +206,7 @@ class _OnLaporState extends State<_OnLapor> {
                                       .getImage(ImageSource.gallery);
                                   get
                                       .then((value) =>
-                                          setState(() => _image = value))
+                                      setState(() => _image = value))
                                       .onError((error, _) => toast('$error'));
                                 },
                                 icon: Icon(
@@ -219,7 +225,7 @@ class _OnLaporState extends State<_OnLapor> {
                                       .getImage(ImageSource.camera);
                                   get
                                       .then((value) =>
-                                          setState(() => _image = value))
+                                      setState(() => _image = value))
                                       .onError((error, _) => toast('$error'));
                                 },
                                 icon: Icon(
@@ -251,10 +257,10 @@ class _OnLaporState extends State<_OnLapor> {
                           focusNode: _linkFocusNode,
                           decoration: InputDecoration(
                               labelStyle: TextStyle(
-                            color: _linkFocusNode.hasFocus
-                                ? orangeBlaze
-                                : Colors.black,
-                          )),
+                                color: _linkFocusNode.hasFocus
+                                    ? orangeBlaze
+                                    : Colors.black,
+                              )),
                         ),
                         const SizedBox(height: 20),
                         Text(

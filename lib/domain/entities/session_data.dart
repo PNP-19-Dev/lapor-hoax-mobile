@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.48
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.48
+ */
+
 import 'package:equatable/equatable.dart';
 
 class SessionData extends Equatable {
@@ -17,10 +23,10 @@ class SessionData extends Equatable {
 
   @override
   List<Object?> get props => [
-        token,
-        userid,
-        expiry,
-        email,
-        username,
-      ];
+    token,
+    userid,
+    expiry,
+    email,
+    username,
+  ];
 }

@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.48
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.48
+ */
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -19,21 +25,35 @@ import 'package:laporhoax/utils/exception.dart';
 
 abstract class RemoteDataSource {
   Future<String> deleteReport(String token, int id);
+
   Future<List<CategoryModel>> getCategory();
+
   Future<FeedModel> getFeedDetail(int id);
+
   Future<List<FeedModel>> getFeeds();
+
   Future<String> getPasswordReset(String email);
+
   Future<List<QuestionModel>> getQuestions();
+
   Future<List<ReportModel>> getReport(String token, int id);
+
   Future<List<UserModel>> getUser(String email);
+
   Future<UserQuestionModel> getUserQuestions(int id);
-  Future<String> postChangePassword(
-      String oldPass, String newPass, String token);
+
+  Future<String> postChangePassword(String oldPass, String newPass, String token);
+
   Future postFcmToken(String user, String fcmToken);
+
   Future updateFcmToken(String user, String fcmToken);
+
   Future<UserTokenModel> postLogin(String username, String password);
+
   Future<RegisterResponse> postRegister(RegisterModel user);
+
   Future<ReportModel> postReport(String token, ReportRequest report);
+
   Future<String> postChallenge(UserQuestionModel challenge);
 }
 
@@ -319,8 +339,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<String> postChangePassword(
-      String oldPass, String newPass, String token) async {
+  Future<String> postChangePassword(String oldPass, String newPass, String token) async {
     try {
       final response = await dio.put('/$passwordChangeEndpoint/',
           options: Options(contentType: Headers.jsonContentType, headers: {

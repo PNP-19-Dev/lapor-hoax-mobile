@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.48
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.48
+ */
+
 import 'package:laporhoax/data/datasources/db/database_helper.dart';
 import 'package:laporhoax/data/datasources/preferences/preferences_helper.dart';
 import 'package:laporhoax/data/models/category_table.dart';
@@ -12,17 +18,29 @@ abstract class LocalDataSource {
   static const String loginMessage = 'Session Saved';
   static const String logoutMessage = 'Session Removed';
   static const String cacheError = "Can't get the data :(";
+
   Future<String> insertFeed(FeedTable feed);
+
   Future<String> removeFeed(FeedTable feed);
+
   Future<FeedTable?> getFeedById(int id);
+
   Future<List<FeedTable>> getFeeds();
+
   Future<bool> isLoggedIn();
+
   Future<SessionData?> getSession();
+
   Future<String> insertSession(SessionData data);
+
   Future<String> removeSession(SessionData data);
+
   Future<void> cacheQuestions(List<QuestionTable> questions);
+
   Future<List<QuestionTable>> getCachedQuestion();
+
   Future<void> cacheCategory(List<CategoryTable> category);
+
   Future<List<CategoryTable>> getCachedCategory();
 }
 

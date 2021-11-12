@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -201,7 +207,7 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                             builder: (context) {
                               return AlertDialog(
                                 insetPadding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
+                                const EdgeInsets.symmetric(horizontal: 20),
                                 content: Container(
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
@@ -222,7 +228,7 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                                       Text(
                                         'Ini adalah password barumu. Silakan masuk untuk melanjutkan',
                                         style:
-                                            Theme.of(context).textTheme.caption,
+                                        Theme.of(context).textTheme.caption,
                                         textAlign: TextAlign.center,
                                       ),
                                       ElevatedButton(
@@ -247,7 +253,7 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                         index = state.index!;
                         userAnswer = state.userQuestion!;
                         _inputQuestion.text =
-                            state.questionMap![state.index![0]]!;
+                        state.questionMap![state.index![0]]!;
                       } else if (state is QuestionError) {
                         progress?.dismiss();
                         _inputQuestion.text = 'Gagal Mendapatkan Data';

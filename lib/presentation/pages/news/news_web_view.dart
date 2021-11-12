@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -122,7 +128,7 @@ class _NewsWebViewState extends State<NewsWebView> {
                     WebView(
                       key: _key,
                       initialUrl:
-                          '${RemoteDataSourceImpl.baseUrl}/news/${widget.id}',
+                      '${RemoteDataSourceImpl.baseUrl}/news/${widget.id}',
                       javascriptMode: JavascriptMode.unrestricted,
                       onPageFinished: (finish) {
                         setState(() {
@@ -132,8 +138,8 @@ class _NewsWebViewState extends State<NewsWebView> {
                     ),
                     isLoading
                         ? Center(
-                            child: CircularProgressIndicator(),
-                          )
+                      child: CircularProgressIndicator(),
+                    )
                         : Stack(),
                   ],
                 ),

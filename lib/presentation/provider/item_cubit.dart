@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
@@ -12,11 +18,9 @@ class ItemCubit extends Cubit<ItemState> {
   final SaveFeed _save;
   final RemoveFeed _remove;
 
-  ItemCubit(
-    this._status,
-    this._save,
-    this._remove,
-  ) : super(ItemInitial());
+  ItemCubit(this._status,
+      this._save,
+      this._remove,) : super(ItemInitial());
 
   Future<void> getStatus(int id) async {
     final result = await _status.execute(id);
@@ -29,8 +33,8 @@ class ItemCubit extends Cubit<ItemState> {
   Future<void> saveFeed(Feed feed) async {
     final result = await _save.execute(feed);
     result.fold(
-      (failure) => emit(ItemSaveError(failure.message)),
-      (success) => emit(ItemSaved(success)),
+          (failure) => emit(ItemSaveError(failure.message)),
+          (success) => emit(ItemSaved(success)),
     );
   }
 

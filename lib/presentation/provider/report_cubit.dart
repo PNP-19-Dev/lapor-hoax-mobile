@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
@@ -82,20 +88,18 @@ class ReportCubit extends Cubit<ReportState> {
     final result = await _category.execute();
 
     result.fold(
-      (failure) => emit(CategoryError(failure.message)),
-      (data) => emit(CategoryFetched(data)),
+          (failure) => emit(CategoryError(failure.message)),
+          (data) => emit(CategoryFetched(data)),
     );
   }
 
-  Future<void> sendReport(
-    String token,
-    int id,
-    String url,
-    String desc,
-    XFile img,
-    String category,
-    bool isAnonym,
-  ) async {
+  Future<void> sendReport(String token,
+      int id,
+      String url,
+      String desc,
+      XFile img,
+      String category,
+      bool isAnonym,) async {
     final report = ReportRequest(
       user: id,
       url: url,
@@ -109,8 +113,8 @@ class ReportCubit extends Cubit<ReportState> {
     final result = await _send.execute(token, report);
 
     result.fold(
-      (failure) => emit(ReportError(failure.message)),
-      (report) => emit(ReportUploaded(report)),
+          (failure) => emit(ReportError(failure.message)),
+          (report) => emit(ReportUploaded(report)),
     );
   }
 }

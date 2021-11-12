@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laporhoax/domain/entities/user.dart';
@@ -17,19 +23,18 @@ class PasswordCubit extends Cubit<PasswordState> {
     emit(PasswordLoading());
     final result = await _user.execute(email);
     result.fold(
-      (failure) => emit(PasswordError(failure.message)),
-      (data) => emit(UserHasData(data)),
+          (failure) => emit(PasswordError(failure.message)),
+          (data) => emit(UserHasData(data)),
     );
   }
 
-  Future<void> changePassword(
-      String oldPass, String newPass, String token) async {
+  Future<void> changePassword(String oldPass, String newPass, String token) async {
     emit(PasswordLoading());
     final result = await _change.execute(oldPass, newPass, token);
 
     result.fold(
-      (failure) => emit(PasswordError(failure.message)),
-      (success) => emit(PasswordReseted()),
+          (failure) => emit(PasswordError(failure.message)),
+          (success) => emit(PasswordReseted()),
     );
   }
 
@@ -38,8 +43,8 @@ class PasswordCubit extends Cubit<PasswordState> {
     final result = await _reset.execute(email);
 
     result.fold(
-      (failure) => emit(PasswordError(failure.message)),
-      (success) => emit(PasswordReseted()),
+          (failure) => emit(PasswordError(failure.message)),
+          (success) => emit(PasswordReseted()),
     );
   }
 }

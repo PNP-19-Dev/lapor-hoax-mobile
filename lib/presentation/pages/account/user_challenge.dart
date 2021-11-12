@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -107,14 +113,14 @@ class _UserChallengeState extends State<UserChallenge> {
                     value: _selectedQ1,
                     items: questions
                         .map((value) {
-                          return DropdownMenuItem<int>(
-                            child: Text(value.question),
-                            value: value.id,
-                          );
-                        })
+                      return DropdownMenuItem<int>(
+                        child: Text(value.question),
+                        value: value.id,
+                      );
+                    })
                         .where((item) =>
-                            item.value != _selectedQ2 &&
-                            item.value != _selectedQ3)
+                    item.value != _selectedQ2 &&
+                        item.value != _selectedQ3)
                         .toList(),
                     onChanged: (v) {
                       setState(() {
@@ -166,14 +172,14 @@ class _UserChallengeState extends State<UserChallenge> {
                     value: _selectedQ2,
                     items: questions
                         .map((value) {
-                          return DropdownMenuItem<int>(
-                            child: Text(value.question),
-                            value: value.id,
-                          );
-                        })
+                      return DropdownMenuItem<int>(
+                        child: Text(value.question),
+                        value: value.id,
+                      );
+                    })
                         .where((item) =>
-                            item.value != _selectedQ1 &&
-                            item.value != _selectedQ3)
+                    item.value != _selectedQ1 &&
+                        item.value != _selectedQ3)
                         .toList(),
                     onChanged: (v) {
                       setState(() {
@@ -225,14 +231,14 @@ class _UserChallengeState extends State<UserChallenge> {
                     value: _selectedQ3,
                     items: questions
                         .map((value) {
-                          return DropdownMenuItem<int>(
-                            child: Text(value.question),
-                            value: value.id,
-                          );
-                        })
+                      return DropdownMenuItem<int>(
+                        child: Text(value.question),
+                        value: value.id,
+                      );
+                    })
                         .where((item) =>
-                            item.value != _selectedQ1 &&
-                            item.value != _selectedQ2)
+                    item.value != _selectedQ1 &&
+                        item.value != _selectedQ2)
                         .toList(),
                     onChanged: (v) {
                       setState(() {
@@ -271,14 +277,14 @@ class _UserChallengeState extends State<UserChallenge> {
                           context
                               .read<QuestionCubit>()
                               .sendQuestions(UserQuestion(
-                                user: widget.id.toString(),
-                                quest1: _selectedQ1,
-                                quest2: _selectedQ2,
-                                quest3: _selectedQ3,
-                                ans1: _ans1.text,
-                                ans2: _ans2.text,
-                                ans3: _ans3.text,
-                              ));
+                            user: widget.id.toString(),
+                            quest1: _selectedQ1,
+                            quest2: _selectedQ2,
+                            quest3: _selectedQ3,
+                            ans1: _ans1.text,
+                            ans2: _ans2.text,
+                            ans3: _ans3.text,
+                          ));
                         }
                       },
                       child: Text('Daftar'),

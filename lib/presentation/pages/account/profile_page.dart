@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laporhoax/presentation/pages/account/account_page.dart';
@@ -81,12 +87,12 @@ class _ProfilePageState extends State<ProfilePage> {
                       BuildCard(
                         Icons.vpn_key_outlined,
                         'Ubah Kata Sandi',
-                        () => Navigation.intent(PasswordChangePage.ROUTE_NAME),
+                            () => Navigation.intent(PasswordChangePage.ROUTE_NAME),
                       ),
                       BuildCard(
                         Icons.vpn_key_outlined,
                         'Ubah Pertanyaan Keamanan',
-                        () => Navigation.intentWithData(
+                            () => Navigation.intentWithData(
                             ChangeUserQuestion.ROUTE_NAME, _id),
                       ),
                     ],

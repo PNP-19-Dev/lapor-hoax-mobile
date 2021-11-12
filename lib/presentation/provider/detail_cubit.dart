@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
@@ -15,8 +21,8 @@ class DetailCubit extends Cubit<DetailState> {
     final result = await _detail.execute(id);
 
     result.fold(
-      (failure) => emit(DetailError(failure.message)),
-      (data) => emit(DetailHasData(data)),
+          (failure) => emit(DetailError(failure.message)),
+          (data) => emit(DetailHasData(data)),
     );
   }
 }

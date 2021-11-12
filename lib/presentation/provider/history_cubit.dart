@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:laporhoax/data/models/token_id.dart';
@@ -14,6 +20,7 @@ class HistoryCubit extends Cubit<HistoryState> {
   HistoryCubit(this._query, this._delete) : super(HistoryInitial());
 
   List<Report> _reports = [];
+
   List<Report> get reports => _reports;
 
   Future<void> getHistory(TokenId tokenId) async {
@@ -21,8 +28,8 @@ class HistoryCubit extends Cubit<HistoryState> {
 
     final result = await _query.execute(tokenId.token, tokenId.id);
     result.fold(
-      (failure) => emit(HistoryError(failure.message)),
-      (data) {
+          (failure) => emit(HistoryError(failure.message)),
+          (data) {
         _reports = data;
         return data.isEmpty
             ? emit(HistoryError('Tidak ada data Laporan'))
@@ -36,8 +43,8 @@ class HistoryCubit extends Cubit<HistoryState> {
       final result = await _delete.execute(tokenId.token, tokenId.id);
       emit(HistoryLoading());
       result.fold(
-        (failure) => emit(HistoryDeleteSomeData(_reports, failure.message)),
-        (success) {
+            (failure) => emit(HistoryDeleteSomeData(_reports, failure.message)),
+            (success) {
           _reports.removeWhere((element) => element.id == tokenId.id);
           emit(HistoryDeleteSomeData(_reports, success));
         },

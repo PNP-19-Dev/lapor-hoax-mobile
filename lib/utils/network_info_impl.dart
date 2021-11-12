@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.53
+ */
+
 import 'package:data_connection_checker/data_connection_checker.dart';
 
 abstract class NetworkInfo {

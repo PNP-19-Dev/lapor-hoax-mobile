@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:laporhoax/domain/entities/question.dart';
@@ -13,19 +19,17 @@ class QuestionCubit extends Cubit<QuestionState> {
   final GetQuestions _questions;
   final PostUserChallenge _send;
 
-  QuestionCubit(
-    this._challenge,
-    this._questions,
-    this._send,
-  ) : super(QuestionInitial());
+  QuestionCubit(this._challenge,
+      this._questions,
+      this._send,) : super(QuestionInitial());
 
   Future<void> fetchQuestions() async {
     emit(QuestionLoading());
     final result = await _questions.execute();
 
     result.fold(
-      (failure) => emit(QuestionError(failure.message)),
-      (data) => emit(QuestionHasData.question(data)),
+          (failure) => emit(QuestionError(failure.message)),
+          (data) => emit(QuestionHasData.question(data)),
     );
   }
 
@@ -35,11 +39,11 @@ class QuestionCubit extends Cubit<QuestionState> {
     emit(QuestionLoading());
 
     result.fold(
-      (failure) => emit(QuestionError(failure.message)),
-      (question) async {
-        data.fold(
           (failure) => emit(QuestionError(failure.message)),
-          (data) => emit(QuestionHasData(question, questionToMap(question),
+          (question) async {
+        data.fold(
+              (failure) => emit(QuestionError(failure.message)),
+              (data) => emit(QuestionHasData(question, questionToMap(question),
               getIndexQuestion(data), getAnswerQuestion(data))),
         );
       },
@@ -80,8 +84,8 @@ class QuestionCubit extends Cubit<QuestionState> {
 
     final result = await _send.execute(question);
     result.fold(
-      (failure) => emit(ChallengeError(failure.message)),
-      (success) => emit(ChallengeSuccess()),
+          (failure) => emit(ChallengeError(failure.message)),
+          (success) => emit(ChallengeSuccess()),
     );
   }
 }

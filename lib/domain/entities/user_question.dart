@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.48
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.48
+ */
+
 import 'package:equatable/equatable.dart';
 
 class UserQuestion extends Equatable {
@@ -9,14 +15,13 @@ class UserQuestion extends Equatable {
   final String? ans2;
   final String? ans3;
 
-  UserQuestion(
-      {required this.user,
-      required this.quest1,
-      required this.quest2,
-      required this.quest3,
-      required this.ans1,
-      required this.ans2,
-      required this.ans3});
+  UserQuestion({required this.user,
+    required this.quest1,
+    required this.quest2,
+    required this.quest3,
+    required this.ans1,
+    required this.ans2,
+    required this.ans3});
 
   @override
   List<Object?> get props => [user, ans1, ans2, ans3, quest1, quest2, quest3];

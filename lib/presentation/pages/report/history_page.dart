@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -75,7 +81,6 @@ class _HistoryPageState extends State<HistoryPage> {
         reports = state.reports;
         _showSnackBar(context, state.message);
       }
-
     }, builder: (_, state) {
       if (state is HistoryLoading) {
         return const Center(child: CircularProgressIndicator());

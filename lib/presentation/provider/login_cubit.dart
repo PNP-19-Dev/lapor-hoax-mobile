@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:laporhoax/data/datasources/local_data_source.dart';
@@ -15,13 +21,11 @@ class LoginCubit extends Cubit<LoginState> {
   final GetSessionData _data;
   final RemoveSessionData _logout;
 
-  LoginCubit(
-    this._login,
-    this._user,
-    this._save,
-    this._data,
-    this._logout,
-  ) : super(LoginInitial());
+  LoginCubit(this._login,
+      this._user,
+      this._save,
+      this._data,
+      this._logout,) : super(LoginInitial());
 
   /*TODO UPDATE THE FCM TOKEN
   final data = Provider.of<UserNotifier>(
@@ -43,11 +47,11 @@ class LoginCubit extends Cubit<LoginState> {
     final user = await _user.execute(username);
 
     result.fold(
-      (failure) => emit(LoginFailure(failure.message)),
-      (token) {
-        user.fold(
           (failure) => emit(LoginFailure(failure.message)),
-          (user) => emit(SessionSaving(SessionData(
+          (token) {
+        user.fold(
+              (failure) => emit(LoginFailure(failure.message)),
+              (user) => emit(SessionSaving(SessionData(
             token: token.token!,
             userid: user.id,
             expiry: token.expiry!,
@@ -70,8 +74,8 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LoginInitial());
     final result = await _data.execute();
     result.fold(
-      (failure) => emit(LoginFailure(failure.message)),
-      (sessionData) {
+          (failure) => emit(LoginFailure(failure.message)),
+          (sessionData) {
         if (sessionData != null) {
           emit(LoginSuccessWithData(sessionData));
         } else {

@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -145,9 +151,9 @@ class _LoginPageState extends State<LoginPage> {
                                       .textTheme
                                       .bodyText1!
                                       .copyWith(
-                                        color: orangeBlaze,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    color: orangeBlaze,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                               BlocListener<LoginCubit, LoginState>(
@@ -178,11 +184,11 @@ class _LoginPageState extends State<LoginPage> {
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
                                         context.read<LoginCubit>().login(
-                                              _usernameController.text
-                                                  .toString(),
-                                              _passwordController.text
-                                                  .toString(),
-                                            );
+                                          _usernameController.text
+                                              .toString(),
+                                          _passwordController.text
+                                              .toString(),
+                                        );
                                       }
                                     },
                                     child: Text('Login'),

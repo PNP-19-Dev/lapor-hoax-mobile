@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -38,7 +44,7 @@ class _StaticPageViewerState extends State<StaticPageViewer> {
     String fileText = await rootBundle
         .loadString('assets/document/${widget.data.fileName}.html');
     _controller.loadUrl(Uri.dataFromString(fileText,
-            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
+        mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
         .toString());
   }
 }

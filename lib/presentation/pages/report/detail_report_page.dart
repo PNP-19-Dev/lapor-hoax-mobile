@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -71,8 +77,8 @@ class DetailReportPage extends StatelessWidget {
               child: Text(
                 "${verdictDesc.isEmpty ? '--- Belum ada feedback, ditunggu ya ! ---' : verdictDesc}",
                 style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      color: isDark ? Colors.white : Colors.grey,
-                    ),
+                  color: isDark ? Colors.white : Colors.grey,
+                ),
                 textAlign: TextAlign.justify,
               ),
             ),
@@ -103,8 +109,8 @@ class DetailReportPage extends StatelessWidget {
                     child: Text(
                       '${report.url}',
                       style: Theme.of(context).textTheme.caption!.copyWith(
-                            color: orangeBlaze,
-                          ),
+                        color: orangeBlaze,
+                      ),
                     ),
                     onTap: () {
                       final url = report.url!.replaceAll('"', '');
@@ -152,8 +158,8 @@ class DetailReportPage extends StatelessWidget {
               child: Text(
                 '${report.description}',
                 style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      color: grey700,
-                    ),
+                  color: grey700,
+                ),
                 textAlign: TextAlign.justify,
               ),
             ),
