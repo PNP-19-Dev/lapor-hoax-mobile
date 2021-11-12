@@ -68,6 +68,9 @@ dependencies:
   firebase_crashlytics: ^2.3.0
 
 dev_dependencies:
+  flutter_driver:
+    sdk: flutter
+  test: any
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.4
