@@ -13,7 +13,7 @@ class OnSuccessReport extends StatelessWidget {
 
   final Report reportItem;
 
-  OnSuccessReport({required this.reportItem});
+  OnSuccessReport({required this.reportItem, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class OnSuccessReport extends StatelessWidget {
                 child: Text('Lapor lagi yuk !'),
               ),
               SizedBox(height: 20),
-              GestureDetector(
+              InkWell(
                 onTap: () => Navigation.intentWithData(
                     DetailReportPage.ROUTE_NAME, reportItem),
                 child: Text(
@@ -75,6 +75,8 @@ class OnSuccessReport extends StatelessWidget {
 
 class OnFailureReport extends StatelessWidget {
   static const String ROUTE_NAME = '/error';
+
+  OnFailureReport({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

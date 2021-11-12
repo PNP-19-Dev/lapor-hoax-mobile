@@ -95,7 +95,15 @@ class _UserChallengeState extends State<UserChallenge> {
                       icon: Image.asset('assets/icons/question.png'),
                       suffixIcon: Icon(Icons.arrow_drop_down),
                     ),
-                    hint: Text('Category'),
+                    hint: BlocBuilder<QuestionCubit, QuestionState>(
+                      builder: (context, state) {
+                        if (state is QuestionLoading) {
+                          return Text('Loading');
+                        } else {
+                          return Text('Pilih Pertanyaan');
+                        }
+                      },
+                    ),
                     value: _selectedQ1,
                     items: questions
                         .map((value) {
@@ -146,7 +154,15 @@ class _UserChallengeState extends State<UserChallenge> {
                       icon: Image.asset('assets/icons/question.png'),
                       suffixIcon: Icon(Icons.arrow_drop_down),
                     ),
-                    hint: Text('Category'),
+                    hint: BlocBuilder<QuestionCubit, QuestionState>(
+                      builder: (context, state) {
+                        if (state is QuestionLoading) {
+                          return Text('Loading');
+                        } else {
+                          return Text('Pilih Pertanyaan');
+                        }
+                      },
+                    ),
                     value: _selectedQ2,
                     items: questions
                         .map((value) {
@@ -197,7 +213,15 @@ class _UserChallengeState extends State<UserChallenge> {
                       icon: Image.asset('assets/icons/question.png'),
                       suffixIcon: Icon(Icons.arrow_drop_down),
                     ),
-                    hint: Text('Category'),
+                    hint: BlocBuilder<QuestionCubit, QuestionState>(
+                      builder: (context, state) {
+                        if (state is QuestionLoading) {
+                          return Text('Loading');
+                        } else {
+                          return Text('Pilih Pertanyaan');
+                        }
+                      },
+                    ),
                     value: _selectedQ3,
                     items: questions
                         .map((value) {

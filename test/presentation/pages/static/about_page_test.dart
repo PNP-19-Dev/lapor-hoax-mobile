@@ -3,18 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laporhoax/presentation/pages/static/about_page.dart';
 import 'package:laporhoax/presentation/provider/about_cubit.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'about_page_test.mocks.dart';
+import '../../../helpers/test_helper.mocks.dart';
 
-@GenerateMocks([
-  AboutCubit,
-])
-void main(){
+void main() {
   late MockAboutCubit bloc;
 
-  setUp((){
+  setUp(() {
     bloc = MockAboutCubit();
   });
 
@@ -27,14 +23,32 @@ void main(){
     );
   }
 
-  testWidgets('Page should display about page',
-          (WidgetTester tester) async {
-        when(bloc.state).thenReturn(AboutState('v1.1.0'));
-        when(bloc.stream).thenAnswer((_) => Stream.value(AboutState('v1.1.0')));
+  testWidgets('Page should display about page', (WidgetTester tester) async {
+    when(bloc.state).thenReturn(AboutState('v1.1.0'));
+    when(bloc.stream).thenAnswer((_) => Stream.value(AboutState('v1.1.0')));
 
-        await tester.pumpWidget(_makeTestableWidget(About()));
+    await tester.pumpWidget(_makeTestableWidget(About()));
 
-        final item = find.byKey(Key('about_page_version'));
-        expect(item, findsOneWidget);
-      });
+    final item = find.byKey(Key('about_page_version'));
+    expect(item, findsOneWidget);
+
+    final text = find.text('version v1.1.0');
+    expect(text, findsOneWidget);
+  });
+
+  testWidgets('should display about dialog', (WidgetTester tester) async {
+    when(bloc.state).thenReturn(AboutState('v1.1.0'));
+    when(bloc.stream).thenAnswer((_) => Stream.value(AboutState('v1.1.0')));
+
+    await tester.pumpWidget(_makeTestableWidget(About()));
+
+    final item = find.byType(InkWell);
+    expect(item, findsOneWidget);
+
+    await tester.tap(item);
+    await tester.pump();
+
+    final dialog = find.byType(AboutDialog);
+    expect(dialog, findsOneWidget);
+  });
 }

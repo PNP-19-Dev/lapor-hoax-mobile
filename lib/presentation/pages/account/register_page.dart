@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:laporhoax/domain/entities/register.dart';
+import 'package:laporhoax/presentation/pages/account/login_page.dart';
 import 'package:laporhoax/presentation/pages/account/user_challenge.dart';
 import 'package:laporhoax/presentation/provider/register_cubit.dart';
 import 'package:laporhoax/styles/colors.dart';
@@ -43,7 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         IconButton(
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () => Navigation.back(),
                           icon: Icon(Icons.arrow_back),
                         ),
                       ],
@@ -161,7 +162,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ),
                             validator: (value) {
-                              if (value!.toString() != _passwordController.text) {
+                              if (value!.toString() !=
+                                  _passwordController.text) {
                                 return 'Password tidak sama!';
                               }
                               if (value.trim().isEmpty) {
@@ -172,15 +174,15 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           SizedBox(height: 20),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
+                                InkWell(
+                                  onTap: () =>
+                                      Navigation.intent(LoginPage.ROUTE_NAME),
                                   child: Text(
                                     'Masuk disini',
                                     style: Theme.of(context)
@@ -200,7 +202,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                     }
 
                                     if (state is RegisterError) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         SnackBar(
                                           content: Text(state.message),
                                         ),
@@ -216,11 +219,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                     onPressed: () async {
                                       if (_formKey.currentState!.validate()) {
                                         var userData = Register(
-                                          name:
-                                              _usernameController.text.toString(),
-                                          email: _emailController.text.toString(),
-                                          password:
-                                              _passwordController.text.toString(),
+                                          name: _usernameController.text
+                                              .toString(),
+                                          email:
+                                              _emailController.text.toString(),
+                                          password: _passwordController.text
+                                              .toString(),
                                         );
 
                                         context

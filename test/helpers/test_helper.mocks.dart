@@ -2,45 +2,59 @@
 // in laporhoax/test/helpers/test_helper.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i12;
+import 'dart:async' as _i11;
 
+import 'package:bloc/bloc.dart' as _i50;
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:data_connection_checker/data_connection_checker.dart' as _i9;
-import 'package:dio/dio.dart' as _i10;
-import 'package:laporhoax/data/datasources/db/database_helper.dart' as _i34;
-import 'package:laporhoax/data/datasources/local_data_source.dart' as _i30;
+import 'package:dio/dio.dart' as _i23;
+import 'package:image_picker/image_picker.dart' as _i20;
+import 'package:laporhoax/data/datasources/db/database_helper.dart' as _i46;
+import 'package:laporhoax/data/datasources/local_data_source.dart' as _i42;
 import 'package:laporhoax/data/datasources/preferences/preferences_helper.dart'
-    as _i36;
-import 'package:laporhoax/data/datasources/remote_data_source.dart' as _i25;
-import 'package:laporhoax/data/models/category_model.dart' as _i26;
-import 'package:laporhoax/data/models/category_table.dart' as _i33;
+    as _i48;
+import 'package:laporhoax/data/datasources/remote_data_source.dart' as _i37;
+import 'package:laporhoax/data/models/category_model.dart' as _i38;
+import 'package:laporhoax/data/models/category_table.dart' as _i45;
 import 'package:laporhoax/data/models/feed_model.dart' as _i3;
-import 'package:laporhoax/data/models/feed_table.dart' as _i31;
-import 'package:laporhoax/data/models/question_model.dart' as _i27;
-import 'package:laporhoax/data/models/question_table.dart' as _i32;
-import 'package:laporhoax/data/models/register_model.dart' as _i29;
+import 'package:laporhoax/data/models/feed_table.dart' as _i43;
+import 'package:laporhoax/data/models/question_model.dart' as _i39;
+import 'package:laporhoax/data/models/question_table.dart' as _i44;
+import 'package:laporhoax/data/models/register_model.dart' as _i41;
 import 'package:laporhoax/data/models/register_response.dart' as _i6;
 import 'package:laporhoax/data/models/report_model.dart' as _i7;
-import 'package:laporhoax/data/models/report_request.dart' as _i24;
-import 'package:laporhoax/data/models/user_model.dart' as _i28;
+import 'package:laporhoax/data/models/report_request.dart' as _i36;
+import 'package:laporhoax/data/models/token_id.dart' as _i51;
+import 'package:laporhoax/data/models/user_model.dart' as _i40;
 import 'package:laporhoax/data/models/user_question_model.dart' as _i4;
 import 'package:laporhoax/data/models/user_token_model.dart' as _i5;
-import 'package:laporhoax/domain/entities/category.dart' as _i14;
-import 'package:laporhoax/domain/entities/feed.dart' as _i15;
-import 'package:laporhoax/domain/entities/question.dart' as _i16;
-import 'package:laporhoax/domain/entities/register.dart' as _i23;
-import 'package:laporhoax/domain/entities/register_data.dart' as _i22;
-import 'package:laporhoax/domain/entities/report.dart' as _i17;
-import 'package:laporhoax/domain/entities/session_data.dart' as _i18;
-import 'package:laporhoax/domain/entities/user.dart' as _i19;
-import 'package:laporhoax/domain/entities/user_question.dart' as _i20;
-import 'package:laporhoax/domain/entities/user_token.dart' as _i21;
-import 'package:laporhoax/domain/repositories/repository.dart' as _i11;
-import 'package:laporhoax/utils/failure.dart' as _i13;
-import 'package:laporhoax/utils/network_info_impl.dart' as _i37;
+import 'package:laporhoax/domain/entities/category.dart' as _i26;
+import 'package:laporhoax/domain/entities/feed.dart' as _i27;
+import 'package:laporhoax/domain/entities/question.dart' as _i28;
+import 'package:laporhoax/domain/entities/register.dart' as _i35;
+import 'package:laporhoax/domain/entities/register_data.dart' as _i34;
+import 'package:laporhoax/domain/entities/report.dart' as _i29;
+import 'package:laporhoax/domain/entities/session_data.dart' as _i30;
+import 'package:laporhoax/domain/entities/user.dart' as _i31;
+import 'package:laporhoax/domain/entities/user_question.dart' as _i32;
+import 'package:laporhoax/domain/entities/user_token.dart' as _i33;
+import 'package:laporhoax/domain/repositories/repository.dart' as _i24;
+import 'package:laporhoax/presentation/provider/about_cubit.dart' as _i22;
+import 'package:laporhoax/presentation/provider/detail_cubit.dart' as _i10;
+import 'package:laporhoax/presentation/provider/feed_cubit.dart' as _i12;
+import 'package:laporhoax/presentation/provider/history_cubit.dart' as _i13;
+import 'package:laporhoax/presentation/provider/item_cubit.dart' as _i14;
+import 'package:laporhoax/presentation/provider/login_cubit.dart' as _i15;
+import 'package:laporhoax/presentation/provider/password_cubit.dart' as _i16;
+import 'package:laporhoax/presentation/provider/question_cubit.dart' as _i17;
+import 'package:laporhoax/presentation/provider/register_cubit.dart' as _i18;
+import 'package:laporhoax/presentation/provider/report_cubit.dart' as _i19;
+import 'package:laporhoax/presentation/provider/saved_feed_cubit.dart' as _i21;
+import 'package:laporhoax/utils/failure.dart' as _i25;
+import 'package:laporhoax/utils/network_info_impl.dart' as _i49;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:shared_preferences/shared_preferences.dart' as _i8;
-import 'package:sqflite/sqflite.dart' as _i35;
+import 'package:sqflite/sqflite.dart' as _i47;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: avoid_setters_without_getters
@@ -73,178 +87,229 @@ class _FakeDuration_7 extends _i1.Fake implements Duration {}
 class _FakeAddressCheckResult_8 extends _i1.Fake
     implements _i9.AddressCheckResult {}
 
-class _FakeBaseOptions_9 extends _i1.Fake implements _i10.BaseOptions {}
+class _FakeDetailState_9 extends _i1.Fake implements _i10.DetailState {}
 
-class _FakeHttpClientAdapter_10 extends _i1.Fake
-    implements _i10.HttpClientAdapter {}
+class _FakeStreamSubscription_10<T> extends _i1.Fake
+    implements _i11.StreamSubscription<T> {}
 
-class _FakeTransformer_11 extends _i1.Fake implements _i10.Transformer {}
+class _FakeFeedState_11 extends _i1.Fake implements _i12.FeedState {}
 
-class _FakeInterceptors_12 extends _i1.Fake implements _i10.Interceptors {}
+class _FakeHistoryState_12 extends _i1.Fake implements _i13.HistoryState {}
 
-class _FakeResponse_13<T> extends _i1.Fake implements _i10.Response<T> {}
+class _FakeItemState_13 extends _i1.Fake implements _i14.ItemState {}
+
+class _FakeLoginState_14 extends _i1.Fake implements _i15.LoginState {}
+
+class _FakePasswordState_15 extends _i1.Fake implements _i16.PasswordState {}
+
+class _FakeQuestionState_16 extends _i1.Fake implements _i17.QuestionState {}
+
+class _FakeRegisterState_17 extends _i1.Fake implements _i18.RegisterState {}
+
+class _FakeReportState_18 extends _i1.Fake implements _i19.ReportState {}
+
+class _FakeXFile_19 extends _i1.Fake implements _i20.XFile {}
+
+class _FakeSavedFeedState_20 extends _i1.Fake implements _i21.SavedFeedState {}
+
+class _FakeAboutState_21 extends _i1.Fake implements _i22.AboutState {}
+
+class _FakeBaseOptions_22 extends _i1.Fake implements _i23.BaseOptions {}
+
+class _FakeHttpClientAdapter_23 extends _i1.Fake
+    implements _i23.HttpClientAdapter {}
+
+class _FakeTransformer_24 extends _i1.Fake implements _i23.Transformer {}
+
+class _FakeInterceptors_25 extends _i1.Fake implements _i23.Interceptors {}
+
+class _FakeResponse_26<T> extends _i1.Fake implements _i23.Response<T> {}
 
 /// A class which mocks [Repository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockRepository extends _i1.Mock implements _i11.Repository {
+class MockRepository extends _i1.Mock implements _i24.Repository {
   MockRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i12.Future<_i2.Either<_i13.Failure, String>> deleteReport(
+  _i11.Future<_i2.Either<_i25.Failure, String>> deleteReport(
           String? token, int? id) =>
       (super.noSuchMethod(Invocation.method(#deleteReport, [token, id]),
-              returnValue: Future<_i2.Either<_i13.Failure, String>>.value(
-                  _FakeEither_0<_i13.Failure, String>()))
-          as _i12.Future<_i2.Either<_i13.Failure, String>>);
+              returnValue: Future<_i2.Either<_i25.Failure, String>>.value(
+                  _FakeEither_0<_i25.Failure, String>()))
+          as _i11.Future<_i2.Either<_i25.Failure, String>>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, List<_i14.Category>>> getCategories() =>
+  _i11.Future<_i2.Either<_i25.Failure, List<_i26.Category>>> getCategories() =>
       (super.noSuchMethod(Invocation.method(#getCategories, []),
               returnValue:
-                  Future<_i2.Either<_i13.Failure, List<_i14.Category>>>.value(
-                      _FakeEither_0<_i13.Failure, List<_i14.Category>>()))
-          as _i12.Future<_i2.Either<_i13.Failure, List<_i14.Category>>>);
+                  Future<_i2.Either<_i25.Failure, List<_i26.Category>>>.value(
+                      _FakeEither_0<_i25.Failure, List<_i26.Category>>()))
+          as _i11.Future<_i2.Either<_i25.Failure, List<_i26.Category>>>);
+
   @override
-  _i12.Future<bool> isAddedToSavedFeed(int? id) =>
+  _i11.Future<bool> isAddedToSavedFeed(int? id) =>
       (super.noSuchMethod(Invocation.method(#isAddedToSavedFeed, [id]),
-          returnValue: Future<bool>.value(false)) as _i12.Future<bool>);
+          returnValue: Future<bool>.value(false)) as _i11.Future<bool>);
+
   @override
-  _i12.Future<bool> isSessionActivated() =>
+  _i11.Future<bool> isSessionActivated() =>
       (super.noSuchMethod(Invocation.method(#isSessionActivated, []),
-          returnValue: Future<bool>.value(false)) as _i12.Future<bool>);
+          returnValue: Future<bool>.value(false)) as _i11.Future<bool>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, List<_i15.Feed>>> getFeeds() =>
+  _i11.Future<_i2.Either<_i25.Failure, List<_i27.Feed>>> getFeeds() =>
       (super.noSuchMethod(Invocation.method(#getFeeds, []),
-          returnValue: Future<_i2.Either<_i13.Failure, List<_i15.Feed>>>.value(
-              _FakeEither_0<_i13.Failure, List<_i15.Feed>>())) as _i12
-          .Future<_i2.Either<_i13.Failure, List<_i15.Feed>>>);
+          returnValue: Future<_i2.Either<_i25.Failure, List<_i27.Feed>>>.value(
+              _FakeEither_0<_i25.Failure, List<_i27.Feed>>())) as _i11
+          .Future<_i2.Either<_i25.Failure, List<_i27.Feed>>>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, _i15.Feed>> getFeedDetail(int? id) =>
+  _i11.Future<_i2.Either<_i25.Failure, _i27.Feed>> getFeedDetail(int? id) =>
       (super.noSuchMethod(Invocation.method(#getFeedDetail, [id]),
-              returnValue: Future<_i2.Either<_i13.Failure, _i15.Feed>>.value(
-                  _FakeEither_0<_i13.Failure, _i15.Feed>()))
-          as _i12.Future<_i2.Either<_i13.Failure, _i15.Feed>>);
+              returnValue: Future<_i2.Either<_i25.Failure, _i27.Feed>>.value(
+                  _FakeEither_0<_i25.Failure, _i27.Feed>()))
+          as _i11.Future<_i2.Either<_i25.Failure, _i27.Feed>>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, String>> getPasswordReset(
+  _i11.Future<_i2.Either<_i25.Failure, String>> getPasswordReset(
           String? email) =>
       (super.noSuchMethod(Invocation.method(#getPasswordReset, [email]),
-              returnValue: Future<_i2.Either<_i13.Failure, String>>.value(
-                  _FakeEither_0<_i13.Failure, String>()))
-          as _i12.Future<_i2.Either<_i13.Failure, String>>);
+              returnValue: Future<_i2.Either<_i25.Failure, String>>.value(
+                  _FakeEither_0<_i25.Failure, String>()))
+          as _i11.Future<_i2.Either<_i25.Failure, String>>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, List<_i16.Question>>> getQuestions() =>
+  _i11.Future<_i2.Either<_i25.Failure, List<_i28.Question>>> getQuestions() =>
       (super.noSuchMethod(Invocation.method(#getQuestions, []),
               returnValue:
-                  Future<_i2.Either<_i13.Failure, List<_i16.Question>>>.value(
-                      _FakeEither_0<_i13.Failure, List<_i16.Question>>()))
-          as _i12.Future<_i2.Either<_i13.Failure, List<_i16.Question>>>);
+                  Future<_i2.Either<_i25.Failure, List<_i28.Question>>>.value(
+                      _FakeEither_0<_i25.Failure, List<_i28.Question>>()))
+          as _i11.Future<_i2.Either<_i25.Failure, List<_i28.Question>>>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, List<_i17.Report>>> getReports(
+  _i11.Future<_i2.Either<_i25.Failure, List<_i29.Report>>> getReports(
           String? token, int? id) =>
       (super.noSuchMethod(Invocation.method(#getReports, [token, id]),
               returnValue:
-                  Future<_i2.Either<_i13.Failure, List<_i17.Report>>>.value(
-                      _FakeEither_0<_i13.Failure, List<_i17.Report>>()))
-          as _i12.Future<_i2.Either<_i13.Failure, List<_i17.Report>>>);
+                  Future<_i2.Either<_i25.Failure, List<_i29.Report>>>.value(
+                      _FakeEither_0<_i25.Failure, List<_i29.Report>>()))
+          as _i11.Future<_i2.Either<_i25.Failure, List<_i29.Report>>>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, List<_i15.Feed>>> getSavedFeeds() =>
+  _i11.Future<_i2.Either<_i25.Failure, List<_i27.Feed>>> getSavedFeeds() =>
       (super.noSuchMethod(Invocation.method(#getSavedFeeds, []),
-          returnValue: Future<_i2.Either<_i13.Failure, List<_i15.Feed>>>.value(
-              _FakeEither_0<_i13.Failure, List<_i15.Feed>>())) as _i12
-          .Future<_i2.Either<_i13.Failure, List<_i15.Feed>>>);
+          returnValue: Future<_i2.Either<_i25.Failure, List<_i27.Feed>>>.value(
+              _FakeEither_0<_i25.Failure, List<_i27.Feed>>())) as _i11
+          .Future<_i2.Either<_i25.Failure, List<_i27.Feed>>>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, _i18.SessionData>> getSessionData() =>
+  _i11.Future<_i2.Either<_i25.Failure, _i30.SessionData>> getSessionData() =>
       (super.noSuchMethod(Invocation.method(#getSessionData, []),
-          returnValue: Future<_i2.Either<_i13.Failure, _i18.SessionData>>.value(
-              _FakeEither_0<_i13.Failure, _i18.SessionData>())) as _i12
-          .Future<_i2.Either<_i13.Failure, _i18.SessionData>>);
+          returnValue: Future<_i2.Either<_i25.Failure, _i30.SessionData>>.value(
+              _FakeEither_0<_i25.Failure, _i30.SessionData>())) as _i11
+          .Future<_i2.Either<_i25.Failure, _i30.SessionData>>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, _i19.User>> getUser(String? email) =>
+  _i11.Future<_i2.Either<_i25.Failure, _i31.User>> getUser(String? email) =>
       (super.noSuchMethod(Invocation.method(#getUser, [email]),
-              returnValue: Future<_i2.Either<_i13.Failure, _i19.User>>.value(
-                  _FakeEither_0<_i13.Failure, _i19.User>()))
-          as _i12.Future<_i2.Either<_i13.Failure, _i19.User>>);
+              returnValue: Future<_i2.Either<_i25.Failure, _i31.User>>.value(
+                  _FakeEither_0<_i25.Failure, _i31.User>()))
+          as _i11.Future<_i2.Either<_i25.Failure, _i31.User>>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, _i20.UserQuestion>> getUserChallenge(
+  _i11.Future<_i2.Either<_i25.Failure, _i32.UserQuestion>> getUserChallenge(
           int? id) =>
       (super.noSuchMethod(Invocation.method(#getUserChallenge, [id]),
               returnValue:
-                  Future<_i2.Either<_i13.Failure, _i20.UserQuestion>>.value(
-                      _FakeEither_0<_i13.Failure, _i20.UserQuestion>()))
-          as _i12.Future<_i2.Either<_i13.Failure, _i20.UserQuestion>>);
+                  Future<_i2.Either<_i25.Failure, _i32.UserQuestion>>.value(
+                      _FakeEither_0<_i25.Failure, _i32.UserQuestion>()))
+          as _i11.Future<_i2.Either<_i25.Failure, _i32.UserQuestion>>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, String>> postChangePassword(
+  _i11.Future<_i2.Either<_i25.Failure, String>> postChangePassword(
           String? oldPass, String? newPass, String? token) =>
       (super.noSuchMethod(
               Invocation.method(#postChangePassword, [oldPass, newPass, token]),
-              returnValue: Future<_i2.Either<_i13.Failure, String>>.value(
-                  _FakeEither_0<_i13.Failure, String>()))
-          as _i12.Future<_i2.Either<_i13.Failure, String>>);
+              returnValue: Future<_i2.Either<_i25.Failure, String>>.value(
+                  _FakeEither_0<_i25.Failure, String>()))
+          as _i11.Future<_i2.Either<_i25.Failure, String>>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, String>> postFCMToken(
+  _i11.Future<_i2.Either<_i25.Failure, String>> postFCMToken(
           int? user, String? fcmToken) =>
       (super.noSuchMethod(Invocation.method(#postFCMToken, [user, fcmToken]),
-              returnValue: Future<_i2.Either<_i13.Failure, String>>.value(
-                  _FakeEither_0<_i13.Failure, String>()))
-          as _i12.Future<_i2.Either<_i13.Failure, String>>);
+              returnValue: Future<_i2.Either<_i25.Failure, String>>.value(
+                  _FakeEither_0<_i25.Failure, String>()))
+          as _i11.Future<_i2.Either<_i25.Failure, String>>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, String>> putFCMToken(
+  _i11.Future<_i2.Either<_i25.Failure, String>> putFCMToken(
           int? user, String? fcmToken) =>
       (super.noSuchMethod(Invocation.method(#putFCMToken, [user, fcmToken]),
-              returnValue: Future<_i2.Either<_i13.Failure, String>>.value(
-                  _FakeEither_0<_i13.Failure, String>()))
-          as _i12.Future<_i2.Either<_i13.Failure, String>>);
+              returnValue: Future<_i2.Either<_i25.Failure, String>>.value(
+                  _FakeEither_0<_i25.Failure, String>()))
+          as _i11.Future<_i2.Either<_i25.Failure, String>>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, _i21.UserToken>> postLogin(
+  _i11.Future<_i2.Either<_i25.Failure, _i33.UserToken>> postLogin(
           String? username, String? password) =>
       (super.noSuchMethod(Invocation.method(#postLogin, [username, password]),
-          returnValue: Future<_i2.Either<_i13.Failure, _i21.UserToken>>.value(
-              _FakeEither_0<_i13.Failure, _i21.UserToken>())) as _i12
-          .Future<_i2.Either<_i13.Failure, _i21.UserToken>>);
+          returnValue: Future<_i2.Either<_i25.Failure, _i33.UserToken>>.value(
+              _FakeEither_0<_i25.Failure, _i33.UserToken>())) as _i11
+          .Future<_i2.Either<_i25.Failure, _i33.UserToken>>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, _i22.RegisterData>> postRegister(
-          _i23.Register? user) =>
+  _i11.Future<_i2.Either<_i25.Failure, _i34.RegisterData>> postRegister(
+          _i35.Register? user) =>
       (super.noSuchMethod(Invocation.method(#postRegister, [user]),
               returnValue:
-                  Future<_i2.Either<_i13.Failure, _i22.RegisterData>>.value(
-                      _FakeEither_0<_i13.Failure, _i22.RegisterData>()))
-          as _i12.Future<_i2.Either<_i13.Failure, _i22.RegisterData>>);
+                  Future<_i2.Either<_i25.Failure, _i34.RegisterData>>.value(
+                      _FakeEither_0<_i25.Failure, _i34.RegisterData>()))
+          as _i11.Future<_i2.Either<_i25.Failure, _i34.RegisterData>>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, _i17.Report>> postReport(
-          String? token, _i24.ReportRequest? report) =>
+  _i11.Future<_i2.Either<_i25.Failure, _i29.Report>> postReport(
+          String? token, _i36.ReportRequest? report) =>
       (super.noSuchMethod(Invocation.method(#postReport, [token, report]),
-              returnValue: Future<_i2.Either<_i13.Failure, _i17.Report>>.value(
-                  _FakeEither_0<_i13.Failure, _i17.Report>()))
-          as _i12.Future<_i2.Either<_i13.Failure, _i17.Report>>);
+              returnValue: Future<_i2.Either<_i25.Failure, _i29.Report>>.value(
+                  _FakeEither_0<_i25.Failure, _i29.Report>()))
+          as _i11.Future<_i2.Either<_i25.Failure, _i29.Report>>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, String>> postUserChallenge(
-          _i20.UserQuestion? challenge) =>
+  _i11.Future<_i2.Either<_i25.Failure, String>> postUserChallenge(
+          _i32.UserQuestion? challenge) =>
       (super.noSuchMethod(Invocation.method(#postUserChallenge, [challenge]),
-              returnValue: Future<_i2.Either<_i13.Failure, String>>.value(
-                  _FakeEither_0<_i13.Failure, String>()))
-          as _i12.Future<_i2.Either<_i13.Failure, String>>);
+              returnValue: Future<_i2.Either<_i25.Failure, String>>.value(
+                  _FakeEither_0<_i25.Failure, String>()))
+          as _i11.Future<_i2.Either<_i25.Failure, String>>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, String>> removeFeed(_i15.Feed? feed) =>
+  _i11.Future<_i2.Either<_i25.Failure, String>> removeFeed(_i27.Feed? feed) =>
       (super.noSuchMethod(Invocation.method(#removeFeed, [feed]),
-              returnValue: Future<_i2.Either<_i13.Failure, String>>.value(
-                  _FakeEither_0<_i13.Failure, String>()))
-          as _i12.Future<_i2.Either<_i13.Failure, String>>);
+              returnValue: Future<_i2.Either<_i25.Failure, String>>.value(
+                  _FakeEither_0<_i25.Failure, String>()))
+          as _i11.Future<_i2.Either<_i25.Failure, String>>);
+
   @override
-  _i12.Future<String> removeSessionData(_i18.SessionData? data) =>
+  _i11.Future<String> removeSessionData(_i30.SessionData? data) =>
       (super.noSuchMethod(Invocation.method(#removeSessionData, [data]),
-          returnValue: Future<String>.value('')) as _i12.Future<String>);
+          returnValue: Future<String>.value('')) as _i11.Future<String>);
+
   @override
-  _i12.Future<_i2.Either<_i13.Failure, String>> saveFeed(_i15.Feed? feed) =>
+  _i11.Future<_i2.Either<_i25.Failure, String>> saveFeed(_i27.Feed? feed) =>
       (super.noSuchMethod(Invocation.method(#saveFeed, [feed]),
-              returnValue: Future<_i2.Either<_i13.Failure, String>>.value(
-                  _FakeEither_0<_i13.Failure, String>()))
-          as _i12.Future<_i2.Either<_i13.Failure, String>>);
+              returnValue: Future<_i2.Either<_i25.Failure, String>>.value(
+                  _FakeEither_0<_i25.Failure, String>()))
+          as _i11.Future<_i2.Either<_i25.Failure, String>>);
+
   @override
-  _i12.Future<String> saveSessionData(_i18.SessionData? data) =>
+  _i11.Future<String> saveSessionData(_i30.SessionData? data) =>
       (super.noSuchMethod(Invocation.method(#saveSessionData, [data]),
-          returnValue: Future<String>.value('')) as _i12.Future<String>);
+          returnValue: Future<String>.value('')) as _i11.Future<String>);
+
   @override
   String toString() => super.toString();
 }
@@ -252,96 +317,114 @@ class MockRepository extends _i1.Mock implements _i11.Repository {
 /// A class which mocks [RemoteDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockRemoteDataSource extends _i1.Mock implements _i25.RemoteDataSource {
+class MockRemoteDataSource extends _i1.Mock implements _i37.RemoteDataSource {
   MockRemoteDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i12.Future<String> deleteReport(String? token, int? id) =>
+  _i11.Future<String> deleteReport(String? token, int? id) =>
       (super.noSuchMethod(Invocation.method(#deleteReport, [token, id]),
-          returnValue: Future<String>.value('')) as _i12.Future<String>);
+          returnValue: Future<String>.value('')) as _i11.Future<String>);
+
   @override
-  _i12.Future<List<_i26.CategoryModel>> getCategory() => (super.noSuchMethod(
+  _i11.Future<List<_i38.CategoryModel>> getCategory() =>
+      (super.noSuchMethod(
           Invocation.method(#getCategory, []),
           returnValue:
-              Future<List<_i26.CategoryModel>>.value(<_i26.CategoryModel>[]))
-      as _i12.Future<List<_i26.CategoryModel>>);
+          Future<List<_i38.CategoryModel>>.value(<_i38.CategoryModel>[]))
+      as _i11.Future<List<_i38.CategoryModel>>);
+
   @override
-  _i12.Future<_i3.FeedModel> getFeedDetail(int? id) =>
+  _i11.Future<_i3.FeedModel> getFeedDetail(int? id) =>
       (super.noSuchMethod(Invocation.method(#getFeedDetail, [id]),
-              returnValue: Future<_i3.FeedModel>.value(_FakeFeedModel_1()))
-          as _i12.Future<_i3.FeedModel>);
+          returnValue: Future<_i3.FeedModel>.value(_FakeFeedModel_1()))
+      as _i11.Future<_i3.FeedModel>);
+
   @override
-  _i12.Future<List<_i3.FeedModel>> getFeeds() =>
+  _i11.Future<List<_i3.FeedModel>> getFeeds() =>
       (super.noSuchMethod(Invocation.method(#getFeeds, []),
-              returnValue: Future<List<_i3.FeedModel>>.value(<_i3.FeedModel>[]))
-          as _i12.Future<List<_i3.FeedModel>>);
+          returnValue: Future<List<_i3.FeedModel>>.value(<_i3.FeedModel>[]))
+      as _i11.Future<List<_i3.FeedModel>>);
+
   @override
-  _i12.Future<String> getPasswordReset(String? email) =>
+  _i11.Future<String> getPasswordReset(String? email) =>
       (super.noSuchMethod(Invocation.method(#getPasswordReset, [email]),
-          returnValue: Future<String>.value('')) as _i12.Future<String>);
+          returnValue: Future<String>.value('')) as _i11.Future<String>);
+
   @override
-  _i12.Future<List<_i27.QuestionModel>> getQuestions() => (super.noSuchMethod(
+  _i11.Future<List<_i39.QuestionModel>> getQuestions() =>
+      (super.noSuchMethod(
           Invocation.method(#getQuestions, []),
           returnValue:
-              Future<List<_i27.QuestionModel>>.value(<_i27.QuestionModel>[]))
-      as _i12.Future<List<_i27.QuestionModel>>);
+          Future<List<_i39.QuestionModel>>.value(<_i39.QuestionModel>[]))
+      as _i11.Future<List<_i39.QuestionModel>>);
+
   @override
-  _i12.Future<List<_i7.ReportModel>> getReport(String? token, int? id) =>
+  _i11.Future<List<_i7.ReportModel>> getReport(String? token, int? id) =>
       (super.noSuchMethod(Invocation.method(#getReport, [token, id]),
-              returnValue:
-                  Future<List<_i7.ReportModel>>.value(<_i7.ReportModel>[]))
-          as _i12.Future<List<_i7.ReportModel>>);
+          returnValue:
+          Future<List<_i7.ReportModel>>.value(<_i7.ReportModel>[]))
+      as _i11.Future<List<_i7.ReportModel>>);
+
   @override
-  _i12.Future<List<_i28.UserModel>> getUser(String? email) =>
+  _i11.Future<List<_i40.UserModel>> getUser(String? email) =>
       (super.noSuchMethod(Invocation.method(#getUser, [email]),
-              returnValue:
-                  Future<List<_i28.UserModel>>.value(<_i28.UserModel>[]))
-          as _i12.Future<List<_i28.UserModel>>);
+          returnValue:
+          Future<List<_i40.UserModel>>.value(<_i40.UserModel>[]))
+      as _i11.Future<List<_i40.UserModel>>);
+
   @override
-  _i12.Future<_i4.UserQuestionModel> getUserQuestions(int? id) =>
+  _i11.Future<_i4.UserQuestionModel> getUserQuestions(int? id) =>
       (super.noSuchMethod(Invocation.method(#getUserQuestions, [id]),
-              returnValue: Future<_i4.UserQuestionModel>.value(
-                  _FakeUserQuestionModel_2()))
-          as _i12.Future<_i4.UserQuestionModel>);
+          returnValue: Future<_i4.UserQuestionModel>.value(
+              _FakeUserQuestionModel_2()))
+      as _i11.Future<_i4.UserQuestionModel>);
+
   @override
-  _i12.Future<String> postChangePassword(
-          String? oldPass, String? newPass, String? token) =>
+  _i11.Future<String> postChangePassword(String? oldPass, String? newPass,
+      String? token) =>
       (super.noSuchMethod(
           Invocation.method(#postChangePassword, [oldPass, newPass, token]),
-          returnValue: Future<String>.value('')) as _i12.Future<String>);
+          returnValue: Future<String>.value('')) as _i11.Future<String>);
+
   @override
-  _i12.Future<dynamic> postFcmToken(String? user, String? fcmToken) =>
+  _i11.Future<dynamic> postFcmToken(String? user, String? fcmToken) =>
       (super.noSuchMethod(Invocation.method(#postFcmToken, [user, fcmToken]),
-          returnValue: Future<dynamic>.value()) as _i12.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i11.Future<dynamic>);
+
   @override
-  _i12.Future<dynamic> updateFcmToken(String? user, String? fcmToken) =>
+  _i11.Future<dynamic> updateFcmToken(String? user, String? fcmToken) =>
       (super.noSuchMethod(Invocation.method(#updateFcmToken, [user, fcmToken]),
-          returnValue: Future<dynamic>.value()) as _i12.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i11.Future<dynamic>);
+
   @override
-  _i12.Future<_i5.UserTokenModel> postLogin(
-          String? username, String? password) =>
+  _i11.Future<_i5.UserTokenModel> postLogin(String? username,
+      String? password) =>
       (super.noSuchMethod(Invocation.method(#postLogin, [username, password]),
-              returnValue:
-                  Future<_i5.UserTokenModel>.value(_FakeUserTokenModel_3()))
-          as _i12.Future<_i5.UserTokenModel>);
+          returnValue:
+          Future<_i5.UserTokenModel>.value(_FakeUserTokenModel_3()))
+      as _i11.Future<_i5.UserTokenModel>);
+
   @override
-  _i12.Future<_i6.RegisterResponse> postRegister(_i29.RegisterModel? user) =>
+  _i11.Future<_i6.RegisterResponse> postRegister(_i41.RegisterModel? user) =>
       (super.noSuchMethod(Invocation.method(#postRegister, [user]),
-              returnValue:
-                  Future<_i6.RegisterResponse>.value(_FakeRegisterResponse_4()))
-          as _i12.Future<_i6.RegisterResponse>);
+          returnValue:
+          Future<_i6.RegisterResponse>.value(_FakeRegisterResponse_4()))
+      as _i11.Future<_i6.RegisterResponse>);
+
   @override
-  _i12.Future<_i7.ReportModel> postReport(
-          String? token, _i24.ReportRequest? report) =>
+  _i11.Future<_i7.ReportModel> postReport(String? token,
+      _i36.ReportRequest? report) =>
       (super.noSuchMethod(Invocation.method(#postReport, [token, report]),
-              returnValue: Future<_i7.ReportModel>.value(_FakeReportModel_5()))
-          as _i12.Future<_i7.ReportModel>);
+          returnValue: Future<_i7.ReportModel>.value(_FakeReportModel_5()))
+      as _i11.Future<_i7.ReportModel>);
+
   @override
-  _i12.Future<String> postChallenge(_i4.UserQuestionModel? challenge) =>
+  _i11.Future<String> postChallenge(_i4.UserQuestionModel? challenge) =>
       (super.noSuchMethod(Invocation.method(#postChallenge, [challenge]),
-          returnValue: Future<String>.value('')) as _i12.Future<String>);
+          returnValue: Future<String>.value('')) as _i11.Future<String>);
+
   @override
   String toString() => super.toString();
 }
@@ -349,70 +432,82 @@ class MockRemoteDataSource extends _i1.Mock implements _i25.RemoteDataSource {
 /// A class which mocks [LocalDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLocalDataSource extends _i1.Mock implements _i30.LocalDataSource {
+class MockLocalDataSource extends _i1.Mock implements _i42.LocalDataSource {
   MockLocalDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i12.Future<String> insertFeed(_i31.FeedTable? feed) =>
+  _i11.Future<String> insertFeed(_i43.FeedTable? feed) =>
       (super.noSuchMethod(Invocation.method(#insertFeed, [feed]),
-          returnValue: Future<String>.value('')) as _i12.Future<String>);
+          returnValue: Future<String>.value('')) as _i11.Future<String>);
+
   @override
-  _i12.Future<String> removeFeed(_i31.FeedTable? feed) =>
+  _i11.Future<String> removeFeed(_i43.FeedTable? feed) =>
       (super.noSuchMethod(Invocation.method(#removeFeed, [feed]),
-          returnValue: Future<String>.value('')) as _i12.Future<String>);
+          returnValue: Future<String>.value('')) as _i11.Future<String>);
+
   @override
-  _i12.Future<_i31.FeedTable?> getFeedById(int? id) =>
+  _i11.Future<_i43.FeedTable?> getFeedById(int? id) =>
       (super.noSuchMethod(Invocation.method(#getFeedById, [id]),
-              returnValue: Future<_i31.FeedTable?>.value())
-          as _i12.Future<_i31.FeedTable?>);
+              returnValue: Future<_i43.FeedTable?>.value())
+          as _i11.Future<_i43.FeedTable?>);
+
   @override
-  _i12.Future<List<_i31.FeedTable>> getFeeds() => (super.noSuchMethod(
+  _i11.Future<List<_i43.FeedTable>> getFeeds() => (super.noSuchMethod(
           Invocation.method(#getFeeds, []),
-          returnValue: Future<List<_i31.FeedTable>>.value(<_i31.FeedTable>[]))
-      as _i12.Future<List<_i31.FeedTable>>);
+          returnValue: Future<List<_i43.FeedTable>>.value(<_i43.FeedTable>[]))
+      as _i11.Future<List<_i43.FeedTable>>);
+
   @override
-  _i12.Future<bool> isLoggedIn() =>
+  _i11.Future<bool> isLoggedIn() =>
       (super.noSuchMethod(Invocation.method(#isLoggedIn, []),
-          returnValue: Future<bool>.value(false)) as _i12.Future<bool>);
+          returnValue: Future<bool>.value(false)) as _i11.Future<bool>);
+
   @override
-  _i12.Future<_i18.SessionData?> getSession() =>
+  _i11.Future<_i30.SessionData?> getSession() =>
       (super.noSuchMethod(Invocation.method(#getSession, []),
-              returnValue: Future<_i18.SessionData?>.value())
-          as _i12.Future<_i18.SessionData?>);
+              returnValue: Future<_i30.SessionData?>.value())
+          as _i11.Future<_i30.SessionData?>);
+
   @override
-  _i12.Future<String> insertSession(_i18.SessionData? data) =>
+  _i11.Future<String> insertSession(_i30.SessionData? data) =>
       (super.noSuchMethod(Invocation.method(#insertSession, [data]),
-          returnValue: Future<String>.value('')) as _i12.Future<String>);
+          returnValue: Future<String>.value('')) as _i11.Future<String>);
+
   @override
-  _i12.Future<String> removeSession(_i18.SessionData? data) =>
+  _i11.Future<String> removeSession(_i30.SessionData? data) =>
       (super.noSuchMethod(Invocation.method(#removeSession, [data]),
-          returnValue: Future<String>.value('')) as _i12.Future<String>);
+          returnValue: Future<String>.value('')) as _i11.Future<String>);
+
   @override
-  _i12.Future<void> cacheQuestions(List<_i32.QuestionTable>? questions) =>
+  _i11.Future<void> cacheQuestions(List<_i44.QuestionTable>? questions) =>
       (super.noSuchMethod(Invocation.method(#cacheQuestions, [questions]),
               returnValue: Future<void>.value(),
               returnValueForMissingStub: Future<void>.value())
-          as _i12.Future<void>);
+          as _i11.Future<void>);
+
   @override
-  _i12.Future<List<_i32.QuestionTable>> getCachedQuestion() =>
+  _i11.Future<List<_i44.QuestionTable>> getCachedQuestion() =>
       (super.noSuchMethod(Invocation.method(#getCachedQuestion, []),
-              returnValue: Future<List<_i32.QuestionTable>>.value(
-                  <_i32.QuestionTable>[]))
-          as _i12.Future<List<_i32.QuestionTable>>);
+              returnValue: Future<List<_i44.QuestionTable>>.value(
+                  <_i44.QuestionTable>[]))
+          as _i11.Future<List<_i44.QuestionTable>>);
+
   @override
-  _i12.Future<void> cacheCategory(List<_i33.CategoryTable>? category) =>
+  _i11.Future<void> cacheCategory(List<_i45.CategoryTable>? category) =>
       (super.noSuchMethod(Invocation.method(#cacheCategory, [category]),
               returnValue: Future<void>.value(),
               returnValueForMissingStub: Future<void>.value())
-          as _i12.Future<void>);
+          as _i11.Future<void>);
+
   @override
-  _i12.Future<List<_i33.CategoryTable>> getCachedCategory() =>
+  _i11.Future<List<_i45.CategoryTable>> getCachedCategory() =>
       (super.noSuchMethod(Invocation.method(#getCachedCategory, []),
-              returnValue: Future<List<_i33.CategoryTable>>.value(
-                  <_i33.CategoryTable>[]))
-          as _i12.Future<List<_i33.CategoryTable>>);
+              returnValue: Future<List<_i45.CategoryTable>>.value(
+                  <_i45.CategoryTable>[]))
+          as _i11.Future<List<_i45.CategoryTable>>);
+
   @override
   String toString() => super.toString();
 }
@@ -420,73 +515,84 @@ class MockLocalDataSource extends _i1.Mock implements _i30.LocalDataSource {
 /// A class which mocks [DatabaseHelper].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDatabaseHelper extends _i1.Mock implements _i34.DatabaseHelper {
+class MockDatabaseHelper extends _i1.Mock implements _i46.DatabaseHelper {
   MockDatabaseHelper() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i12.Future<_i35.Database?> get database =>
+  _i11.Future<_i47.Database?> get database =>
       (super.noSuchMethod(Invocation.getter(#database),
-              returnValue: Future<_i35.Database?>.value())
-          as _i12.Future<_i35.Database?>);
+              returnValue: Future<_i47.Database?>.value())
+          as _i11.Future<_i47.Database?>);
+
   @override
-  _i12.Future<void> insertNews(_i31.FeedTable? feed) => (super.noSuchMethod(
+  _i11.Future<void> insertNews(_i43.FeedTable? feed) => (super.noSuchMethod(
       Invocation.method(#insertNews, [feed]),
       returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i12.Future<void>);
+      returnValueForMissingStub: Future<void>.value()) as _i11.Future<void>);
+
   @override
-  _i12.Future<List<Map<String, dynamic>>> getFeeds() =>
+  _i11.Future<List<Map<String, dynamic>>> getFeeds() =>
       (super.noSuchMethod(Invocation.method(#getFeeds, []),
               returnValue: Future<List<Map<String, dynamic>>>.value(
                   <Map<String, dynamic>>[]))
-          as _i12.Future<List<Map<String, dynamic>>>);
+          as _i11.Future<List<Map<String, dynamic>>>);
+
   @override
-  _i12.Future<Map<String, dynamic>?> getFeedById(int? id) =>
+  _i11.Future<Map<String, dynamic>?> getFeedById(int? id) =>
       (super.noSuchMethod(Invocation.method(#getFeedById, [id]),
               returnValue: Future<Map<String, dynamic>?>.value())
-          as _i12.Future<Map<String, dynamic>?>);
+          as _i11.Future<Map<String, dynamic>?>);
+
   @override
-  _i12.Future<void> removeFeed(_i31.FeedTable? feed) => (super.noSuchMethod(
+  _i11.Future<void> removeFeed(_i43.FeedTable? feed) => (super.noSuchMethod(
       Invocation.method(#removeFeed, [feed]),
       returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i12.Future<void>);
+      returnValueForMissingStub: Future<void>.value()) as _i11.Future<void>);
+
   @override
-  _i12.Future<void> insertQuestionTransaction(
-          List<_i32.QuestionTable>? questions) =>
+  _i11.Future<void> insertQuestionTransaction(
+          List<_i44.QuestionTable>? questions) =>
       (super.noSuchMethod(
               Invocation.method(#insertQuestionTransaction, [questions]),
               returnValue: Future<void>.value(),
               returnValueForMissingStub: Future<void>.value())
-          as _i12.Future<void>);
+          as _i11.Future<void>);
+
   @override
-  _i12.Future<void> insertCategoryTransaction(
-          List<_i33.CategoryTable>? categories) =>
+  _i11.Future<void> insertCategoryTransaction(
+          List<_i45.CategoryTable>? categories) =>
       (super.noSuchMethod(
               Invocation.method(#insertCategoryTransaction, [categories]),
               returnValue: Future<void>.value(),
               returnValueForMissingStub: Future<void>.value())
-          as _i12.Future<void>);
+          as _i11.Future<void>);
+
   @override
-  _i12.Future<List<Map<String, dynamic>>> getQuestionCache() =>
+  _i11.Future<List<Map<String, dynamic>>> getQuestionCache() =>
       (super.noSuchMethod(Invocation.method(#getQuestionCache, []),
               returnValue: Future<List<Map<String, dynamic>>>.value(
                   <Map<String, dynamic>>[]))
-          as _i12.Future<List<Map<String, dynamic>>>);
+          as _i11.Future<List<Map<String, dynamic>>>);
+
   @override
-  _i12.Future<List<Map<String, dynamic>>> getCategoryCache() =>
+  _i11.Future<List<Map<String, dynamic>>> getCategoryCache() =>
       (super.noSuchMethod(Invocation.method(#getCategoryCache, []),
               returnValue: Future<List<Map<String, dynamic>>>.value(
                   <Map<String, dynamic>>[]))
-          as _i12.Future<List<Map<String, dynamic>>>);
+          as _i11.Future<List<Map<String, dynamic>>>);
+
   @override
-  _i12.Future<int> clearQuestionCache() =>
+  _i11.Future<int> clearQuestionCache() =>
       (super.noSuchMethod(Invocation.method(#clearQuestionCache, []),
-          returnValue: Future<int>.value(0)) as _i12.Future<int>);
+          returnValue: Future<int>.value(0)) as _i11.Future<int>);
+
   @override
-  _i12.Future<int> clearCategoryCache() =>
+  _i11.Future<int> clearCategoryCache() =>
       (super.noSuchMethod(Invocation.method(#clearCategoryCache, []),
-          returnValue: Future<int>.value(0)) as _i12.Future<int>);
+          returnValue: Future<int>.value(0)) as _i11.Future<int>);
+
   @override
   String toString() => super.toString();
 }
@@ -494,42 +600,49 @@ class MockDatabaseHelper extends _i1.Mock implements _i34.DatabaseHelper {
 /// A class which mocks [PreferencesHelper].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPreferencesHelper extends _i1.Mock implements _i36.PreferencesHelper {
+class MockPreferencesHelper extends _i1.Mock implements _i48.PreferencesHelper {
   MockPreferencesHelper() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i12.Future<_i8.SharedPreferences> get sharedPreferences =>
+  _i11.Future<_i8.SharedPreferences> get sharedPreferences =>
       (super.noSuchMethod(Invocation.getter(#sharedPreferences),
-              returnValue: Future<_i8.SharedPreferences>.value(
-                  _FakeSharedPreferences_6()))
-          as _i12.Future<_i8.SharedPreferences>);
+          returnValue: Future<_i8.SharedPreferences>.value(
+              _FakeSharedPreferences_6()))
+      as _i11.Future<_i8.SharedPreferences>);
+
   @override
   set sharedPreferences(
-          _i12.Future<_i8.SharedPreferences>? _sharedPreferences) =>
+      _i11.Future<_i8.SharedPreferences>? _sharedPreferences) =>
       super.noSuchMethod(
           Invocation.setter(#sharedPreferences, _sharedPreferences),
           returnValueForMissingStub: null);
+
   @override
-  _i12.Future<String> get expireDate =>
+  _i11.Future<String> get expireDate =>
       (super.noSuchMethod(Invocation.getter(#expireDate),
-          returnValue: Future<String>.value('')) as _i12.Future<String>);
+          returnValue: Future<String>.value('')) as _i11.Future<String>);
+
   @override
-  _i12.Future<String> get token =>
+  _i11.Future<String> get token =>
       (super.noSuchMethod(Invocation.getter(#token),
-          returnValue: Future<String>.value('')) as _i12.Future<String>);
+          returnValue: Future<String>.value('')) as _i11.Future<String>);
+
   @override
-  _i12.Future<String> get email =>
+  _i11.Future<String> get email =>
       (super.noSuchMethod(Invocation.getter(#email),
-          returnValue: Future<String>.value('')) as _i12.Future<String>);
+          returnValue: Future<String>.value('')) as _i11.Future<String>);
+
   @override
-  _i12.Future<int> get id => (super.noSuchMethod(Invocation.getter(#id),
-      returnValue: Future<int>.value(0)) as _i12.Future<int>);
+  _i11.Future<int> get id =>
+      (super.noSuchMethod(Invocation.getter(#id),
+          returnValue: Future<int>.value(0)) as _i11.Future<int>);
+
   @override
-  _i12.Future<bool> get isLogin =>
+  _i11.Future<bool> get isLogin =>
       (super.noSuchMethod(Invocation.getter(#isLogin),
-          returnValue: Future<bool>.value(false)) as _i12.Future<bool>);
+          returnValue: Future<bool>.value(false)) as _i11.Future<bool>);
   @override
   void setExpire(String? value) =>
       super.noSuchMethod(Invocation.method(#setExpire, [value]),
@@ -584,40 +697,49 @@ class MockDataConnectionChecker extends _i1.Mock
   set checkInterval(Duration? _checkInterval) =>
       super.noSuchMethod(Invocation.setter(#checkInterval, _checkInterval),
           returnValueForMissingStub: null);
+
   @override
-  List<_i9.AddressCheckResult> get lastTryResults => (super.noSuchMethod(
-      Invocation.getter(#lastTryResults),
-      returnValue: <_i9.AddressCheckResult>[]) as List<_i9.AddressCheckResult>);
+  List<_i9.AddressCheckResult> get lastTryResults =>
+      (super.noSuchMethod(
+          Invocation.getter(#lastTryResults),
+          returnValue: <_i9.AddressCheckResult>[]) as List<
+          _i9.AddressCheckResult>);
+
   @override
-  _i12.Future<bool> get hasConnection =>
+  _i11.Future<bool> get hasConnection =>
       (super.noSuchMethod(Invocation.getter(#hasConnection),
-          returnValue: Future<bool>.value(false)) as _i12.Future<bool>);
+          returnValue: Future<bool>.value(false)) as _i11.Future<bool>);
+
   @override
-  _i12.Future<_i9.DataConnectionStatus> get connectionStatus =>
+  _i11.Future<_i9.DataConnectionStatus> get connectionStatus =>
       (super.noSuchMethod(Invocation.getter(#connectionStatus),
-              returnValue: Future<_i9.DataConnectionStatus>.value(
-                  _i9.DataConnectionStatus.disconnected))
-          as _i12.Future<_i9.DataConnectionStatus>);
+          returnValue: Future<_i9.DataConnectionStatus>.value(
+              _i9.DataConnectionStatus.disconnected))
+      as _i11.Future<_i9.DataConnectionStatus>);
+
   @override
-  _i12.Stream<_i9.DataConnectionStatus> get onStatusChange =>
+  _i11.Stream<_i9.DataConnectionStatus> get onStatusChange =>
       (super.noSuchMethod(Invocation.getter(#onStatusChange),
-              returnValue: Stream<_i9.DataConnectionStatus>.empty())
-          as _i12.Stream<_i9.DataConnectionStatus>);
+          returnValue: Stream<_i9.DataConnectionStatus>.empty())
+      as _i11.Stream<_i9.DataConnectionStatus>);
+
   @override
   bool get hasListeners =>
       (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
-          as bool);
+      as bool);
   @override
   bool get isActivelyChecking =>
       (super.noSuchMethod(Invocation.getter(#isActivelyChecking),
           returnValue: false) as bool);
+
   @override
-  _i12.Future<_i9.AddressCheckResult> isHostReachable(
-          _i9.AddressCheckOptions? options) =>
+  _i11.Future<_i9.AddressCheckResult> isHostReachable(
+      _i9.AddressCheckOptions? options) =>
       (super.noSuchMethod(Invocation.method(#isHostReachable, [options]),
-              returnValue: Future<_i9.AddressCheckResult>.value(
-                  _FakeAddressCheckResult_8()))
-          as _i12.Future<_i9.AddressCheckResult>);
+          returnValue: Future<_i9.AddressCheckResult>.value(
+              _FakeAddressCheckResult_8()))
+      as _i11.Future<_i9.AddressCheckResult>);
+
   @override
   String toString() => super.toString();
 }
@@ -625,15 +747,1003 @@ class MockDataConnectionChecker extends _i1.Mock
 /// A class which mocks [NetworkInfo].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNetworkInfo extends _i1.Mock implements _i37.NetworkInfo {
+class MockNetworkInfo extends _i1.Mock implements _i49.NetworkInfo {
   MockNetworkInfo() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i12.Future<bool> get isConnected =>
+  _i11.Future<bool> get isConnected =>
       (super.noSuchMethod(Invocation.getter(#isConnected),
-          returnValue: Future<bool>.value(false)) as _i12.Future<bool>);
+          returnValue: Future<bool>.value(false)) as _i11.Future<bool>);
+
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [DetailCubit].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDetailCubit extends _i1.Mock implements _i10.DetailCubit {
+  MockDetailCubit() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i10.DetailState get state =>
+      (super.noSuchMethod(Invocation.getter(#state),
+          returnValue: _FakeDetailState_9()) as _i10.DetailState);
+
+  @override
+  _i11.Stream<_i10.DetailState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+          returnValue: Stream<_i10.DetailState>.empty())
+      as _i11.Stream<_i10.DetailState>);
+
+  @override
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+      as bool);
+
+  @override
+  _i11.Future<void> fetchDetail(int? id) =>
+      (super.noSuchMethod(
+          Invocation.method(#fetchDetail, [id]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  _i11.StreamSubscription<_i10.DetailState> listen(
+      void Function(_i10.DetailState)? onData,
+      {Function? onError,
+        void Function()? onDone,
+        bool? cancelOnError}) =>
+      (super.noSuchMethod(
+          Invocation.method(#listen, [
+            onData
+          ], {
+            #onError: onError,
+            #onDone: onDone,
+            #cancelOnError: cancelOnError
+          }),
+          returnValue: _FakeStreamSubscription_10<_i10.DetailState>())
+      as _i11.StreamSubscription<_i10.DetailState>);
+
+  @override
+  void emit(_i10.DetailState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onChange(_i50.Change<_i10.DetailState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  _i11.Future<void> close() =>
+      (super.noSuchMethod(
+          Invocation.method(#close, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [FeedCubit].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockFeedCubit extends _i1.Mock implements _i12.FeedCubit {
+  MockFeedCubit() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i12.FeedState get state =>
+      (super.noSuchMethod(Invocation.getter(#state),
+          returnValue: _FakeFeedState_11()) as _i12.FeedState);
+
+  @override
+  _i11.Stream<_i12.FeedState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+          returnValue: Stream<_i12.FeedState>.empty())
+      as _i11.Stream<_i12.FeedState>);
+
+  @override
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+      as bool);
+
+  @override
+  _i11.Future<void> fetchFeeds() =>
+      (super.noSuchMethod(
+          Invocation.method(#fetchFeeds, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  _i11.StreamSubscription<_i12.FeedState> listen(
+      void Function(_i12.FeedState)? onData,
+      {Function? onError,
+        void Function()? onDone,
+        bool? cancelOnError}) =>
+      (super.noSuchMethod(
+          Invocation.method(#listen, [
+            onData
+          ], {
+            #onError: onError,
+            #onDone: onDone,
+            #cancelOnError: cancelOnError
+          }),
+          returnValue: _FakeStreamSubscription_10<_i12.FeedState>())
+      as _i11.StreamSubscription<_i12.FeedState>);
+
+  @override
+  void emit(_i12.FeedState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onChange(_i50.Change<_i12.FeedState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  _i11.Future<void> close() =>
+      (super.noSuchMethod(
+          Invocation.method(#close, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [HistoryCubit].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockHistoryCubit extends _i1.Mock implements _i13.HistoryCubit {
+  MockHistoryCubit() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  List<_i29.Report> get reports =>
+      (super.noSuchMethod(Invocation.getter(#reports),
+          returnValue: <_i29.Report>[]) as List<_i29.Report>);
+
+  @override
+  _i13.HistoryState get state =>
+      (super.noSuchMethod(Invocation.getter(#state),
+          returnValue: _FakeHistoryState_12()) as _i13.HistoryState);
+
+  @override
+  _i11.Stream<_i13.HistoryState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+          returnValue: Stream<_i13.HistoryState>.empty())
+      as _i11.Stream<_i13.HistoryState>);
+
+  @override
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+      as bool);
+
+  @override
+  _i11.Future<void> getHistory(_i51.TokenId? tokenId) =>
+      (super.noSuchMethod(
+          Invocation.method(#getHistory, [tokenId]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  _i11.Future<bool> removeReport(_i51.TokenId? tokenId, String? status) =>
+      (super.noSuchMethod(Invocation.method(#removeReport, [tokenId, status]),
+          returnValue: Future<bool>.value(false)) as _i11.Future<bool>);
+
+  @override
+  _i11.StreamSubscription<_i13.HistoryState> listen(
+      void Function(_i13.HistoryState)? onData,
+      {Function? onError,
+        void Function()? onDone,
+        bool? cancelOnError}) =>
+      (super.noSuchMethod(
+          Invocation.method(#listen, [
+            onData
+          ], {
+            #onError: onError,
+            #onDone: onDone,
+            #cancelOnError: cancelOnError
+          }),
+          returnValue: _FakeStreamSubscription_10<_i13.HistoryState>())
+      as _i11.StreamSubscription<_i13.HistoryState>);
+
+  @override
+  void emit(_i13.HistoryState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onChange(_i50.Change<_i13.HistoryState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  _i11.Future<void> close() =>
+      (super.noSuchMethod(
+          Invocation.method(#close, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [ItemCubit].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockItemCubit extends _i1.Mock implements _i14.ItemCubit {
+  MockItemCubit() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i14.ItemState get state =>
+      (super.noSuchMethod(Invocation.getter(#state),
+          returnValue: _FakeItemState_13()) as _i14.ItemState);
+
+  @override
+  _i11.Stream<_i14.ItemState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+          returnValue: Stream<_i14.ItemState>.empty())
+      as _i11.Stream<_i14.ItemState>);
+
+  @override
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+      as bool);
+
+  @override
+  _i11.Future<void> getStatus(int? id) =>
+      (super.noSuchMethod(
+          Invocation.method(#getStatus, [id]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  _i11.Future<void> saveFeed(_i27.Feed? feed) =>
+      (super.noSuchMethod(
+          Invocation.method(#saveFeed, [feed]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  _i11.Future<void> removeFeed(_i27.Feed? feed) =>
+      (super.noSuchMethod(
+          Invocation.method(#removeFeed, [feed]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  _i11.StreamSubscription<_i14.ItemState> listen(
+      void Function(_i14.ItemState)? onData,
+      {Function? onError,
+        void Function()? onDone,
+        bool? cancelOnError}) =>
+      (super.noSuchMethod(
+          Invocation.method(#listen, [
+            onData
+          ], {
+            #onError: onError,
+            #onDone: onDone,
+            #cancelOnError: cancelOnError
+          }),
+          returnValue: _FakeStreamSubscription_10<_i14.ItemState>())
+      as _i11.StreamSubscription<_i14.ItemState>);
+
+  @override
+  void emit(_i14.ItemState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onChange(_i50.Change<_i14.ItemState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  _i11.Future<void> close() =>
+      (super.noSuchMethod(
+          Invocation.method(#close, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [LoginCubit].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockLoginCubit extends _i1.Mock implements _i15.LoginCubit {
+  MockLoginCubit() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i15.LoginState get state =>
+      (super.noSuchMethod(Invocation.getter(#state),
+          returnValue: _FakeLoginState_14()) as _i15.LoginState);
+
+  @override
+  _i11.Stream<_i15.LoginState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+          returnValue: Stream<_i15.LoginState>.empty())
+      as _i11.Stream<_i15.LoginState>);
+
+  @override
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+      as bool);
+
+  @override
+  _i11.Future<void> login(String? username, String? password) =>
+      (super.noSuchMethod(Invocation.method(#login, [username, password]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value())
+      as _i11.Future<void>);
+
+  @override
+  _i11.Future<void> savingSession(_i30.SessionData? session) =>
+      (super.noSuchMethod(Invocation.method(#savingSession, [session]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value())
+      as _i11.Future<void>);
+
+  @override
+  _i11.Future<void> fetchSession() =>
+      (super.noSuchMethod(
+          Invocation.method(#fetchSession, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  _i11.Future<void> logout(_i30.SessionData? data) =>
+      (super.noSuchMethod(
+          Invocation.method(#logout, [data]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  _i11.StreamSubscription<_i15.LoginState> listen(
+      void Function(_i15.LoginState)? onData,
+      {Function? onError,
+        void Function()? onDone,
+        bool? cancelOnError}) =>
+      (super.noSuchMethod(
+          Invocation.method(#listen, [
+            onData
+          ], {
+            #onError: onError,
+            #onDone: onDone,
+            #cancelOnError: cancelOnError
+          }),
+          returnValue: _FakeStreamSubscription_10<_i15.LoginState>())
+      as _i11.StreamSubscription<_i15.LoginState>);
+
+  @override
+  void emit(_i15.LoginState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onChange(_i50.Change<_i15.LoginState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  _i11.Future<void> close() =>
+      (super.noSuchMethod(
+          Invocation.method(#close, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [PasswordCubit].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPasswordCubit extends _i1.Mock implements _i16.PasswordCubit {
+  MockPasswordCubit() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i16.PasswordState get state =>
+      (super.noSuchMethod(Invocation.getter(#state),
+          returnValue: _FakePasswordState_15()) as _i16.PasswordState);
+
+  @override
+  _i11.Stream<_i16.PasswordState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+          returnValue: Stream<_i16.PasswordState>.empty())
+      as _i11.Stream<_i16.PasswordState>);
+
+  @override
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+      as bool);
+
+  @override
+  _i11.Future<void> getUserData(String? email) =>
+      (super.noSuchMethod(
+          Invocation.method(#getUserData, [email]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  _i11.Future<void> changePassword(String? oldPass, String? newPass,
+      String? token) =>
+      (super.noSuchMethod(
+          Invocation.method(#changePassword, [oldPass, newPass, token]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value())
+      as _i11.Future<void>);
+
+  @override
+  _i11.Future<void> resetPassword(String? email) =>
+      (super.noSuchMethod(
+          Invocation.method(#resetPassword, [email]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  _i11.StreamSubscription<_i16.PasswordState> listen(
+      void Function(_i16.PasswordState)? onData,
+      {Function? onError,
+        void Function()? onDone,
+        bool? cancelOnError}) =>
+      (super.noSuchMethod(
+          Invocation.method(#listen, [
+            onData
+          ], {
+            #onError: onError,
+            #onDone: onDone,
+            #cancelOnError: cancelOnError
+          }),
+          returnValue: _FakeStreamSubscription_10<_i16.PasswordState>())
+      as _i11.StreamSubscription<_i16.PasswordState>);
+
+  @override
+  void emit(_i16.PasswordState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onChange(_i50.Change<_i16.PasswordState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  _i11.Future<void> close() =>
+      (super.noSuchMethod(
+          Invocation.method(#close, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [QuestionCubit].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockQuestionCubit extends _i1.Mock implements _i17.QuestionCubit {
+  MockQuestionCubit() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i17.QuestionState get state =>
+      (super.noSuchMethod(Invocation.getter(#state),
+          returnValue: _FakeQuestionState_16()) as _i17.QuestionState);
+
+  @override
+  _i11.Stream<_i17.QuestionState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+          returnValue: Stream<_i17.QuestionState>.empty())
+      as _i11.Stream<_i17.QuestionState>);
+
+  @override
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+      as bool);
+
+  @override
+  _i11.Future<void> fetchQuestions() =>
+      (super.noSuchMethod(
+          Invocation.method(#fetchQuestions, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  _i11.Future<void> fetchQuestionWithChallenge(int? id) =>
+      (super.noSuchMethod(
+          Invocation.method(#fetchQuestionWithChallenge, [id]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  _i11.Future<void> sendQuestions(_i32.UserQuestion? question) =>
+      (super.noSuchMethod(Invocation.method(#sendQuestions, [question]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value())
+      as _i11.Future<void>);
+
+  @override
+  _i11.StreamSubscription<_i17.QuestionState> listen(
+      void Function(_i17.QuestionState)? onData,
+      {Function? onError,
+        void Function()? onDone,
+        bool? cancelOnError}) =>
+      (super.noSuchMethod(
+          Invocation.method(#listen, [
+            onData
+          ], {
+            #onError: onError,
+            #onDone: onDone,
+            #cancelOnError: cancelOnError
+          }),
+          returnValue: _FakeStreamSubscription_10<_i17.QuestionState>())
+      as _i11.StreamSubscription<_i17.QuestionState>);
+
+  @override
+  void emit(_i17.QuestionState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onChange(_i50.Change<_i17.QuestionState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  _i11.Future<void> close() =>
+      (super.noSuchMethod(
+          Invocation.method(#close, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [RegisterCubit].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockRegisterCubit extends _i1.Mock implements _i18.RegisterCubit {
+  MockRegisterCubit() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i18.RegisterState get state =>
+      (super.noSuchMethod(Invocation.getter(#state),
+          returnValue: _FakeRegisterState_17()) as _i18.RegisterState);
+
+  @override
+  _i11.Stream<_i18.RegisterState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+          returnValue: Stream<_i18.RegisterState>.empty())
+      as _i11.Stream<_i18.RegisterState>);
+
+  @override
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+      as bool);
+
+  @override
+  _i11.Future<void> register(_i35.Register? user) =>
+      (super.noSuchMethod(
+          Invocation.method(#register, [user]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  _i11.StreamSubscription<_i18.RegisterState> listen(
+      void Function(_i18.RegisterState)? onData,
+      {Function? onError,
+        void Function()? onDone,
+        bool? cancelOnError}) =>
+      (super.noSuchMethod(
+          Invocation.method(#listen, [
+            onData
+          ], {
+            #onError: onError,
+            #onDone: onDone,
+            #cancelOnError: cancelOnError
+          }),
+          returnValue: _FakeStreamSubscription_10<_i18.RegisterState>())
+      as _i11.StreamSubscription<_i18.RegisterState>);
+
+  @override
+  void emit(_i18.RegisterState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onChange(_i50.Change<_i18.RegisterState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  _i11.Future<void> close() =>
+      (super.noSuchMethod(
+          Invocation.method(#close, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [ReportCubit].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockReportCubit extends _i1.Mock implements _i19.ReportCubit {
+  MockReportCubit() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i19.ReportState get state =>
+      (super.noSuchMethod(Invocation.getter(#state),
+          returnValue: _FakeReportState_18()) as _i19.ReportState);
+
+  @override
+  _i11.Stream<_i19.ReportState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+          returnValue: Stream<_i19.ReportState>.empty())
+      as _i11.Stream<_i19.ReportState>);
+
+  @override
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+      as bool);
+
+  @override
+  _i11.Future<_i20.XFile> getImage(_i20.ImageSource? source) =>
+      (super.noSuchMethod(Invocation.method(#getImage, [source]),
+          returnValue: Future<_i20.XFile>.value(_FakeXFile_19()))
+      as _i11.Future<_i20.XFile>);
+
+  @override
+  _i11.Future<void> fetchCategory() =>
+      (super.noSuchMethod(
+          Invocation.method(#fetchCategory, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  _i11.Future<void> sendReport(String? token, int? id, String? url,
+      String? desc, _i20.XFile? img, String? category, bool? isAnonym) =>
+      (super.noSuchMethod(
+          Invocation.method(
+              #sendReport, [token, id, url, desc, img, category, isAnonym]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value())
+      as _i11.Future<void>);
+
+  @override
+  _i11.StreamSubscription<_i19.ReportState> listen(
+      void Function(_i19.ReportState)? onData,
+      {Function? onError,
+        void Function()? onDone,
+        bool? cancelOnError}) =>
+      (super.noSuchMethod(
+          Invocation.method(#listen, [
+            onData
+          ], {
+            #onError: onError,
+            #onDone: onDone,
+            #cancelOnError: cancelOnError
+          }),
+          returnValue: _FakeStreamSubscription_10<_i19.ReportState>())
+      as _i11.StreamSubscription<_i19.ReportState>);
+
+  @override
+  void emit(_i19.ReportState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onChange(_i50.Change<_i19.ReportState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  _i11.Future<void> close() =>
+      (super.noSuchMethod(
+          Invocation.method(#close, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [SavedFeedCubit].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSavedFeedCubit extends _i1.Mock implements _i21.SavedFeedCubit {
+  MockSavedFeedCubit() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i21.SavedFeedState get state =>
+      (super.noSuchMethod(Invocation.getter(#state),
+          returnValue: _FakeSavedFeedState_20()) as _i21.SavedFeedState);
+
+  @override
+  _i11.Stream<_i21.SavedFeedState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+          returnValue: Stream<_i21.SavedFeedState>.empty())
+      as _i11.Stream<_i21.SavedFeedState>);
+
+  @override
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+      as bool);
+
+  @override
+  _i11.Future<void> fetchSavedFeeds() =>
+      (super.noSuchMethod(
+          Invocation.method(#fetchSavedFeeds, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  _i11.StreamSubscription<_i21.SavedFeedState> listen(
+      void Function(_i21.SavedFeedState)? onData,
+      {Function? onError,
+        void Function()? onDone,
+        bool? cancelOnError}) =>
+      (super.noSuchMethod(
+          Invocation.method(#listen, [
+            onData
+          ], {
+            #onError: onError,
+            #onDone: onDone,
+            #cancelOnError: cancelOnError
+          }),
+          returnValue: _FakeStreamSubscription_10<_i21.SavedFeedState>())
+      as _i11.StreamSubscription<_i21.SavedFeedState>);
+
+  @override
+  void emit(_i21.SavedFeedState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onChange(_i50.Change<_i21.SavedFeedState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  _i11.Future<void> close() =>
+      (super.noSuchMethod(
+          Invocation.method(#close, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [AboutCubit].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAboutCubit extends _i1.Mock implements _i22.AboutCubit {
+  MockAboutCubit() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i22.AboutState get state =>
+      (super.noSuchMethod(Invocation.getter(#state),
+          returnValue: _FakeAboutState_21()) as _i22.AboutState);
+
+  @override
+  _i11.Stream<_i22.AboutState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+          returnValue: Stream<_i22.AboutState>.empty())
+      as _i11.Stream<_i22.AboutState>);
+
+  @override
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+      as bool);
+
+  @override
+  _i11.Future<void> getVersion() =>
+      (super.noSuchMethod(
+          Invocation.method(#getVersion, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
+  @override
+  _i11.StreamSubscription<_i22.AboutState> listen(
+      void Function(_i22.AboutState)? onData,
+      {Function? onError,
+        void Function()? onDone,
+        bool? cancelOnError}) =>
+      (super.noSuchMethod(
+          Invocation.method(#listen, [
+            onData
+          ], {
+            #onError: onError,
+            #onDone: onDone,
+            #cancelOnError: cancelOnError
+          }),
+          returnValue: _FakeStreamSubscription_10<_i22.AboutState>())
+      as _i11.StreamSubscription<_i22.AboutState>);
+
+  @override
+  void emit(_i22.AboutState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onChange(_i50.Change<_i22.AboutState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+
+  @override
+  _i11.Future<void> close() =>
+      (super.noSuchMethod(
+          Invocation.method(#close, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i11.Future<
+          void>);
+
   @override
   String toString() => super.toString();
 }
@@ -641,367 +1751,396 @@ class MockNetworkInfo extends _i1.Mock implements _i37.NetworkInfo {
 /// A class which mocks [Dio].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDio extends _i1.Mock implements _i10.Dio {
+class MockDio extends _i1.Mock implements _i23.Dio {
   MockDio() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i10.BaseOptions get options =>
+  _i23.BaseOptions get options =>
       (super.noSuchMethod(Invocation.getter(#options),
-          returnValue: _FakeBaseOptions_9()) as _i10.BaseOptions);
+          returnValue: _FakeBaseOptions_22()) as _i23.BaseOptions);
+
   @override
-  set options(_i10.BaseOptions? _options) =>
+  set options(_i23.BaseOptions? _options) =>
       super.noSuchMethod(Invocation.setter(#options, _options),
           returnValueForMissingStub: null);
+
   @override
-  _i10.HttpClientAdapter get httpClientAdapter =>
+  _i23.HttpClientAdapter get httpClientAdapter =>
       (super.noSuchMethod(Invocation.getter(#httpClientAdapter),
-          returnValue: _FakeHttpClientAdapter_10()) as _i10.HttpClientAdapter);
+          returnValue: _FakeHttpClientAdapter_23()) as _i23.HttpClientAdapter);
+
   @override
-  set httpClientAdapter(_i10.HttpClientAdapter? _httpClientAdapter) => super
-      .noSuchMethod(Invocation.setter(#httpClientAdapter, _httpClientAdapter),
+  set httpClientAdapter(_i23.HttpClientAdapter? _httpClientAdapter) =>
+      super
+          .noSuchMethod(
+          Invocation.setter(#httpClientAdapter, _httpClientAdapter),
           returnValueForMissingStub: null);
+
   @override
-  _i10.Transformer get transformer =>
+  _i23.Transformer get transformer =>
       (super.noSuchMethod(Invocation.getter(#transformer),
-          returnValue: _FakeTransformer_11()) as _i10.Transformer);
+          returnValue: _FakeTransformer_24()) as _i23.Transformer);
+
   @override
-  set transformer(_i10.Transformer? _transformer) =>
+  set transformer(_i23.Transformer? _transformer) =>
       super.noSuchMethod(Invocation.setter(#transformer, _transformer),
           returnValueForMissingStub: null);
+
   @override
-  _i10.Interceptors get interceptors =>
+  _i23.Interceptors get interceptors =>
       (super.noSuchMethod(Invocation.getter(#interceptors),
-          returnValue: _FakeInterceptors_12()) as _i10.Interceptors);
+          returnValue: _FakeInterceptors_25()) as _i23.Interceptors);
+
   @override
   void close({bool? force = false}) =>
       super.noSuchMethod(Invocation.method(#close, [], {#force: force}),
           returnValueForMissingStub: null);
+
   @override
-  _i12.Future<_i10.Response<T>> get<T>(String? path,
-          {Map<String, dynamic>? queryParameters,
-          _i10.Options? options,
-          _i10.CancelToken? cancelToken,
-          _i10.ProgressCallback? onReceiveProgress}) =>
+  _i11.Future<_i23.Response<T>> get<T>(String? path,
+      {Map<String, dynamic>? queryParameters,
+        _i23.Options? options,
+        _i23.CancelToken? cancelToken,
+        _i23.ProgressCallback? onReceiveProgress}) =>
       (super.noSuchMethod(
-              Invocation.method(#get, [
-                path
-              ], {
-                #queryParameters: queryParameters,
-                #options: options,
-                #cancelToken: cancelToken,
-                #onReceiveProgress: onReceiveProgress
-              }),
-              returnValue:
-                  Future<_i10.Response<T>>.value(_FakeResponse_13<T>()))
-          as _i12.Future<_i10.Response<T>>);
+          Invocation.method(#get, [
+            path
+          ], {
+            #queryParameters: queryParameters,
+            #options: options,
+            #cancelToken: cancelToken,
+            #onReceiveProgress: onReceiveProgress
+          }),
+          returnValue:
+          Future<_i23.Response<T>>.value(_FakeResponse_26<T>()))
+      as _i11.Future<_i23.Response<T>>);
+
   @override
-  _i12.Future<_i10.Response<T>> getUri<T>(Uri? uri,
-          {_i10.Options? options,
-          _i10.CancelToken? cancelToken,
-          _i10.ProgressCallback? onReceiveProgress}) =>
+  _i11.Future<_i23.Response<T>> getUri<T>(Uri? uri,
+      {_i23.Options? options,
+        _i23.CancelToken? cancelToken,
+        _i23.ProgressCallback? onReceiveProgress}) =>
       (super.noSuchMethod(
-              Invocation.method(#getUri, [
-                uri
-              ], {
-                #options: options,
-                #cancelToken: cancelToken,
-                #onReceiveProgress: onReceiveProgress
-              }),
-              returnValue:
-                  Future<_i10.Response<T>>.value(_FakeResponse_13<T>()))
-          as _i12.Future<_i10.Response<T>>);
+          Invocation.method(#getUri, [
+            uri
+          ], {
+            #options: options,
+            #cancelToken: cancelToken,
+            #onReceiveProgress: onReceiveProgress
+          }),
+          returnValue:
+          Future<_i23.Response<T>>.value(_FakeResponse_26<T>()))
+      as _i11.Future<_i23.Response<T>>);
+
   @override
-  _i12.Future<_i10.Response<T>> post<T>(String? path,
-          {dynamic data,
-          Map<String, dynamic>? queryParameters,
-          _i10.Options? options,
-          _i10.CancelToken? cancelToken,
-          _i10.ProgressCallback? onSendProgress,
-          _i10.ProgressCallback? onReceiveProgress}) =>
+  _i11.Future<_i23.Response<T>> post<T>(String? path,
+      {dynamic data,
+        Map<String, dynamic>? queryParameters,
+        _i23.Options? options,
+        _i23.CancelToken? cancelToken,
+        _i23.ProgressCallback? onSendProgress,
+        _i23.ProgressCallback? onReceiveProgress}) =>
       (super.noSuchMethod(
-              Invocation.method(#post, [
-                path
-              ], {
-                #data: data,
-                #queryParameters: queryParameters,
-                #options: options,
-                #cancelToken: cancelToken,
-                #onSendProgress: onSendProgress,
-                #onReceiveProgress: onReceiveProgress
-              }),
-              returnValue:
-                  Future<_i10.Response<T>>.value(_FakeResponse_13<T>()))
-          as _i12.Future<_i10.Response<T>>);
+          Invocation.method(#post, [
+            path
+          ], {
+            #data: data,
+            #queryParameters: queryParameters,
+            #options: options,
+            #cancelToken: cancelToken,
+            #onSendProgress: onSendProgress,
+            #onReceiveProgress: onReceiveProgress
+          }),
+          returnValue:
+          Future<_i23.Response<T>>.value(_FakeResponse_26<T>()))
+      as _i11.Future<_i23.Response<T>>);
+
   @override
-  _i12.Future<_i10.Response<T>> postUri<T>(Uri? uri,
-          {dynamic data,
-          _i10.Options? options,
-          _i10.CancelToken? cancelToken,
-          _i10.ProgressCallback? onSendProgress,
-          _i10.ProgressCallback? onReceiveProgress}) =>
+  _i11.Future<_i23.Response<T>> postUri<T>(Uri? uri,
+      {dynamic data,
+        _i23.Options? options,
+        _i23.CancelToken? cancelToken,
+        _i23.ProgressCallback? onSendProgress,
+        _i23.ProgressCallback? onReceiveProgress}) =>
       (super.noSuchMethod(
-              Invocation.method(#postUri, [
-                uri
-              ], {
-                #data: data,
-                #options: options,
-                #cancelToken: cancelToken,
-                #onSendProgress: onSendProgress,
-                #onReceiveProgress: onReceiveProgress
-              }),
-              returnValue:
-                  Future<_i10.Response<T>>.value(_FakeResponse_13<T>()))
-          as _i12.Future<_i10.Response<T>>);
+          Invocation.method(#postUri, [
+            uri
+          ], {
+            #data: data,
+            #options: options,
+            #cancelToken: cancelToken,
+            #onSendProgress: onSendProgress,
+            #onReceiveProgress: onReceiveProgress
+          }),
+          returnValue:
+          Future<_i23.Response<T>>.value(_FakeResponse_26<T>()))
+      as _i11.Future<_i23.Response<T>>);
+
   @override
-  _i12.Future<_i10.Response<T>> put<T>(String? path,
-          {dynamic data,
-          Map<String, dynamic>? queryParameters,
-          _i10.Options? options,
-          _i10.CancelToken? cancelToken,
-          _i10.ProgressCallback? onSendProgress,
-          _i10.ProgressCallback? onReceiveProgress}) =>
+  _i11.Future<_i23.Response<T>> put<T>(String? path,
+      {dynamic data,
+        Map<String, dynamic>? queryParameters,
+        _i23.Options? options,
+        _i23.CancelToken? cancelToken,
+        _i23.ProgressCallback? onSendProgress,
+        _i23.ProgressCallback? onReceiveProgress}) =>
       (super.noSuchMethod(
-              Invocation.method(#put, [
-                path
-              ], {
-                #data: data,
-                #queryParameters: queryParameters,
-                #options: options,
-                #cancelToken: cancelToken,
-                #onSendProgress: onSendProgress,
-                #onReceiveProgress: onReceiveProgress
-              }),
-              returnValue:
-                  Future<_i10.Response<T>>.value(_FakeResponse_13<T>()))
-          as _i12.Future<_i10.Response<T>>);
+          Invocation.method(#put, [
+            path
+          ], {
+            #data: data,
+            #queryParameters: queryParameters,
+            #options: options,
+            #cancelToken: cancelToken,
+            #onSendProgress: onSendProgress,
+            #onReceiveProgress: onReceiveProgress
+          }),
+          returnValue:
+          Future<_i23.Response<T>>.value(_FakeResponse_26<T>()))
+      as _i11.Future<_i23.Response<T>>);
+
   @override
-  _i12.Future<_i10.Response<T>> putUri<T>(Uri? uri,
-          {dynamic data,
-          _i10.Options? options,
-          _i10.CancelToken? cancelToken,
-          _i10.ProgressCallback? onSendProgress,
-          _i10.ProgressCallback? onReceiveProgress}) =>
+  _i11.Future<_i23.Response<T>> putUri<T>(Uri? uri,
+      {dynamic data,
+        _i23.Options? options,
+        _i23.CancelToken? cancelToken,
+        _i23.ProgressCallback? onSendProgress,
+        _i23.ProgressCallback? onReceiveProgress}) =>
       (super.noSuchMethod(
-              Invocation.method(#putUri, [
-                uri
-              ], {
-                #data: data,
-                #options: options,
-                #cancelToken: cancelToken,
-                #onSendProgress: onSendProgress,
-                #onReceiveProgress: onReceiveProgress
-              }),
-              returnValue:
-                  Future<_i10.Response<T>>.value(_FakeResponse_13<T>()))
-          as _i12.Future<_i10.Response<T>>);
+          Invocation.method(#putUri, [
+            uri
+          ], {
+            #data: data,
+            #options: options,
+            #cancelToken: cancelToken,
+            #onSendProgress: onSendProgress,
+            #onReceiveProgress: onReceiveProgress
+          }),
+          returnValue:
+          Future<_i23.Response<T>>.value(_FakeResponse_26<T>()))
+      as _i11.Future<_i23.Response<T>>);
+
   @override
-  _i12.Future<_i10.Response<T>> head<T>(String? path,
-          {dynamic data,
-          Map<String, dynamic>? queryParameters,
-          _i10.Options? options,
-          _i10.CancelToken? cancelToken}) =>
+  _i11.Future<_i23.Response<T>> head<T>(String? path,
+      {dynamic data,
+        Map<String, dynamic>? queryParameters,
+        _i23.Options? options,
+        _i23.CancelToken? cancelToken}) =>
       (super.noSuchMethod(
-              Invocation.method(#head, [
-                path
-              ], {
-                #data: data,
-                #queryParameters: queryParameters,
-                #options: options,
-                #cancelToken: cancelToken
-              }),
-              returnValue:
-                  Future<_i10.Response<T>>.value(_FakeResponse_13<T>()))
-          as _i12.Future<_i10.Response<T>>);
+          Invocation.method(#head, [
+            path
+          ], {
+            #data: data,
+            #queryParameters: queryParameters,
+            #options: options,
+            #cancelToken: cancelToken
+          }),
+          returnValue:
+          Future<_i23.Response<T>>.value(_FakeResponse_26<T>()))
+      as _i11.Future<_i23.Response<T>>);
+
   @override
-  _i12.Future<_i10.Response<T>> headUri<T>(Uri? uri,
-          {dynamic data,
-          _i10.Options? options,
-          _i10.CancelToken? cancelToken}) =>
+  _i11.Future<_i23.Response<T>> headUri<T>(Uri? uri,
+      {dynamic data,
+        _i23.Options? options,
+        _i23.CancelToken? cancelToken}) =>
       (super.noSuchMethod(
-              Invocation.method(#headUri, [uri],
-                  {#data: data, #options: options, #cancelToken: cancelToken}),
-              returnValue:
-                  Future<_i10.Response<T>>.value(_FakeResponse_13<T>()))
-          as _i12.Future<_i10.Response<T>>);
+          Invocation.method(#headUri, [uri],
+              {#data: data, #options: options, #cancelToken: cancelToken}),
+          returnValue:
+          Future<_i23.Response<T>>.value(_FakeResponse_26<T>()))
+      as _i11.Future<_i23.Response<T>>);
+
   @override
-  _i12.Future<_i10.Response<T>> delete<T>(String? path,
-          {dynamic data,
-          Map<String, dynamic>? queryParameters,
-          _i10.Options? options,
-          _i10.CancelToken? cancelToken}) =>
+  _i11.Future<_i23.Response<T>> delete<T>(String? path,
+      {dynamic data,
+        Map<String, dynamic>? queryParameters,
+        _i23.Options? options,
+        _i23.CancelToken? cancelToken}) =>
       (super.noSuchMethod(
-              Invocation.method(#delete, [
-                path
-              ], {
-                #data: data,
-                #queryParameters: queryParameters,
-                #options: options,
-                #cancelToken: cancelToken
-              }),
-              returnValue:
-                  Future<_i10.Response<T>>.value(_FakeResponse_13<T>()))
-          as _i12.Future<_i10.Response<T>>);
+          Invocation.method(#delete, [
+            path
+          ], {
+            #data: data,
+            #queryParameters: queryParameters,
+            #options: options,
+            #cancelToken: cancelToken
+          }),
+          returnValue:
+          Future<_i23.Response<T>>.value(_FakeResponse_26<T>()))
+      as _i11.Future<_i23.Response<T>>);
+
   @override
-  _i12.Future<_i10.Response<T>> deleteUri<T>(Uri? uri,
-          {dynamic data,
-          _i10.Options? options,
-          _i10.CancelToken? cancelToken}) =>
+  _i11.Future<_i23.Response<T>> deleteUri<T>(Uri? uri,
+      {dynamic data,
+        _i23.Options? options,
+        _i23.CancelToken? cancelToken}) =>
       (super.noSuchMethod(
-              Invocation.method(#deleteUri, [uri],
-                  {#data: data, #options: options, #cancelToken: cancelToken}),
-              returnValue:
-                  Future<_i10.Response<T>>.value(_FakeResponse_13<T>()))
-          as _i12.Future<_i10.Response<T>>);
+          Invocation.method(#deleteUri, [uri],
+              {#data: data, #options: options, #cancelToken: cancelToken}),
+          returnValue:
+          Future<_i23.Response<T>>.value(_FakeResponse_26<T>()))
+      as _i11.Future<_i23.Response<T>>);
+
   @override
-  _i12.Future<_i10.Response<T>> patch<T>(String? path,
-          {dynamic data,
-          Map<String, dynamic>? queryParameters,
-          _i10.Options? options,
-          _i10.CancelToken? cancelToken,
-          _i10.ProgressCallback? onSendProgress,
-          _i10.ProgressCallback? onReceiveProgress}) =>
+  _i11.Future<_i23.Response<T>> patch<T>(String? path,
+      {dynamic data,
+        Map<String, dynamic>? queryParameters,
+        _i23.Options? options,
+        _i23.CancelToken? cancelToken,
+        _i23.ProgressCallback? onSendProgress,
+        _i23.ProgressCallback? onReceiveProgress}) =>
       (super.noSuchMethod(
-              Invocation.method(#patch, [
-                path
-              ], {
-                #data: data,
-                #queryParameters: queryParameters,
-                #options: options,
-                #cancelToken: cancelToken,
-                #onSendProgress: onSendProgress,
-                #onReceiveProgress: onReceiveProgress
-              }),
-              returnValue:
-                  Future<_i10.Response<T>>.value(_FakeResponse_13<T>()))
-          as _i12.Future<_i10.Response<T>>);
+          Invocation.method(#patch, [
+            path
+          ], {
+            #data: data,
+            #queryParameters: queryParameters,
+            #options: options,
+            #cancelToken: cancelToken,
+            #onSendProgress: onSendProgress,
+            #onReceiveProgress: onReceiveProgress
+          }),
+          returnValue:
+          Future<_i23.Response<T>>.value(_FakeResponse_26<T>()))
+      as _i11.Future<_i23.Response<T>>);
+
   @override
-  _i12.Future<_i10.Response<T>> patchUri<T>(Uri? uri,
-          {dynamic data,
-          _i10.Options? options,
-          _i10.CancelToken? cancelToken,
-          _i10.ProgressCallback? onSendProgress,
-          _i10.ProgressCallback? onReceiveProgress}) =>
+  _i11.Future<_i23.Response<T>> patchUri<T>(Uri? uri,
+      {dynamic data,
+        _i23.Options? options,
+        _i23.CancelToken? cancelToken,
+        _i23.ProgressCallback? onSendProgress,
+        _i23.ProgressCallback? onReceiveProgress}) =>
       (super.noSuchMethod(
-              Invocation.method(#patchUri, [
-                uri
-              ], {
-                #data: data,
-                #options: options,
-                #cancelToken: cancelToken,
-                #onSendProgress: onSendProgress,
-                #onReceiveProgress: onReceiveProgress
-              }),
-              returnValue:
-                  Future<_i10.Response<T>>.value(_FakeResponse_13<T>()))
-          as _i12.Future<_i10.Response<T>>);
+          Invocation.method(#patchUri, [
+            uri
+          ], {
+            #data: data,
+            #options: options,
+            #cancelToken: cancelToken,
+            #onSendProgress: onSendProgress,
+            #onReceiveProgress: onReceiveProgress
+          }),
+          returnValue:
+          Future<_i23.Response<T>>.value(_FakeResponse_26<T>()))
+      as _i11.Future<_i23.Response<T>>);
   @override
   void lock() => super.noSuchMethod(Invocation.method(#lock, []),
       returnValueForMissingStub: null);
   @override
   void unlock() => super.noSuchMethod(Invocation.method(#unlock, []),
       returnValueForMissingStub: null);
+
   @override
-  void clear() => super.noSuchMethod(Invocation.method(#clear, []),
-      returnValueForMissingStub: null);
+  void clear() =>
+      super.noSuchMethod(Invocation.method(#clear, []),
+          returnValueForMissingStub: null);
+
   @override
-  _i12.Future<_i10.Response<dynamic>> download(
-          String? urlPath, dynamic savePath,
-          {_i10.ProgressCallback? onReceiveProgress,
-          Map<String, dynamic>? queryParameters,
-          _i10.CancelToken? cancelToken,
-          bool? deleteOnError = true,
-          String? lengthHeader = r'content-length',
-          dynamic data,
-          _i10.Options? options}) =>
+  _i11.Future<_i23.Response<dynamic>> download(String? urlPath,
+      dynamic savePath,
+      {_i23.ProgressCallback? onReceiveProgress,
+        Map<String, dynamic>? queryParameters,
+        _i23.CancelToken? cancelToken,
+        bool? deleteOnError = true,
+        String? lengthHeader = r'content-length',
+        dynamic data,
+        _i23.Options? options}) =>
       (super.noSuchMethod(
-              Invocation.method(#download, [
-                urlPath,
-                savePath
-              ], {
-                #onReceiveProgress: onReceiveProgress,
-                #queryParameters: queryParameters,
-                #cancelToken: cancelToken,
-                #deleteOnError: deleteOnError,
-                #lengthHeader: lengthHeader,
-                #data: data,
-                #options: options
-              }),
-              returnValue: Future<_i10.Response<dynamic>>.value(
-                  _FakeResponse_13<dynamic>()))
-          as _i12.Future<_i10.Response<dynamic>>);
+          Invocation.method(#download, [
+            urlPath,
+            savePath
+          ], {
+            #onReceiveProgress: onReceiveProgress,
+            #queryParameters: queryParameters,
+            #cancelToken: cancelToken,
+            #deleteOnError: deleteOnError,
+            #lengthHeader: lengthHeader,
+            #data: data,
+            #options: options
+          }),
+          returnValue: Future<_i23.Response<dynamic>>.value(
+              _FakeResponse_26<dynamic>()))
+      as _i11.Future<_i23.Response<dynamic>>);
+
   @override
-  _i12.Future<_i10.Response<dynamic>> downloadUri(Uri? uri, dynamic savePath,
-          {_i10.ProgressCallback? onReceiveProgress,
-          _i10.CancelToken? cancelToken,
-          bool? deleteOnError = true,
-          String? lengthHeader = r'content-length',
-          dynamic data,
-          _i10.Options? options}) =>
+  _i11.Future<_i23.Response<dynamic>> downloadUri(Uri? uri, dynamic savePath,
+      {_i23.ProgressCallback? onReceiveProgress,
+        _i23.CancelToken? cancelToken,
+        bool? deleteOnError = true,
+        String? lengthHeader = r'content-length',
+        dynamic data,
+        _i23.Options? options}) =>
       (super.noSuchMethod(
-              Invocation.method(#downloadUri, [
-                uri,
-                savePath
-              ], {
-                #onReceiveProgress: onReceiveProgress,
-                #cancelToken: cancelToken,
-                #deleteOnError: deleteOnError,
-                #lengthHeader: lengthHeader,
-                #data: data,
-                #options: options
-              }),
-              returnValue: Future<_i10.Response<dynamic>>.value(
-                  _FakeResponse_13<dynamic>()))
-          as _i12.Future<_i10.Response<dynamic>>);
+          Invocation.method(#downloadUri, [
+            uri,
+            savePath
+          ], {
+            #onReceiveProgress: onReceiveProgress,
+            #cancelToken: cancelToken,
+            #deleteOnError: deleteOnError,
+            #lengthHeader: lengthHeader,
+            #data: data,
+            #options: options
+          }),
+          returnValue: Future<_i23.Response<dynamic>>.value(
+              _FakeResponse_26<dynamic>()))
+      as _i11.Future<_i23.Response<dynamic>>);
+
   @override
-  _i12.Future<_i10.Response<T>> request<T>(String? path,
-          {dynamic data,
-          Map<String, dynamic>? queryParameters,
-          _i10.CancelToken? cancelToken,
-          _i10.Options? options,
-          _i10.ProgressCallback? onSendProgress,
-          _i10.ProgressCallback? onReceiveProgress}) =>
+  _i11.Future<_i23.Response<T>> request<T>(String? path,
+      {dynamic data,
+        Map<String, dynamic>? queryParameters,
+        _i23.CancelToken? cancelToken,
+        _i23.Options? options,
+        _i23.ProgressCallback? onSendProgress,
+        _i23.ProgressCallback? onReceiveProgress}) =>
       (super.noSuchMethod(
-              Invocation.method(#request, [
-                path
-              ], {
-                #data: data,
-                #queryParameters: queryParameters,
-                #cancelToken: cancelToken,
-                #options: options,
-                #onSendProgress: onSendProgress,
-                #onReceiveProgress: onReceiveProgress
-              }),
-              returnValue:
-                  Future<_i10.Response<T>>.value(_FakeResponse_13<T>()))
-          as _i12.Future<_i10.Response<T>>);
+          Invocation.method(#request, [
+            path
+          ], {
+            #data: data,
+            #queryParameters: queryParameters,
+            #cancelToken: cancelToken,
+            #options: options,
+            #onSendProgress: onSendProgress,
+            #onReceiveProgress: onReceiveProgress
+          }),
+          returnValue:
+          Future<_i23.Response<T>>.value(_FakeResponse_26<T>()))
+      as _i11.Future<_i23.Response<T>>);
+
   @override
-  _i12.Future<_i10.Response<T>> requestUri<T>(Uri? uri,
-          {dynamic data,
-          _i10.CancelToken? cancelToken,
-          _i10.Options? options,
-          _i10.ProgressCallback? onSendProgress,
-          _i10.ProgressCallback? onReceiveProgress}) =>
+  _i11.Future<_i23.Response<T>> requestUri<T>(Uri? uri,
+      {dynamic data,
+        _i23.CancelToken? cancelToken,
+        _i23.Options? options,
+        _i23.ProgressCallback? onSendProgress,
+        _i23.ProgressCallback? onReceiveProgress}) =>
       (super.noSuchMethod(
-              Invocation.method(#requestUri, [
-                uri
-              ], {
-                #data: data,
-                #cancelToken: cancelToken,
-                #options: options,
-                #onSendProgress: onSendProgress,
-                #onReceiveProgress: onReceiveProgress
-              }),
-              returnValue:
-                  Future<_i10.Response<T>>.value(_FakeResponse_13<T>()))
-          as _i12.Future<_i10.Response<T>>);
+          Invocation.method(#requestUri, [
+            uri
+          ], {
+            #data: data,
+            #cancelToken: cancelToken,
+            #options: options,
+            #onSendProgress: onSendProgress,
+            #onReceiveProgress: onReceiveProgress
+          }),
+          returnValue:
+          Future<_i23.Response<T>>.value(_FakeResponse_26<T>()))
+      as _i11.Future<_i23.Response<T>>);
+
   @override
-  _i12.Future<_i10.Response<T>> fetch<T>(_i10.RequestOptions? requestOptions) =>
+  _i11.Future<_i23.Response<T>> fetch<T>(_i23.RequestOptions? requestOptions) =>
       (super.noSuchMethod(Invocation.method(#fetch, [requestOptions]),
-              returnValue:
-                  Future<_i10.Response<T>>.value(_FakeResponse_13<T>()))
-          as _i12.Future<_i10.Response<T>>);
+          returnValue:
+          Future<_i23.Response<T>>.value(_FakeResponse_26<T>()))
+      as _i11.Future<_i23.Response<T>>);
+
   @override
   String toString() => super.toString();
 }

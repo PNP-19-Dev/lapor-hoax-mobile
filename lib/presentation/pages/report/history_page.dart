@@ -77,7 +77,6 @@ class _HistoryPageState extends State<HistoryPage> {
       }
 
     }, builder: (_, state) {
-      print(state);
       if (state is HistoryLoading) {
         return const Center(child: CircularProgressIndicator());
       } else if (state is HistoryHasData) {
@@ -97,6 +96,7 @@ class _HistoryPageState extends State<HistoryPage> {
         );
       } else if (state is HistoryError) {
         return Center(
+          key: Key('history_page_item_error'),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

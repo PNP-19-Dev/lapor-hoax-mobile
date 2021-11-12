@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,9 +40,14 @@ class _ReportPageState extends State<ReportPage> {
         child: BlocBuilder<LoginCubit, LoginState>(
           builder: (_, state) {
             if (state is LoginSuccessWithData) {
-              return _OnLapor(state.data);
+              return _OnLapor(
+                state.data,
+                key: Key('report_is_lapor'),
+              );
             } else {
-              return _OnWelcome();
+              return _OnWelcome(
+                key: Key('report_is_welcome'),
+              );
             }
           },
         ),
@@ -53,6 +57,8 @@ class _ReportPageState extends State<ReportPage> {
 }
 
 class _OnWelcome extends StatelessWidget {
+  _OnWelcome({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -343,12 +349,10 @@ class _OnLaporState extends State<_OnLapor> {
 
                               if (state is ReportError) {
                                 progress!.dismiss();
-                                Navigator.pushNamed(
-                                    context, OnFailureReport.ROUTE_NAME);
+                                Navigation.intent(OnFailureReport.ROUTE_NAME);
                               } else if (state is ReportUploaded) {
                                 progress!.dismiss();
-                                Navigator.pushNamed(
-                                    context, OnSuccessReport.ROUTE_NAME);
+                                Navigation.intent(OnSuccessReport.ROUTE_NAME);
                               }
                             },
                             child: ElevatedButton(

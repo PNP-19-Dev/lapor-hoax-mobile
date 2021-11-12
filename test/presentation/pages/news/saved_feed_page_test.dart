@@ -3,13 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laporhoax/presentation/pages/news/saved_news.dart';
 import 'package:laporhoax/presentation/provider/saved_feed_cubit.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../dummy_data/dummy_objects.dart';
-import 'saved_feed_page_test.mocks.dart';
+import '../../../helpers/test_helper.mocks.dart';
 
-@GenerateMocks([SavedFeedCubit])
 void main() {
   late MockSavedFeedCubit bloc;
 

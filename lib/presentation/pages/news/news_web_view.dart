@@ -6,15 +6,10 @@ import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/presentation/provider/detail_cubit.dart';
 import 'package:laporhoax/presentation/provider/item_cubit.dart';
 import 'package:laporhoax/styles/colors.dart';
+import 'package:laporhoax/utils/navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
-class NewsWebViewData {
-  final id;
-
-  NewsWebViewData(this.id);
-}
 
 class NewsWebView extends StatefulWidget {
   static const ROUTE_NAME = '/news_web_view';
@@ -27,6 +22,11 @@ class NewsWebView extends StatefulWidget {
 }
 
 class _NewsWebViewState extends State<NewsWebView> {
+  void showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
+
   @override
   void initState() {
     super.initState();
@@ -36,42 +36,6 @@ class _NewsWebViewState extends State<NewsWebView> {
 
   final _key = UniqueKey();
   bool isLoading = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomScaffold(
-      body: Stack(
-        children: [
-          WebView(
-            key: _key,
-            initialUrl: '${RemoteDataSourceImpl.baseUrl}/news/${widget.id}',
-            javascriptMode: JavascriptMode.unrestricted,
-            onPageFinished: (finish) {
-              setState(() {
-                isLoading = false;
-              });
-            },
-          ),
-          isLoading
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Stack(),
-        ],
-      ),
-    );
-  }
-}
-
-class CustomScaffold extends StatelessWidget {
-  final Widget body;
-
-  CustomScaffold({required this.body});
-
-  void showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
-  }
 
   Widget _buildShortAppBar(BuildContext context, Feed feed) {
     return Card(
@@ -84,7 +48,7 @@ class CustomScaffold extends StatelessWidget {
           children: [
             IconButton(
               icon: Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigation.back(),
             ),
             Expanded(
               child: Text(
@@ -115,17 +79,13 @@ class CustomScaffold extends StatelessWidget {
                   builder: (context, state) {
                     if (state is ItemIsSave || state is ItemSaved) {
                       return IconButton(
-                          onPressed: (){
-                            print('unsave tapped!');
-                            context.read<ItemCubit>().removeFeed(feed);
-                          },
+                          onPressed: () =>
+                              context.read<ItemCubit>().removeFeed(feed),
                           icon: Icon(Icons.bookmark, color: orangeBlaze));
                     } else if (state is ItemUnsaved || state is ItemRemoved) {
                       return IconButton(
-                        onPressed: () {
-                          print('save tapped!');
-                          context.read<ItemCubit>().saveFeed(feed);
-                        },
+                        onPressed: () =>
+                            context.read<ItemCubit>().saveFeed(feed),
                         icon: Icon(Icons.bookmark_outline, color: orangeBlaze),
                       );
                     } else
@@ -149,7 +109,6 @@ class CustomScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<DetailCubit, DetailState>(builder: (context, state) {
-        print(state);
         if (state is DetailLoading) {
           return Center(
             child: CircularProgressIndicator(),
@@ -158,7 +117,26 @@ class CustomScaffold extends StatelessWidget {
           return SafeArea(
             child: Stack(
               children: [
-                body,
+                Stack(
+                  children: [
+                    WebView(
+                      key: _key,
+                      initialUrl:
+                          '${RemoteDataSourceImpl.baseUrl}/news/${widget.id}',
+                      javascriptMode: JavascriptMode.unrestricted,
+                      onPageFinished: (finish) {
+                        setState(() {
+                          isLoading = false;
+                        });
+                      },
+                    ),
+                    isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : Stack(),
+                  ],
+                ),
                 _buildShortAppBar(context, state.data),
               ],
             ),

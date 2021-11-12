@@ -23,8 +23,6 @@ class _StaticPageViewerState extends State<StaticPageViewer> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
           title: Text(widget.data.title),
         ),
         body: WebView(

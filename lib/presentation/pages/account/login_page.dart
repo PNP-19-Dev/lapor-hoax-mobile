@@ -117,10 +117,8 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           width: double.infinity,
                           child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, ForgotPasswordSectionOne.ROUTE_NAME);
-                            },
+                            onTap: () => Navigation.intent(
+                                ForgotPasswordSectionOne.ROUTE_NAME),
                             child: Container(
                               child: Text('Lupa Password ?',
                                   style: Theme.of(context)
@@ -139,10 +137,8 @@ class _LoginPageState extends State<LoginPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, RegisterPage.ROUTE_NAME);
-                                },
+                                onTap: () =>
+                                    Navigation.intent(RegisterPage.ROUTE_NAME),
                                 child: Text(
                                   'Daftar Akun',
                                   style: Theme.of(context)

@@ -184,7 +184,7 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                     'Pertanyaan',
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
-                  BlocListener<QuestionCubit, QuestionState>(
+                  BlocConsumer<QuestionCubit, QuestionState>(
                     listener: (context, state) {
                       final progress = ProgressHUD.of(context);
 
@@ -226,8 +226,7 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                                         textAlign: TextAlign.center,
                                       ),
                                       ElevatedButton(
-                                        onPressed: () => Navigator.pushNamed(
-                                          context,
+                                        onPressed: () => Navigation.intent(
                                           LoginPage.ROUTE_NAME,
                                         ),
                                         child: Text('Masuk'),
@@ -254,7 +253,7 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                         _inputQuestion.text = 'Gagal Mendapatkan Data';
                       }
                     },
-                    child: TextField(
+                    builder: (_, state) => TextField(
                       controller: _inputQuestion,
                       enabled: false,
                     ),

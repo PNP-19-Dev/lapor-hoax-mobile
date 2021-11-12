@@ -40,9 +40,14 @@ class _AccountPageState extends State<AccountPage> {
         child: BlocBuilder<LoginCubit, LoginState>(
           builder: (_, state) {
             if (state is LoginSuccessWithData) {
-              return _OnAccountLogin(state.data);
+              return _OnAccountLogin(
+                state.data,
+                key: Key('account_page_login'),
+              );
             } else
-              return _OnWelCome();
+              return _OnWelCome(
+                key: Key('account_page_logout'),
+              );
           },
         ),
       ),
@@ -79,7 +84,7 @@ class BuildCard extends StatelessWidget {
 class _OnAccountLogin extends StatelessWidget {
   final SessionData sessionData;
 
-  _OnAccountLogin(this.sessionData);
+  _OnAccountLogin(this.sessionData, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +135,7 @@ class _OnAccountLogin extends StatelessWidget {
           BuildCard(
             Icons.info_outline,
             'Tentang Laporhoax',
-            () => Navigator.pushNamed(context, About.routeName),
+            () => Navigation.intent(About.routeName),
           ),
           BuildCard(
             Icons.share_rounded,
@@ -164,6 +169,8 @@ class _OnAccountLogin extends StatelessWidget {
 }
 
 class _OnWelCome extends StatelessWidget {
+  _OnWelCome({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -206,12 +213,12 @@ class _OnWelCome extends StatelessWidget {
         BuildCard(
           Icons.info_outline,
           'Tentang LaporHoax',
-          () => Navigator.pushNamed(context, About.routeName),
+          () => Navigation.intent(About.routeName),
         ),
         BuildCard(
           Icons.share_rounded,
           'Bagikan LaporHoax',
-          () => Share.share(
+              () => Share.share(
               'Ayo berantas hoaks bersama LaporHoax! di https://s.id/LAPORHOAX'),
         ),
         SizedBox(height: 20),
