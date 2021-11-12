@@ -1,9 +1,16 @@
+/*
+ * Created by andii on 12/11/21 22.48
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.48
+ */
+
 import 'package:laporhoax/data/models/category_model.dart';
 import 'package:laporhoax/data/models/category_table.dart';
 import 'package:laporhoax/data/models/feed_model.dart';
 import 'package:laporhoax/data/models/feed_table.dart';
 import 'package:laporhoax/data/models/question_model.dart';
 import 'package:laporhoax/data/models/question_table.dart';
+import 'package:laporhoax/data/models/register.dart';
 import 'package:laporhoax/data/models/register_model.dart';
 import 'package:laporhoax/data/models/register_response.dart';
 import 'package:laporhoax/data/models/report_model.dart';
@@ -13,7 +20,6 @@ import 'package:laporhoax/data/models/user_token_model.dart';
 import 'package:laporhoax/domain/entities/category.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/domain/entities/question.dart';
-import 'package:laporhoax/domain/entities/register.dart';
 import 'package:laporhoax/domain/entities/register_data.dart';
 import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';

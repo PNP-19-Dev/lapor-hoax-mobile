@@ -1,8 +1,14 @@
+/*
+ * Created by andii on 12/11/21 22.48
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.43
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:laporhoax/domain/entities/register.dart';
+import 'package:laporhoax/data/models/register.dart';
 import 'package:laporhoax/presentation/pages/account/login_page.dart';
 import 'package:laporhoax/presentation/pages/account/user_challenge.dart';
 import 'package:laporhoax/presentation/provider/register_cubit.dart';
