@@ -62,11 +62,13 @@ class _AboutState extends State<About> {
                   onTap: () => showAboutDialog(
                     context: context,
                     applicationIcon:
-                    Image.asset('assets/icons/logo_new.png', width: 50),
+                        Image.asset('assets/icons/logo_new.png', width: 50),
                     applicationName: 'LAPOR HOAX',
                     applicationVersion: state.data,
                   ),
-                  child: Text('version ${state.data}'),
+                  child: Text('version ${state.data}',
+                    key: Key('about_page_version'),
+                  ),
                 ),
               ),
             ],
