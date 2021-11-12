@@ -34,6 +34,7 @@ class HistoryCubit extends Cubit<HistoryState> {
   Future<bool> removeReport(TokenId tokenId, String status) async {
     if (status.toLowerCase() == 'belum diproses') {
       final result = await _delete.execute(tokenId.token, tokenId.id);
+      emit(HistoryLoading());
       result.fold(
         (failure) => emit(HistoryDeleteSomeData(_reports, failure.message)),
         (success) {

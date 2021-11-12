@@ -16,7 +16,7 @@ class SavedNews extends StatefulWidget {
 class _SavedNewsState extends State<SavedNews> with RouteAware {
   @override
   void initState() {
-    context.read<SavedFeedCubit>().fetchSavedCubit();
+    context.read<SavedFeedCubit>().fetchSavedFeeds();
     super.initState();
   }
 
@@ -27,7 +27,7 @@ class _SavedNewsState extends State<SavedNews> with RouteAware {
   }
 
   void didPopNext() {
-    context.read<SavedFeedCubit>().fetchSavedCubit();
+    context.read<SavedFeedCubit>().fetchSavedFeeds();
   }
 
   @override
@@ -42,10 +42,12 @@ class _SavedNewsState extends State<SavedNews> with RouteAware {
           builder: (context, state) {
             if (state is SavedFeedLoading) {
               return const Center(
+                key: Key('saved_news_loading'),
                 child: CircularProgressIndicator(),
               );
             } else if (state is SavedFeedHasData) {
               return ListView.builder(
+                key: Key('saved_feed_has_data'),
                 itemBuilder: (context, index) {
                   final news = state.feeds;
                   return FeedCard(news[index]);

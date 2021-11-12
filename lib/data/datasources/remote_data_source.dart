@@ -53,16 +53,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   final Dio dio;
 
-  RemoteDataSourceImpl({required this.dio}) {
-    // dio.options.baseUrl = baseUrl;
-    // dio.options.validateStatus = (int? status) {
-    //   return status != null && status > 0;
-    // };
-    // dio.options.headers = <String, String>{
-    //   HttpHeaders.acceptHeader: '*/*',
-    //   HttpHeaders.acceptEncodingHeader: 'gzip, deflate, br'
-    // };
-  }
+  RemoteDataSourceImpl({required this.dio});
 
   @override
   Future<UserTokenModel> postLogin(String username, String password) async {

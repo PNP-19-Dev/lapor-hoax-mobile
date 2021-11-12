@@ -31,19 +31,14 @@ import 'package:laporhoax/domain/usecases/save_feed.dart';
 import 'package:laporhoax/domain/usecases/save_session_data.dart';
 import 'package:laporhoax/presentation/provider/about_cubit.dart';
 import 'package:laporhoax/presentation/provider/detail_cubit.dart';
-import 'package:laporhoax/presentation/provider/feed_notifier.dart';
 import 'package:laporhoax/presentation/provider/history_cubit.dart';
 import 'package:laporhoax/presentation/provider/item_cubit.dart';
 import 'package:laporhoax/presentation/provider/login_cubit.dart';
-import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
 import 'package:laporhoax/presentation/provider/password_cubit.dart';
 import 'package:laporhoax/presentation/provider/question_cubit.dart';
-import 'package:laporhoax/presentation/provider/question_notifier.dart';
 import 'package:laporhoax/presentation/provider/register_cubit.dart';
 import 'package:laporhoax/presentation/provider/report_cubit.dart';
-import 'package:laporhoax/presentation/provider/report_notifier.dart';
 import 'package:laporhoax/presentation/provider/saved_feed_cubit.dart';
-import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/utils/network_info_impl.dart';
 
 import 'data/datasources/preferences/preferences_helper.dart';
@@ -54,49 +49,6 @@ import 'domain/usecases/remove_feed.dart';
 final locator = GetIt.instance;
 
 void init() {
-  // provider
-  locator.registerFactory(
-    () => FeedNotifier(getFeeds: locator()),
-  );
-  locator.registerFactory(
-    () => ReportNotifier(
-      getReports: locator(),
-      postReport: locator(),
-      deleteReport: locator(),
-      getCategories: locator(),
-    ),
-  );
-  locator.registerFactory(
-    () => UserNotifier(
-      getUser: locator(),
-      getPasswordReset: locator(),
-      postFCMToken: locator(),
-      postChangePassword: locator(),
-      postUserChallenge: locator(),
-      removeSessionData: locator(),
-      saveSessionData: locator(),
-      getSessionData: locator(),
-      getSessionStatus: locator(),
-      postLogin: locator(),
-      postRegister: locator(),
-      putFCMToken: locator(),
-    ),
-  );
-  locator.registerFactory(
-    () => QuestionNotifier(
-      getQuestions: locator(),
-      getUserChallenge: locator(),
-    ),
-  );
-  locator.registerFactory(
-    () => NewsDetailNotifier(
-      getFeedSaveStatus: locator(),
-      removeFeed: locator(),
-      saveFeed: locator(),
-      getFeedDetail: locator(),
-    ),
-  );
-
   // bloc
   locator.registerFactory(
     () => AboutCubit(),
@@ -112,7 +64,6 @@ void init() {
   );
   locator.registerFactory(
     () => LoginCubit(
-      locator(),
       locator(),
       locator(),
       locator(),

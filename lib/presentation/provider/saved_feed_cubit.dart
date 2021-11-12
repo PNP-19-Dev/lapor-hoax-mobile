@@ -8,7 +8,7 @@ class SavedFeedCubit extends Cubit<SavedFeedState> {
 
   SavedFeedCubit(this._getFeeds) : super(SavedFeedInitial());
 
-  Future<void> fetchSavedCubit() async {
+  Future<void> fetchSavedFeeds() async {
     emit(SavedFeedLoading());
     final result = await _getFeeds.execute();
 

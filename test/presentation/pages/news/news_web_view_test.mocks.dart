@@ -2,16 +2,12 @@
 // in laporhoax/test/presentation/pages/news/news_web_view_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i5;
+import 'dart:async' as _i3;
 
-import 'package:dartz/dartz.dart' as _i3;
-import 'package:laporhoax/domain/entities/feed.dart' as _i7;
-import 'package:laporhoax/domain/repositories/repository.dart' as _i2;
-import 'package:laporhoax/domain/usecases/get_feed_detail.dart' as _i4;
-import 'package:laporhoax/domain/usecases/get_feed_save_status.dart' as _i10;
-import 'package:laporhoax/domain/usecases/remove_feed.dart' as _i9;
-import 'package:laporhoax/domain/usecases/save_feed.dart' as _i8;
-import 'package:laporhoax/utils/failure.dart' as _i6;
+import 'package:bloc/bloc.dart' as _i5;
+import 'package:laporhoax/domain/entities/feed.dart' as _i6;
+import 'package:laporhoax/presentation/provider/detail_cubit.dart' as _i2;
+import 'package:laporhoax/presentation/provider/item_cubit.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
@@ -23,92 +19,148 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 
-class _FakeRepository_0 extends _i1.Fake implements _i2.Repository {}
+class _FakeDetailState_0 extends _i1.Fake implements _i2.DetailState {}
 
-class _FakeEither_1<L, R> extends _i1.Fake implements _i3.Either<L, R> {}
+class _FakeStreamSubscription_1<T> extends _i1.Fake
+    implements _i3.StreamSubscription<T> {}
 
-/// A class which mocks [GetFeedDetail].
+class _FakeItemState_2 extends _i1.Fake implements _i4.ItemState {}
+
+/// A class which mocks [DetailCubit].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetFeedDetail extends _i1.Mock implements _i4.GetFeedDetail {
-  MockGetFeedDetail() {
+class MockDetailCubit extends _i1.Mock implements _i2.DetailCubit {
+  MockDetailCubit() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.Repository get repository =>
-      (super.noSuchMethod(Invocation.getter(#repository),
-          returnValue: _FakeRepository_0()) as _i2.Repository);
+  _i2.DetailState get state => (super.noSuchMethod(Invocation.getter(#state),
+      returnValue: _FakeDetailState_0()) as _i2.DetailState);
   @override
-  _i5.Future<_i3.Either<_i6.Failure, _i7.Feed>> execute(int? id) =>
-      (super.noSuchMethod(Invocation.method(#execute, [id]),
-              returnValue: Future<_i3.Either<_i6.Failure, _i7.Feed>>.value(
-                  _FakeEither_1<_i6.Failure, _i7.Feed>()))
-          as _i5.Future<_i3.Either<_i6.Failure, _i7.Feed>>);
+  _i3.Stream<_i2.DetailState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+              returnValue: Stream<_i2.DetailState>.empty())
+          as _i3.Stream<_i2.DetailState>);
+  @override
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+          as bool);
+  @override
+  _i3.Future<void> fetchDetail(int? id) =>
+      (super.noSuchMethod(Invocation.method(#fetchDetail, [id]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
+  @override
+  _i3.StreamSubscription<_i2.DetailState> listen(
+          void Function(_i2.DetailState)? onData,
+          {Function? onError,
+          void Function()? onDone,
+          bool? cancelOnError}) =>
+      (super.noSuchMethod(
+              Invocation.method(#listen, [
+                onData
+              ], {
+                #onError: onError,
+                #onDone: onDone,
+                #cancelOnError: cancelOnError
+              }),
+              returnValue: _FakeStreamSubscription_1<_i2.DetailState>())
+          as _i3.StreamSubscription<_i2.DetailState>);
+  @override
+  void emit(_i2.DetailState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+  @override
+  void onChange(_i5.Change<_i2.DetailState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+  @override
+  _i3.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
   @override
   String toString() => super.toString();
 }
 
-/// A class which mocks [SaveFeed].
+/// A class which mocks [ItemCubit].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSaveFeed extends _i1.Mock implements _i8.SaveFeed {
-  MockSaveFeed() {
+class MockItemCubit extends _i1.Mock implements _i4.ItemCubit {
+  MockItemCubit() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.Repository get repository =>
-      (super.noSuchMethod(Invocation.getter(#repository),
-          returnValue: _FakeRepository_0()) as _i2.Repository);
+  _i4.ItemState get state => (super.noSuchMethod(Invocation.getter(#state),
+      returnValue: _FakeItemState_2()) as _i4.ItemState);
   @override
-  _i5.Future<_i3.Either<_i6.Failure, String>> execute(_i7.Feed? feed) =>
-      (super.noSuchMethod(Invocation.method(#execute, [feed]),
-              returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
-                  _FakeEither_1<_i6.Failure, String>()))
-          as _i5.Future<_i3.Either<_i6.Failure, String>>);
+  _i3.Stream<_i4.ItemState> get stream => (super.noSuchMethod(
+      Invocation.getter(#stream),
+      returnValue: Stream<_i4.ItemState>.empty()) as _i3.Stream<_i4.ItemState>);
   @override
-  String toString() => super.toString();
-}
-
-/// A class which mocks [RemoveFeed].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockRemoveFeed extends _i1.Mock implements _i9.RemoveFeed {
-  MockRemoveFeed() {
-    _i1.throwOnMissingStub(this);
-  }
-
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+          as bool);
   @override
-  _i2.Repository get repository =>
-      (super.noSuchMethod(Invocation.getter(#repository),
-          returnValue: _FakeRepository_0()) as _i2.Repository);
+  _i3.Future<void> getStatus(int? id) =>
+      (super.noSuchMethod(Invocation.method(#getStatus, [id]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
   @override
-  _i5.Future<_i3.Either<_i6.Failure, String>> execute(_i7.Feed? feed) =>
-      (super.noSuchMethod(Invocation.method(#execute, [feed]),
-              returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
-                  _FakeEither_1<_i6.Failure, String>()))
-          as _i5.Future<_i3.Either<_i6.Failure, String>>);
+  _i3.Future<void> saveFeed(_i6.Feed? feed) =>
+      (super.noSuchMethod(Invocation.method(#saveFeed, [feed]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
   @override
-  String toString() => super.toString();
-}
-
-/// A class which mocks [GetFeedSaveStatus].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockGetFeedSaveStatus extends _i1.Mock implements _i10.GetFeedSaveStatus {
-  MockGetFeedSaveStatus() {
-    _i1.throwOnMissingStub(this);
-  }
-
+  _i3.Future<void> removeFeed(_i6.Feed? feed) =>
+      (super.noSuchMethod(Invocation.method(#removeFeed, [feed]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
   @override
-  _i2.Repository get repository =>
-      (super.noSuchMethod(Invocation.getter(#repository),
-          returnValue: _FakeRepository_0()) as _i2.Repository);
+  _i3.StreamSubscription<_i4.ItemState> listen(
+          void Function(_i4.ItemState)? onData,
+          {Function? onError,
+          void Function()? onDone,
+          bool? cancelOnError}) =>
+      (super.noSuchMethod(
+              Invocation.method(#listen, [
+                onData
+              ], {
+                #onError: onError,
+                #onDone: onDone,
+                #cancelOnError: cancelOnError
+              }),
+              returnValue: _FakeStreamSubscription_1<_i4.ItemState>())
+          as _i3.StreamSubscription<_i4.ItemState>);
   @override
-  _i5.Future<bool> execute(int? id) =>
-      (super.noSuchMethod(Invocation.method(#execute, [id]),
-          returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
+  void emit(_i4.ItemState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+  @override
+  void onChange(_i5.Change<_i4.ItemState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+  @override
+  _i3.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
   @override
   String toString() => super.toString();
 }

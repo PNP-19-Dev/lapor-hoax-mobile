@@ -1,38 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:laporhoax/presentation/provider/feed_notifier.dart';
-import 'package:laporhoax/utils/state_enum.dart';
+import 'package:laporhoax/presentation/pages/news/news_page.dart';
+import 'package:laporhoax/presentation/provider/feed_cubit.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../dummy_data/dummy_objects.dart';
 import 'news_page_test.mocks.dart';
 
-@GenerateMocks([FeedNotifier])
+@GenerateMocks([FeedCubit])
 void main() {
-  late MockFeedNotifier mockFeedNotifier;
+  late MockFeedCubit bloc;
 
   setUp(() {
-    mockFeedNotifier = MockFeedNotifier();
+    bloc = MockFeedCubit();
   });
 
-  /*TODO INCREMENTAL TESTING
   Widget _makeTestableWidget(Widget body) {
-    return ChangeNotifierProvider<FeedNotifier>.value(
-      value: mockFeedNotifier,
+    return BlocProvider<FeedCubit>.value(
+      value: bloc,
       child: MaterialApp(
         home: body,
       ),
     );
-  }*/
+  }
 
   testWidgets('Page should display progress bar when loading',
       (WidgetTester tester) async {
-    when(mockFeedNotifier.feedState).thenReturn(RequestState.Loading);
+    when(bloc.state).thenReturn(FeedLoading());
+    when(bloc.stream).thenAnswer((_) => const Stream.empty());
 
-    //final progressFinder = find.byType(CircularProgressIndicator);
-    final centerFinder = find.byType(Center);
+    final finder = find.byKey(Key('loading_widget'));
 
-    expect(centerFinder, findsOneWidget);
-    //expect(progressFinder, findsOneWidget);
+    await tester.pumpWidget(_makeTestableWidget(NewsPage()));
+
+    expect(finder, findsOneWidget);
   });
+
+  testWidgets('Page should display items when data success fetched',
+      (WidgetTester tester) async {
+    when(bloc.state).thenReturn(FeedHasData([testFeed]));
+    when(bloc.stream).thenAnswer((_) => Stream.value(FeedHasData([testFeed])));
+
+    final finder = find.byKey(Key('home_feed_items'));
+
+    await tester.pumpWidget(_makeTestableWidget(NewsPage()));
+
+    expect(finder, findsOneWidget);
+  });
+
+  testWidgets('Page should display error when data failed fetched',
+          (WidgetTester tester) async {
+        when(bloc.state).thenReturn(FeedError('Error'));
+        when(bloc.stream).thenAnswer((_) => Stream.value(FeedError('Error')));
+
+        final finder = find.byKey(Key('home_feed_error'));
+
+        await tester.pumpWidget(_makeTestableWidget(NewsPage()));
+
+        expect(finder, findsOneWidget);
+      });
 }

@@ -90,7 +90,7 @@ final testSessionData = SessionData(
   expiry: "expiry",
   userid: 1,
   email: "email",
-  username: 'useranme',
+  username: 'username',
 );
 
 final testUserChallenge = UserQuestion(

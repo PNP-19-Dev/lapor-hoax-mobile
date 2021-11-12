@@ -30,7 +30,7 @@ class _NewsWebViewState extends State<NewsWebView> {
   @override
   void initState() {
     super.initState();
-    context.read<DetailCubit>().getDetail(widget.id);
+    context.read<DetailCubit>().fetchDetail(widget.id);
     context.read<ItemCubit>().getStatus(widget.id);
   }
 

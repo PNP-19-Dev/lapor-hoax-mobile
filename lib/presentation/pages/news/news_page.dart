@@ -1,14 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/presentation/pages/report/report_page.dart';
 import 'package:laporhoax/presentation/pages/static/tutorial_page.dart';
-import 'package:laporhoax/presentation/provider/feed_notifier.dart';
+import 'package:laporhoax/presentation/provider/feed_cubit.dart';
 import 'package:laporhoax/styles/colors.dart';
 import 'package:laporhoax/utils/datetime_helper.dart';
 import 'package:laporhoax/utils/navigation.dart';
-import 'package:laporhoax/utils/state_enum.dart';
 import 'package:provider/provider.dart';
 
 import 'news_web_view.dart';
@@ -24,8 +24,7 @@ class _NewsPageState extends State<NewsPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-        () => Provider.of<FeedNotifier>(context, listen: false)..fetchFeeds());
+    context.read<FeedCubit>().fetchFeeds();
   }
 
   @override
@@ -54,21 +53,22 @@ class _NewsPageState extends State<NewsPage> {
         SliverToBoxAdapter(
           child: _BannerCard(),
         ),
-        Consumer<FeedNotifier>(
-          builder: (context, data, child) {
-            final state = data.feedState;
-            if (state == RequestState.Loading) {
+        BlocBuilder<FeedCubit, FeedState>(
+          builder: (context, state) {
+            if (state is FeedLoading) {
               return SliverToBoxAdapter(
+                key: Key('loading_widget'),
                 child: Container(
                   child: Center(
                     child: CircularProgressIndicator(),
                   ),
                 ),
               );
-            } else if (state == RequestState.Loaded) {
-              return _FeedList(data.feeds);
-            } else {
+            } else if (state is FeedHasData) {
+              return _FeedList(state.data, key: Key('home_feed_items'),);
+            } else if (state is FeedError) {
               return SliverList(
+                key: Key('home_feed_error'),
                 delegate: SliverChildListDelegate([
                   Icon(
                     Icons.error,
@@ -79,9 +79,11 @@ class _NewsPageState extends State<NewsPage> {
                     'Something Went wrong',
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
-                  Text('${data.message}'),
+                  Text('${state.message}'),
                 ]),
               );
+            } else {
+              return Container();
             }
           },
         ),
@@ -93,7 +95,7 @@ class _NewsPageState extends State<NewsPage> {
 class _FeedList extends StatelessWidget {
   final List<Feed> feeds;
 
-  _FeedList(this.feeds);
+  _FeedList(this.feeds, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -203,15 +205,13 @@ class _BannerCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding:
-          const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
           child: Card(
             borderOnForeground: true,
             color: orange200,
             child: Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 16, vertical: 18),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

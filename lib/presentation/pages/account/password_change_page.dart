@@ -20,6 +20,7 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
   var _oldPassword = TextEditingController();
   var _newPassword = TextEditingController();
   var _confirmPassword = TextEditingController();
+  var _token = '';
 
   @override
   void initState() {
@@ -167,20 +168,23 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                     SizedBox(
                       width: double.infinity,
                       height: 45,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            String oldPass = _oldPassword.text;
-                            String newPass = _newPassword.text;
-                            String? token =
-                                context.read<LoginCubit>().session?.token;
-
-                            context
-                                .read<PasswordCubit>()
-                                .changePassword(oldPass, newPass, token!);
+                      child: BlocListener<LoginCubit, LoginState>(
+                        listener: (context, state) {
+                          if (state is LoginSuccessWithData) {
+                            _token = state.data.token;
                           }
                         },
-                        child: Text('Ganti Kata Sandi'),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              context.read<PasswordCubit>().changePassword(
+                                  _oldPassword.text.toString(),
+                                  _newPassword.text.toString(),
+                                  _token);
+                            }
+                          },
+                          child: Text('Ganti Kata Sandi'),
+                        ),
                       ),
                     ),
                   ],

@@ -39,14 +39,14 @@ class QuestionCubit extends Cubit<QuestionState> {
       (question) async {
         data.fold(
           (failure) => emit(QuestionError(failure.message)),
-          (data) => emit(QuestionHasData(question, _questionToMap(question),
-              _getIndexQuestion(data), _getAnswerQuestion(data))),
+          (data) => emit(QuestionHasData(question, questionToMap(question),
+              getIndexQuestion(data), getAnswerQuestion(data))),
         );
       },
     );
   }
 
-  Map<int, String> _questionToMap(List<Question> questions) {
+  static Map<int, String> questionToMap(List<Question> questions) {
     Map<int, String> map = {};
     questions.forEach((element) {
       map[element.id] = '${element.question}';
@@ -54,7 +54,7 @@ class QuestionCubit extends Cubit<QuestionState> {
     return map;
   }
 
-  List<int>? _getIndexQuestion(UserQuestion userQuestion) {
+  static List<int>? getIndexQuestion(UserQuestion userQuestion) {
     List<int> index = [];
     index.addAll([
       userQuestion.quest1 ?? 0,
@@ -65,7 +65,7 @@ class QuestionCubit extends Cubit<QuestionState> {
     return index;
   }
 
-  List<String>? _getAnswerQuestion(UserQuestion userQuestion) {
+  static List<String>? getAnswerQuestion(UserQuestion userQuestion) {
     List<String> index = [];
     index.addAll([
       userQuestion.ans1 ?? '',

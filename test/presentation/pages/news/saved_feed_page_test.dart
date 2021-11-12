@@ -1,51 +1,77 @@
-import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:laporhoax/domain/usecases/get_saved_feeds.dart';
-import 'package:laporhoax/presentation/provider/saved_news_notifier.dart';
-import 'package:laporhoax/utils/failure.dart';
-import 'package:laporhoax/utils/state_enum.dart';
+import 'package:laporhoax/presentation/pages/news/saved_news.dart';
+import 'package:laporhoax/presentation/provider/saved_feed_cubit.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../dummy_data/dummy_objects.dart';
-import '../../provider/saved_news_notifier_test.mocks.dart';
+import 'saved_feed_page_test.mocks.dart';
 
-@GenerateMocks([GetSavedFeeds])
+@GenerateMocks([SavedFeedCubit])
 void main() {
-  late SavedNewsNotifier provider;
-  late MockGetSavedFeeds mockGetSavedFeeds;
-  late int listenerCallCount;
+  late MockSavedFeedCubit bloc;
 
   setUp(() {
-    listenerCallCount = 0;
-    mockGetSavedFeeds = MockGetSavedFeeds();
-    provider = SavedNewsNotifier(getSavedFeeds: mockGetSavedFeeds)
-      ..addListener(() {
-        listenerCallCount += 1;
+    bloc = MockSavedFeedCubit();
+  });
+
+  Widget _makeTestableWidget(Widget body) {
+    return BlocProvider<SavedFeedCubit>.value(
+      value: bloc,
+      child: MaterialApp(
+        home: body,
+      ),
+    );
+  }
+
+  testWidgets('Page should display progress bar when loading',
+      (WidgetTester tester) async {
+    when(bloc.state).thenReturn(SavedFeedLoading());
+    when(bloc.stream).thenAnswer((_) => const Stream.empty());
+
+    await tester.pumpWidget(_makeTestableWidget(SavedNews()));
+
+    final loading = find.byKey(Key('saved_news_loading'));
+
+    expect(loading, findsOneWidget);
+  });
+
+  testWidgets('Page should display a list when data fetched',
+      (WidgetTester tester) async {
+    when(bloc.state).thenReturn(SavedFeedHasData([testFeed]));
+    when(bloc.stream)
+        .thenAnswer((_) => Stream.value(SavedFeedHasData([testFeed])));
+
+    await tester.pumpWidget(_makeTestableWidget(SavedNews()));
+
+    final item = find.byKey(Key('saved_feed_has_data'));
+
+    expect(item, findsOneWidget);
+  });
+
+  testWidgets('Page should display an empty error when data empty',
+          (WidgetTester tester) async {
+        when(bloc.state).thenReturn(SavedFeedEmpty('Kosong'));
+        when(bloc.stream)
+            .thenAnswer((_) => Stream.value(SavedFeedEmpty('Kosong')));
+
+        await tester.pumpWidget(_makeTestableWidget(SavedNews()));
+
+        final item = find.byKey(Key('error_message'));
+        expect(item, findsOneWidget);
       });
-  });
 
-  test('should change movies data when data is gotten successfully', () async {
-    // arrange
-    when(mockGetSavedFeeds.execute())
-        .thenAnswer((_) async => Right([testFeed]));
-    // act
-    await provider.fetchSavedFeeds();
-    // assert
-    expect(provider.feedListState, RequestState.Loaded);
-    expect(provider.saveListFeeds, [testFeed]);
-    expect(listenerCallCount, 2);
-  });
+  testWidgets('Page should display an error when data failed to fetch',
+          (WidgetTester tester) async {
+        when(bloc.state).thenReturn(SavedFeedError('Failure'));
+        when(bloc.stream)
+            .thenAnswer((_) => Stream.value(SavedFeedError('Failure')));
 
-  test('should return error when data is unsuccessful', () async {
-    // arrange
-    when(mockGetSavedFeeds.execute())
-        .thenAnswer((_) async => Left(DatabaseFailure("Can't get data")));
-    // act
-    await provider.fetchSavedFeeds();
-    // assert
-    expect(provider.feedListState, RequestState.Error);
-    expect(provider.report, "Can't get data");
-    expect(listenerCallCount, 2);
-  });
+        await tester.pumpWidget(_makeTestableWidget(SavedNews()));
+
+        final item = find.byKey(Key('error_message'));
+        expect(item, findsOneWidget);
+      });
 }

@@ -10,7 +10,7 @@ class DetailCubit extends Cubit<DetailState> {
 
   DetailCubit(this._detail) : super(DetailInitial());
 
-  Future<void> getDetail(int id) async {
+  Future<void> fetchDetail(int id) async {
     emit(DetailLoading());
     final result = await _detail.execute(id);
 

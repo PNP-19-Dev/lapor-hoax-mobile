@@ -166,7 +166,12 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                     );
                                     progress!.dismiss();
+                                  } else if (state is SessionSaving) {
+                                    context
+                                        .read<LoginCubit>()
+                                        .savingSession(state.data);
                                   } else if (state is LoginSuccess) {
+                                    progress!.dismiss();
                                     Navigation.intent(HomePage.ROUTE_NAME);
                                   }
                                 },

@@ -30,17 +30,15 @@ import 'package:laporhoax/presentation/pages/static/static_page_viewer.dart';
 import 'package:laporhoax/presentation/pages/static/tutorial_page.dart';
 import 'package:laporhoax/presentation/provider/about_cubit.dart';
 import 'package:laporhoax/presentation/provider/detail_cubit.dart';
-import 'package:laporhoax/presentation/provider/feed_notifier.dart';
+import 'package:laporhoax/presentation/provider/feed_cubit.dart';
 import 'package:laporhoax/presentation/provider/history_cubit.dart';
 import 'package:laporhoax/presentation/provider/item_cubit.dart';
 import 'package:laporhoax/presentation/provider/login_cubit.dart';
-import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
 import 'package:laporhoax/presentation/provider/password_cubit.dart';
 import 'package:laporhoax/presentation/provider/question_cubit.dart';
 import 'package:laporhoax/presentation/provider/register_cubit.dart';
 import 'package:laporhoax/presentation/provider/report_cubit.dart';
 import 'package:laporhoax/presentation/provider/saved_feed_cubit.dart';
-import 'package:laporhoax/presentation/provider/user_notifier.dart';
 import 'package:laporhoax/styles/theme.dart';
 import 'package:laporhoax/utils/navigation.dart';
 import 'package:laporhoax/utils/route_observer.dart';
@@ -96,20 +94,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => di.locator<FeedNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<NewsDetailNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<FeedCubit>(),
         ),
         BlocProvider(
           create: (_) => di.locator<SavedFeedCubit>(),
         ),
         BlocProvider(
           create: (_) => di.locator<ReportCubit>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<UserNotifier>(),
         ),
         BlocProvider(
           create: (_) => di.locator<PasswordCubit>(),

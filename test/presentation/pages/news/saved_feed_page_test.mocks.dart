@@ -2,13 +2,10 @@
 // in laporhoax/test/presentation/pages/news/saved_feed_page_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i5;
+import 'dart:async' as _i3;
 
-import 'package:dartz/dartz.dart' as _i3;
-import 'package:laporhoax/domain/entities/feed.dart' as _i7;
-import 'package:laporhoax/domain/repositories/repository.dart' as _i2;
-import 'package:laporhoax/domain/usecases/get_saved_feeds.dart' as _i4;
-import 'package:laporhoax/utils/failure.dart' as _i6;
+import 'package:bloc/bloc.dart' as _i4;
+import 'package:laporhoax/presentation/provider/saved_feed_cubit.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
@@ -20,28 +17,72 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 
-class _FakeRepository_0 extends _i1.Fake implements _i2.Repository {}
+class _FakeSavedFeedState_0 extends _i1.Fake implements _i2.SavedFeedState {}
 
-class _FakeEither_1<L, R> extends _i1.Fake implements _i3.Either<L, R> {}
+class _FakeStreamSubscription_1<T> extends _i1.Fake
+    implements _i3.StreamSubscription<T> {}
 
-/// A class which mocks [GetSavedFeeds].
+/// A class which mocks [SavedFeedCubit].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetSavedFeeds extends _i1.Mock implements _i4.GetSavedFeeds {
-  MockGetSavedFeeds() {
+class MockSavedFeedCubit extends _i1.Mock implements _i2.SavedFeedCubit {
+  MockSavedFeedCubit() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.Repository get repository =>
-      (super.noSuchMethod(Invocation.getter(#repository),
-          returnValue: _FakeRepository_0()) as _i2.Repository);
+  _i2.SavedFeedState get state => (super.noSuchMethod(Invocation.getter(#state),
+      returnValue: _FakeSavedFeedState_0()) as _i2.SavedFeedState);
   @override
-  _i5.Future<_i3.Either<_i6.Failure, List<_i7.Feed>>> execute() =>
-      (super.noSuchMethod(Invocation.method(#execute, []),
-          returnValue: Future<_i3.Either<_i6.Failure, List<_i7.Feed>>>.value(
-              _FakeEither_1<_i6.Failure, List<_i7.Feed>>())) as _i5
-          .Future<_i3.Either<_i6.Failure, List<_i7.Feed>>>);
+  _i3.Stream<_i2.SavedFeedState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+              returnValue: Stream<_i2.SavedFeedState>.empty())
+          as _i3.Stream<_i2.SavedFeedState>);
+  @override
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+          as bool);
+  @override
+  _i3.Future<void> fetchSavedFeeds() =>
+      (super.noSuchMethod(Invocation.method(#fetchSavedFeeds, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
+  @override
+  _i3.StreamSubscription<_i2.SavedFeedState> listen(
+          void Function(_i2.SavedFeedState)? onData,
+          {Function? onError,
+          void Function()? onDone,
+          bool? cancelOnError}) =>
+      (super.noSuchMethod(
+              Invocation.method(#listen, [
+                onData
+              ], {
+                #onError: onError,
+                #onDone: onDone,
+                #cancelOnError: cancelOnError
+              }),
+              returnValue: _FakeStreamSubscription_1<_i2.SavedFeedState>())
+          as _i3.StreamSubscription<_i2.SavedFeedState>);
+  @override
+  void emit(_i2.SavedFeedState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+  @override
+  void onChange(_i4.Change<_i2.SavedFeedState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+  @override
+  _i3.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
   @override
   String toString() => super.toString();
 }
