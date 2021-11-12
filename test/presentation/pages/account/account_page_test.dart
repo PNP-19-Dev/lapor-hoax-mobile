@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -25,25 +31,25 @@ void main() {
   }
 
   testWidgets('Page should welcome when not login',
-      (WidgetTester tester) async {
-    when(bloc.state).thenReturn(LoginEnded());
-    when(bloc.stream).thenAnswer((_) => const Stream.empty());
+          (WidgetTester tester) async {
+        when(bloc.state).thenReturn(LoginEnded());
+        when(bloc.stream).thenAnswer((_) => const Stream.empty());
 
-    await tester.pumpWidget(_makeTestableWidget(AccountPage()));
+        await tester.pumpWidget(_makeTestableWidget(AccountPage()));
 
-    final finder = find.byKey(Key('account_page_logout'));
-    expect(finder, findsOneWidget);
-  });
+        final finder = find.byKey(Key('account_page_logout'));
+        expect(finder, findsOneWidget);
+      });
 
   testWidgets('Page should display account menu when user is logged in',
-      (WidgetTester tester) async {
-    when(bloc.state).thenReturn(LoginSuccessWithData(testSessionData));
-    when(bloc.stream)
-        .thenAnswer((_) => Stream.value(LoginSuccessWithData(testSessionData)));
+          (WidgetTester tester) async {
+        when(bloc.state).thenReturn(LoginSuccessWithData(testSessionData));
+        when(bloc.stream)
+            .thenAnswer((_) => Stream.value(LoginSuccessWithData(testSessionData)));
 
-    await tester.pumpWidget(_makeTestableWidget(AccountPage()));
+        await tester.pumpWidget(_makeTestableWidget(AccountPage()));
 
-    final finder = find.byKey(Key('account_page_login'));
-    expect(finder, findsOneWidget);
-  });
+        final finder = find.byKey(Key('account_page_login'));
+        expect(finder, findsOneWidget);
+      });
 }

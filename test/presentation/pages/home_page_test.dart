@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -59,11 +65,11 @@ void main() {
   }
 
   testWidgets('Page should display center progress bar when loading',
-      (WidgetTester tester) async {
-    when(_feeds.execute()).thenAnswer((_) async => Right([testFeed]));
-    await tester.pumpWidget(_makeTestableWidget(HomePage()));
+          (WidgetTester tester) async {
+        when(_feeds.execute()).thenAnswer((_) async => Right([testFeed]));
+        await tester.pumpWidget(_makeTestableWidget(HomePage()));
 
-    final homeFinder = find.byKey(Key("home_page_scaffold"));
-    expect(homeFinder, findsOneWidget);
-  });
+        final homeFinder = find.byKey(Key("home_page_scaffold"));
+        expect(homeFinder, findsOneWidget);
+      });
 }

@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -30,19 +36,19 @@ void main() {
   }
 
   testWidgets('Page should display progress bar when loading',
-      (WidgetTester tester) async {
-    when(detailBloc.state).thenReturn(DetailLoading());
-    when(detailBloc.stream).thenAnswer((_) => const Stream.empty());
+          (WidgetTester tester) async {
+        when(detailBloc.state).thenReturn(DetailLoading());
+        when(detailBloc.stream).thenAnswer((_) => const Stream.empty());
 
-    when(itemBloc.state).thenReturn(ItemUnsaved());
-    when(itemBloc.stream).thenAnswer((_) => Stream.value(ItemUnsaved()));
+        when(itemBloc.state).thenReturn(ItemUnsaved());
+        when(itemBloc.stream).thenAnswer((_) => Stream.value(ItemUnsaved()));
 
-    await tester.pumpWidget(_makeTestableWidget(NewsWebView(id: 1)));
+        await tester.pumpWidget(_makeTestableWidget(NewsWebView(id: 1)));
 
-    final centerFinder = find.byType(Center);
-    expect(centerFinder, findsOneWidget);
+        final centerFinder = find.byType(Center);
+        expect(centerFinder, findsOneWidget);
 
-    final progress = find.byType(CircularProgressIndicator);
-    expect(progress, findsOneWidget);
-  });
+        final progress = find.byType(CircularProgressIndicator);
+        expect(progress, findsOneWidget);
+      });
 }

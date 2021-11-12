@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -25,28 +31,28 @@ void main() {
   }
 
   testWidgets('Page should display progress bar when loading',
-      (WidgetTester tester) async {
-    when(bloc.state).thenReturn(FeedLoading());
-    when(bloc.stream).thenAnswer((_) => const Stream.empty());
+          (WidgetTester tester) async {
+        when(bloc.state).thenReturn(FeedLoading());
+        when(bloc.stream).thenAnswer((_) => const Stream.empty());
 
-    final finder = find.byKey(Key('loading_widget'));
+        final finder = find.byKey(Key('loading_widget'));
 
-    await tester.pumpWidget(_makeTestableWidget(NewsPage()));
+        await tester.pumpWidget(_makeTestableWidget(NewsPage()));
 
-    expect(finder, findsOneWidget);
-  });
+        expect(finder, findsOneWidget);
+      });
 
   testWidgets('Page should display items when data success fetched',
-      (WidgetTester tester) async {
-    when(bloc.state).thenReturn(FeedHasData([testFeed]));
-    when(bloc.stream).thenAnswer((_) => Stream.value(FeedHasData([testFeed])));
+          (WidgetTester tester) async {
+        when(bloc.state).thenReturn(FeedHasData([testFeed]));
+        when(bloc.stream).thenAnswer((_) => Stream.value(FeedHasData([testFeed])));
 
-    final finder = find.byKey(Key('home_feed_items'));
+        final finder = find.byKey(Key('home_feed_items'));
 
-    await tester.pumpWidget(_makeTestableWidget(NewsPage()));
+        await tester.pumpWidget(_makeTestableWidget(NewsPage()));
 
-    expect(finder, findsOneWidget);
-  });
+        expect(finder, findsOneWidget);
+      });
 
   testWidgets('Page should display error when data failed fetched',
           (WidgetTester tester) async {

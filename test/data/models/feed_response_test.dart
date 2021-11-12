@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -12,7 +18,7 @@ void main() {
       title: "Libur Maulid Nabi 2021 Digeser: Tanggal dan Alasannya",
       content: "content",
       thumbnail:
-          "https://django-lapor-hoax.s3.amazonaws.com/feeds/1.jpeg?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=yXthBiGVfwxxC%2Flai%2FvL0PZAMz4%3D&Expires=1634826461",
+      "https://django-lapor-hoax.s3.amazonaws.com/feeds/1.jpeg?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=yXthBiGVfwxxC%2Flai%2FvL0PZAMz4%3D&Expires=1634826461",
       date: "2021-10-13T01:34:58.831621+07:00",
       view: 0,
       author: 1);
@@ -28,7 +34,7 @@ void main() {
     test('should return a valid model from JSON', () {
       // arrange
       final Map<String, dynamic> jsonMap =
-          json.decode(readJson('dummy_data/feed.json'));
+      json.decode(readJson('dummy_data/feed.json'));
       // act
       final result = FeedResponse.fromJson(jsonMap);
       // assert
@@ -53,7 +59,7 @@ void main() {
             "title": "Libur Maulid Nabi 2021 Digeser: Tanggal dan Alasannya",
             "content": "content",
             "thumbnail":
-                "https://django-lapor-hoax.s3.amazonaws.com/feeds/1.jpeg?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=yXthBiGVfwxxC%2Flai%2FvL0PZAMz4%3D&Expires=1634826461",
+            "https://django-lapor-hoax.s3.amazonaws.com/feeds/1.jpeg?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=yXthBiGVfwxxC%2Flai%2FvL0PZAMz4%3D&Expires=1634826461",
             "date": "2021-10-13T01:34:58.831621+07:00",
             "view": 0,
             "author": 1

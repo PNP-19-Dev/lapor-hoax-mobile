@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
@@ -44,30 +50,30 @@ void main() {
   group('Delete Report', () {
     test(
         'should return remote data when the call to remote data source is successful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.deleteReport(tToken, tId))
-          .thenAnswer((_) async => 'success');
-      // act
-      final result = await repository.deleteReport(tToken, tId);
-      // assert
-      verify(mockRemoteDataSource.deleteReport(tToken, tId));
-      /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
-      final resultMessage = result.getOrElse(() => 'success');
-      expect(resultMessage, 'success');
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.deleteReport(tToken, tId))
+              .thenAnswer((_) async => 'success');
+          // act
+          final result = await repository.deleteReport(tToken, tId);
+          // assert
+          verify(mockRemoteDataSource.deleteReport(tToken, tId));
+          /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
+          final resultMessage = result.getOrElse(() => 'success');
+          expect(resultMessage, 'success');
+        });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.deleteReport(tToken, tId))
-          .thenThrow(ServerException('Cant Delete Report'));
-      // act
-      final result = await repository.deleteReport(tToken, tId);
-      // assert
-      verify(mockRemoteDataSource.deleteReport(tToken, tId));
-      expect(result, equals(Left(ServerFailure('Cant Delete Report'))));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.deleteReport(tToken, tId))
+              .thenThrow(ServerException('Cant Delete Report'));
+          // act
+          final result = await repository.deleteReport(tToken, tId);
+          // assert
+          verify(mockRemoteDataSource.deleteReport(tToken, tId));
+          expect(result, equals(Left(ServerFailure('Cant Delete Report'))));
+        });
   });
 
   group('Get Categories', () {
@@ -89,30 +95,30 @@ void main() {
       });
 
       test('should return data when the call to remote data is successful',
-          () async {
-        // arrange
-        when(mockRemoteDataSource.getCategory())
-            .thenAnswer((_) async => [testCategoryModel]);
-        // act
-        final result = await repository.getCategories();
-        // assert
-        verify(mockRemoteDataSource.getCategory());
-        final resultList = result.getOrElse(() => []);
-        expect(resultList, [testCategory]);
-      });
+              () async {
+            // arrange
+            when(mockRemoteDataSource.getCategory())
+                .thenAnswer((_) async => [testCategoryModel]);
+            // act
+            final result = await repository.getCategories();
+            // assert
+            verify(mockRemoteDataSource.getCategory());
+            final resultList = result.getOrElse(() => []);
+            expect(resultList, [testCategory]);
+          });
 
       test(
           'should cache data locally when the call to remote data is successful',
-          () async {
-        // arrange
-        when(mockRemoteDataSource.getCategory())
-            .thenAnswer((_) async => [testCategoryModel]);
-        // act
-        await repository.getCategories();
-        // assert
-        verify(mockRemoteDataSource.getCategory());
-        verify(mockLocalDataSource.cacheCategory([testCategoryTable]));
-      });
+              () async {
+            // arrange
+            when(mockRemoteDataSource.getCategory())
+                .thenAnswer((_) async => [testCategoryModel]);
+            // act
+            await repository.getCategories();
+            // assert
+            verify(mockRemoteDataSource.getCategory());
+            verify(mockLocalDataSource.cacheCategory([testCategoryTable]));
+          });
 
       test('should return server failure', () async {
         // arrange
@@ -158,28 +164,28 @@ void main() {
   group('Get Feed Detail', () {
     test(
         'should return Feed data when the call to remote data source is successful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getFeedDetail(tId))
-          .thenAnswer((_) async => testFeedModel);
-      // act
-      final result = await repository.getFeedDetail(tId);
-      // assert
-      verify(mockRemoteDataSource.getFeedDetail(tId));
-      expect(result, equals(Right(testFeed)));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.getFeedDetail(tId))
+              .thenAnswer((_) async => testFeedModel);
+          // act
+          final result = await repository.getFeedDetail(tId);
+          // assert
+          verify(mockRemoteDataSource.getFeedDetail(tId));
+          expect(result, equals(Right(testFeed)));
+        });
     test(
         'should return Server Failure when the call to remote data source is unsuccessful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getFeedDetail(tId))
-          .thenThrow(ServerException('Failed To Get Detail'));
-      // act
-      final result = await repository.getFeedDetail(tId);
-      // assert
-      verify(mockRemoteDataSource.getFeedDetail(tId));
-      expect(result, equals(Left(ServerFailure('Failed To Get Detail'))));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.getFeedDetail(tId))
+              .thenThrow(ServerException('Failed To Get Detail'));
+          // act
+          final result = await repository.getFeedDetail(tId);
+          // assert
+          verify(mockRemoteDataSource.getFeedDetail(tId));
+          expect(result, equals(Left(ServerFailure('Failed To Get Detail'))));
+        });
   });
 
   group('Get Feed Save Status', () {
@@ -197,58 +203,58 @@ void main() {
   group('Get Feeds', () {
     test(
         'should return remote data when the call to remote data source is successful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getFeeds())
-          .thenAnswer((_) async => [testFeedModel]);
-      // act
-      final result = await repository.getFeeds();
-      // assert
-      verify(mockRemoteDataSource.getFeeds());
-      /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
-      final resultMessage = result.getOrElse(() => []);
-      expect(resultMessage, testFeedList);
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.getFeeds())
+              .thenAnswer((_) async => [testFeedModel]);
+          // act
+          final result = await repository.getFeeds();
+          // assert
+          verify(mockRemoteDataSource.getFeeds());
+          /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
+          final resultMessage = result.getOrElse(() => []);
+          expect(resultMessage, testFeedList);
+        });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getFeeds()).thenThrow(ServerException('Cant Retrieve Feed Data'));
-      // act
-      final result = await repository.getFeeds();
-      // assert
-      verify(mockRemoteDataSource.getFeeds());
-      expect(result, equals(Left(ServerFailure('Cant Retrieve Feed Data'))));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.getFeeds()).thenThrow(ServerException('Cant Retrieve Feed Data'));
+          // act
+          final result = await repository.getFeeds();
+          // assert
+          verify(mockRemoteDataSource.getFeeds());
+          expect(result, equals(Left(ServerFailure('Cant Retrieve Feed Data'))));
+        });
   });
 
   group('Get Password Reset', () {
     test(
         'should return remote data when the call to remote data source is successful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getPasswordReset(tEmail))
-          .thenAnswer((_) async => 'Success');
-      // act
-      final result = await repository.getPasswordReset(tEmail);
-      // assert
-      verify(mockRemoteDataSource.getPasswordReset(tEmail));
-      /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
-      final resultMessage = result.getOrElse(() => 'Failure');
-      expect(resultMessage, 'Success');
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.getPasswordReset(tEmail))
+              .thenAnswer((_) async => 'Success');
+          // act
+          final result = await repository.getPasswordReset(tEmail);
+          // assert
+          verify(mockRemoteDataSource.getPasswordReset(tEmail));
+          /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
+          final resultMessage = result.getOrElse(() => 'Failure');
+          expect(resultMessage, 'Success');
+        });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getPasswordReset(tEmail))
-          .thenThrow(ServerException('Cant Reset'));
-      // act
-      final result = await repository.getPasswordReset(tEmail);
-      // assert
-      verify(mockRemoteDataSource.getPasswordReset(tEmail));
-      expect(result, equals(Left(ServerFailure('Cant Reset'))));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.getPasswordReset(tEmail))
+              .thenThrow(ServerException('Cant Reset'));
+          // act
+          final result = await repository.getPasswordReset(tEmail);
+          // assert
+          verify(mockRemoteDataSource.getPasswordReset(tEmail));
+          expect(result, equals(Left(ServerFailure('Cant Reset'))));
+        });
   });
 
   group('Get Questions', () {
@@ -271,43 +277,43 @@ void main() {
 
       test(
           'should return remote data when the call to remote data source is successful',
-          () async {
-        final tQuestionResponse = QuestionModel(id: 1, question: 'question');
-        // arrange
-        when(mockRemoteDataSource.getQuestions())
-            .thenAnswer((_) async => [tQuestionResponse]);
-        // act
-        final result = await repository.getQuestions();
-        // assert
-        verify(mockRemoteDataSource.getQuestions());
-        /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
-        final resultMessage = result.getOrElse(() => []);
-        expect(resultMessage, [testQuestion]);
-      });
+              () async {
+            final tQuestionResponse = QuestionModel(id: 1, question: 'question');
+            // arrange
+            when(mockRemoteDataSource.getQuestions())
+                .thenAnswer((_) async => [tQuestionResponse]);
+            // act
+            final result = await repository.getQuestions();
+            // assert
+            verify(mockRemoteDataSource.getQuestions());
+            /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
+            final resultMessage = result.getOrElse(() => []);
+            expect(resultMessage, [testQuestion]);
+          });
       test(
           'should return server failure when the call to remote data source is unsuccessful',
-          () async {
-        // arrange
-        when(mockRemoteDataSource.getQuestions()).thenThrow(ServerException('Cant Retrieve Data'));
-        // act
-        final result = await repository.getQuestions();
-        // assert
-        verify(mockRemoteDataSource.getQuestions());
-        expect(result, equals(Left(ServerFailure('Cant Retrieve Data'))));
-      });
+              () async {
+            // arrange
+            when(mockRemoteDataSource.getQuestions()).thenThrow(ServerException('Cant Retrieve Data'));
+            // act
+            final result = await repository.getQuestions();
+            // assert
+            verify(mockRemoteDataSource.getQuestions());
+            expect(result, equals(Left(ServerFailure('Cant Retrieve Data'))));
+          });
 
       test(
           'should cache data locally when the call to remote data is successful',
-          () async {
-        // arrange
-        when(mockRemoteDataSource.getQuestions())
-            .thenAnswer((realInvocation) async => [testQuestionModel]);
-        // act
-        await repository.getQuestions();
-        // assert
-        verify(mockRemoteDataSource.getQuestions());
-        verify(mockLocalDataSource.cacheQuestions([testQuestionTable]));
-      });
+              () async {
+            // arrange
+            when(mockRemoteDataSource.getQuestions())
+                .thenAnswer((realInvocation) async => [testQuestionModel]);
+            // act
+            await repository.getQuestions();
+            // assert
+            verify(mockRemoteDataSource.getQuestions());
+            verify(mockLocalDataSource.cacheQuestions([testQuestionTable]));
+          });
 
       test('should return server failure', () async {});
     });
@@ -345,47 +351,47 @@ void main() {
   group('Get Reports', () {
     test(
         'should return remote data when the call to remote data source is successful',
-        () async {
-      final tReportResponse = ReportModel(
-        id: 59,
-        url: "www.aslihoax.com",
-        img:
+            () async {
+          final tReportResponse = ReportModel(
+            id: 59,
+            url: "www.aslihoax.com",
+            img:
             "https://django-lapor-hoax.s3.amazonaws.com/reports/Capture.PNG?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=6eGLu1R0U3qsyUf5sb%2B2up%2B9DzU%3D&Expires=1634827154",
-        category: "Isu SARA",
-        status: "Selesai",
-        isAnonym: false,
-        dateReported: "2021-10-13T03:33:41.647173+07:00",
-        description: "Menyebarkan berita hoax",
-        prosesDate: "2021-10-15T03:52:34.695336+07:00",
-        verdict: "Diterima",
-        verdictDesc: "respon",
-        verdictDate: "2021-10-15T04:01:28.042973+07:00",
-        user: 1,
-        verdictJudge: 1,
-      );
-      // arrange
-      when(mockRemoteDataSource.getReport(tToken, tId))
-          .thenAnswer((_) async => [tReportResponse]);
-      // act
-      final result = await repository.getReports(tToken, tId);
-      // assert
-      verify(mockRemoteDataSource.getReport(tToken, tId));
-      /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
-      final resultMessage = result.getOrElse(() => []);
-      expect(resultMessage, testReportList);
-    });
+            category: "Isu SARA",
+            status: "Selesai",
+            isAnonym: false,
+            dateReported: "2021-10-13T03:33:41.647173+07:00",
+            description: "Menyebarkan berita hoax",
+            prosesDate: "2021-10-15T03:52:34.695336+07:00",
+            verdict: "Diterima",
+            verdictDesc: "respon",
+            verdictDate: "2021-10-15T04:01:28.042973+07:00",
+            user: 1,
+            verdictJudge: 1,
+          );
+          // arrange
+          when(mockRemoteDataSource.getReport(tToken, tId))
+              .thenAnswer((_) async => [tReportResponse]);
+          // act
+          final result = await repository.getReports(tToken, tId);
+          // assert
+          verify(mockRemoteDataSource.getReport(tToken, tId));
+          /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
+          final resultMessage = result.getOrElse(() => []);
+          expect(resultMessage, testReportList);
+        });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getReport(tToken, tId))
-          .thenThrow(ServerException('Cant Fetch Reports'));
-      // act
-      final result = await repository.getReports(tToken, tId);
-      // assert
-      verify(mockRemoteDataSource.getReport(tToken, tId));
-      expect(result, equals(Left(ServerFailure('Cant Fetch Reports'))));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.getReport(tToken, tId))
+              .thenThrow(ServerException('Cant Fetch Reports'));
+          // act
+          final result = await repository.getReports(tToken, tId);
+          // assert
+          verify(mockRemoteDataSource.getReport(tToken, tId));
+          expect(result, equals(Left(ServerFailure('Cant Fetch Reports'))));
+        });
   });
 
   group('Get Saved Feeds', () {
@@ -454,204 +460,204 @@ void main() {
   group('Get User', () {
     test(
         'should return remote data when the call to remote data source is successful',
-        () async {
-      final tUserModel = UserModel(id: 1, username: "username", email: "email");
-      // arrange
-      when(mockRemoteDataSource.getUser(tEmail))
-          .thenAnswer((_) async => [tUserModel]);
-      // act
-      final result = await repository.getUser(tEmail);
-      // assert
-      verify(mockRemoteDataSource.getUser(tEmail));
-      expect(result, equals(Right(testUser)));
-    });
+            () async {
+          final tUserModel = UserModel(id: 1, username: "username", email: "email");
+          // arrange
+          when(mockRemoteDataSource.getUser(tEmail))
+              .thenAnswer((_) async => [tUserModel]);
+          // act
+          final result = await repository.getUser(tEmail);
+          // assert
+          verify(mockRemoteDataSource.getUser(tEmail));
+          expect(result, equals(Right(testUser)));
+        });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getUser(tEmail)).thenThrow(ServerException('Not Found'));
-      // act
-      final result = await repository.getUser(tEmail);
-      // assert
-      verify(mockRemoteDataSource..getUser(tEmail));
-      expect(result, equals(Left(ServerFailure('Not Found'))));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.getUser(tEmail)).thenThrow(ServerException('Not Found'));
+          // act
+          final result = await repository.getUser(tEmail);
+          // assert
+          verify(mockRemoteDataSource..getUser(tEmail));
+          expect(result, equals(Left(ServerFailure('Not Found'))));
+        });
   });
 
   group('Get User Challenge', () {
     test(
         'should return remote data when the call to remote data source is successful',
-        () async {
-      final tUserQuestionModel = UserQuestionModel(
-        user: "user",
-        quest1: 1,
-        quest2: 2,
-        quest3: 3,
-        ans1: "ans1",
-        ans2: "ans2",
-        ans3: "ans3",
-      );
-      // arrange
-      when(mockRemoteDataSource.getUserQuestions(tId))
-          .thenAnswer((_) async => tUserQuestionModel);
-      // act
-      final result = await repository.getUserChallenge(tId);
-      // assert
-      verify(mockRemoteDataSource.getUserQuestions(tId));
-      expect(result, equals(Right(testUserChallenge)));
-    });
+            () async {
+          final tUserQuestionModel = UserQuestionModel(
+            user: "user",
+            quest1: 1,
+            quest2: 2,
+            quest3: 3,
+            ans1: "ans1",
+            ans2: "ans2",
+            ans3: "ans3",
+          );
+          // arrange
+          when(mockRemoteDataSource.getUserQuestions(tId))
+              .thenAnswer((_) async => tUserQuestionModel);
+          // act
+          final result = await repository.getUserChallenge(tId);
+          // assert
+          verify(mockRemoteDataSource.getUserQuestions(tId));
+          expect(result, equals(Right(testUserChallenge)));
+        });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getUserQuestions(tId))
-          .thenThrow(ServerException('Failed to Get Data'));
-      // act
-      final result = await repository.getUserChallenge(tId);
-      // assert
-      verify(mockRemoteDataSource.getUserQuestions(tId));
-      expect(result, equals(Left(ServerFailure('Failed to Get Data'))));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.getUserQuestions(tId))
+              .thenThrow(ServerException('Failed to Get Data'));
+          // act
+          final result = await repository.getUserChallenge(tId);
+          // assert
+          verify(mockRemoteDataSource.getUserQuestions(tId));
+          expect(result, equals(Left(ServerFailure('Failed to Get Data'))));
+        });
   });
 
   group('Post Change Password', () {
     test(
         'should return remote data when the call to remote data source is successful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken))
-          .thenAnswer((_) async => 'Success');
-      // act
-      final result =
+            () async {
+          // arrange
+          when(mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken))
+              .thenAnswer((_) async => 'Success');
+          // act
+          final result =
           await repository.postChangePassword(tOldPass, tNewPass, tToken);
-      // assert
-      verify(
-          mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken));
-      expect(result, equals(Right('Success')));
-    });
+          // assert
+          verify(
+              mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken));
+          expect(result, equals(Right('Success')));
+        });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken))
-          .thenThrow(ServerException('Cant Change Password'));
-      // act
-      final result =
+            () async {
+          // arrange
+          when(mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken))
+              .thenThrow(ServerException('Cant Change Password'));
+          // act
+          final result =
           await repository.postChangePassword(tOldPass, tNewPass, tToken);
-      // assert
-      verify(
-          mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken));
-      expect(result, equals(Left(ServerFailure('Cant Change Password'))));
-    });
+          // assert
+          verify(
+              mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken));
+          expect(result, equals(Left(ServerFailure('Cant Change Password'))));
+        });
   });
 
   group('Post FCM Token', () {
     test(
         'should return remote data when the call to remote data source is successful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postFcmToken(tId.toString(), tToken))
-          .thenAnswer((_) async => 'Success');
-      // act
-      final result = await repository.postFCMToken(tId, tToken);
-      // assert
-      verify(mockRemoteDataSource.postFcmToken(tId.toString(), tToken));
-      expect(result, equals(Right('Success')));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.postFcmToken(tId.toString(), tToken))
+              .thenAnswer((_) async => 'Success');
+          // act
+          final result = await repository.postFCMToken(tId, tToken);
+          // assert
+          verify(mockRemoteDataSource.postFcmToken(tId.toString(), tToken));
+          expect(result, equals(Right('Success')));
+        });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postFcmToken(tId.toString(), tToken))
-          .thenThrow(ServerException('Cant To Send'));
-      // act
-      final result = await repository.postFCMToken(tId, tToken);
-      // assert
-      verify(mockRemoteDataSource.postFcmToken(tId.toString(), tToken));
-      expect(result, equals(Left(ServerFailure('Cant To Send'))));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.postFcmToken(tId.toString(), tToken))
+              .thenThrow(ServerException('Cant To Send'));
+          // act
+          final result = await repository.postFCMToken(tId, tToken);
+          // assert
+          verify(mockRemoteDataSource.postFcmToken(tId.toString(), tToken));
+          expect(result, equals(Left(ServerFailure('Cant To Send'))));
+        });
   });
 
   group('Put FCM Token', () {
     test(
         'should return remote data when the call to remote data source is successful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken))
-          .thenAnswer((_) async => 'Success');
-      // act
-      final result = await repository.putFCMToken(tId, tToken);
-      // assert
-      verify(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken));
-      expect(result, equals(Right('Success')));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken))
+              .thenAnswer((_) async => 'Success');
+          // act
+          final result = await repository.putFCMToken(tId, tToken);
+          // assert
+          verify(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken));
+          expect(result, equals(Right('Success')));
+        });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken))
-          .thenThrow(ServerException('Cant To Send'));
-      // act
-      final result = await repository.putFCMToken(tId, tToken);
-      // assert
-      verify(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken));
-      expect(result, equals(Left(ServerFailure('Cant To Send'))));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken))
+              .thenThrow(ServerException('Cant To Send'));
+          // act
+          final result = await repository.putFCMToken(tId, tToken);
+          // assert
+          verify(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken));
+          expect(result, equals(Left(ServerFailure('Cant To Send'))));
+        });
   });
 
   group('Post Login', () {
     test(
         'should return remote data when the call to remote data source is successful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postLogin(tUsername, tOldPass))
-          .thenAnswer((_) async => testLoginModel);
-      // act
-      final result = await repository.postLogin(tUsername, tOldPass);
-      // assert
-      verify(mockRemoteDataSource.postLogin(tUsername, tOldPass));
-      expect(result, equals(Right(testLogin)));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.postLogin(tUsername, tOldPass))
+              .thenAnswer((_) async => testLoginModel);
+          // act
+          final result = await repository.postLogin(tUsername, tOldPass);
+          // assert
+          verify(mockRemoteDataSource.postLogin(tUsername, tOldPass));
+          expect(result, equals(Right(testLogin)));
+        });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postLogin(tUsername, tOldPass))
-          .thenThrow(ServerException('UserName atau Password Salah!'));
-      // act
-      final result = await repository.postLogin(tUsername, tOldPass);
-      // assert
-      verify(mockRemoteDataSource.postLogin(tUsername, tOldPass));
-      expect(
-          result, equals(Left(ServerFailure('UserName atau Password Salah!'))));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.postLogin(tUsername, tOldPass))
+              .thenThrow(ServerException('UserName atau Password Salah!'));
+          // act
+          final result = await repository.postLogin(tUsername, tOldPass);
+          // assert
+          verify(mockRemoteDataSource.postLogin(tUsername, tOldPass));
+          expect(
+              result, equals(Left(ServerFailure('UserName atau Password Salah!'))));
+        });
   });
 
   group('Post Register', () {
     test(
         'should return remote data when the call to remote data source is successful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postRegister(testRegisterModel))
-          .thenAnswer((_) async => testRegisterCallback);
-      // act
-      final result = await repository.postRegister(testRegister);
-      // assert
-      verify(mockRemoteDataSource.postRegister(testRegisterModel));
-      expect(result, equals(Right(testRegisterCallback.toEntity())));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.postRegister(testRegisterModel))
+              .thenAnswer((_) async => testRegisterCallback);
+          // act
+          final result = await repository.postRegister(testRegister);
+          // assert
+          verify(mockRemoteDataSource.postRegister(testRegisterModel));
+          expect(result, equals(Right(testRegisterCallback.toEntity())));
+        });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postRegister(testRegisterModel))
-          .thenThrow(ServerException('Invalid Data'));
-      // act
-      final result = await repository.postRegister(testRegister);
-      // assert
-      verify(mockRemoteDataSource.postRegister(testRegisterModel));
-      expect(result, equals(Left(ServerFailure('Invalid Data'))));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.postRegister(testRegisterModel))
+              .thenThrow(ServerException('Invalid Data'));
+          // act
+          final result = await repository.postRegister(testRegister);
+          // assert
+          verify(mockRemoteDataSource.postRegister(testRegisterModel));
+          expect(result, equals(Left(ServerFailure('Invalid Data'))));
+        });
   });
 
   group('Post Report', () {
@@ -665,55 +671,55 @@ void main() {
     );
     test(
         'should return remote data when the call to remote data source is successful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postReport(tToken, tReportCompose))
-          .thenAnswer((_) async => testReportModel);
-      // act
-      final result = await repository.postReport(tToken, tReportCompose);
-      // assert
-      verify(mockRemoteDataSource.postReport(tToken, tReportCompose));
-      expect(result, equals(Right(testReport)));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.postReport(tToken, tReportCompose))
+              .thenAnswer((_) async => testReportModel);
+          // act
+          final result = await repository.postReport(tToken, tReportCompose);
+          // assert
+          verify(mockRemoteDataSource.postReport(tToken, tReportCompose));
+          expect(result, equals(Right(testReport)));
+        });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postReport(tToken, tReportCompose))
-          .thenThrow(ServerException('Invalid'));
-      // act
-      final result = await repository.postReport(tToken, tReportCompose);
-      // assert
-      verify(mockRemoteDataSource.postReport(tToken, tReportCompose));
-      expect(result, equals(Left(ServerFailure('Invalid'))));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.postReport(tToken, tReportCompose))
+              .thenThrow(ServerException('Invalid'));
+          // act
+          final result = await repository.postReport(tToken, tReportCompose);
+          // assert
+          verify(mockRemoteDataSource.postReport(tToken, tReportCompose));
+          expect(result, equals(Left(ServerFailure('Invalid'))));
+        });
   });
 
   group('Post User Challenge', () {
     test(
         'should return remote data when the call to remote data source is successful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postChallenge(testUserChallengeModel))
-          .thenAnswer((_) async => 'Success');
-      // act
-      final result = await repository.postUserChallenge(testUserChallenge);
-      // assert
-      verify(mockRemoteDataSource.postChallenge(testUserChallengeModel));
-      expect(result, equals(Right('Success')));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.postChallenge(testUserChallengeModel))
+              .thenAnswer((_) async => 'Success');
+          // act
+          final result = await repository.postUserChallenge(testUserChallenge);
+          // assert
+          verify(mockRemoteDataSource.postChallenge(testUserChallengeModel));
+          expect(result, equals(Right('Success')));
+        });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.postChallenge(testUserChallengeModel))
-          .thenThrow(ServerException('Invalid'));
-      // act
-      final result = await repository.postUserChallenge(testUserChallenge);
-      // assert
-      verify(mockRemoteDataSource.postChallenge(testUserChallengeModel));
-      expect(result, equals(Left(ServerFailure('Invalid'))));
-    });
+            () async {
+          // arrange
+          when(mockRemoteDataSource.postChallenge(testUserChallengeModel))
+              .thenThrow(ServerException('Invalid'));
+          // act
+          final result = await repository.postUserChallenge(testUserChallenge);
+          // assert
+          verify(mockRemoteDataSource.postChallenge(testUserChallengeModel));
+          expect(result, equals(Left(ServerFailure('Invalid'))));
+        });
   });
 
   group('Remove Feed', () {

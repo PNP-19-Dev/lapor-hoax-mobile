@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -27,7 +33,7 @@ void main() {
   testWidgets('Page should display widgets', (WidgetTester tester) async {
     when(bloc.state).thenReturn(QuestionHasData.question([testQuestion]));
     when(bloc.stream).thenAnswer(
-        (_) => Stream.value(QuestionHasData.question([testQuestion])));
+            (_) => Stream.value(QuestionHasData.question([testQuestion])));
 
     await tester.pumpWidget(_makeTestableWidget(ChangeUserQuestion(id: 1)));
 

@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -31,26 +37,26 @@ void main() {
   }
 
   testWidgets('Page should display register page items',
-      (WidgetTester tester) async {
-    when(loginCubit.state).thenReturn(LoginSuccessWithData(testSessionData));
-    when(loginCubit.stream)
-        .thenAnswer((_) => Stream.value(LoginSuccessWithData(testSessionData)));
+          (WidgetTester tester) async {
+        when(loginCubit.state).thenReturn(LoginSuccessWithData(testSessionData));
+        when(loginCubit.stream)
+            .thenAnswer((_) => Stream.value(LoginSuccessWithData(testSessionData)));
 
-    when(passwordCubit.state).thenReturn(PasswordInitial());
-    when(passwordCubit.stream).thenAnswer((_) => Stream.empty());
+        when(passwordCubit.state).thenReturn(PasswordInitial());
+        when(passwordCubit.stream).thenAnswer((_) => Stream.empty());
 
-    await tester.pumpWidget(_makeTestableWidget(PasswordChangePage()));
+        await tester.pumpWidget(_makeTestableWidget(PasswordChangePage()));
 
-    final texts = find.byType(Text);
-    expect(texts, findsNWidgets(5));
+        final texts = find.byType(Text);
+        expect(texts, findsNWidgets(5));
 
-    final inputs = find.byType(TextFormField);
-    expect(inputs, findsNWidgets(3));
+        final inputs = find.byType(TextFormField);
+        expect(inputs, findsNWidgets(3));
 
-    final textButton = find.byType(InkWell);
-    expect(textButton, findsOneWidget);
+        final textButton = find.byType(InkWell);
+        expect(textButton, findsOneWidget);
 
-    final button = find.byType(ElevatedButton);
-    expect(button, findsOneWidget);
-  });
+        final button = find.byType(ElevatedButton);
+        expect(button, findsOneWidget);
+      });
 }

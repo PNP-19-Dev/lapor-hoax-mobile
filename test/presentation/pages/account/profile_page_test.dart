@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -25,22 +31,22 @@ void main() {
   }
 
   testWidgets('Page should display register page items',
-      (WidgetTester tester) async {
-    when(bloc.state).thenReturn(LoginSuccessWithData(testSessionData));
-    when(bloc.stream)
-        .thenAnswer((_) => Stream.value(LoginSuccessWithData(testSessionData)));
+          (WidgetTester tester) async {
+        when(bloc.state).thenReturn(LoginSuccessWithData(testSessionData));
+        when(bloc.stream)
+            .thenAnswer((_) => Stream.value(LoginSuccessWithData(testSessionData)));
 
-    await tester.pumpWidget(_makeTestableWidget(ProfilePage(
-      email: testSessionData.email,
-    )));
+        await tester.pumpWidget(_makeTestableWidget(ProfilePage(
+          email: testSessionData.email,
+        )));
 
-    final texts = find.byType(Text);
-    expect(texts, findsNWidgets(5));
+        final texts = find.byType(Text);
+        expect(texts, findsNWidgets(5));
 
-    final inputs = find.byType(TextFormField);
-    expect(inputs, findsNWidgets(2));
+        final inputs = find.byType(TextFormField);
+        expect(inputs, findsNWidgets(2));
 
-    final textButton = find.byType(InkWell);
-    expect(textButton, findsNWidgets(2));
-  });
+        final textButton = find.byType(InkWell);
+        expect(textButton, findsNWidgets(2));
+      });
 }

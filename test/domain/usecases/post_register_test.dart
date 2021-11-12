@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laporhoax/domain/usecases/post_register.dart';
@@ -18,15 +24,15 @@ void main() {
   group('PostRegister Test', () {
     group('execute', () {
       test("should get user's callback when execute function is called",
-          () async {
-        // arrange
-        when(mockRepository.postRegister(testRegister))
-            .thenAnswer((_) async => Right(testRegisterData));
-        // act
-        final result = await usecase.execute(testRegister);
-        // assert
-        expect(result, Right(testRegisterData));
-      });
+              () async {
+            // arrange
+            when(mockRepository.postRegister(testRegister))
+                .thenAnswer((_) async => Right(testRegisterData));
+            // act
+            final result = await usecase.execute(testRegister);
+            // assert
+            expect(result, Right(testRegisterData));
+          });
     });
   });
 }

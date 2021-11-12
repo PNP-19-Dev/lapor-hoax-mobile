@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,35 +38,35 @@ void main() {
   }
 
   testWidgets('Page should display forgot section one',
-      (WidgetTester tester) async {
-    when(passwordCubit.state).thenReturn(PasswordInitial());
-    when(passwordCubit.stream).thenAnswer((_) => const Stream.empty());
+          (WidgetTester tester) async {
+        when(passwordCubit.state).thenReturn(PasswordInitial());
+        when(passwordCubit.stream).thenAnswer((_) => const Stream.empty());
 
-    await tester.pumpWidget(_makeTestableWidget(ForgotPasswordSectionOne()));
+        await tester.pumpWidget(_makeTestableWidget(ForgotPasswordSectionOne()));
 
-    final picture = find.byType(SvgPicture);
-    expect(picture, findsOneWidget);
+        final picture = find.byType(SvgPicture);
+        expect(picture, findsOneWidget);
 
-    final text = find.byType(Text);
-    expect(text, findsNWidgets(4));
+        final text = find.byType(Text);
+        expect(text, findsNWidgets(4));
 
-    final editText = find.byType(TextFormField);
-    expect(editText, findsOneWidget);
+        final editText = find.byType(TextFormField);
+        expect(editText, findsOneWidget);
 
-    final button = find.byType(ElevatedButton);
-    expect(button, findsOneWidget);
-  });
+        final button = find.byType(ElevatedButton);
+        expect(button, findsOneWidget);
+      });
 
   testWidgets('Page should display forgot section two',
-      (WidgetTester tester) async {
-    when(questionCubit.state).thenReturn(
-      QuestionHasData(
-          [testQuestion],
-          QuestionCubit.questionToMap([testQuestion]),
-          QuestionCubit.getIndexQuestion(testUserChallenge),
-          QuestionCubit.getAnswerQuestion(testUserChallenge)),
-    );
-    when(questionCubit.stream).thenAnswer((_) => Stream.value(
+          (WidgetTester tester) async {
+        when(questionCubit.state).thenReturn(
+          QuestionHasData(
+              [testQuestion],
+              QuestionCubit.questionToMap([testQuestion]),
+              QuestionCubit.getIndexQuestion(testUserChallenge),
+              QuestionCubit.getAnswerQuestion(testUserChallenge)),
+        );
+        when(questionCubit.stream).thenAnswer((_) => Stream.value(
           QuestionHasData(
               [testQuestion],
               QuestionCubit.questionToMap([testQuestion]),
@@ -68,16 +74,16 @@ void main() {
               QuestionCubit.getAnswerQuestion(testUserChallenge)),
         ));
 
-    await tester.pumpWidget(
-        _makeTestableWidget(ForgotPasswordSectionTwo(user: testUser)));
+        await tester.pumpWidget(
+            _makeTestableWidget(ForgotPasswordSectionTwo(user: testUser)));
 
-    final text = find.byType(Text);
-    expect(text, findsNWidgets(5));
+        final text = find.byType(Text);
+        expect(text, findsNWidgets(5));
 
-    final editText = find.byType(TextField);
-    expect(editText, findsNWidgets(2));
+        final editText = find.byType(TextField);
+        expect(editText, findsNWidgets(2));
 
-    final button = find.byType(ElevatedButton);
-    expect(button, findsOneWidget);
-  });
+        final button = find.byType(ElevatedButton);
+        expect(button, findsOneWidget);
+      });
 }

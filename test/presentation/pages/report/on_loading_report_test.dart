@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,34 +19,34 @@ void main() {
   }
 
   testWidgets('Page should display success report page',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-        _makeTestableWidget(OnSuccessReport(reportItem: testReport)));
+          (WidgetTester tester) async {
+        await tester.pumpWidget(
+            _makeTestableWidget(OnSuccessReport(reportItem: testReport)));
 
-    final item = find.byType(Text);
-    expect(item, findsNWidgets(5));
+        final item = find.byType(Text);
+        expect(item, findsNWidgets(5));
 
-    final text = find.byType(SvgPicture);
-    expect(text, findsOneWidget);
+        final text = find.byType(SvgPicture);
+        expect(text, findsOneWidget);
 
-    final button = find.byType(ElevatedButton);
-    expect(button, findsOneWidget);
+        final button = find.byType(ElevatedButton);
+        expect(button, findsOneWidget);
 
-    final seeRecent = find.byType(InkWell);
-    expect(seeRecent, findsNWidgets(2));
-  });
+        final seeRecent = find.byType(InkWell);
+        expect(seeRecent, findsNWidgets(2));
+      });
 
   testWidgets('Page should display error report page',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(_makeTestableWidget(OnFailureReport()));
+          (WidgetTester tester) async {
+        await tester.pumpWidget(_makeTestableWidget(OnFailureReport()));
 
-    final item = find.byType(Text);
-    expect(item, findsNWidgets(4));
+        final item = find.byType(Text);
+        expect(item, findsNWidgets(4));
 
-    final text = find.byType(SvgPicture);
-    expect(text, findsOneWidget);
+        final text = find.byType(SvgPicture);
+        expect(text, findsOneWidget);
 
-    final button = find.byType(ElevatedButton);
-    expect(button, findsOneWidget);
-  });
+        final button = find.byType(ElevatedButton);
+        expect(button, findsOneWidget);
+      });
 }

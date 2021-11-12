@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laporhoax/data/datasources/local_data_source.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
@@ -23,48 +29,48 @@ void main() {
 
   group('Save Feed', () {
     test('should return success message when insert to database is success',
-        () async {
-      // arrange
-      when(mockDatabaseHelper.insertNews(testFeedTable))
-          .thenAnswer((_) async => 1);
-      // act
-      final result = await dataSource.insertFeed(testFeedTable);
-      // assert
-      expect(result, 'Feed Saved');
-    });
+            () async {
+          // arrange
+          when(mockDatabaseHelper.insertNews(testFeedTable))
+              .thenAnswer((_) async => 1);
+          // act
+          final result = await dataSource.insertFeed(testFeedTable);
+          // assert
+          expect(result, 'Feed Saved');
+        });
 
     test('should throw DatabaseException when insert to database is failed',
-        () {
-      // arrange
-      when(mockDatabaseHelper.insertNews(testFeedTable)).thenThrow(Exception());
-      // act
-      final call = dataSource.insertFeed(testFeedTable);
-      // assert
-      expect(call, throwsA(isA<DatabaseException>()));
-    });
+            () {
+          // arrange
+          when(mockDatabaseHelper.insertNews(testFeedTable)).thenThrow(Exception());
+          // act
+          final call = dataSource.insertFeed(testFeedTable);
+          // assert
+          expect(call, throwsA(isA<DatabaseException>()));
+        });
   });
 
   group('Remove Feed', () {
     test('should return success message when remove to database is success',
-        () async {
-      // arrange
-      when(mockDatabaseHelper.removeFeed(testFeedTable))
-          .thenAnswer((_) async => 1);
-      // act
-      final result = await dataSource.removeFeed(testFeedTable);
-      // assert
-      expect(result, 'Feed Removed');
-    });
+            () async {
+          // arrange
+          when(mockDatabaseHelper.removeFeed(testFeedTable))
+              .thenAnswer((_) async => 1);
+          // act
+          final result = await dataSource.removeFeed(testFeedTable);
+          // assert
+          expect(result, 'Feed Removed');
+        });
 
     test('should throw DatabaseException when insert to database is failed',
-        () {
-      // arrange
-      when(mockDatabaseHelper.removeFeed(testFeedTable)).thenThrow(Exception());
-      // act
-      final call = dataSource.removeFeed(testFeedTable);
-      // assert
-      expect(call, throwsA(isA<DatabaseException>()));
-    });
+            () {
+          // arrange
+          when(mockDatabaseHelper.removeFeed(testFeedTable)).thenThrow(Exception());
+          // act
+          final call = dataSource.removeFeed(testFeedTable);
+          // assert
+          expect(call, throwsA(isA<DatabaseException>()));
+        });
   });
 
   group('Get Feed Detail By Id', () {
@@ -177,11 +183,11 @@ void main() {
 
   group('Get Session', (){
     final data = SessionData(
-        token: 'token',
-        userid: 1,
-        expiry: 'expiry',
-        email: 'email',
-        username: 'username',
+      token: 'token',
+      userid: 1,
+      expiry: 'expiry',
+      email: 'email',
+      username: 'username',
     );
 
     test('should return a valid session data when login is true', () async {

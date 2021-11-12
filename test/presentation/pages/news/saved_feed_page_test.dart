@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -25,29 +31,29 @@ void main() {
   }
 
   testWidgets('Page should display progress bar when loading',
-      (WidgetTester tester) async {
-    when(bloc.state).thenReturn(SavedFeedLoading());
-    when(bloc.stream).thenAnswer((_) => const Stream.empty());
+          (WidgetTester tester) async {
+        when(bloc.state).thenReturn(SavedFeedLoading());
+        when(bloc.stream).thenAnswer((_) => const Stream.empty());
 
-    await tester.pumpWidget(_makeTestableWidget(SavedNews()));
+        await tester.pumpWidget(_makeTestableWidget(SavedNews()));
 
-    final loading = find.byKey(Key('saved_news_loading'));
+        final loading = find.byKey(Key('saved_news_loading'));
 
-    expect(loading, findsOneWidget);
-  });
+        expect(loading, findsOneWidget);
+      });
 
   testWidgets('Page should display a list when data fetched',
-      (WidgetTester tester) async {
-    when(bloc.state).thenReturn(SavedFeedHasData([testFeed]));
-    when(bloc.stream)
-        .thenAnswer((_) => Stream.value(SavedFeedHasData([testFeed])));
+          (WidgetTester tester) async {
+        when(bloc.state).thenReturn(SavedFeedHasData([testFeed]));
+        when(bloc.stream)
+            .thenAnswer((_) => Stream.value(SavedFeedHasData([testFeed])));
 
-    await tester.pumpWidget(_makeTestableWidget(SavedNews()));
+        await tester.pumpWidget(_makeTestableWidget(SavedNews()));
 
-    final item = find.byKey(Key('saved_feed_has_data'));
+        final item = find.byKey(Key('saved_feed_has_data'));
 
-    expect(item, findsOneWidget);
-  });
+        expect(item, findsOneWidget);
+      });
 
   testWidgets('Page should display an empty error when data empty',
           (WidgetTester tester) async {
