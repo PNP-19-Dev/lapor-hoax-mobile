@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.36
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.36
+ */
+
 import 'package:laporhoax/data/models/category_table.dart';
 import 'package:laporhoax/data/models/feed_table.dart';
 import 'package:laporhoax/data/models/question_table.dart';
