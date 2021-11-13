@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 14/11/21 01.40
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.53
+ * Last modified 13/11/21 17.54
  */
 
 import 'package:flutter/material.dart';
@@ -51,5 +51,8 @@ final darkTheme = ThemeData(
   ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     foregroundColor: Colors.black,
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    border: OutlineInputBorder(),
   ),
 );

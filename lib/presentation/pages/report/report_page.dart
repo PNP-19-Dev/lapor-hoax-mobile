@@ -1,7 +1,7 @@
 /*
- * Created by andii on 13/11/21 08.11
+ * Created by andii on 14/11/21 01.40
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 13/11/21 00.36
+ * Last modified 13/11/21 22.18
  */
 
 import 'package:flutter/material.dart';
@@ -73,7 +73,7 @@ class _OnWelcome extends StatelessWidget {
         Container(
           padding: const EdgeInsets.only(top: 11, left: 15),
           child: GestureDetector(
-            child: Icon(Icons.arrow_back, size: 32),
+            child: Icon(Icons.arrow_back),
             onTap: () => Navigation.back(),
           ),
         ),
@@ -211,7 +211,7 @@ class _OnLaporState extends State<_OnLapor> {
                                 },
                                 icon: Icon(
                                   Icons.image,
-                                  color: isDark ? Colors.grey : Colors.black,
+                                  color: isDark ? Colors.white : Colors.black,
                                 ),
                               ),
                             ),
@@ -230,7 +230,7 @@ class _OnLaporState extends State<_OnLapor> {
                                 },
                                 icon: Icon(
                                   Icons.camera_alt,
-                                  color: isDark ? Colors.grey : Colors.black,
+                                  color: isDark ? Colors.white : Colors.black,
                                 ),
                               ),
                             ),
@@ -315,18 +315,6 @@ class _OnLaporState extends State<_OnLapor> {
                           controller: _descController,
                           minLines: 4,
                           maxLines: null,
-                          decoration: InputDecoration(
-                            alignLabelWithHint: true,
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                  style: BorderStyle.solid, color: orangeBlaze),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(style: BorderStyle.solid),
-                            ),
-                          ),
                         ),
                         Wrap(
                           crossAxisAlignment: WrapCrossAlignment.center,
@@ -391,7 +379,7 @@ class _ReportPageHeader extends StatelessWidget {
         Container(
           padding: const EdgeInsets.only(top: 11),
           child: GestureDetector(
-            child: Icon(Icons.arrow_back, size: 32),
+            child: Icon(Icons.arrow_back),
             onTap: () => Navigation.intent(HomePage.ROUTE_NAME),
           ),
         ),

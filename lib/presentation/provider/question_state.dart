@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 14/11/21 01.40
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.55
+ * Last modified 14/11/21 00.02
  */
 
 part of 'question_cubit.dart';
@@ -28,9 +28,9 @@ class QuestionError extends QuestionState {
 
 class QuestionHasData extends QuestionState {
   final List<Question> questions;
-  Map<int, String>? questionMap;
-  List<int>? index;
-  List<String>? userQuestion;
+  final Map<int, String>? questionMap;
+  final List<int>? index;
+  final List<String>? userQuestion;
 
   QuestionHasData(this.questions,
       this.questionMap,

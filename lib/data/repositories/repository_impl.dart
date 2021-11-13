@@ -1,10 +1,11 @@
 /*
- * Created by andii on 13/11/21 08.11
+ * Created by andii on 14/11/21 01.40
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 13/11/21 00.28
+ * Last modified 14/11/21 01.25
  */
 
 import 'package:dartz/dartz.dart';
+import 'package:laporhoax/utils/network_exceptions.dart';
 import 'package:laporhoax/data/datasources/local_data_source.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
 import 'package:laporhoax/data/models/category_table.dart';
@@ -44,10 +45,8 @@ class RepositoryImpl implements Repository {
     try {
       final result = await remoteDataSource.getFeeds();
       return Right(result.map((data) => data.toEntity()).toList());
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -100,8 +99,8 @@ class RepositoryImpl implements Repository {
         localDataSource.cacheCategory(
             result.map((category) => CategoryTable.fromDTO(category)).toList());
         return Right(result.map((e) => e.toEntity()).toList());
-      } on ServerException catch (e) {
-        return Left(ServerFailure(e.message));
+      } on NetworkExceptions catch (e) {
+        return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
       }
     } else {
       try {
@@ -118,10 +117,8 @@ class RepositoryImpl implements Repository {
     try {
       final result = await remoteDataSource.getReport(token, id);
       return Right(result.map((data) => data.toEntity()).toList());
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -129,11 +126,9 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, User>> getUser(String email) async {
     try {
       final result = await remoteDataSource.getUser(email);
-      return Right(result.map((e) => e.toEntity()).first);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+      return Right(result.toEntity());
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -142,11 +137,8 @@ class RepositoryImpl implements Repository {
     try {
       final result = await remoteDataSource.postLogin(username, password);
       return Right(result.toEntity());
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      print(e);
-      throw e.toString();
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -156,10 +148,8 @@ class RepositoryImpl implements Repository {
       final result =
       await remoteDataSource.postRegister(RegisterModel.fromDTO(user));
       return Right(result.toEntity());
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -168,10 +158,8 @@ class RepositoryImpl implements Repository {
     try {
       final result = await remoteDataSource.postReport(token, report);
       return Right(result.toEntity());
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -180,12 +168,9 @@ class RepositoryImpl implements Repository {
     try {
       final result = await remoteDataSource
           .postChallenge(UserQuestionModel.fromDTO(challenge));
-      print('Challenge Result $result');
       return Right(result);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -194,10 +179,8 @@ class RepositoryImpl implements Repository {
     try {
       final result = await remoteDataSource.deleteReport(token, id);
       return Right(result);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -206,10 +189,8 @@ class RepositoryImpl implements Repository {
     try {
       final result = await remoteDataSource.getPasswordReset(email);
       return Right(result);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -221,8 +202,8 @@ class RepositoryImpl implements Repository {
         localDataSource.cacheQuestions(
             result.map((question) => QuestionTable.fromDTO(question)).toList());
         return Right(result.map((e) => e.toEntity()).toList());
-      } on ServerException catch (e) {
-        return Left(ServerFailure(e.message));
+      } on NetworkExceptions catch (e) {
+        return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
       }
     } else {
       try {
@@ -240,10 +221,8 @@ class RepositoryImpl implements Repository {
       final result =
       await remoteDataSource.postChangePassword(oldPass, newPass, token);
       return Right(result);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -253,10 +232,8 @@ class RepositoryImpl implements Repository {
       final result =
       await remoteDataSource.postFcmToken(user.toString(), fcmToken);
       return Right(result);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -266,10 +243,8 @@ class RepositoryImpl implements Repository {
       final result =
       await remoteDataSource.updateFcmToken(user.toString(), fcmToken);
       return Right(result);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -300,10 +275,8 @@ class RepositoryImpl implements Repository {
     try {
       final result = await remoteDataSource.getUserQuestions(id);
       return Right(result.toEntity());
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -312,10 +285,8 @@ class RepositoryImpl implements Repository {
     try {
       final result = await remoteDataSource.getFeedDetail(id);
       return Right(result.toEntity());
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 }

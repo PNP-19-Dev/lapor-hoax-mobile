@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.48
+ * Created by andii on 14/11/21 01.40
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.48
+ * Last modified 14/11/21 00.33
  */
 
 import 'package:laporhoax/data/models/category_model.dart';
@@ -124,6 +124,12 @@ final testUser = User(
   username: "username",
   email: "email",
 );
+
+final testUserMap = {
+  "id": 1,
+  "username": "username",
+  "email": "email",
+};
 
 final testUserModel = UserModel(
   id: 1,

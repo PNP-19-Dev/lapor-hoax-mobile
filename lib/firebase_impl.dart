@@ -1,7 +1,7 @@
 /*
- * Created by andii on 13/11/21 08.11
+ * Created by andii on 14/11/21 01.40
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 13/11/21 00.00
+ * Last modified 14/11/21 01.25
  */
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,8 +11,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print('Handling a background message ${message.messageId}');
-  print('MESSAGE: ${message.data}');
+  if (kDebugMode) {
+    print('Handling a background message ${message.messageId}');
+    print('MESSAGE: ${message.data}');
+  }
 }
 
 late AndroidNotificationChannel channel;

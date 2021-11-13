@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 14/11/21 01.40
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.55
+ * Last modified 13/11/21 21.18
  */
 
 import 'package:flutter/material.dart';
@@ -100,7 +100,7 @@ class _NewsWebViewState extends State<NewsWebView> {
                 ),
                 IconButton(
                   onPressed: () => Share.share(
-                      'Ada berita di laporhoax ${RemoteDataSourceImpl.baseUrl}/pages/${feed.id}'),
+                      'Ada berita di laporhoax $baseUrl/pages/${feed.id}'),
                   icon: SvgPicture.asset('assets/icons/share.svg'),
                 )
               ],
@@ -127,8 +127,7 @@ class _NewsWebViewState extends State<NewsWebView> {
                   children: [
                     WebView(
                       key: _key,
-                      initialUrl:
-                      '${RemoteDataSourceImpl.baseUrl}/news/${widget.id}',
+                      initialUrl: '$baseUrl/news/${widget.id}',
                       javascriptMode: JavascriptMode.unrestricted,
                       onPageFinished: (finish) {
                         setState(() {
@@ -138,8 +137,8 @@ class _NewsWebViewState extends State<NewsWebView> {
                     ),
                     isLoading
                         ? Center(
-                      child: CircularProgressIndicator(),
-                    )
+                            child: CircularProgressIndicator(),
+                          )
                         : Stack(),
                   ],
                 ),

@@ -1,11 +1,12 @@
 /*
- * Created by andii on 12/11/21 23.01
+ * Created by andii on 14/11/21 01.40
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.58
+ * Last modified 13/11/21 22.19
  */
 
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:dio/dio.dart';
+import 'package:laporhoax/data/datasources/api/dio_client.dart';
 import 'package:laporhoax/data/datasources/db/database_helper.dart';
 import 'package:laporhoax/data/datasources/local_data_source.dart';
 import 'package:laporhoax/data/datasources/preferences/preferences_helper.dart';
@@ -29,6 +30,7 @@ import 'package:mockito/annotations.dart';
   Repository,
   RemoteDataSource,
   LocalDataSource,
+  DioClient,
   DatabaseHelper,
   PreferencesHelper,
   DataConnectionChecker,

@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 14/11/21 01.40
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.55
+ * Last modified 13/11/21 21.53
  */
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -71,21 +71,25 @@ class _NewsPageState extends State<NewsPage> {
                 ),
               );
             } else if (state is FeedHasData) {
-              return _FeedList(state.data, key: Key('home_feed_items'),);
+              return _FeedList(
+                state.data,
+                key: Key('home_feed_items'),
+              );
             } else if (state is FeedError) {
               return SliverList(
                 key: Key('home_feed_error'),
                 delegate: SliverChildListDelegate([
+                  SizedBox(height: 100),
                   Icon(
                     Icons.error,
                     size: 30,
                     color: grey200,
                   ),
                   Text(
-                    'Something Went wrong',
+                    '${state.message}',
                     style: Theme.of(context).textTheme.bodyText2,
+                    textAlign: TextAlign.center,
                   ),
-                  Text('${state.message}'),
                 ]),
               );
             } else {
@@ -107,9 +111,9 @@ class _FeedList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverGrid(
       gridDelegate:
-      SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       delegate: SliverChildBuilderDelegate(
-            (_, index) {
+        (_, index) {
           var feed = feeds[index];
           return Padding(
             padding: const EdgeInsets.all(8.0),
@@ -162,10 +166,10 @@ class _FeedList extends StatelessWidget {
                           softWrap: true,
                           overflow: TextOverflow.clip,
                           style:
-                          Theme.of(context).textTheme.bodyText2!.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                       ),
                       Positioned(
@@ -185,8 +189,8 @@ class _FeedList extends StatelessWidget {
                                   .textTheme
                                   .overline!
                                   .copyWith(
-                                color: Colors.white,
-                              ),
+                                    color: Colors.white,
+                                  ),
                             ),
                           ],
                         ),

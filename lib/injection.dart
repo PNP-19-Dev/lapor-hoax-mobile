@@ -1,14 +1,12 @@
 /*
- * Created by andii on 13/11/21 08.11
+ * Created by andii on 14/11/21 01.40
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 13/11/21 08.11
+ * Last modified 13/11/21 22.06
  */
 
-import 'dart:io';
-
 import 'package:data_connection_checker/data_connection_checker.dart';
-import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:laporhoax/data/datasources/api/dio_client.dart';
 import 'package:laporhoax/data/datasources/db/database_helper.dart';
 import 'package:laporhoax/data/datasources/local_data_source.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
@@ -157,7 +155,7 @@ void init() {
 
   // data sources
   locator.registerLazySingleton<RemoteDataSource>(
-        () => RemoteDataSourceImpl(dio: locator()),
+    () => RemoteDataSourceImpl(client: locator()),
   );
   locator.registerLazySingleton<LocalDataSource>(
     () => LocalDataSourceImpl(
@@ -176,21 +174,6 @@ void init() {
   locator.registerLazySingleton<PreferencesHelper>(() => PreferencesHelper());
 
   // external
-  locator.registerLazySingleton(() {
-    BaseOptions options = new BaseOptions(
-      baseUrl: RemoteDataSourceImpl.baseUrl,
-      receiveDataWhenStatusError: true,
-      connectTimeout: 5 * 1000,
-      receiveTimeout: 5 * 1000,
-      sendTimeout: 3 * 1000,
-      headers: {
-        HttpHeaders.acceptHeader: '*/*',
-        HttpHeaders.acceptEncodingHeader: 'gzip, deflate, br',
-      },
-      validateStatus: (int? status) => status != null && status > 0,
-      // ..interceptors.add(LogInterceptor())
-    );
-    return Dio(options);
-  });
+  locator.registerLazySingleton(() => DioClient(baseUrl));
   locator.registerLazySingleton(() => DataConnectionChecker());
 }
