@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 13/11/21 08.11
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.55
+ * Last modified 13/11/21 00.36
  */
 
 import 'package:flutter/material.dart';
@@ -355,6 +355,7 @@ class _OnLaporState extends State<_OnLapor> {
 
                               if (state is ReportError) {
                                 progress!.dismiss();
+                                toast(state.message);
                                 Navigation.intent(OnFailureReport.ROUTE_NAME);
                               } else if (state is ReportUploaded) {
                                 progress!.dismiss();

@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.48
+ * Created by andii on 13/11/21 08.11
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.40
+ * Last modified 12/11/21 23.51
  */
 
 import 'package:laporhoax/utils/datetime_helper.dart';
@@ -78,9 +78,9 @@ class PreferencesHelper {
   Future<bool> get isLogin async {
     final prefs = await sharedPreferences;
 
-    final token = prefs.getString(TOKEN) ?? '';
-    if (token.isNotEmpty &&
-        DateTime.now().isAfter(DateTimeHelper.formattedDateToken(token))) {
+    final expire = prefs.getString(EXPIRE) ?? '';
+    if (expire.isNotEmpty &&
+        DateTime.now().isAfter(DateTimeHelper.formattedDateToken(expire))) {
       setExpire(null);
       setLogin(false);
       return false;

@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.48
+ * Created by andii on 13/11/21 08.11
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.48
+ * Last modified 13/11/21 00.28
  */
 
 import 'package:dartz/dartz.dart';
@@ -145,7 +145,8 @@ class RepositoryImpl implements Repository {
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
     } catch (e) {
-      throw e;
+      print(e);
+      throw e.toString();
     }
   }
 

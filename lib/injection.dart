@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 13/11/21 08.11
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.55
+ * Last modified 13/11/21 08.11
  */
 
 import 'dart:io';
@@ -37,6 +37,7 @@ import 'package:laporhoax/domain/usecases/save_feed.dart';
 import 'package:laporhoax/domain/usecases/save_session_data.dart';
 import 'package:laporhoax/presentation/provider/about_cubit.dart';
 import 'package:laporhoax/presentation/provider/detail_cubit.dart';
+import 'package:laporhoax/presentation/provider/feed_cubit.dart';
 import 'package:laporhoax/presentation/provider/history_cubit.dart';
 import 'package:laporhoax/presentation/provider/item_cubit.dart';
 import 'package:laporhoax/presentation/provider/login_cubit.dart';
@@ -57,59 +58,62 @@ final locator = GetIt.instance;
 void init() {
   // bloc
   locator.registerFactory(
-        () => AboutCubit(),
+    () => AboutCubit(),
   );
   locator.registerFactory(
-        () => SavedFeedCubit(locator()),
+    () => FeedCubit(locator()),
   );
   locator.registerFactory(
-        () => HistoryCubit(
+    () => SavedFeedCubit(locator()),
+  );
+  locator.registerFactory(
+    () => HistoryCubit(
       locator(),
       locator(),
     ),
   );
   locator.registerFactory(
-        () => LoginCubit(
+    () => LoginCubit(
       locator(),
       locator(),
-      locator(),
-      locator(),
-      locator(),
-    ),
-  );
-  locator.registerFactory(
-        () => RegisterCubit(
-      locator(),
-      locator(),
-    ),
-  );
-  locator.registerFactory(
-        () => PasswordCubit(
       locator(),
       locator(),
       locator(),
     ),
   );
   locator.registerFactory(
-        () => QuestionCubit(
+    () => RegisterCubit(
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => PasswordCubit(
       locator(),
       locator(),
       locator(),
     ),
   );
   locator.registerFactory(
-        () => ReportCubit(
+    () => QuestionCubit(
+      locator(),
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => ReportCubit(
       locator(),
       locator(),
     ),
   );
   locator.registerFactory(
-        () => DetailCubit(
+    () => DetailCubit(
       locator(),
     ),
   );
   locator.registerFactory(
-        () => ItemCubit(
+    () => ItemCubit(
       locator(),
       locator(),
       locator(),
@@ -144,7 +148,7 @@ void init() {
 
   // repository
   locator.registerLazySingleton<Repository>(
-        () => RepositoryImpl(
+    () => RepositoryImpl(
       remoteDataSource: locator(),
       localDataSource: locator(),
       networkInfo: locator(),
@@ -156,7 +160,7 @@ void init() {
         () => RemoteDataSourceImpl(dio: locator()),
   );
   locator.registerLazySingleton<LocalDataSource>(
-        () => LocalDataSourceImpl(
+    () => LocalDataSourceImpl(
       databaseHelper: locator(),
       preferencesHelper: locator(),
     ),
@@ -173,15 +177,20 @@ void init() {
 
   // external
   locator.registerLazySingleton(() {
-    return Dio()
-      ..options.headers.addAll({
+    BaseOptions options = new BaseOptions(
+      baseUrl: RemoteDataSourceImpl.baseUrl,
+      receiveDataWhenStatusError: true,
+      connectTimeout: 5 * 1000,
+      receiveTimeout: 5 * 1000,
+      sendTimeout: 3 * 1000,
+      headers: {
         HttpHeaders.acceptHeader: '*/*',
-        HttpHeaders.acceptEncodingHeader: 'gzip, deflate, br'
-      })
-      ..options.baseUrl = RemoteDataSourceImpl.baseUrl
-      ..options.sendTimeout = 60 * 1000
-      ..options.validateStatus = (int? status) => status != null && status > 0;
-    // ..interceptors.add(LogInterceptor())
+        HttpHeaders.acceptEncodingHeader: 'gzip, deflate, br',
+      },
+      validateStatus: (int? status) => status != null && status > 0,
+      // ..interceptors.add(LogInterceptor())
+    );
+    return Dio(options);
   });
   locator.registerLazySingleton(() => DataConnectionChecker());
 }

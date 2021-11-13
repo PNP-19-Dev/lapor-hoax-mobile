@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 13/11/21 08.11
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.55
+ * Last modified 13/11/21 00.26
  */
 
 import 'package:flutter/material.dart';
@@ -159,6 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                               BlocListener<LoginCubit, LoginState>(
                                 listener: (context, state) {
                                   final progress = ProgressHUD.of(context);
+
                                   if (state is Login) {
                                     progress?.showWithText('Loading...');
                                   } else if (state is LoginFailure) {

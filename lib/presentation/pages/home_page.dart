@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 13/11/21 08.11
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.50
+ * Last modified 13/11/21 00.00
  */
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -9,12 +9,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:laporhoax/firebase_impl.dart';
 import 'package:laporhoax/presentation/pages/account/account_page.dart';
 import 'package:laporhoax/presentation/pages/news/news_page.dart';
 import 'package:laporhoax/presentation/pages/report/report_page.dart';
 import 'package:laporhoax/utils/navigation.dart';
-
-import '../../main.dart';
 
 class HomePage extends StatefulWidget {
   static const ROUTE_NAME = '/home_page';

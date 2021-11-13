@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.48
+ * Created by andii on 13/11/21 08.11
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.48
+ * Last modified 13/11/21 08.11
  */
 
 import 'dart:convert';
@@ -77,21 +77,26 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<UserTokenModel> postLogin(String username, String password) async {
-    final response = await dio.post(
-      '/$loginEndpoint/',
-      options: Options(contentType: Headers.jsonContentType),
-      data: jsonEncode(
-        <String, String>{
-          "username": username,
-          "password": password,
-        },
-      ),
-    );
+    try {
+      final response = await dio.post(
+        '/$loginEndpoint/',
+        options: Options(contentType: Headers.jsonContentType),
+        data: jsonEncode(
+          <String, String>{
+            "username": username,
+            "password": password,
+          },
+        ),
+      );
 
-    if (response.statusCode == 200) {
-      return UserTokenModel.fromJson(response.data);
-    } else {
-      throw ServerException('Username atau Password salah!');
+      if (response.statusCode == 200) {
+        return UserTokenModel.fromJson(response.data);
+      } else {
+        throw ServerException('username atau password salah!');
+      }
+    } on DioError catch (e) {
+      print(e.type);
+      throw ServerException(e.message);
     }
   }
 
@@ -239,7 +244,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
             'Gagal Mendapatkan data (${response.statusCode})');
       }
     } on DioError catch (e) {
-      throw ServerException('Terjadi masalah ${e.message}');
+      print(e.type);
+      throw ServerException('Gagal');
     }
   }
 
