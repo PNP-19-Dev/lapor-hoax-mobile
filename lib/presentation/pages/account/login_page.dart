@@ -1,7 +1,7 @@
 /*
- * Created by andii on 13/11/21 08.11
+ * Created by andii on 14/11/21 14.07
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 13/11/21 00.26
+ * Last modified 14/11/21 11.08
  */
 
 import 'package:flutter/material.dart';
@@ -76,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         Text('Email',
                             style: TextStyle(fontWeight: FontWeight.bold)),
+                        SizedBox(height: 10),
                         TextFormField(
                           controller: _usernameController,
                           keyboardType: TextInputType.text,
@@ -92,6 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(height: 25),
                         Text('Kata Sandi',
                             style: TextStyle(fontWeight: FontWeight.bold)),
+                        SizedBox(height: 10),
                         TextFormField(
                           controller: _passwordController,
                           autofillHints: [AutofillHints.password],
@@ -151,28 +153,23 @@ class _LoginPageState extends State<LoginPage> {
                                       .textTheme
                                       .bodyText1!
                                       .copyWith(
-                                    color: orangeBlaze,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                        color: orangeBlaze,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                 ),
                               ),
                               BlocListener<LoginCubit, LoginState>(
                                 listener: (context, state) {
                                   final progress = ProgressHUD.of(context);
-
                                   if (state is Login) {
                                     progress?.showWithText('Loading...');
                                   } else if (state is LoginFailure) {
+                                    progress!.dismiss();
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(state.message),
                                       ),
                                     );
-                                    progress!.dismiss();
-                                  } else if (state is SessionSaving) {
-                                    context
-                                        .read<LoginCubit>()
-                                        .savingSession(state.data);
                                   } else if (state is LoginSuccess) {
                                     progress!.dismiss();
                                     Navigation.intent(HomePage.ROUTE_NAME);
@@ -185,11 +182,11 @@ class _LoginPageState extends State<LoginPage> {
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
                                         context.read<LoginCubit>().login(
-                                          _usernameController.text
-                                              .toString(),
-                                          _passwordController.text
-                                              .toString(),
-                                        );
+                                              _usernameController.text
+                                                  .toString(),
+                                              _passwordController.text
+                                                  .toString(),
+                                            );
                                       }
                                     },
                                     child: Text('Login'),

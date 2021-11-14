@@ -1,7 +1,7 @@
 /*
- * Created by andii on 13/11/21 08.11
+ * Created by andii on 14/11/21 14.07
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 13/11/21 00.00
+ * Last modified 14/11/21 12.38
  */
 
 import 'package:flutter/material.dart';
@@ -31,12 +31,14 @@ import 'package:laporhoax/presentation/pages/static/about_page.dart';
 import 'package:laporhoax/presentation/pages/static/static_page_viewer.dart';
 import 'package:laporhoax/presentation/pages/static/tutorial_page.dart';
 import 'package:laporhoax/presentation/provider/about_cubit.dart';
+import 'package:laporhoax/presentation/provider/account_cubit.dart';
 import 'package:laporhoax/presentation/provider/detail_cubit.dart';
 import 'package:laporhoax/presentation/provider/feed_cubit.dart';
 import 'package:laporhoax/presentation/provider/history_cubit.dart';
 import 'package:laporhoax/presentation/provider/item_cubit.dart';
 import 'package:laporhoax/presentation/provider/login_cubit.dart';
 import 'package:laporhoax/presentation/provider/password_cubit.dart';
+import 'package:laporhoax/presentation/provider/profile_cubit.dart';
 import 'package:laporhoax/presentation/provider/question_cubit.dart';
 import 'package:laporhoax/presentation/provider/register_cubit.dart';
 import 'package:laporhoax/presentation/provider/report_cubit.dart';
@@ -87,10 +89,16 @@ class MyApp extends StatelessWidget {
           create: (_) => di.locator<LoginCubit>(),
         ),
         BlocProvider(
+          create: (_) => di.locator<AccountCubit>(),
+        ),
+        BlocProvider(
           create: (_) => di.locator<RegisterCubit>(),
         ),
         BlocProvider(
           create: (_) => di.locator<AboutCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<ProfileCubit>(),
         ),
       ],
       child: MaterialApp(
@@ -172,8 +180,8 @@ class MyApp extends StatelessWidget {
             case OnRegisterSuccess.ROUTE_NAME:
               return MaterialPageRoute(
                   builder: (_) => OnRegisterSuccess(
-                    settings.arguments as String,
-                  ));
+                        settings.arguments as String,
+                      ));
             case About.routeName:
               return MaterialPageRoute(builder: (_) => About());
             default:

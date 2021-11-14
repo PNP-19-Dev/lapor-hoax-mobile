@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 01.40
+ * Created by andii on 14/11/21 14.07
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 13/11/21 22.11
+ * Last modified 14/11/21 14.05
  */
 
 import 'package:flutter/material.dart';
@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laporhoax/presentation/pages/account/account_page.dart';
 import 'package:laporhoax/presentation/pages/account/change_user_question.dart';
 import 'package:laporhoax/presentation/pages/account/password_change_page.dart';
-import 'package:laporhoax/presentation/provider/login_cubit.dart';
+import 'package:laporhoax/presentation/provider/profile_cubit.dart';
 import 'package:laporhoax/utils/navigation.dart';
 import 'package:provider/provider.dart';
 
@@ -33,30 +33,30 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    context.read<LoginCubit>().fetchSession();
+    context.read<ProfileCubit>().getData(widget.email);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Text('Profil'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: BlocListener<LoginCubit, LoginState>(
-                listener: (context, state) {
-                  if (state is LoginSuccessWithData) {
-                    _usernameController.text = state.data.username;
-                    _emailController.text = state.data.email;
-                    _id = state.data.userid;
-                  }
-                },
+    return BlocListener<ProfileCubit, ProfileState>(
+      listener: (context, state) {
+        if (state is ProfileDataFetched) {
+          _usernameController.text = state.user.username;
+          _emailController.text = state.user.email;
+          _id = state.user.id;
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          title: Text('Profil'),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -64,18 +64,40 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: [
                       Text('Username',
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextFormField(
-                        controller: _usernameController,
-                        keyboardType: TextInputType.text,
-                        enabled: false,
+                      BlocBuilder<ProfileCubit, ProfileState>(
+                        builder: (context, state) {
+                          return TextFormField(
+                            controller: _usernameController,
+                            keyboardType: TextInputType.text,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              hintText: state is ProfileGetData
+                                  ? 'Mendapatkan data'
+                                  : state is ProfileDataError
+                                      ? state.message
+                                      : '',
+                            ),
+                          );
+                        },
                       ),
                       SizedBox(height: 10),
                       Text('Email',
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextFormField(
-                        controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        enabled: false,
+                      BlocBuilder<ProfileCubit, ProfileState>(
+                        builder: (context, state) {
+                          return TextFormField(
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              hintText: state is ProfileGetData
+                                  ? 'Mendapatkan data'
+                                  : state is ProfileDataError
+                                      ? state.message
+                                      : '',
+                            ),
+                          );
+                        },
                       ),
                       SizedBox(height: 10),
                       Divider(
@@ -86,20 +108,20 @@ class _ProfilePageState extends State<ProfilePage> {
                       BuildCard(
                         Icons.vpn_key_outlined,
                         'Ubah Kata Sandi',
-                            () => Navigation.intent(PasswordChangePage.ROUTE_NAME),
+                        () => Navigation.intent(PasswordChangePage.ROUTE_NAME),
                       ),
                       BuildCard(
                         Icons.vpn_key_outlined,
                         'Ubah Pertanyaan Keamanan',
-                            () => Navigation.intentWithData(
+                        () => Navigation.intentWithData(
                             ChangeUserQuestion.ROUTE_NAME, _id),
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

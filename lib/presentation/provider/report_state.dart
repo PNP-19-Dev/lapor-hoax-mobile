@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 14/11/21 14.07
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.51
+ * Last modified 14/11/21 11.12
  */
 
 part of 'report_cubit.dart';
@@ -14,6 +14,17 @@ abstract class ReportState extends Equatable {
 }
 
 class ReportInitial extends ReportState {}
+
+class ReportLogin extends ReportState {
+  final SessionData data;
+
+  ReportLogin(this.data);
+
+  @override
+  List<Object> get props => [data];
+}
+
+class ReportNotLogin extends ReportState {}
 
 class CategoryInitial extends ReportState {
   final String message;

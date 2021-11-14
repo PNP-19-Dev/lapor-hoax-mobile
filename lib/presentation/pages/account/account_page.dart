@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 14/11/21 14.07
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.55
+ * Last modified 14/11/21 11.42
  */
 
 import 'package:flutter/material.dart';
@@ -14,6 +14,7 @@ import 'package:laporhoax/presentation/pages/news/saved_news.dart';
 import 'package:laporhoax/presentation/pages/report/history_page.dart';
 import 'package:laporhoax/presentation/pages/static/about_page.dart';
 import 'package:laporhoax/presentation/pages/static/static_page_viewer.dart';
+import 'package:laporhoax/presentation/provider/account_cubit.dart';
 import 'package:laporhoax/presentation/provider/login_cubit.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:laporhoax/styles/theme.dart';
@@ -35,7 +36,7 @@ class _AccountPageState extends State<AccountPage> {
   @override
   void initState() {
     super.initState();
-    context.read<LoginCubit>().fetchSession();
+    context.read<AccountCubit>().fetchSession();
   }
 
   @override
@@ -43,17 +44,20 @@ class _AccountPageState extends State<AccountPage> {
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 50.0),
-        child: BlocBuilder<LoginCubit, LoginState>(
+        child: BlocBuilder<AccountCubit, AccountState>(
           builder: (_, state) {
-            if (state is LoginSuccessWithData) {
+            if (state is AccountLogin) {
               return _OnAccountLogin(
                 state.data,
                 key: Key('account_page_login'),
               );
-            } else
+            } else if (state is AccountNotLogin) {
               return _OnWelCome(
                 key: Key('account_page_logout'),
               );
+            } else {
+              return Container();
+            }
           },
         ),
       ),
@@ -77,8 +81,8 @@ class BuildCard extends StatelessWidget {
         title: Text(
           name,
           style: Theme.of(context).textTheme.bodyText1!.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+                fontWeight: FontWeight.bold,
+              ),
         ),
         trailing: Icon(Icons.chevron_right),
         onTap: onTap,
@@ -116,13 +120,13 @@ class _OnAccountLogin extends StatelessWidget {
           BuildCard(
             Icons.person_outline_rounded,
             'Profil',
-                () => Navigation.intentWithData(
+            () => Navigation.intentWithData(
                 ProfilePage.ROUTE_NAME, sessionData.email),
           ),
           BuildCard(
             Icons.history,
             'Riwayat Pelaporan',
-                () => Navigation.intentWithData(
+            () => Navigation.intentWithData(
               HistoryPage.ROUTE_NAME,
               TokenId(
                 sessionData.userid,
@@ -133,7 +137,7 @@ class _OnAccountLogin extends StatelessWidget {
           BuildCard(
             Icons.bookmark_outline,
             'Berita Tersimpan',
-                () => Navigation.intent(SavedNews.ROUTE_NAME),
+            () => Navigation.intent(SavedNews.ROUTE_NAME),
           ),
           SizedBox(height: 10),
           Divider(height: 10, endIndent: 20, indent: 20),
@@ -141,12 +145,12 @@ class _OnAccountLogin extends StatelessWidget {
           BuildCard(
             Icons.info_outline,
             'Tentang Laporhoax',
-                () => Navigation.intent(About.routeName),
+            () => Navigation.intent(About.routeName),
           ),
           BuildCard(
             Icons.share_rounded,
             'Bagikan Laporhoax',
-                () => Share.share(
+            () => Share.share(
                 'Ayo berantas hoaks bersama LaporHoax! di https://s.id/LAPORHOAX'),
           ),
           SizedBox(height: 20),
@@ -162,7 +166,47 @@ class _OnAccountLogin extends StatelessWidget {
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () => context.read<LoginCubit>().logout(sessionData),
+                onPressed: () => showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: const Radius.circular(40.0),
+                        topRight: const Radius.circular(40.0),
+                      ),
+                    ),
+                    builder: (context) {
+                      return Container(
+                        padding:
+                            const EdgeInsets.only(top: 50, left: 20, right: 20),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'Apakah yakin mau keluar ? ',
+                              style: Theme.of(context).textTheme.headline5,
+                            ),
+                            SizedBox(height: 30),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () => context
+                                    .read<LoginCubit>()
+                                    .logout(sessionData),
+                                child: Text('Ya'),
+                              ),
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              child: TextButton(
+                                onPressed: () => Navigation.back(),
+                                child: Text('Tidak'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
                 style: redElevatedButton,
                 child: Text('Logout'),
               ),
@@ -219,12 +263,12 @@ class _OnWelCome extends StatelessWidget {
         BuildCard(
           Icons.info_outline,
           'Tentang LaporHoax',
-              () => Navigation.intent(About.routeName),
+          () => Navigation.intent(About.routeName),
         ),
         BuildCard(
           Icons.share_rounded,
           'Bagikan LaporHoax',
-              () => Share.share(
+          () => Share.share(
               'Ayo berantas hoaks bersama LaporHoax! di https://s.id/LAPORHOAX'),
         ),
         SizedBox(height: 20),

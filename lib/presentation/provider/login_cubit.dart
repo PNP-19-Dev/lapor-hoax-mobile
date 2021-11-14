@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 14/11/21 14.07
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.55
+ * Last modified 14/11/21 11.22
  */
 
 import 'package:bloc/bloc.dart';
@@ -51,27 +51,24 @@ class LoginCubit extends Cubit<LoginState> {
           (token) {
         user.fold(
               (failure) => emit(LoginFailure(failure.message)),
-              (user) => emit(SessionSaving(SessionData(
-            token: token.token!,
-            userid: user.id,
-            expiry: token.expiry!,
-            username: user.username,
-            email: user.email,
-          ))),
+              (user) => savingSession(SessionData(
+                token: token.token!,
+                userid: user.id,
+                expiry: token.expiry!,
+                username: user.username,
+                email: user.email,
+              )),
         );
       },
     );
   }
 
   Future<void> savingSession(SessionData session) async {
-    final save = await _save.execute(session);
-    if (save == LocalDataSource.saveMessage) {
-      emit(LoginSuccess());
-    }
+    await _save.execute(session);
+    emit(LoginSuccess());
   }
 
   Future<void> fetchSession() async {
-    emit(LoginInitial());
     final result = await _data.execute();
     result.fold(
           (failure) => emit(LoginFailure(failure.message)),

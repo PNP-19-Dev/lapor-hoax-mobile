@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 14/11/21 14.07
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.55
+ * Last modified 14/11/21 12.20
  */
 
 import 'package:flutter/material.dart';
@@ -40,7 +40,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
   Widget _getSlidable(BuildContext context, Report report) {
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      margin: const EdgeInsets.symmetric(vertical: 4),
       elevation: 4,
       child: Slidable(
         key: Key(report.id.toString()),
@@ -112,7 +112,7 @@ class _HistoryPageState extends State<HistoryPage> {
                 color: Color(0xFFBDBDBD),
               ),
               Text(
-                'Terjadi masalah ${state.message}',
+                '${state.message}',
                 style: Theme.of(context).textTheme.bodyText2,
               ),
             ],

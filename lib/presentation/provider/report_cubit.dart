@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 14/11/21 14.07
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.55
+ * Last modified 14/11/21 11.20
  */
 
 import 'package:bloc/bloc.dart';
@@ -11,7 +11,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:laporhoax/data/models/report_request.dart';
 import 'package:laporhoax/domain/entities/category.dart';
 import 'package:laporhoax/domain/entities/report.dart';
+import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/domain/usecases/get_categories.dart';
+import 'package:laporhoax/domain/usecases/get_session_data.dart';
 import 'package:laporhoax/domain/usecases/post_report.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -88,18 +90,20 @@ class ReportCubit extends Cubit<ReportState> {
     final result = await _category.execute();
 
     result.fold(
-          (failure) => emit(CategoryError(failure.message)),
-          (data) => emit(CategoryFetched(data)),
+      (failure) => emit(CategoryError(failure.message)),
+      (data) => emit(CategoryFetched(data)),
     );
   }
 
-  Future<void> sendReport(String token,
-      int id,
-      String url,
-      String desc,
-      XFile img,
-      String category,
-      bool isAnonym,) async {
+  Future<void> sendReport(
+    String token,
+    int id,
+    String url,
+    String desc,
+    XFile img,
+    String category,
+    bool isAnonym,
+  ) async {
     final report = ReportRequest(
       user: id,
       url: url,
@@ -113,8 +117,8 @@ class ReportCubit extends Cubit<ReportState> {
     final result = await _send.execute(token, report);
 
     result.fold(
-          (failure) => emit(ReportError(failure.message)),
-          (report) => emit(ReportUploaded(report)),
+      (failure) => emit(ReportError(failure.message)),
+      (report) => emit(ReportUploaded(report)),
     );
   }
 }

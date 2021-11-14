@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 01.40
+ * Created by andii on 14/11/21 14.07
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 13/11/21 21.53
+ * Last modified 14/11/21 11.05
  */
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -65,6 +65,7 @@ class _NewsPageState extends State<NewsPage> {
               return SliverToBoxAdapter(
                 key: Key('loading_widget'),
                 child: Container(
+                  padding: const EdgeInsets.only(top: 100),
                   child: Center(
                     child: CircularProgressIndicator(),
                   ),

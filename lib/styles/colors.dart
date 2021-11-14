@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 14/11/21 14.07
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.53
+ * Last modified 14/11/21 12.14
  */
 
 import 'package:flutter/material.dart';
@@ -14,6 +14,7 @@ const Color grey500 = Color(0xFF979797);
 const Color grey600 = Color(0xFF7C7C7C);
 const Color grey700 = Color(0xFF595959);
 const Color grey800 = Color(0xFF121212);
+const Color darkCard = Color(0xFF3F3F3F);
 const Color orange200 = Color(0xFFFFE2CC);
 const Color orangeBlaze = Color(0xFFF96C00);
 const Color orangeBlazeVariant = Color(0xFFE35802);

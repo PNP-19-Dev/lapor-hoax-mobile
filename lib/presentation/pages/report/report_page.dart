@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 01.40
+ * Created by andii on 14/11/21 14.07
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 13/11/21 22.18
+ * Last modified 14/11/21 14.00
  */
 
 import 'package:flutter/material.dart';
@@ -86,9 +86,7 @@ class _OnWelcome extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(
-          height: 45,
-        ),
+        SizedBox(height: 45),
         Container(
           child: Center(
             child: Column(
@@ -161,14 +159,14 @@ class _OnLaporState extends State<_OnLapor> {
   sendData() {
     if (_formKey.currentState!.validate() && _image != null) {
       context.read<ReportCubit>().sendReport(
-        widget.data.token,
-        widget.data.userid,
-        _urlController.text.toString(),
-        _descController.text.toString(),
-        _image!,
-        _selectedCategory,
-        _anonym,
-      );
+            widget.data.token,
+            widget.data.userid,
+            _urlController.text.toString(),
+            _descController.text.toString(),
+            _image!,
+            _selectedCategory,
+            _anonym,
+          );
     }
   }
 
@@ -195,6 +193,7 @@ class _OnLaporState extends State<_OnLapor> {
                           'Screenshoot',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
+                        const SizedBox(height: 10),
                         Row(
                           children: [
                             CircleAvatar(
@@ -206,7 +205,7 @@ class _OnLaporState extends State<_OnLapor> {
                                       .getImage(ImageSource.gallery);
                                   get
                                       .then((value) =>
-                                      setState(() => _image = value))
+                                          setState(() => _image = value))
                                       .onError((error, _) => toast('$error'));
                                 },
                                 icon: Icon(
@@ -225,7 +224,7 @@ class _OnLaporState extends State<_OnLapor> {
                                       .getImage(ImageSource.camera);
                                   get
                                       .then((value) =>
-                                      setState(() => _image = value))
+                                          setState(() => _image = value))
                                       .onError((error, _) => toast('$error'));
                                 },
                                 icon: Icon(
@@ -250,6 +249,7 @@ class _OnLaporState extends State<_OnLapor> {
                           'Url / Link',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
+                        const SizedBox(height: 10),
                         TextField(
                           keyboardType: TextInputType.url,
                           textInputAction: TextInputAction.done,
@@ -257,16 +257,17 @@ class _OnLaporState extends State<_OnLapor> {
                           focusNode: _linkFocusNode,
                           decoration: InputDecoration(
                               labelStyle: TextStyle(
-                                color: _linkFocusNode.hasFocus
-                                    ? orangeBlaze
-                                    : Colors.black,
-                              )),
+                            color: _linkFocusNode.hasFocus
+                                ? orangeBlaze
+                                : Colors.black,
+                          )),
                         ),
                         const SizedBox(height: 20),
                         Text(
                           'Kategori',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
+                        const SizedBox(height: 10),
                         BlocBuilder<ReportCubit, ReportState>(
                           builder: (_, state) {
                             List<Category> _categories = [];
@@ -309,6 +310,7 @@ class _OnLaporState extends State<_OnLapor> {
                           'Deskripsi laporan ( Opsional )',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
+                        const SizedBox(height: 10),
                         TextField(
                           keyboardType: TextInputType.multiline,
                           textInputAction: TextInputAction.done,
@@ -345,6 +347,8 @@ class _OnLaporState extends State<_OnLapor> {
                                 progress!.dismiss();
                                 toast(state.message);
                                 Navigation.intent(OnFailureReport.ROUTE_NAME);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(state.message)));
                               } else if (state is ReportUploaded) {
                                 progress!.dismiss();
                                 Navigation.intent(OnSuccessReport.ROUTE_NAME);
@@ -376,15 +380,12 @@ class _ReportPageHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          padding: const EdgeInsets.only(top: 11),
-          child: GestureDetector(
-            child: Icon(Icons.arrow_back),
-            onTap: () => Navigation.intent(HomePage.ROUTE_NAME),
-          ),
+        GestureDetector(
+          child: Icon(Icons.arrow_back),
+          onTap: () => Navigation.intent(HomePage.ROUTE_NAME),
         ),
         Container(
-          padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
+          padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
           child: Center(
             child: Text(
               'Buat Laporan',

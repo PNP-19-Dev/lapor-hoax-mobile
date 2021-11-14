@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 14/11/21 14.07
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.55
+ * Last modified 14/11/21 14.02
  */
 
 import 'package:flutter/material.dart';
@@ -10,7 +10,6 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:laporhoax/domain/entities/question.dart';
 import 'package:laporhoax/domain/entities/user_question.dart';
 import 'package:laporhoax/presentation/provider/question_cubit.dart';
-import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:laporhoax/styles/colors.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +32,7 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
   var _ans2 = TextEditingController();
   var _ans3 = TextEditingController();
   List<Question> questions = [];
-  String message = "...";
+  String message = "Mengambil data...";
 
   @override
   initState() {
@@ -57,41 +56,39 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
               child: Container(
                 margin: const EdgeInsets.only(top: 10),
                 padding:
-                const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                    const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Pertanyaan 1',
                         style: TextStyle(fontWeight: FontWeight.bold)),
-                    DropdownButtonFormField<int>(
-                      isExpanded: true,
-                      iconSize: 0,
-                      decoration: InputDecoration(
-                        icon: Image.asset('assets/icons/question.png'),
-                        suffixIcon: Icon(Icons.arrow_drop_down),
-                      ),
-                      hint: Text('Question 1'),
-                      value: _selectedQ1,
-                      items: questions
-                          .map((value) {
-                        return DropdownMenuItem<int>(
-                          child: Text(value.question),
-                          value: value.id,
+                    BlocBuilder<QuestionCubit, QuestionState>(
+                      builder: (context, state) {
+                        return DropdownButtonFormField<int>(
+                          isExpanded: true,
+                          iconSize: 0,
+                          decoration: InputDecoration(
+                            suffixIcon: Icon(Icons.arrow_drop_down),
+                          ),
+                          hint: Text('${state is QuestionLoading ? message : state is QuestionError ? state.message : 'Question 1'}'),
+                          value: _selectedQ1,
+                          items: questions
+                              .map((value) {
+                                return DropdownMenuItem<int>(
+                                  child: Text(value.question),
+                                  value: value.id,
+                                );
+                              })
+                              .where((item) =>
+                                  item.value != _selectedQ2 &&
+                                  item.value != _selectedQ3)
+                              .toList(),
+                          onChanged: (v) {
+                            setState(() {
+                              _selectedQ1 = v!;
+                            });
+                          },
                         );
-                      })
-                          .where((item) =>
-                      item.value != _selectedQ2 &&
-                          item.value != _selectedQ3)
-                          .toList(),
-                      onChanged: (v) {
-                        setState(() {
-                          _selectedQ1 = v!;
-                        });
-                      },
-                      onTap: () {
-                        if (questions.isEmpty) {
-                          toast(message);
-                        }
                       },
                     ),
                     SizedBox(height: 8),
@@ -102,8 +99,6 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                       textInputAction: TextInputAction.next,
                       controller: _ans1,
                       decoration: InputDecoration(
-                        hintText: 'jawaban pertanyaan 1',
-                        icon: Image.asset('assets/icons/ans.png'),
                         labelStyle: TextStyle(
                           color: _linkFocusNode.hasFocus
                               ? orangeBlaze
@@ -119,35 +114,34 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                     SizedBox(height: 30),
                     Text('Pertanyaan 2',
                         style: TextStyle(fontWeight: FontWeight.bold)),
-                    DropdownButtonFormField<int>(
-                      isExpanded: true,
-                      iconSize: 0,
-                      decoration: InputDecoration(
-                        icon: Image.asset('assets/icons/question.png'),
-                        suffixIcon: Icon(Icons.arrow_drop_down),
-                      ),
-                      hint: Text('Question 2'),
-                      value: _selectedQ2,
-                      items: questions
-                          .map((value) {
-                        return DropdownMenuItem<int>(
-                          child: Text(value.question),
-                          value: value.id,
+                    BlocBuilder<QuestionCubit, QuestionState>(
+                      builder: (context, state) {
+                        return DropdownButtonFormField<int>(
+                          isExpanded: true,
+                          iconSize: 0,
+                          decoration: InputDecoration(
+                            suffixIcon: Icon(Icons.arrow_drop_down),
+                          ),
+                          hint: Text(
+                              '${state is QuestionLoading ? message : state is QuestionError ? state.message : 'Question 2'}'),
+                          value: _selectedQ2,
+                          items: questions
+                              .map((value) {
+                                return DropdownMenuItem<int>(
+                                  child: Text(value.question),
+                                  value: value.id,
+                                );
+                              })
+                              .where((item) =>
+                                  item.value != _selectedQ1 &&
+                                  item.value != _selectedQ3)
+                              .toList(),
+                          onChanged: (v) {
+                            setState(() {
+                              _selectedQ2 = v!;
+                            });
+                          },
                         );
-                      })
-                          .where((item) =>
-                      item.value != _selectedQ1 &&
-                          item.value != _selectedQ3)
-                          .toList(),
-                      onChanged: (v) {
-                        setState(() {
-                          _selectedQ2 = v!;
-                        });
-                      },
-                      onTap: () {
-                        if (questions.isEmpty) {
-                          toast(message);
-                        }
                       },
                     ),
                     SizedBox(height: 8),
@@ -158,8 +152,6 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                       textInputAction: TextInputAction.next,
                       controller: _ans2,
                       decoration: InputDecoration(
-                        hintText: 'jawaban pertanyaan 2',
-                        icon: Image.asset('assets/icons/ans.png'),
                         labelStyle: TextStyle(
                           color: _linkFocusNode.hasFocus
                               ? orangeBlaze
@@ -175,35 +167,34 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                     SizedBox(height: 30),
                     Text('Pertanyaan 3',
                         style: TextStyle(fontWeight: FontWeight.bold)),
-                    DropdownButtonFormField<int>(
-                      isExpanded: true,
-                      iconSize: 0,
-                      decoration: InputDecoration(
-                        icon: Image.asset('assets/icons/question.png'),
-                        suffixIcon: Icon(Icons.arrow_drop_down),
-                      ),
-                      hint: Text('Question 3'),
-                      value: _selectedQ3,
-                      items: questions
-                          .map((value) {
-                        return DropdownMenuItem<int>(
-                          child: Text(value.question),
-                          value: value.id,
+                    BlocBuilder<QuestionCubit, QuestionState>(
+                      builder: (context, state) {
+                        return DropdownButtonFormField<int>(
+                          isExpanded: true,
+                          iconSize: 0,
+                          decoration: InputDecoration(
+                            suffixIcon: Icon(Icons.arrow_drop_down),
+                          ),
+                          hint: Text(
+                              '${state is QuestionLoading ? message : state is QuestionError ? state.message : 'Question 3'}'),
+                          value: _selectedQ3,
+                          items: questions
+                              .map((value) {
+                                return DropdownMenuItem<int>(
+                                  child: Text(value.question),
+                                  value: value.id,
+                                );
+                              })
+                              .where((item) =>
+                                  item.value != _selectedQ1 &&
+                                  item.value != _selectedQ2)
+                              .toList(),
+                          onChanged: (v) {
+                            setState(() {
+                              _selectedQ3 = v!;
+                            });
+                          },
                         );
-                      })
-                          .where((item) =>
-                      item.value != _selectedQ1 &&
-                          item.value != _selectedQ2)
-                          .toList(),
-                      onChanged: (v) {
-                        setState(() {
-                          _selectedQ3 = v!;
-                        });
-                      },
-                      onTap: () {
-                        if (questions.isEmpty) {
-                          toast(message);
-                        }
                       },
                     ),
                     SizedBox(height: 8),
@@ -214,8 +205,6 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                       textInputAction: TextInputAction.next,
                       controller: _ans3,
                       decoration: InputDecoration(
-                        hintText: 'jawaban pertanyaan 3',
-                        icon: Image.asset('assets/icons/ans.png'),
                         labelStyle: TextStyle(
                           color: _linkFocusNode.hasFocus
                               ? orangeBlaze
@@ -235,10 +224,8 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                         listener: (_, state) {
                           var progress = ProgressHUD.of(context);
 
-                          if (state is QuestionLoading) {
-                            message = 'Mengambil data...';
-                          } else if (state is QuestionHasData) {
-                            questions = state.questions;
+                          if (state is QuestionHasData) {
+                            questions.addAll(state.questions);
                           }
 
                           if (state is ChallengeSending) {
@@ -257,26 +244,24 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                             showDialog(
                                 context: context,
                                 builder: (_) => AlertDialog(
-                                  content: Text('Error ${state.message}'),
-                                ));
+                                      content: Text('Error ${state.message}'),
+                                    ));
                           }
                         },
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              var challenge = UserQuestion(
-                                user: widget.id.toString(),
-                                quest1: _selectedQ1,
-                                quest2: _selectedQ2,
-                                quest3: _selectedQ3,
-                                ans1: _ans1.text.toLowerCase(),
-                                ans2: _ans2.text.toLowerCase(),
-                                ans3: _ans3.text.toLowerCase(),
-                              );
-
                               context
                                   .read<QuestionCubit>()
-                                  .sendQuestions(challenge);
+                                  .sendQuestions(UserQuestion(
+                                    user: widget.id.toString(),
+                                    quest1: _selectedQ1,
+                                    quest2: _selectedQ2,
+                                    quest3: _selectedQ3,
+                                    ans1: _ans1.text.toLowerCase(),
+                                    ans2: _ans2.text.toLowerCase(),
+                                    ans3: _ans3.text.toLowerCase(),
+                                  ));
                             }
                           },
                           child: Text('Perbarui Pertanyaan Keamanan'),

@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 14/11/21 14.07
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.55
+ * Last modified 14/11/21 14.03
  */
 
 import 'package:flutter/material.dart';
@@ -35,11 +35,12 @@ class _UserChallengeState extends State<UserChallenge> {
   var _ans2 = TextEditingController();
   var _ans3 = TextEditingController();
   List<Question> questions = [];
+  String message = "Mengambil data...";
 
   @override
   initState() {
-    super.initState();
     context.read<QuestionCubit>().fetchQuestions();
+    super.initState();
   }
 
   @override
@@ -48,249 +49,244 @@ class _UserChallengeState extends State<UserChallenge> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
         title: Text('Atur Pertanyaan Rahasia'),
       ),
-      body: BlocListener<QuestionCubit, QuestionState>(
-        listener: (_, state) {
-          var progress = ProgressHUD.of(context);
+      body: ProgressHUD(
+        child: Builder(
+          builder: (context) => SingleChildScrollView(
+            child: BlocListener<QuestionCubit, QuestionState>(
+              listener: (context, state) {
+                var progress = ProgressHUD.of(context);
 
-          if (state is QuestionLoading) {
-            progress!.showWithText('Memeriksa pertanyaan');
-          } else if (state is QuestionHasData) {
-            questions = state.questions;
-          } else if (state is QuestionError) {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    content: Text(state.message),
-                  );
-                });
-          } else if (state is ChallengeError) {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    content: Text(state.message),
-                  );
-                });
-          } else if (state is ChallengeSuccess) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text('Success')));
-            Navigation.intentWithData(
-                OnRegisterSuccess.ROUTE_NAME, 'Akun berhasil dibuat!');
-          }
-        },
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Container(
-              margin: const EdgeInsets.only(top: 10),
-              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Pertanyaan 1',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  DropdownButtonFormField<int>(
-                    isExpanded: true,
-                    iconSize: 0,
-                    decoration: InputDecoration(
-                      icon: Image.asset('assets/icons/question.png'),
-                      suffixIcon: Icon(Icons.arrow_drop_down),
-                    ),
-                    hint: BlocBuilder<QuestionCubit, QuestionState>(
-                      builder: (context, state) {
-                        if (state is QuestionLoading) {
-                          return Text('Loading');
-                        } else {
-                          return Text('Pilih Pertanyaan');
-                        }
-                      },
-                    ),
-                    value: _selectedQ1,
-                    items: questions
-                        .map((value) {
-                      return DropdownMenuItem<int>(
-                        child: Text(value.question),
-                        value: value.id,
-                      );
-                    })
-                        .where((item) =>
-                    item.value != _selectedQ2 &&
-                        item.value != _selectedQ3)
-                        .toList(),
-                    onChanged: (v) {
-                      setState(() {
-                        _selectedQ1 = v!;
+                if (state is QuestionLoading) {
+                  message = 'Mengambil data...';
+                } else if (state is QuestionHasData) {
+                  questions = state.questions;
+                }
+
+                if (state is ChallengeSending) {
+                  progress!.showWithText('Memeriksa pertanyaan');
+                }
+
+                if (state is QuestionError) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          content: Text(state.message),
+                        );
                       });
-                    },
-                    onTap: () {
-                      if (questions.isEmpty) {
-                        toast('');
-                      }
-                    },
-                  ),
-                  SizedBox(height: 8),
-                  Text('Jawaban',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextFormField(
-                    keyboardType: TextInputType.text,
-                    textInputAction: TextInputAction.next,
-                    controller: _ans1,
-                    decoration: InputDecoration(
-                      hintText: 'jawaban pertanyaan 1',
-                      icon: Image.asset('assets/icons/ans.png'),
-                      labelStyle: TextStyle(
-                        color: _linkFocusNode.hasFocus
-                            ? orangeBlaze
-                            : Colors.black,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  Text('Pertanyaan 2',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  DropdownButtonFormField<int>(
-                    isExpanded: true,
-                    iconSize: 0,
-                    decoration: InputDecoration(
-                      icon: Image.asset('assets/icons/question.png'),
-                      suffixIcon: Icon(Icons.arrow_drop_down),
-                    ),
-                    hint: BlocBuilder<QuestionCubit, QuestionState>(
-                      builder: (context, state) {
-                        if (state is QuestionLoading) {
-                          return Text('Loading');
-                        } else {
-                          return Text('Pilih Pertanyaan');
-                        }
-                      },
-                    ),
-                    value: _selectedQ2,
-                    items: questions
-                        .map((value) {
-                      return DropdownMenuItem<int>(
-                        child: Text(value.question),
-                        value: value.id,
-                      );
-                    })
-                        .where((item) =>
-                    item.value != _selectedQ1 &&
-                        item.value != _selectedQ3)
-                        .toList(),
-                    onChanged: (v) {
-                      setState(() {
-                        _selectedQ2 = v!;
+                }
+
+                if (state is ChallengeSuccess) {
+                  progress!.dismiss();
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text('Success')));
+                  Navigation.intentWithData(
+                      OnRegisterSuccess.ROUTE_NAME, 'Akun berhasil dibuat!');
+                } else if (state is ChallengeError) {
+                  progress!.dismiss();
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          content: Text(state.message),
+                        );
                       });
-                    },
-                    onTap: () {
-                      if (questions.isEmpty) {
-                        toast('');
-                      }
-                    },
-                  ),
-                  SizedBox(height: 8),
-                  Text('Jawaban',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextFormField(
-                    keyboardType: TextInputType.text,
-                    textInputAction: TextInputAction.next,
-                    controller: _ans2,
-                    decoration: InputDecoration(
-                      hintText: 'jawaban pertanyaan 2',
-                      icon: Image.asset('assets/icons/ans.png'),
-                      labelStyle: TextStyle(
-                        color: _linkFocusNode.hasFocus
-                            ? orangeBlaze
-                            : Colors.black,
+                }
+              },
+              child: Form(
+                key: _formKey,
+                child: Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Pertanyaan 1',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      BlocBuilder<QuestionCubit, QuestionState>(
+                        builder: (context, state) {
+                          return DropdownButtonFormField<int>(
+                            isExpanded: true,
+                            iconSize: 0,
+                            decoration: InputDecoration(
+                              suffixIcon: Icon(Icons.arrow_drop_down),
+                            ),
+                            hint: Text(
+                                '${state is QuestionLoading ? message : state is QuestionError ? state.message : 'Question 1'}'),
+                            value: _selectedQ1,
+                            items: questions
+                                .map((value) {
+                                  return DropdownMenuItem<int>(
+                                    child: Text(value.question),
+                                    value: value.id,
+                                  );
+                                })
+                                .where((item) =>
+                                    item.value != _selectedQ2 &&
+                                    item.value != _selectedQ3)
+                                .toList(),
+                            onChanged: (v) {
+                              setState(() {
+                                _selectedQ1 = v!;
+                              });
+                            },
+                            onTap: () {
+                              if (questions.isEmpty) {
+                                toast('');
+                              }
+                            },
+                          );
+                        },
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  Text('Pertanyaan 3',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  DropdownButtonFormField<int>(
-                    isExpanded: true,
-                    iconSize: 0,
-                    decoration: InputDecoration(
-                      icon: Image.asset('assets/icons/question.png'),
-                      suffixIcon: Icon(Icons.arrow_drop_down),
-                    ),
-                    hint: BlocBuilder<QuestionCubit, QuestionState>(
-                      builder: (context, state) {
-                        if (state is QuestionLoading) {
-                          return Text('Loading');
-                        } else {
-                          return Text('Pilih Pertanyaan');
-                        }
-                      },
-                    ),
-                    value: _selectedQ3,
-                    items: questions
-                        .map((value) {
-                      return DropdownMenuItem<int>(
-                        child: Text(value.question),
-                        value: value.id,
-                      );
-                    })
-                        .where((item) =>
-                    item.value != _selectedQ1 &&
-                        item.value != _selectedQ2)
-                        .toList(),
-                    onChanged: (v) {
-                      setState(() {
-                        _selectedQ3 = v!;
-                      });
-                    },
-                    onTap: () {
-                      if (questions.isEmpty) {
-                        toast('');
-                      }
-                    },
-                  ),
-                  SizedBox(height: 8),
-                  Text('Jawaban',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextFormField(
-                    keyboardType: TextInputType.text,
-                    textInputAction: TextInputAction.next,
-                    controller: _ans3,
-                    decoration: InputDecoration(
-                      hintText: 'jawaban pertanyaan 3',
-                      icon: Image.asset('assets/icons/ans.png'),
-                      labelStyle: TextStyle(
-                        color: _linkFocusNode.hasFocus
-                            ? orangeBlaze
-                            : Colors.black,
+                      SizedBox(height: 8),
+                      Text('Jawaban',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.next,
+                        controller: _ans1,
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(
+                            color: _linkFocusNode.hasFocus
+                                ? orangeBlaze
+                                : Colors.black,
+                          ),
+                        ),
                       ),
-                    ),
+                      SizedBox(height: 30),
+                      Text('Pertanyaan 2',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      BlocBuilder<QuestionCubit, QuestionState>(
+                        builder: (context, state) {
+                          return DropdownButtonFormField<int>(
+                            isExpanded: true,
+                            iconSize: 0,
+                            decoration: InputDecoration(
+                              suffixIcon: Icon(Icons.arrow_drop_down),
+                            ),
+                            hint: Text(
+                                '${state is QuestionLoading ? message : state is QuestionError ? state.message : 'Question 2'}'),
+                            value: _selectedQ2,
+                            items: questions
+                                .map((value) {
+                                  return DropdownMenuItem<int>(
+                                    child: Text(value.question),
+                                    value: value.id,
+                                  );
+                                })
+                                .where((item) =>
+                                    item.value != _selectedQ1 &&
+                                    item.value != _selectedQ3)
+                                .toList(),
+                            onChanged: (v) {
+                              setState(() {
+                                _selectedQ2 = v!;
+                              });
+                            },
+                            onTap: () {
+                              if (questions.isEmpty) {
+                                toast('');
+                              }
+                            },
+                          );
+                        },
+                      ),
+                      SizedBox(height: 8),
+                      Text('Jawaban',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.next,
+                        controller: _ans2,
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(
+                            color: _linkFocusNode.hasFocus
+                                ? orangeBlaze
+                                : Colors.black,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      Text('Pertanyaan 3',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      BlocBuilder<QuestionCubit, QuestionState>(
+                        builder: (context, state) {
+                          return DropdownButtonFormField<int>(
+                            isExpanded: true,
+                            iconSize: 0,
+                            decoration: InputDecoration(
+                              suffixIcon: Icon(Icons.arrow_drop_down),
+                            ),
+                            hint: Text(
+                                '${state is QuestionLoading ? message : state is QuestionError ? state.message : 'Question 3'}'),
+                            value: _selectedQ3,
+                            items: questions
+                                .map((value) {
+                                  return DropdownMenuItem<int>(
+                                    child: Text(value.question),
+                                    value: value.id,
+                                  );
+                                })
+                                .where((item) =>
+                                    item.value != _selectedQ1 &&
+                                    item.value != _selectedQ2)
+                                .toList(),
+                            onChanged: (v) {
+                              setState(() {
+                                _selectedQ3 = v!;
+                              });
+                            },
+                            onTap: () {
+                              if (questions.isEmpty) {
+                                toast('');
+                              }
+                            },
+                          );
+                        },
+                      ),
+                      SizedBox(height: 8),
+                      Text('Jawaban',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.next,
+                        controller: _ans3,
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(
+                            color: _linkFocusNode.hasFocus
+                                ? orangeBlaze
+                                : Colors.black,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              context
+                                  .read<QuestionCubit>()
+                                  .sendQuestions(UserQuestion(
+                                    user: widget.id.toString(),
+                                    quest1: _selectedQ1,
+                                    quest2: _selectedQ2,
+                                    quest3: _selectedQ3,
+                                    ans1: _ans1.text.toLowerCase(),
+                                    ans2: _ans2.text.toLowerCase(),
+                                    ans3: _ans3.text.toLowerCase(),
+                                  ));
+                            }
+                          },
+                          child: Text('Daftar'),
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 10),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          context
-                              .read<QuestionCubit>()
-                              .sendQuestions(UserQuestion(
-                            user: widget.id.toString(),
-                            quest1: _selectedQ1,
-                            quest2: _selectedQ2,
-                            quest3: _selectedQ3,
-                            ans1: _ans1.text,
-                            ans2: _ans2.text,
-                            ans3: _ans3.text,
-                          ));
-                        }
-                      },
-                      child: Text('Daftar'),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
