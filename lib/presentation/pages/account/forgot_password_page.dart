@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 14/11/21 14.58
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.55
+ * Last modified 14/11/21 14.53
  */
 
 import 'package:flutter/material.dart';
@@ -30,105 +30,113 @@ class _ForgotPasswordSectionOneState extends State<ForgotPasswordSectionOne> {
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     var _inputEmail = TextEditingController();
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(elevation: 0),
-      body: ProgressHUD(
-        child: Builder(
-          builder: (context) => SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.only(
-                top: 40.0,
-                left: 16.0,
-                right: 16.0,
-              ),
+      body: SafeArea(
+        child: ProgressHUD(
+          child: Builder(
+            builder: (context) => SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
-                    child: Column(
-                      children: [
-                        SvgPicture.asset('assets/illustration/get_email.svg'),
-                        SizedBox(height: 10),
-                        Text(
-                          'Lupa Password',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline4!
-                              .apply(color: Colors.black),
-                        ),
-                        Text(
-                          'Masukkan email yang telah terdaftar untuk melanjutkan',
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .caption!
-                              .apply(color: grey400),
-                          softWrap: true,
-                        ),
-                      ],
-                    ),
+                  IconButton(
+                    onPressed: () => Navigation.back(),
+                    icon: Icon(Icons.arrow_back),
                   ),
-                  SizedBox(height: 40),
+                  SizedBox(height: 10),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Email',
-                            style: Theme.of(context).textTheme.subtitle2,
-                          ),
-                          TextFormField(
-                            controller: _inputEmail,
-                            keyboardType: TextInputType.emailAddress,
-                            textInputAction: TextInputAction.done,
-                            validator: (value) {
-                              if (value!.trim().isEmpty) {
-                                return 'Mohon isikan alamat email anda!';
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Column(
                             children: [
-                              BlocListener<PasswordCubit, PasswordState>(
-                                listener: (context, state) {
-                                  final progress = ProgressHUD.of(context);
-
-                                  if (state is PasswordLoading) {
-                                    progress!
-                                        .showWithText("Mendapatkan Data..");
-                                  }
-
-                                  if (state is UserHasData) {
-                                    progress!.dismiss();
-                                    Navigation.intentWithData(
-                                        ForgotPasswordSectionTwo.ROUTE_NAME,
-                                        state.data);
-                                  } else if (state is PasswordError) {
-                                    progress!.dismiss();
-                                    toast(state.message);
-                                  }
-                                },
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      context.read<PasswordCubit>().getUserData(
-                                          _inputEmail.text.toString());
-                                    }
-                                  },
-                                  child: Text('selanjutnya'),
-                                ),
+                              SvgPicture.asset('assets/illustration/get_email.svg'),
+                              SizedBox(height: 10),
+                              Text(
+                                'Lupa Password',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4!
+                                    .apply(color: Colors.black),
+                              ),
+                              Text(
+                                'Masukkan email yang telah terdaftar untuk melanjutkan',
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .caption!
+                                    .apply(color: grey400),
+                                softWrap: true,
                               ),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 40),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Email',
+                                  style: Theme.of(context).textTheme.subtitle2,
+                                ),
+                                SizedBox(height: 5),
+                                TextFormField(
+                                  controller: _inputEmail,
+                                  keyboardType: TextInputType.emailAddress,
+                                  textInputAction: TextInputAction.done,
+                                  validator: (value) {
+                                    if (value!.trim().isEmpty) {
+                                      return 'Mohon isikan alamat email anda!';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(height: 20),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    BlocListener<PasswordCubit, PasswordState>(
+                                      listener: (context, state) {
+                                        final progress = ProgressHUD.of(context);
+
+                                        if (state is PasswordLoading) {
+                                          progress!.showWithText("Mendapatkan Data..");
+                                        }
+
+                                        if (state is UserHasData) {
+                                          progress!.dismiss();
+                                          Navigation.intentWithData(
+                                              ForgotPasswordSectionTwo.ROUTE_NAME,
+                                              state.data);
+                                        } else if (state is PasswordError) {
+                                          progress!.dismiss();
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(content: Text(state.message)));
+                                        }
+                                      },
+                                      child: ElevatedButton(
+                                        onPressed: () async {
+                                          if (_formKey.currentState!.validate()) {
+                                            context.read<PasswordCubit>().getUserData(
+                                                _inputEmail.text.toString());
+                                          }
+                                        },
+                                        child: Text('selanjutnya'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -190,13 +198,13 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                     'Pertanyaan',
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
+                  SizedBox(height: 5),
                   BlocConsumer<QuestionCubit, QuestionState>(
                     listener: (context, state) {
                       final progress = ProgressHUD.of(context);
 
                       if (state is QuestionLoading) {
                         progress!.show();
-                        _inputQuestion.text = 'Mendapatkan Data';
                       }
 
                       if (state is ChallengeSuccess) {
@@ -207,7 +215,7 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                             builder: (context) {
                               return AlertDialog(
                                 insetPadding:
-                                const EdgeInsets.symmetric(horizontal: 20),
+                                    const EdgeInsets.symmetric(horizontal: 20),
                                 content: Container(
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
@@ -228,7 +236,7 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                                       Text(
                                         'Ini adalah password barumu. Silakan masuk untuk melanjutkan',
                                         style:
-                                        Theme.of(context).textTheme.caption,
+                                            Theme.of(context).textTheme.caption,
                                         textAlign: TextAlign.center,
                                       ),
                                       ElevatedButton(
@@ -253,14 +261,21 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                         index = state.index!;
                         userAnswer = state.userQuestion!;
                         _inputQuestion.text =
-                        state.questionMap![state.index![0]]!;
+                            state.questionMap![state.index![0]]!;
                       } else if (state is QuestionError) {
                         progress?.dismiss();
-                        _inputQuestion.text = 'Gagal Mendapatkan Data';
                       }
                     },
                     builder: (_, state) => TextField(
                       controller: _inputQuestion,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        hintText: state is QuestionLoading
+                            ? 'Mendapatkan Data'
+                            : state is QuestionError
+                                ? state.message
+                                : 'ex',
+                      ),
                       enabled: false,
                     ),
                   ),
@@ -269,6 +284,7 @@ class _ForgotPasswordSectionTwo extends State<ForgotPasswordSectionTwo> {
                     'Jawaban',
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
+                  SizedBox(height: 5),
                   TextField(
                     controller: _inputAnswer,
                     textInputAction: TextInputAction.done,

@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 14.07
+ * Created by andii on 14/11/21 14.58
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 14.03
+ * Last modified 14/11/21 14.58
  */
 
 import 'package:flutter/material.dart';
@@ -120,7 +120,7 @@ class _UserChallengeState extends State<UserChallenge> {
                             items: questions
                                 .map((value) {
                                   return DropdownMenuItem<int>(
-                                    child: Text(value.question),
+                                    child: Text(value.question, overflow: TextOverflow.visible),
                                     value: value.id,
                                   );
                                 })
@@ -173,7 +173,7 @@ class _UserChallengeState extends State<UserChallenge> {
                             items: questions
                                 .map((value) {
                                   return DropdownMenuItem<int>(
-                                    child: Text(value.question),
+                                    child: Text(value.question, overflow: TextOverflow.visible),
                                     value: value.id,
                                   );
                                 })
@@ -226,7 +226,7 @@ class _UserChallengeState extends State<UserChallenge> {
                             items: questions
                                 .map((value) {
                                   return DropdownMenuItem<int>(
-                                    child: Text(value.question),
+                                    child: Text(value.question, overflow: TextOverflow.visible),
                                     value: value.id,
                                   );
                                 })

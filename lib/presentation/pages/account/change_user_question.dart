@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 14.07
+ * Created by andii on 14/11/21 14.58
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 14.02
+ * Last modified 14/11/21 14.57
  */
 
 import 'package:flutter/material.dart';
@@ -72,10 +72,11 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                           ),
                           hint: Text('${state is QuestionLoading ? message : state is QuestionError ? state.message : 'Question 1'}'),
                           value: _selectedQ1,
+
                           items: questions
                               .map((value) {
                                 return DropdownMenuItem<int>(
-                                  child: Text(value.question),
+                                  child: Text(value.question, overflow: TextOverflow.visible),
                                   value: value.id,
                                 );
                               })
@@ -128,7 +129,7 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                           items: questions
                               .map((value) {
                                 return DropdownMenuItem<int>(
-                                  child: Text(value.question),
+                                  child: Text(value.question, overflow: TextOverflow.visible),
                                   value: value.id,
                                 );
                               })
@@ -181,7 +182,7 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                           items: questions
                               .map((value) {
                                 return DropdownMenuItem<int>(
-                                  child: Text(value.question),
+                                  child: Text(value.question, overflow: TextOverflow.visible),
                                   value: value.id,
                                 );
                               })

@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.48
+ * Created by andii on 14/11/21 14.58
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.43
+ * Last modified 14/11/21 14.29
  */
 
 import 'package:flutter/material.dart';
@@ -40,48 +40,51 @@ class _RegisterPageState extends State<RegisterPage> {
       body: ProgressHUD(
         child: Builder(
           builder: (context) => SafeArea(
-            child: Container(
-              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        onPressed: () => Navigation.back(),
+                        icon: Icon(Icons.arrow_back),
+                      ),
+                    ],
+                  ),
+                  Center(
+                    child: Column(
                       children: [
-                        IconButton(
-                          onPressed: () => Navigation.back(),
-                          icon: Icon(Icons.arrow_back),
+                        Image.asset(
+                          'assets/icons/logo_new.png',
+                          height: 80,
+                          width: 80,
                         ),
+                        SizedBox(height: 20),
+                        Text(
+                          "Daftar",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline5!.copyWith(
+                            fontWeight: FontWeight.bold
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 30),
                       ],
                     ),
-                    Center(
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/icons/logo_new.png',
-                            height: 80,
-                            width: 80,
-                          ),
-                          SizedBox(height: 30),
-                          Text(
-                            "Daftar",
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline5!
-                                .copyWith(color: Colors.black),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Form(
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Form(
                       key: _formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Username',
                               style: TextStyle(fontWeight: FontWeight.bold)),
+                          SizedBox(height: 5),
                           TextFormField(
                             controller: _usernameController,
                             keyboardType: TextInputType.text,
@@ -97,6 +100,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           SizedBox(height: 10),
                           Text('Email',
                               style: TextStyle(fontWeight: FontWeight.bold)),
+                          SizedBox(height: 5),
                           TextFormField(
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
@@ -112,6 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           SizedBox(height: 10),
                           Text('Kata Sandi',
                               style: TextStyle(fontWeight: FontWeight.bold)),
+                          SizedBox(height: 5),
                           TextFormField(
                             controller: _passwordController,
                             autofillHints: [
@@ -146,6 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           SizedBox(height: 10),
                           Text('Masukkan ulang Kata Sandi',
                               style: TextStyle(fontWeight: FontWeight.bold)),
+                          SizedBox(height: 5),
                           TextFormField(
                             controller: _samePasswordController,
                             autofillHints: [AutofillHints.password],
@@ -186,8 +192,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                InkWell(
-                                  onTap: () =>
+                                TextButton(
+                                  onPressed: () =>
                                       Navigation.intent(LoginPage.ROUTE_NAME),
                                   child: Text(
                                     'Masuk disini',
@@ -247,8 +253,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

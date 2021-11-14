@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 14/11/21 14.58
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.55
+ * Last modified 14/11/21 14.48
  */
 
 import 'package:bloc/bloc.dart';
@@ -34,9 +34,9 @@ class QuestionCubit extends Cubit<QuestionState> {
   }
 
   Future<void> fetchQuestionWithChallenge(int id) async {
+    emit(QuestionLoading());
     final result = await _questions.execute();
     final data = await _challenge.execute(id);
-    emit(QuestionLoading());
 
     result.fold(
           (failure) => emit(QuestionError(failure.message)),

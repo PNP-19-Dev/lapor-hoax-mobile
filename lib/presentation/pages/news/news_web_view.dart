@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 01.40
+ * Created by andii on 14/11/21 14.58
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 13/11/21 21.18
+ * Last modified 14/11/21 14.50
  */
 
 import 'package:flutter/material.dart';
@@ -50,7 +50,7 @@ class _NewsWebViewState extends State<NewsWebView> {
       child: Container(
         height: 60,
         child: Row(
-          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             IconButton(
               icon: Icon(Icons.arrow_back),
