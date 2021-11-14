@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 01.40
+ * Created by andii on 14/11/21 10.32
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 00.33
+ * Last modified 14/11/21 08.28
  */
 
 import 'package:laporhoax/data/models/category_model.dart';
@@ -117,6 +117,16 @@ final testUserChallengeModel = UserQuestionModel(
   ans1: "ans1",
   ans2: "ans2",
   ans3: "ans3",
+);
+
+final testUserChallengeFromJson = UserQuestionModel(
+  user: "AnonymousUser",
+  quest1: 1,
+  quest2: 2,
+  quest3: 3,
+  ans1: "a",
+  ans2: "a",
+  ans3: "a",
 );
 
 final testUser = User(

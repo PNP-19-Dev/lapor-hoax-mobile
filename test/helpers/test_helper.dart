@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 01.40
+ * Created by andii on 14/11/21 10.32
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 13/11/21 22.19
+ * Last modified 14/11/21 10.17
  */
 
 import 'package:data_connection_checker/data_connection_checker.dart';
@@ -31,6 +31,7 @@ import 'package:mockito/annotations.dart';
   RemoteDataSource,
   LocalDataSource,
   DioClient,
+  MultipartFile,
   DatabaseHelper,
   PreferencesHelper,
   DataConnectionChecker,
@@ -46,7 +47,5 @@ import 'package:mockito/annotations.dart';
   ReportCubit,
   SavedFeedCubit,
   AboutCubit,
-], customMocks: [
-  MockSpec<Dio>(as: #MockDio)
 ])
 void main() {}

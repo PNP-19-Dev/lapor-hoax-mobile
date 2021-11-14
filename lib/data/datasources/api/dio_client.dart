@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 01.40
+ * Created by andii on 14/11/21 10.32
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 13/11/21 23.55
+ * Last modified 14/11/21 09.28
  */
 
 import 'dart:io';
@@ -70,21 +70,13 @@ class DioClient {
   Future<dynamic> post(
     String uri, {
     data,
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-    CancelToken? cancelToken,
-    ProgressCallback? onSendProgress,
-    ProgressCallback? onReceiveProgress,
+    Map<String, dynamic>? headers,
   }) async {
     try {
       var response = await _dio.post(
         uri,
         data: data,
-        queryParameters: queryParameters,
-        options: options,
-        cancelToken: cancelToken,
-        onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress,
+        options: Options(headers: headers),
       );
       return response.data;
     } on SocketException catch (e) {
@@ -99,21 +91,13 @@ class DioClient {
   Future<dynamic> put(
     String uri, {
     data,
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-    CancelToken? cancelToken,
-    ProgressCallback? onSendProgress,
-    ProgressCallback? onReceiveProgress,
+    Map<String, dynamic>? headers,
   }) async {
     try {
       var response = await _dio.put(
         uri,
         data: data,
-        queryParameters: queryParameters,
-        options: options,
-        cancelToken: cancelToken,
-        onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress,
+        options: Options(headers: headers),
       );
       return response.data;
     } on SocketException catch (e) {
@@ -128,17 +112,13 @@ class DioClient {
   Future<dynamic> delete(
     String uri, {
     data,
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
   }) async {
     try {
       var response = await _dio.delete(
         uri,
         data: data,
-        queryParameters: queryParameters,
-        options: options,
-        cancelToken: cancelToken,
+        options: Options(headers: headers),
       );
       return response.data;
     } on SocketException catch (e) {

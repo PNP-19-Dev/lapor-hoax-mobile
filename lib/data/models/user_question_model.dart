@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.48
+ * Created by andii on 14/11/21 10.32
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.48
+ * Last modified 14/11/21 08.28
  */
 
 import 'package:equatable/equatable.dart';
@@ -22,7 +22,7 @@ class UserQuestionModel extends Equatable {
     required this.quest3,
     required this.ans1,
     required this.ans2,
-    required this.ans3});
+    required this.ans3,});
 
   factory UserQuestionModel.fromJson(Map<String, dynamic> json) =>
       UserQuestionModel(

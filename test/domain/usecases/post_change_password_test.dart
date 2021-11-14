@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 23.01
+ * Created by andii on 14/11/21 10.32
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 23.01
+ * Last modified 14/11/21 09.49
  */
 
 import 'package:dartz/dartz.dart';
@@ -29,7 +29,7 @@ void main() {
       test("should get 'success' callback when execute function is called",
               () async {
             // arrange
-            when(mockRepository.postChangePassword(tOldPass, tNewPass, tToken))
+            when(mockRepository.putPassword(tOldPass, tNewPass, tToken))
                 .thenAnswer((_) async => Right('success'));
             // act
             final result = await usecase.execute(tOldPass, tNewPass, tToken);

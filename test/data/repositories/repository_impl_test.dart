@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 01.40
+ * Created by andii on 14/11/21 10.32
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 01.27
+ * Last modified 14/11/21 09.49
  */
 
 import 'package:dartz/dartz.dart';
@@ -556,28 +556,28 @@ void main() {
         'should return remote data when the call to remote data source is successful',
         () async {
       // arrange
-      when(mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken))
+      when(mockRemoteDataSource.putPassword(tOldPass, tNewPass, tToken))
           .thenAnswer((_) async => 'Success');
       // act
       final result =
-          await repository.postChangePassword(tOldPass, tNewPass, tToken);
+          await repository.putPassword(tOldPass, tNewPass, tToken);
       // assert
       verify(
-          mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken));
+          mockRemoteDataSource.putPassword(tOldPass, tNewPass, tToken));
       expect(result, equals(Right('Success')));
     });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-      when(mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken))
+      when(mockRemoteDataSource.putPassword(tOldPass, tNewPass, tToken))
           .thenThrow(NetworkExceptions.defaultError(''));
       // act
       final result =
-          await repository.postChangePassword(tOldPass, tNewPass, tToken);
+          await repository.putPassword(tOldPass, tNewPass, tToken);
       // assert
       verify(
-          mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken));
+          mockRemoteDataSource.putPassword(tOldPass, tNewPass, tToken));
       expect(
           result,
           equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
@@ -620,24 +620,24 @@ void main() {
         'should return remote data when the call to remote data source is successful',
         () async {
       // arrange
-      when(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken))
+      when(mockRemoteDataSource.putFcmToken(tId.toString(), tToken))
           .thenAnswer((_) async => 'Success');
       // act
       final result = await repository.putFCMToken(tId, tToken);
       // assert
-      verify(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken));
+      verify(mockRemoteDataSource.putFcmToken(tId.toString(), tToken));
       expect(result, equals(Right('Success')));
     });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-      when(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken))
+      when(mockRemoteDataSource.putFcmToken(tId.toString(), tToken))
           .thenThrow(NetworkExceptions.defaultError(''));
       // act
       final result = await repository.putFCMToken(tId, tToken);
       // assert
-      verify(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken));
+      verify(mockRemoteDataSource.putFcmToken(tId.toString(), tToken));
       expect(
           result,
           equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(

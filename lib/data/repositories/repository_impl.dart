@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 01.40
+ * Created by andii on 14/11/21 10.32
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 01.25
+ * Last modified 14/11/21 09.49
  */
 
 import 'package:dartz/dartz.dart';
@@ -216,10 +216,10 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, String>> postChangePassword(String oldPass, String newPass, String token) async {
+  Future<Either<Failure, String>> putPassword(String oldPass, String newPass, String token) async {
     try {
       final result =
-      await remoteDataSource.postChangePassword(oldPass, newPass, token);
+      await remoteDataSource.putPassword(oldPass, newPass, token);
       return Right(result);
     } on NetworkExceptions catch (e) {
       return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
@@ -241,7 +241,7 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, String>> putFCMToken(int user, String fcmToken) async {
     try {
       final result =
-      await remoteDataSource.updateFcmToken(user.toString(), fcmToken);
+      await remoteDataSource.putFcmToken(user.toString(), fcmToken);
       return Right(result);
     } on NetworkExceptions catch (e) {
       return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));

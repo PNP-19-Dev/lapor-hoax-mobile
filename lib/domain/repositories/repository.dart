@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.48
+ * Created by andii on 14/11/21 10.32
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.48
+ * Last modified 14/11/21 09.49
  */
 
 import 'package:dartz/dartz.dart';
@@ -45,7 +45,7 @@ abstract class Repository {
 
   Future<Either<Failure, UserQuestion>> getUserChallenge(int id);
 
-  Future<Either<Failure, String>> postChangePassword(String oldPass, String newPass, String token);
+  Future<Either<Failure, String>> putPassword(String oldPass, String newPass, String token);
 
   Future<Either<Failure, String>> postFCMToken(int user, String fcmToken);
 
