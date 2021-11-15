@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.48
+ * Created by andii on 15/11/21 12.51
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.48
+ * Last modified 15/11/21 12.07
  */
 
 import 'package:laporhoax/data/datasources/db/database_helper.dart';
@@ -31,7 +31,13 @@ abstract class LocalDataSource {
 
   Future<SessionData?> getSession();
 
-  Future<String> insertSession(SessionData data);
+  Future<String> insertSession({
+    required int id,
+    required String expiry,
+    required String token,
+    required String email,
+    required String username,
+  });
 
   Future<String> removeSession(SessionData data);
 
@@ -117,12 +123,18 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  Future<String> insertSession(SessionData data) async {
-    preferencesHelper.setId(data.userid);
-    preferencesHelper.setExpire(data.expiry);
-    preferencesHelper.setToken(data.token);
-    preferencesHelper.setEmail(data.email);
-    preferencesHelper.setUsername(data.username);
+  Future<String> insertSession({
+    required int id,
+    required String expiry,
+    required String token,
+    required String email,
+    required String username,
+  }) async {
+    preferencesHelper.setId(id);
+    preferencesHelper.setExpire(expiry);
+    preferencesHelper.setToken(token);
+    preferencesHelper.setEmail(email);
+    preferencesHelper.setUsername(username);
     preferencesHelper.setLogin(true);
     return LocalDataSource.loginMessage;
   }

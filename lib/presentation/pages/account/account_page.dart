@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 14.07
+ * Created by andii on 15/11/21 12.51
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 11.42
+ * Last modified 14/11/21 19.30
  */
 
 import 'package:flutter/material.dart';
@@ -80,7 +80,7 @@ class BuildCard extends StatelessWidget {
         leading: Icon(icon),
         title: Text(
           name,
-          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+          style: Theme.of(context).textTheme.subtitle1!.copyWith(
                 fontWeight: FontWeight.bold,
               ),
         ),
@@ -139,9 +139,8 @@ class _OnAccountLogin extends StatelessWidget {
             'Berita Tersimpan',
             () => Navigation.intent(SavedNews.ROUTE_NAME),
           ),
-          SizedBox(height: 10),
-          Divider(height: 10, endIndent: 20, indent: 20),
-          SizedBox(height: 10),
+          const Divider(thickness: 2, indent: 30, endIndent: 30),
+          const SizedBox(height: 10),
           BuildCard(
             Icons.info_outline,
             'Tentang Laporhoax',
@@ -236,7 +235,9 @@ class _OnWelCome extends StatelessWidget {
               SizedBox(height: 20),
               Text(
                 'Kamu Belum Login !',
-                style: Theme.of(context).textTheme.headline5,
+                style: Theme.of(context).textTheme.headline5!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               SizedBox(height: 5),
               Text(
@@ -259,7 +260,7 @@ class _OnWelCome extends StatelessWidget {
           ),
         ),
         Divider(thickness: 2, indent: 30, endIndent: 30),
-        SizedBox(height: 30),
+        SizedBox(height: 20),
         BuildCard(
           Icons.info_outline,
           'Tentang LaporHoax',
@@ -271,7 +272,7 @@ class _OnWelCome extends StatelessWidget {
           () => Share.share(
               'Ayo berantas hoaks bersama LaporHoax! di https://s.id/LAPORHOAX'),
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 30),
         _Footer(),
       ],
     );

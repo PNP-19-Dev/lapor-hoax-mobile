@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 23.01
+ * Created by andii on 15/11/21 12.51
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 23.01
+ * Last modified 14/11/21 15.51
  */
 
 import 'package:flutter/material.dart';
@@ -78,7 +78,7 @@ void main() {
             _makeTestableWidget(ForgotPasswordSectionTwo(user: testUser)));
 
         final text = find.byType(Text);
-        expect(text, findsNWidgets(5));
+        expect(text, findsNWidgets(6));
 
         final editText = find.byType(TextField);
         expect(editText, findsNWidgets(2));

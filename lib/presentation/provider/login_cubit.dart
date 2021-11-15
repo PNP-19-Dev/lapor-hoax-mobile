@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 14.07
+ * Created by andii on 15/11/21 12.51
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 11.22
+ * Last modified 15/11/21 12.24
  */
 
 import 'package:bloc/bloc.dart';
@@ -21,11 +21,13 @@ class LoginCubit extends Cubit<LoginState> {
   final GetSessionData _data;
   final RemoveSessionData _logout;
 
-  LoginCubit(this._login,
-      this._user,
-      this._save,
-      this._data,
-      this._logout,) : super(LoginInitial());
+  LoginCubit(
+    this._login,
+    this._user,
+    this._save,
+    this._data,
+    this._logout,
+  ) : super(LoginInitial());
 
   /*TODO UPDATE THE FCM TOKEN
   final data = Provider.of<UserNotifier>(
@@ -47,32 +49,30 @@ class LoginCubit extends Cubit<LoginState> {
     final user = await _user.execute(username);
 
     result.fold(
-          (failure) => emit(LoginFailure(failure.message)),
-          (token) {
+      (failure) => emit(LoginFailure(failure.message)),
+      (token) {
         user.fold(
-              (failure) => emit(LoginFailure(failure.message)),
-              (user) => savingSession(SessionData(
-                token: token.token!,
-                userid: user.id,
-                expiry: token.expiry!,
-                username: user.username,
-                email: user.email,
-              )),
+          (failure) => emit(LoginFailure(failure.message)),
+          (user) async {
+            final result = await _save.execute(
+              id: user.id,
+              username: user.username,
+              token: token.token!,
+              expiry: token.expiry!,
+              email: user.email,
+            );
+            emit(LoginSuccess());
+          },
         );
       },
     );
   }
 
-  Future<void> savingSession(SessionData session) async {
-    await _save.execute(session);
-    emit(LoginSuccess());
-  }
-
   Future<void> fetchSession() async {
     final result = await _data.execute();
     result.fold(
-          (failure) => emit(LoginFailure(failure.message)),
-          (sessionData) {
+      (failure) => emit(LoginFailure(failure.message)),
+      (sessionData) {
         if (sessionData != null) {
           emit(LoginSuccessWithData(sessionData));
         } else {

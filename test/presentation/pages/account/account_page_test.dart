@@ -1,13 +1,14 @@
 /*
- * Created by andii on 12/11/21 23.01
+ * Created by andii on 15/11/21 12.51
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 23.01
+ * Last modified 14/11/21 15.48
  */
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laporhoax/presentation/pages/account/account_page.dart';
+import 'package:laporhoax/presentation/provider/account_cubit.dart';
 import 'package:laporhoax/presentation/provider/login_cubit.dart';
 import 'package:mockito/mockito.dart';
 
@@ -15,15 +16,20 @@ import '../../../dummy_data/dummy_objects.dart';
 import '../../../helpers/test_helper.mocks.dart';
 
 void main() {
-  late MockLoginCubit bloc;
+  late MockAccountCubit bloc;
+  late MockLoginCubit loginBloc;
 
   setUp(() {
-    bloc = MockLoginCubit();
+    bloc = MockAccountCubit();
+    loginBloc = MockLoginCubit();
   });
 
   Widget _makeTestableWidget(Widget body) {
-    return BlocProvider<LoginCubit>.value(
-      value: bloc,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AccountCubit>.value(value: bloc),
+        BlocProvider<LoginCubit>.value(value: loginBloc),
+      ],
       child: MaterialApp(
         home: body,
       ),
@@ -31,25 +37,29 @@ void main() {
   }
 
   testWidgets('Page should welcome when not login',
-          (WidgetTester tester) async {
-        when(bloc.state).thenReturn(LoginEnded());
-        when(bloc.stream).thenAnswer((_) => const Stream.empty());
+      (WidgetTester tester) async {
+    when(bloc.state).thenReturn(AccountNotLogin());
+    when(bloc.stream).thenAnswer((_) => const Stream.empty());
 
-        await tester.pumpWidget(_makeTestableWidget(AccountPage()));
+    await tester.pumpWidget(_makeTestableWidget(AccountPage()));
 
-        final finder = find.byKey(Key('account_page_logout'));
-        expect(finder, findsOneWidget);
-      });
+    final finder = find.byKey(Key('account_page_logout'));
+    expect(finder, findsOneWidget);
+  });
 
   testWidgets('Page should display account menu when user is logged in',
-          (WidgetTester tester) async {
-        when(bloc.state).thenReturn(LoginSuccessWithData(testSessionData));
-        when(bloc.stream)
-            .thenAnswer((_) => Stream.value(LoginSuccessWithData(testSessionData)));
+      (WidgetTester tester) async {
+    when(bloc.state).thenReturn(AccountLogin(testSessionData));
+    when(bloc.stream)
+        .thenAnswer((_) => Stream.value(AccountLogin(testSessionData)));
 
-        await tester.pumpWidget(_makeTestableWidget(AccountPage()));
+    when(loginBloc.state).thenReturn(LoginSuccessWithData(testSessionData));
+    when(loginBloc.stream)
+        .thenAnswer((_) => Stream.value(LoginSuccessWithData(testSessionData)));
 
-        final finder = find.byKey(Key('account_page_login'));
-        expect(finder, findsOneWidget);
-      });
+    await tester.pumpWidget(_makeTestableWidget(AccountPage()));
+
+    final finder = find.byKey(Key('account_page_login'));
+    expect(finder, findsOneWidget);
+  });
 }

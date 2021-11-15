@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 23.01
+ * Created by andii on 15/11/21 12.51
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.58
+ * Last modified 15/11/21 12.12
  */
 
 import 'package:flutter_test/flutter_test.dart';
@@ -22,12 +22,29 @@ void main() {
 
   test('should remove feed from saved feed in repository', () async {
     // arrange
-    when(mockRepository.saveSessionData(testSessionData))
-        .thenAnswer((_) async => 'Anda Login');
+    when(mockRepository.saveSessionData(
+      email: testSessionData.email,
+      expiry: testSessionData.expiry,
+      token: testSessionData.expiry,
+      username: testSessionData.username,
+      id: testSessionData.userid,
+    )).thenAnswer((_) async => 'Anda Login');
     // act
-    final result = await usecase.execute(testSessionData);
+    final result = await usecase.execute(
+      email: testSessionData.email,
+      expiry: testSessionData.expiry,
+      token: testSessionData.expiry,
+      username: testSessionData.username,
+      id: testSessionData.userid,
+    );
     // assert
-    verify(mockRepository.saveSessionData(testSessionData));
+    verify(mockRepository.saveSessionData(
+      email: testSessionData.email,
+      expiry: testSessionData.expiry,
+      token: testSessionData.expiry,
+      username: testSessionData.username,
+      id: testSessionData.userid,
+    ));
     expect(result, 'Anda Login');
   });
 }

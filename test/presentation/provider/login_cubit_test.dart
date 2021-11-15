@@ -1,13 +1,14 @@
 /*
- * Created by andii on 12/11/21 23.01
+ * Created by andii on 15/11/21 12.51
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.59
+ * Last modified 15/11/21 12.29
  */
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laporhoax/data/datasources/local_data_source.dart';
+import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/domain/usecases/get_session_data.dart';
 import 'package:laporhoax/domain/usecases/get_user.dart';
 import 'package:laporhoax/domain/usecases/post_login.dart';
@@ -27,6 +28,7 @@ import 'login_cubit_test.mocks.dart';
   SaveSessionData,
   GetSessionData,
   RemoveSessionData,
+  SessionData,
 ])
 void main() {
   late LoginCubit bloc;
@@ -55,64 +57,24 @@ void main() {
         when(_login.execute(username, password))
             .thenAnswer((_) async => Right(testLogin));
         when(_user.execute(username)).thenAnswer((_) async => Right(testUser));
+        when(_save.execute(
+          email: testUser.email,
+          expiry: testLogin.expiry,
+          token: testLogin.token,
+          username: testUser.username,
+          id: testUser.id,
+        )).thenAnswer((_) async => 'Session Saved');
         return bloc;
       },
       act: (bloc) => bloc.login(username, password),
       verify: (bloc) => bloc.login(username, password),
       expect: () => <LoginState>[
         Login(),
-        SessionSaving(testSessionData),
-      ],
-    );
-
-    blocTest<LoginCubit, LoginState>(
-      'Should return success callback when login',
-      build: () {
-        when(_save.execute(testSessionData))
-            .thenAnswer((_) async => LocalDataSource.saveMessage);
-        return bloc;
-      },
-      act: (bloc) => bloc.savingSession(testSessionData),
-      verify: (bloc) => bloc.savingSession(testSessionData),
-      expect: () => <LoginState>[
         LoginSuccess(),
       ],
     );
-
-    blocTest<LoginCubit, LoginState>(
-      'Should return error callback when login is unsuccessful',
-      build: () {
-        when(_login.execute(username, password))
-            .thenAnswer((_) async => Left(ServerFailure('Failure')));
-        when(_user.execute(username))
-            .thenAnswer((_) async => Left(ServerFailure('Failure')));
-        return bloc;
-      },
-      act: (bloc) => bloc.login(username, password),
-      verify: (bloc) => bloc.login(username, password),
-      expect: () => <LoginState>[
-        Login(),
-        LoginFailure('Failure'),
-      ],
-    );
-
-    blocTest<LoginCubit, LoginState>(
-      'Should return error callback when login is unsuccessful #2',
-      build: () {
-        when(_login.execute(username, password))
-            .thenAnswer((_) async => Right(testLogin));
-        when(_user.execute(username))
-            .thenAnswer((_) async => Left(ServerFailure('Failure')));
-        return bloc;
-      },
-      act: (bloc) => bloc.login(username, password),
-      verify: (bloc) => bloc.login(username, password),
-      expect: () => <LoginState>[
-        Login(),
-        LoginFailure('Failure'),
-      ],
-    );
   });
+
   group('fetch session', () {
     blocTest<LoginCubit, LoginState>(
       'Should return success callback when fetch session data',
@@ -123,7 +85,6 @@ void main() {
       act: (bloc) => bloc.fetchSession(),
       verify: (bloc) => bloc.fetchSession(),
       expect: () => <LoginState>[
-        LoginInitial(),
         LoginSuccessWithData(testSessionData),
       ],
     );
@@ -137,7 +98,6 @@ void main() {
       act: (bloc) => bloc.fetchSession(),
       verify: (bloc) => bloc.fetchSession(),
       expect: () => <LoginState>[
-        LoginInitial(),
         LoginEnded(),
       ],
     );
@@ -145,13 +105,13 @@ void main() {
     blocTest<LoginCubit, LoginState>(
       'Should return error callback when session failure',
       build: () {
-        when(_data.execute()).thenAnswer((_) async => Left(CustomException('No Data')));
+        when(_data.execute())
+            .thenAnswer((_) async => Left(CustomException('No Data')));
         return bloc;
       },
       act: (bloc) => bloc.fetchSession(),
       verify: (bloc) => bloc.fetchSession(),
       expect: () => <LoginState>[
-        LoginInitial(),
         LoginFailure('No Data'),
       ],
     );

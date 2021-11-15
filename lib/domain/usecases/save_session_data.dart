@@ -1,10 +1,9 @@
 /*
- * Created by andii on 12/11/21 22.48
+ * Created by andii on 15/11/21 12.51
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.47
+ * Last modified 15/11/21 12.07
  */
 
-import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/domain/repositories/repository.dart';
 
 class SaveSessionData {
@@ -12,7 +11,19 @@ class SaveSessionData {
 
   SaveSessionData(this.repository);
 
-  Future<String> execute(SessionData data) {
-    return repository.saveSessionData(data);
+  Future<String> execute({
+    required int id,
+    required String expiry,
+    required String token,
+    required String email,
+    required String username,
+  }) {
+    return repository.saveSessionData(
+      id: id,
+      expiry: expiry,
+      token: token,
+      email: email,
+      username: username,
+    );
   }
 }

@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 14.07
+ * Created by andii on 15/11/21 12.51
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 12.11
+ * Last modified 14/11/21 19.20
  */
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -95,7 +95,7 @@ class DetailReportPage extends StatelessWidget {
                       textAlign: TextAlign.justify,
                     ),
                   ),
-                  const Divider(height: 50, indent: 25.0, endIndent: 25.0),
+                  Divider(thickness: 2, indent: 30, endIndent: 30),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0,bottom: 16.0),
                     child: Text(

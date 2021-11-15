@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 23.01
+ * Created by andii on 15/11/21 12.51
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 23.01
+ * Last modified 15/11/21 12.45
  */
 
 import 'package:flutter/material.dart';
@@ -36,7 +36,7 @@ void main() {
 
         await tester.pumpWidget(_makeTestableWidget(UserChallenge(id: 1)));
 
-        final finder = find.text('Loading');
+        final finder = find.text('Mengambil data...');
         expect(finder, findsNWidgets(3));
       });
 }

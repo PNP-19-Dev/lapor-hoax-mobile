@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 10.32
+ * Created by andii on 15/11/21 12.51
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 09.49
+ * Last modified 15/11/21 12.07
  */
 
 import 'package:dartz/dartz.dart';
@@ -65,5 +65,11 @@ abstract class Repository {
 
   Future<Either<Failure, String>> saveFeed(Feed feed);
 
-  Future<String> saveSessionData(SessionData data);
+  Future<String> saveSessionData({
+    required int id,
+    required String expiry,
+    required String token,
+    required String email,
+    required String username,
+  });
 }

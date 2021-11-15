@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 10.32
+ * Created by andii on 15/11/21 12.51
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 09.49
+ * Last modified 15/11/21 12.12
  */
 
 import 'package:dartz/dartz.dart';
@@ -559,11 +559,9 @@ void main() {
       when(mockRemoteDataSource.putPassword(tOldPass, tNewPass, tToken))
           .thenAnswer((_) async => 'Success');
       // act
-      final result =
-          await repository.putPassword(tOldPass, tNewPass, tToken);
+      final result = await repository.putPassword(tOldPass, tNewPass, tToken);
       // assert
-      verify(
-          mockRemoteDataSource.putPassword(tOldPass, tNewPass, tToken));
+      verify(mockRemoteDataSource.putPassword(tOldPass, tNewPass, tToken));
       expect(result, equals(Right('Success')));
     });
     test(
@@ -573,11 +571,9 @@ void main() {
       when(mockRemoteDataSource.putPassword(tOldPass, tNewPass, tToken))
           .thenThrow(NetworkExceptions.defaultError(''));
       // act
-      final result =
-          await repository.putPassword(tOldPass, tNewPass, tToken);
+      final result = await repository.putPassword(tOldPass, tNewPass, tToken);
       // assert
-      verify(
-          mockRemoteDataSource.putPassword(tOldPass, tNewPass, tToken));
+      verify(mockRemoteDataSource.putPassword(tOldPass, tNewPass, tToken));
       expect(
           result,
           equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
@@ -831,10 +827,21 @@ void main() {
   group('Save Session Data', () {
     test('should return success message when saving successful', () async {
       // arrange
-      when(mockLocalDataSource.insertSession(testSessionData))
-          .thenAnswer((_) async => 'Session Saved');
+      when(mockLocalDataSource.insertSession(
+        email: testSessionData.email,
+        expiry: testSessionData.expiry,
+        token: testSessionData.expiry,
+        username: testSessionData.username,
+        id: testSessionData.userid,
+      )).thenAnswer((_) async => 'Session Saved');
       // act
-      final result = await repository.saveSessionData(testSessionData);
+      final result = await repository.saveSessionData(
+        email: testSessionData.email,
+        expiry: testSessionData.expiry,
+        token: testSessionData.expiry,
+        username: testSessionData.username,
+        id: testSessionData.userid,
+      );
       // assert
       expect(result, 'Session Saved');
     });
