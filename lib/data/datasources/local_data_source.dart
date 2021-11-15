@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.48
+ * Created by andii on 15/11/21 13.01
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.48
+ * Last modified 15/11/21 12.55
  */
 
 import 'package:laporhoax/data/datasources/db/database_helper.dart';
@@ -20,27 +20,16 @@ abstract class LocalDataSource {
   static const String cacheError = "Can't get the data :(";
 
   Future<String> insertFeed(FeedTable feed);
-
   Future<String> removeFeed(FeedTable feed);
-
   Future<FeedTable?> getFeedById(int id);
-
   Future<List<FeedTable>> getFeeds();
-
   Future<bool> isLoggedIn();
-
   Future<SessionData?> getSession();
-
   Future<String> insertSession(SessionData data);
-
   Future<String> removeSession(SessionData data);
-
   Future<void> cacheQuestions(List<QuestionTable> questions);
-
   Future<List<QuestionTable>> getCachedQuestion();
-
   Future<void> cacheCategory(List<CategoryTable> category);
-
   Future<List<CategoryTable>> getCachedCategory();
 }
 

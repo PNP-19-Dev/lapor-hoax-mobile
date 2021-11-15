@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 23.01
+ * Created by andii on 15/11/21 13.01
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 23.01
+ * Last modified 15/11/21 12.55
  */
 
 import 'package:flutter/material.dart';
@@ -43,7 +43,7 @@ void main() {
         expect(inputs, findsNWidgets(2));
 
         final textButton = find.byType(InkWell);
-        expect(textButton, findsOneWidget);
+        expect(textButton, findsNWidgets(2));
 
         final button = find.byType(ElevatedButton);
         expect(button, findsOneWidget);

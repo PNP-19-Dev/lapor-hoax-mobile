@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.48
+ * Created by andii on 15/11/21 13.01
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.47
+ * Last modified 15/11/21 12.55
  */
 
 import 'package:laporhoax/domain/entities/session_data.dart';
