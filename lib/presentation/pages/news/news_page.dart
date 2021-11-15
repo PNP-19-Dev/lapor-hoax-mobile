@@ -1,11 +1,14 @@
 /*
- * Created by andii on 14/11/21 14.07
+ * Created by andii on 15/11/21 18.02
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 11.05
+ * Last modified 15/11/21 15.23
  */
+
+import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
@@ -27,10 +30,20 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
+
+
   @override
   void initState() {
     super.initState();
+    check();
     context.read<FeedCubit>().fetchFeeds();
+  }
+
+  void check() async {
+    final ByteData bytes = await rootBundle.load('assets/icons/logo_new.png');
+    final Uint8List list = bytes.buffer.asUint8List();
+
+    print('LIST!!! $list');
   }
 
   @override
@@ -40,7 +53,10 @@ class _NewsPageState extends State<NewsPage> {
         SliverAppBar(
           title: Text(
             'LAPOR HOAX',
-            style: Theme.of(context).textTheme.headline5!,
+            style: Theme
+                .of(context)
+                .textTheme
+                .headline5!,
           ),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -88,7 +104,10 @@ class _NewsPageState extends State<NewsPage> {
                   ),
                   Text(
                     '${state.message}',
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyText2,
                     textAlign: TextAlign.center,
                   ),
                 ]),
@@ -112,9 +131,9 @@ class _FeedList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverGrid(
       gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       delegate: SliverChildBuilderDelegate(
-        (_, index) {
+            (_, index) {
           var feed = feeds[index];
           return Padding(
             padding: const EdgeInsets.all(8.0),
@@ -128,16 +147,20 @@ class _FeedList extends StatelessWidget {
                 ),
                 elevation: 4,
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.5,
                   child: Stack(
                     alignment: Alignment.bottomLeft,
                     fit: StackFit.passthrough,
                     children: [
                       CachedNetworkImage(
                         imageUrl: feed.thumbnail!,
-                        placeholder: (_, url) => Center(
-                          child: CircularProgressIndicator(),
-                        ),
+                        placeholder: (_, url) =>
+                            Center(
+                              child: CircularProgressIndicator(),
+                            ),
                         errorWidget: (_, url, error) => Icon(Icons.error),
                         fit: BoxFit.fill,
                       ),
@@ -167,10 +190,14 @@ class _FeedList extends StatelessWidget {
                           softWrap: true,
                           overflow: TextOverflow.clip,
                           style:
-                              Theme.of(context).textTheme.bodyText2!.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          Theme
+                              .of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       Positioned(
@@ -186,12 +213,13 @@ class _FeedList extends StatelessWidget {
                             SizedBox(width: 4),
                             Text(
                               DateTimeHelper.formattedDate(feed.date!),
-                              style: Theme.of(context)
+                              style: Theme
+                                  .of(context)
                                   .textTheme
                                   .overline!
                                   .copyWith(
-                                    color: Colors.white,
-                                  ),
+                                color: Colors.white,
+                              ),
                             ),
                           ],
                         ),
@@ -231,7 +259,8 @@ class _BannerCard extends StatelessWidget {
                     children: [
                       Text(
                         'Udah nemuin \nHoax?',
-                        style: Theme.of(context)
+                        style: Theme
+                            .of(context)
                             .textTheme
                             .headline6!
                             .copyWith(color: Colors.black),
@@ -241,7 +270,8 @@ class _BannerCard extends StatelessWidget {
                             Navigation.intent(ReportPage.ROUTE_NAME),
                         child: Text(
                           'Lapor yuk!',
-                          style: Theme.of(context)
+                          style: Theme
+                              .of(context)
                               .textTheme
                               .button!
                               .copyWith(color: Colors.white),
@@ -268,7 +298,10 @@ class _BannerCard extends StatelessWidget {
               leading: Icon(Icons.menu_book_sharp),
               title: Text(
                 'Tutorial Penggunaan',
-                style: Theme.of(context).textTheme.subtitle2,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .subtitle2,
               ),
               trailing: Icon(Icons.chevron_right),
             ),
@@ -278,7 +311,10 @@ class _BannerCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
             'Berita',
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme
+                .of(context)
+                .textTheme
+                .headline6,
           ),
         ),
       ],
