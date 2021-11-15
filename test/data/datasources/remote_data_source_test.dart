@@ -1,13 +1,15 @@
 /*
- * Created by andii on 15/11/21 14.33
+ * Created by andii on 15/11/21 18.09
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 14.33
+ * Last modified 15/11/21 18.08
  */
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
@@ -19,7 +21,6 @@ import 'package:mockito/mockito.dart';
 import '../../dummy_data/dummy_objects.dart';
 import '../../helpers/test_helper.mocks.dart';
 import '../../json_reader.dart';
-import 'remote_data_source_test.mocks.dart';
 
 @GenerateMocks([
   MultipartFile,
@@ -28,6 +29,7 @@ import 'remote_data_source_test.mocks.dart';
 void main() {
   late MockDioClient client;
   late RemoteDataSourceImpl datasource;
+  TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() {
     client = MockDioClient();
@@ -355,16 +357,19 @@ void main() {
 
   group('post report', () {
     const token = 'token';
-    final report = ReportRequest(
-      user: 1,
-      url: 'url',
-      category: 'category',
-      isAnonym: false,
-      description: 'description',
-      img: MockXFile(),
-    );
 
     test('should return report detail when report sent successfully', () async {
+      ByteData imageData = await rootBundle.load('assets/icons/ans.png');
+      Uint8List imageAsBytes = imageData.buffer.asUint8List();
+      final report = ReportRequest(
+        user: 1,
+        url: 'url',
+        category: 'category',
+        isAnonym: false,
+        description: 'description',
+        img: XFile.fromData(imageAsBytes),
+      );
+
       // arrange
       final data = FormData.fromMap({
         'user': report.user.toString(),
@@ -372,7 +377,7 @@ void main() {
         'category': report.category,
         'isAnonym': report.isAnonym.toString(),
         'description': report.description,
-        'img': MockMultipartFile()
+        'img': MultipartFile.fromBytes(imageAsBytes),
       });
 
       final dynamic jsonMap = json.decode(readJson('dummy_data/report.json'));
@@ -387,6 +392,17 @@ void main() {
     });
 
     test('should return error when post report unsuccessful', () async {
+      ByteData imageData = await rootBundle.load('assets/icons/ans.png');
+      Uint8List imageAsBytes = imageData.buffer.asUint8List();
+      final report = ReportRequest(
+        user: 1,
+        url: 'url',
+        category: 'category',
+        isAnonym: false,
+        description: 'description',
+        img: XFile.fromData(imageAsBytes),
+      );
+
       // arrange
       final data = FormData.fromMap({
         'user': report.user.toString(),
@@ -394,7 +410,7 @@ void main() {
         'category': report.category,
         'isAnonym': report.isAnonym.toString(),
         'description': report.description,
-        'img': MockMultipartFile(),
+        'img': MultipartFile.fromBytes(imageAsBytes),
       });
 
       when(client.post('/$reportsEndpoint/',
