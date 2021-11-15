@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 10.32
+ * Created by andii on 15/11/21 14.22
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 10.10
+ * Last modified 15/11/21 14.11
  */
 
 import 'dart:io';
@@ -145,7 +145,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     try {
       final formData = FormData.fromMap({
         'user': report.user.toString(),
-        'url': '"${report.url}"',
+        'url': report.url,
         'category': report.category,
         'isAnonym': report.isAnonym.toString(),
         'description': report.description,
