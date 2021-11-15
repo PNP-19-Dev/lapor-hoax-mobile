@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 14.07
+ * Created by andii on 16/11/21 01.03
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 12.38
+ * Last modified 16/11/21 00.14
  */
 
 import 'package:flutter/material.dart';
@@ -148,7 +148,8 @@ class MyApp extends StatelessWidget {
                 return HistoryPage(tokenId: tokenId);
               });
             case ReportPage.ROUTE_NAME:
-              return MaterialPageRoute(builder: (_) => ReportPage());
+              return MaterialPageRoute(
+                  builder: (_) => ReportPage(key: Key('report_page')));
             case OnSuccessReport.ROUTE_NAME:
               return MaterialPageRoute(builder: (_) {
                 final reportItem = settings.arguments as Report;

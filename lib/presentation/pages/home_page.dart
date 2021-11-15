@@ -1,15 +1,12 @@
 /*
- * Created by andii on 13/11/21 08.11
+ * Created by andii on 16/11/21 01.03
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 13/11/21 00.00
+ * Last modified 16/11/21 00.12
  */
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:laporhoax/firebase_impl.dart';
 import 'package:laporhoax/presentation/pages/account/account_page.dart';
 import 'package:laporhoax/presentation/pages/news/news_page.dart';
 import 'package:laporhoax/presentation/pages/report/report_page.dart';
@@ -24,31 +21,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _bottomNavIndex = 0;
-
-  _HomePageState() {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null && !kIsWeb) {
-        flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                icon: 'logo_new_mini',
-              ),
-            ));
-      }
-    });
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
-      //
-    });
-  }
 
   List<BottomNavigationBarItem> _bottomNavBarItems = [
     BottomNavigationBarItem(
@@ -82,11 +54,10 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
+        key: Key('fab_add_report'),
         child: Icon(Icons.add),
         tooltip: 'Tambah Laporan',
-        onPressed: () {
-          Navigation.intent(ReportPage.ROUTE_NAME);
-        },
+        onPressed: () => Navigation.intent(ReportPage.ROUTE_NAME),
       ),
     );
   }

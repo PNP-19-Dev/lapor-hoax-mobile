@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 14.07
+ * Created by andii on 16/11/21 01.03
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 11.16
+ * Last modified 16/11/21 00.58
  */
 
 import 'package:equatable/equatable.dart';
@@ -39,15 +39,6 @@ abstract class AccountState extends Equatable {
 class AccountInitial extends AccountState {}
 
 class AccountNotLogin extends AccountState {}
-
-class AccountFailure extends AccountState {
-  final String message;
-
-  AccountFailure(this.message);
-
-  @override
-  List<Object> get props => [message];
-}
 
 class AccountLogin extends AccountState {
   final SessionData data;

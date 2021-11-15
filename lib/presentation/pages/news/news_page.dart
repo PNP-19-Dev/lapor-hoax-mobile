@@ -1,20 +1,19 @@
 /*
- * Created by andii on 15/11/21 18.09
+ * Created by andii on 16/11/21 01.03
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 18.07
+ * Last modified 15/11/21 23.32
  */
 
-import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/presentation/pages/report/report_page.dart';
 import 'package:laporhoax/presentation/pages/static/tutorial_page.dart';
 import 'package:laporhoax/presentation/provider/feed_cubit.dart';
+import 'package:laporhoax/presentation/provider/item_cubit.dart';
 import 'package:laporhoax/styles/colors.dart';
 import 'package:laporhoax/utils/datetime_helper.dart';
 import 'package:laporhoax/utils/navigation.dart';
@@ -180,7 +179,8 @@ class _FeedList extends StatelessWidget {
                         child: Text(
                           feed.title!,
                           softWrap: true,
-                          overflow: TextOverflow.clip,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
                           style:
                           Theme
                               .of(context)
@@ -236,7 +236,7 @@ class _BannerCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+          margin: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
           child: Card(
             borderOnForeground: true,
             color: orange200,
@@ -248,6 +248,8 @@ class _BannerCard extends StatelessWidget {
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Udah nemuin \nHoax?',
@@ -257,6 +259,7 @@ class _BannerCard extends StatelessWidget {
                             .headline6!
                             .copyWith(color: Colors.black),
                       ),
+                      SizedBox(height:20),
                       ElevatedButton(
                         onPressed: () =>
                             Navigation.intent(ReportPage.ROUTE_NAME),

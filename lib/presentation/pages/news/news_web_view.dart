@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 14.58
+ * Created by andii on 16/11/21 01.03
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 14.50
+ * Last modified 15/11/21 23.11
  */
 
 import 'package:flutter/material.dart';
@@ -28,10 +28,8 @@ class NewsWebView extends StatefulWidget {
 }
 
 class _NewsWebViewState extends State<NewsWebView> {
-  void showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context)
+  void showSnackBar(BuildContext context, String message) => ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(message)));
-  }
 
   @override
   void initState() {

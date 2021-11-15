@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 14.58
+ * Created by andii on 16/11/21 01.03
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 14.58
+ * Last modified 15/11/21 23.37
  */
 
 import 'package:flutter/material.dart';
@@ -133,11 +133,6 @@ class _UserChallengeState extends State<UserChallenge> {
                                 _selectedQ1 = v!;
                               });
                             },
-                            onTap: () {
-                              if (questions.isEmpty) {
-                                toast('');
-                              }
-                            },
                           );
                         },
                       ),
@@ -186,11 +181,6 @@ class _UserChallengeState extends State<UserChallenge> {
                                 _selectedQ2 = v!;
                               });
                             },
-                            onTap: () {
-                              if (questions.isEmpty) {
-                                toast('');
-                              }
-                            },
                           );
                         },
                       ),
@@ -238,11 +228,6 @@ class _UserChallengeState extends State<UserChallenge> {
                               setState(() {
                                 _selectedQ3 = v!;
                               });
-                            },
-                            onTap: () {
-                              if (questions.isEmpty) {
-                                toast('');
-                              }
                             },
                           );
                         },

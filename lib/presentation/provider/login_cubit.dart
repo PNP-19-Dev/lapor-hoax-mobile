@@ -1,7 +1,7 @@
 /*
- * Created by andii on 15/11/21 13.01
+ * Created by andii on 16/11/21 01.03
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 12.55
+ * Last modified 16/11/21 00.58
  */
 
 import 'package:bloc/bloc.dart';
@@ -108,15 +108,6 @@ class LoginFailure extends LoginState {
 
   @override
   List<Object> get props => [message];
-}
-
-class SessionSaving extends LoginState {
-  final SessionData data;
-
-  SessionSaving(this.data);
-
-  @override
-  List<Object> get props => [data];
 }
 
 class LoginSuccess extends LoginState {}

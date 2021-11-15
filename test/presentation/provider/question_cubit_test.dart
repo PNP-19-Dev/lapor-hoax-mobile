@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 23.01
+ * Created by andii on 16/11/21 01.03
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 23.00
+ * Last modified 16/11/21 00.55
  */
 
 import 'package:bloc_test/bloc_test.dart';
@@ -90,10 +90,24 @@ void main() {
     );
 
     blocTest<QuestionCubit, QuestionState>(
-      'should get question with user data from usecase',
+      'should return error callback with user data from usecase',
       build: () {
         when(_questions.execute())
             .thenAnswer((_) async => Left(ServerFailure('Failure')));
+        when(_challenge.execute(tId))
+            .thenAnswer((_) async => Left(ServerFailure('Failure')));
+        return bloc;
+      },
+      act: (cubit) => cubit.fetchQuestionWithChallenge(tId),
+      verify: (cubit) => cubit.fetchQuestionWithChallenge(tId),
+      expect: () => [QuestionLoading(), QuestionError('Failure')],
+    );
+
+    blocTest<QuestionCubit, QuestionState>(
+      'should return error callback with user data from usecase #2',
+      build: () {
+        when(_questions.execute())
+            .thenAnswer((_) async => Right([testQuestion]));
         when(_challenge.execute(tId))
             .thenAnswer((_) async => Left(ServerFailure('Failure')));
         return bloc;

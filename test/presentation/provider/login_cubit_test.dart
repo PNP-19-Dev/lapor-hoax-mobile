@@ -1,7 +1,7 @@
 /*
- * Created by andii on 15/11/21 13.01
+ * Created by andii on 16/11/21 01.03
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 12.57
+ * Last modified 16/11/21 01.00
  */
 
 import 'package:bloc_test/bloc_test.dart';
@@ -71,6 +71,52 @@ void main() {
       expect: () => <LoginState>[
         Login(),
         LoginSuccess(),
+      ],
+    );
+
+    blocTest<LoginCubit, LoginState>(
+      'Should return session callback when login',
+      build: () {
+        when(_login.execute(username, password))
+            .thenAnswer((_) async => Left(ServerFailure('Failure')));
+        when(_user.execute(username)).thenAnswer((_) async => Left(ServerFailure('Failure')));
+        when(_save.execute(SessionData(
+          email: testUser.email,
+          expiry: testLogin.expiry!,
+          token: testLogin.token!,
+          username: testUser.username,
+          userid: testUser.id,
+        ))).thenAnswer((_) async => 'Session Saved');
+        return bloc;
+      },
+      act: (bloc) => bloc.login(username, password),
+      verify: (bloc) => bloc.login(username, password),
+      expect: () => <LoginState>[
+        Login(),
+        LoginFailure('Failure'),
+      ],
+    );
+
+    blocTest<LoginCubit, LoginState>(
+      'Should return session callback when login',
+      build: () {
+        when(_login.execute(username, password))
+            .thenAnswer((_) async => Right(testLogin));
+        when(_user.execute(username)).thenAnswer((_) async => Left(ServerFailure('Failure')));
+        when(_save.execute(SessionData(
+          email: testUser.email,
+          expiry: testLogin.expiry!,
+          token: testLogin.token!,
+          username: testUser.username,
+          userid: testUser.id,
+        ))).thenAnswer((_) async => 'Session Saved');
+        return bloc;
+      },
+      act: (bloc) => bloc.login(username, password),
+      verify: (bloc) => bloc.login(username, password),
+      expect: () => <LoginState>[
+        Login(),
+        LoginFailure('Failure'),
       ],
     );
   });

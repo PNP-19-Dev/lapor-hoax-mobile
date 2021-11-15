@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 16/11/21 01.03
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.55
+ * Last modified 16/11/21 01.03
  */
 
 import 'package:bloc/bloc.dart';
@@ -20,7 +20,6 @@ class HistoryCubit extends Cubit<HistoryState> {
   HistoryCubit(this._query, this._delete) : super(HistoryInitial());
 
   List<Report> _reports = [];
-
   List<Report> get reports => _reports;
 
   Future<void> getHistory(TokenId tokenId) async {

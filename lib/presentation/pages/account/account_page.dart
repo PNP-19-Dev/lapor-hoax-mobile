@@ -1,7 +1,7 @@
 /*
- * Created by andii on 15/11/21 13.01
+ * Created by andii on 16/11/21 01.03
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 12.55
+ * Last modified 15/11/21 22.49
  */
 
 import 'package:flutter/material.dart';
@@ -17,6 +17,7 @@ import 'package:laporhoax/presentation/pages/static/static_page_viewer.dart';
 import 'package:laporhoax/presentation/provider/account_cubit.dart';
 import 'package:laporhoax/presentation/provider/login_cubit.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
+import 'package:laporhoax/styles/colors.dart';
 import 'package:laporhoax/styles/theme.dart';
 import 'package:laporhoax/utils/navigation.dart';
 import 'package:provider/provider.dart';
@@ -139,6 +140,7 @@ class _OnAccountLogin extends StatelessWidget {
             'Berita Tersimpan',
             () => Navigation.intent(SavedNews.ROUTE_NAME),
           ),
+          const SizedBox(height: 10),
           const Divider(thickness: 2, indent: 30, endIndent: 30),
           const SizedBox(height: 10),
           BuildCard(
@@ -183,7 +185,9 @@ class _OnAccountLogin extends StatelessWidget {
                           children: [
                             Text(
                               'Apakah yakin mau keluar ? ',
-                              style: Theme.of(context).textTheme.headline5,
+                              style: Theme.of(context).textTheme.headline5!.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             SizedBox(height: 30),
                             SizedBox(
@@ -236,13 +240,16 @@ class _OnWelCome extends StatelessWidget {
               Text(
                 'Kamu Belum Login !',
                 style: Theme.of(context).textTheme.headline5!.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
               SizedBox(height: 5),
               Text(
                 'Silahkan login untuk mengakses semua fitur dari aplikasi LAPOR HOAX ',
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.caption!.copyWith(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? darkCaption
+                        : caption),
                 textAlign: TextAlign.center,
               ),
             ],

@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 14.07
+ * Created by andii on 16/11/21 01.03
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 12.14
+ * Last modified 15/11/21 22.43
  */
 
 import 'package:flutter/material.dart';
@@ -20,6 +20,8 @@ const Color orangeBlaze = Color(0xFFF96C00);
 const Color orangeBlazeVariant = Color(0xFFE35802);
 const Color failure = Color(0xFFFF3333);
 const Color success = Color(0xFF4BB543);
+const Color caption = Color(0xFF727272);
+const Color darkCaption = Color(0xFFE3E3E3);
 
 const kColorLightScheme = ColorScheme(
   // most frequently used color

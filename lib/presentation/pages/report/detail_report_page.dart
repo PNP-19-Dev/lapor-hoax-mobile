@@ -1,7 +1,7 @@
 /*
- * Created by andii on 15/11/21 13.01
+ * Created by andii on 16/11/21 01.03
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 12.55
+ * Last modified 15/11/21 22.46
  */
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -113,7 +113,7 @@ class DetailReportPage extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .caption!
-                          .copyWith(fontWeight: FontWeight.bold),
+                          .copyWith(fontWeight: FontWeight.w600),
                     ),
                   ),
                   Container(
@@ -153,7 +153,7 @@ class DetailReportPage extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .caption!
-                          .copyWith(fontWeight: FontWeight.bold),
+                          .copyWith(fontWeight: FontWeight.w600),
                     ),
                   ),
                   Container(
@@ -177,7 +177,7 @@ class DetailReportPage extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .caption!
-                          .copyWith(fontWeight: FontWeight.bold),
+                          .copyWith(fontWeight: FontWeight.w600),
                     ),
                   ),
                   Container(

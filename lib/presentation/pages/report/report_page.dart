@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 14.07
+ * Created by andii on 16/11/21 01.03
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 14.00
+ * Last modified 16/11/21 00.12
  */
 
 import 'package:flutter/material.dart';
@@ -27,6 +27,8 @@ import 'on_loading_report.dart';
 
 class ReportPage extends StatefulWidget {
   static const ROUTE_NAME = '/lapor_page';
+
+  const ReportPage({Key? key}) : super(key: key);
 
   @override
   _ReportPageState createState() => _ReportPageState();
@@ -78,7 +80,7 @@ class _OnWelcome extends StatelessWidget {
           ),
         ),
         Container(
-          padding: const EdgeInsets.only(top: 30, left: 15, right: 15),
+          padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
           child: Center(
             child: Text(
               'Buat Laporan',
@@ -106,7 +108,10 @@ class _OnWelcome extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
                     'Silahkan login untuk mengakses semua fitur dari aplikasi LAPOR HOAX ',
-                    style: Theme.of(context).textTheme.caption,
+                    style: Theme.of(context).textTheme.caption!.copyWith(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? darkCaption
+                            : caption),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -191,7 +196,10 @@ class _OnLaporState extends State<_OnLapor> {
                       children: [
                         Text(
                           'Screenshoot',
-                          style: Theme.of(context).textTheme.bodyText2,
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                         const SizedBox(height: 10),
                         Row(
@@ -210,7 +218,7 @@ class _OnLaporState extends State<_OnLapor> {
                                 },
                                 icon: Icon(
                                   Icons.image,
-                                  color: isDark ? Colors.white : Colors.black,
+                                  color: isDark ? Colors.black : Colors.white,
                                 ),
                               ),
                             ),
@@ -229,7 +237,7 @@ class _OnLaporState extends State<_OnLapor> {
                                 },
                                 icon: Icon(
                                   Icons.camera_alt,
-                                  color: isDark ? Colors.white : Colors.black,
+                                  color: isDark ? Colors.black : Colors.white,
                                 ),
                               ),
                             ),
@@ -247,7 +255,10 @@ class _OnLaporState extends State<_OnLapor> {
                         const SizedBox(height: 20),
                         Text(
                           'Url / Link',
-                          style: Theme.of(context).textTheme.bodyText2,
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                         const SizedBox(height: 10),
                         TextField(
@@ -265,7 +276,10 @@ class _OnLaporState extends State<_OnLapor> {
                         const SizedBox(height: 20),
                         Text(
                           'Kategori',
-                          style: Theme.of(context).textTheme.bodyText2,
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                         const SizedBox(height: 10),
                         BlocBuilder<ReportCubit, ReportState>(
@@ -308,7 +322,10 @@ class _OnLaporState extends State<_OnLapor> {
                         const SizedBox(height: 20),
                         Text(
                           'Deskripsi laporan ( Opsional )',
-                          style: Theme.of(context).textTheme.bodyText2,
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                         const SizedBox(height: 10),
                         TextField(
@@ -330,7 +347,15 @@ class _OnLaporState extends State<_OnLapor> {
                               },
                               value: _anonym,
                             ),
-                            Text('Lapor Secara Anonim'),
+                            Text(
+                              'Lapor Secara Anonim',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
                           ],
                         ),
                         SizedBox(
@@ -405,20 +430,16 @@ class _ReportPageFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        return Navigation.intentWithData(
-            HistoryPage.ROUTE_NAME, TokenId(data.userid, data.token));
-      },
-      child: Container(
-        margin: const EdgeInsets.only(top: 10),
-        child: Center(
-          child: Text(
-            'Lihat riwayat pelaporan',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: orangeBlaze,
-            ),
+    return SizedBox(
+      width: double.infinity,
+      child: TextButton(
+        onPressed: () => Navigation.intentWithData(
+            HistoryPage.ROUTE_NAME, TokenId(data.userid, data.token)),
+        child: Text(
+          'Lihat riwayat pelaporan',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: orangeBlaze,
           ),
         ),
       ),
