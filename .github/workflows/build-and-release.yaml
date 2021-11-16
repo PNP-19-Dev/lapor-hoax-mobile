@@ -33,10 +33,10 @@ jobs:
           gpg -d --passphrase "${{ secrets.GOOGLE_SERVICES_PASSPHRASE }}" --batch google-services.json.asc > android/app/google-services.json
       - name: Install pub Dependencies
         run: flutter pub get
-      - name: Generate launcher icons
-        run: flutter pub run flutter_launcher_icons:main
-      - name: Generate splashscreen
-        run: flutter pub run flutter_native_splash:create
+#      - name: Generate launcher icons
+#        run: flutter pub run flutter_launcher_icons:main
+#      - name: Generate splashscreen
+#        run: flutter pub run flutter_native_splash:create
       - name: Run Tests
         run: flutter test
       #      - name: Build Android App
