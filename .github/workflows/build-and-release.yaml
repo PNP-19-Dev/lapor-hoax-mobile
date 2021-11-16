@@ -25,8 +25,8 @@ jobs:
         with:
           ndk-version: r21e
       - name: Set NDK Env
-        env : 
-          ANDROID_NDK_HOME = ${{ steps.setup-ndk.outputs.ndk-path }}  
+        run: |
+          echo "ANDROID_NDK_HOME=${{ steps.setup-ndk.outputs.ndk-path }}" >> $GITHUB_ENV
       - name: Set up Flutter
         uses: subosito/flutter-action@v1
         with:
