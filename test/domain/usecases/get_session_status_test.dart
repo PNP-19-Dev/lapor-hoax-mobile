@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.57
+ */
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laporhoax/domain/usecases/get_session_status.dart';
 import 'package:mockito/mockito.dart';

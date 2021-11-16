@@ -1,6 +1,11 @@
+/*
+ * Created by andii on 12/11/21 22.48
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.43
+ */
+
 import 'package:equatable/equatable.dart';
 
-// ignore: must_be_immutable
 class Question extends Equatable {
   Question({
     required this.id,

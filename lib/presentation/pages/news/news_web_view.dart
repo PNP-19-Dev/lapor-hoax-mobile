@@ -1,19 +1,21 @@
+/*
+ * Created by andii on 16/11/21 09.46
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 16/11/21 09.19
+ */
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
-import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
+import 'package:laporhoax/presentation/provider/detail_cubit.dart';
+import 'package:laporhoax/presentation/provider/item_cubit.dart';
 import 'package:laporhoax/styles/colors.dart';
-import 'package:laporhoax/utils/state_enum.dart';
+import 'package:laporhoax/utils/navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
-class NewsWebViewData {
-  final id;
-
-  NewsWebViewData(this.id);
-}
 
 class NewsWebView extends StatefulWidget {
   static const ROUTE_NAME = '/news_web_view';
@@ -26,64 +28,34 @@ class NewsWebView extends StatefulWidget {
 }
 
 class _NewsWebViewState extends State<NewsWebView> {
+  void showSnackBar(BuildContext context, String message) =>
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
+
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      Provider.of<NewsDetailNotifier>(context, listen: false)
-          .fetchFeedDetail(widget.id);
-      Provider.of<NewsDetailNotifier>(context, listen: false)
-          .loadFeedStatus(widget.id);
-    });
+    context.read<DetailCubit>().fetchDetail(widget.id);
+    context.read<ItemCubit>().getStatus(widget.id);
   }
 
   final _key = UniqueKey();
   bool isLoading = true;
+  bool isError = false;
+  String message = '';
 
-  @override
-  Widget build(BuildContext context) {
-    return CustomScaffold(
-      body: Stack(
-        children: [
-          WebView(
-            key: _key,
-            initialUrl: '${RemoteDataSourceImpl.baseUrl}/news/${widget.id}',
-            javascriptMode: JavascriptMode.unrestricted,
-            onPageFinished: (finish) {
-              setState(() {
-                isLoading = false;
-              });
-            },
-          ),
-          isLoading
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Stack(),
-        ],
-      ),
-    );
-  }
-}
-
-class CustomScaffold extends StatelessWidget {
-  final Widget body;
-
-  CustomScaffold({required this.body});
-
-  Widget _buildShortAppBar(
-      BuildContext context, Feed feed, bool isAddedToFeedlist) {
+  Widget _buildShortAppBar(BuildContext context, Feed feed) {
     return Card(
       elevation: 3,
       margin: EdgeInsets.all(0),
       child: Container(
         height: 60,
         child: Row(
-          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             IconButton(
               icon: Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigation.back(),
             ),
             Expanded(
               child: Text(
@@ -93,45 +65,43 @@ class CustomScaffold extends StatelessWidget {
             ),
             Row(
               children: [
-                IconButton(
-                  onPressed: () async {
-                    if (!isAddedToFeedlist) {
-                      await Provider.of<NewsDetailNotifier>(
-                        context,
-                        listen: false,
-                      ).storeFeed(feed);
-                    } else {
-                      await Provider.of<NewsDetailNotifier>(
-                        context,
-                        listen: false,
-                      ).deleteFeed(feed);
+                BlocConsumer<ItemCubit, ItemState>(
+                  listener: (context, state) {
+                    if (state is ItemSaved) {
+                      showSnackBar(context, state.message);
+                    } else if (state is ItemRemoved) {
+                      showSnackBar(context, state.message);
                     }
 
-                    final message =
-                        Provider.of<NewsDetailNotifier>(context, listen: false)
-                            .saveMessage;
-
-                    if (message == NewsDetailNotifier.feedSavedMessage ||
-                        message == NewsDetailNotifier.feedRemovedMessage) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text(message)));
-                    } else {
+                    if (state is ItemSaveError) {
                       showDialog(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              content: Text(message),
+                              content: Text(state.message),
                             );
                           });
                     }
                   },
-                  icon: isAddedToFeedlist
-                      ? Icon(Icons.bookmark, color: orangeBlaze)
-                      : Icon(Icons.bookmark_outline, color: orangeBlaze),
+                  builder: (context, state) {
+                    if (state is ItemIsSave || state is ItemSaved) {
+                      return IconButton(
+                          onPressed: () =>
+                              context.read<ItemCubit>().removeFeed(feed),
+                          icon: Icon(Icons.bookmark, color: orangeBlaze));
+                    } else if (state is ItemUnsaved || state is ItemRemoved) {
+                      return IconButton(
+                        onPressed: () =>
+                            context.read<ItemCubit>().saveFeed(feed),
+                        icon: Icon(Icons.bookmark_outline, color: orangeBlaze),
+                      );
+                    } else
+                      return Container();
+                  },
                 ),
                 IconButton(
                   onPressed: () => Share.share(
-                      'Ada berita di laporhoax ${RemoteDataSourceImpl.baseUrl}/pages/${feed.id}'),
+                      'Ada berita di laporhoax $baseUrl/pages/${feed.id}'),
                   icon: SvgPicture.asset('assets/icons/share.svg'),
                 )
               ],
@@ -145,23 +115,52 @@ class CustomScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<NewsDetailNotifier>(builder: (context, data, child) {
-        if (data.feedState == RequestState.Loading) {
+      body: BlocBuilder<DetailCubit, DetailState>(builder: (context, state) {
+        if (state is DetailLoading) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (data.feedState == RequestState.Loaded) {
+        } else if (state is DetailHasData) {
           return SafeArea(
             child: Stack(
               children: [
-                body,
-                _buildShortAppBar(context, data.feed, data.isAddedtoSavedFeed),
+                Stack(
+                  children: [
+                    WebView(
+                      key: _key,
+                      initialUrl: '$baseUrl/news/${widget.id}',
+                      javascriptMode: JavascriptMode.unrestricted,
+                      onPageFinished: (finish) {
+                        setState(() {
+                          isLoading = false;
+                        });
+                      },
+                      onWebResourceError: ((error) {
+                        setState(() {
+                          isError = true;
+                          message = '${error.errorCode} ${error.description}';
+                        });
+                      }),
+                    ),
+                    isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : isError
+                            ? Center(
+                                child: Text(message),
+                              )
+                            : Stack(),
+                  ],
+                ),
+                _buildShortAppBar(context, state.data),
               ],
             ),
           );
-        } else {
-          return Center(child: Text(data.message));
-        }
+        } else if (state is DetailError) {
+          return Center(child: Text(state.message));
+        } else
+          return Container(key: Key('empty_news_detail'));
       }),
     );
   }

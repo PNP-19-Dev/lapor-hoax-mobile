@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -11,7 +17,7 @@ void main() {
       id: 59,
       url: "www.aslihoax.com",
       img:
-          "https://django-lapor-hoax.s3.amazonaws.com/reports/Capture.PNG?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=6eGLu1R0U3qsyUf5sb%2B2up%2B9DzU%3D&Expires=1634827154",
+      "https://django-lapor-hoax.s3.amazonaws.com/reports/Capture.PNG?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=6eGLu1R0U3qsyUf5sb%2B2up%2B9DzU%3D&Expires=1634827154",
       category: "Isu SARA",
       status: "Selesai",
       isAnonym: false,
@@ -35,7 +41,7 @@ void main() {
     test('should return a valid model from JSON', () {
       // arrange
       final Map<String, dynamic> jsonMap =
-          jsonDecode(readJson('dummy_data/report.json'));
+      jsonDecode(readJson('dummy_data/report.json'));
       // act
       final result = ReportResponse.fromJson(jsonMap);
       // assert
@@ -59,7 +65,7 @@ void main() {
             "id": 59,
             "url": "www.aslihoax.com",
             "img":
-                "https://django-lapor-hoax.s3.amazonaws.com/reports/Capture.PNG?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=6eGLu1R0U3qsyUf5sb%2B2up%2B9DzU%3D&Expires=1634827154",
+            "https://django-lapor-hoax.s3.amazonaws.com/reports/Capture.PNG?AWSAccessKeyId=AKIAXSGIDQGEESDBZHGJ&Signature=6eGLu1R0U3qsyUf5sb%2B2up%2B9DzU%3D&Expires=1634827154",
             "category": "Isu SARA",
             "status": "Selesai",
             "isAnonym": false,

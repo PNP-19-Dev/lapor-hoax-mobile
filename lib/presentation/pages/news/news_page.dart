@@ -1,14 +1,21 @@
+/*
+ * Created by andii on 16/11/21 09.46
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 16/11/21 09.28
+ */
+
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
-import 'package:laporhoax/presentation/pages/account/tutorial_page.dart';
 import 'package:laporhoax/presentation/pages/report/report_page.dart';
-import 'package:laporhoax/presentation/provider/feed_notifier.dart';
+import 'package:laporhoax/presentation/pages/static/tutorial_page.dart';
+import 'package:laporhoax/presentation/provider/feed_cubit.dart';
 import 'package:laporhoax/styles/colors.dart';
 import 'package:laporhoax/utils/datetime_helper.dart';
 import 'package:laporhoax/utils/navigation.dart';
-import 'package:laporhoax/utils/state_enum.dart';
 import 'package:provider/provider.dart';
 
 import 'news_web_view.dart';
@@ -21,11 +28,12 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
+
+
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-        () => Provider.of<FeedNotifier>(context, listen: false)..fetchFeeds());
+    context.read<FeedCubit>().fetchFeeds();
   }
 
   @override
@@ -33,118 +41,72 @@ class _NewsPageState extends State<NewsPage> {
     return CustomScrollView(
       slivers: <Widget>[
         SliverAppBar(
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
           title: Text(
             'LAPOR HOAX',
-            style: Theme.of(context)
+            style: Theme
+                .of(context)
                 .textTheme
-                .headline5!
-                .copyWith(color: Colors.black),
+                .headline5!,
           ),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Image.asset('assets/icons/logo_new.png', width: 60),
           ),
-          actions: [
-            /*IconButton(
+/*          actions: [
+            IconButton(
               onPressed: () {},
               icon: Icon(
                 Icons.notifications_none,
                 color: orangeBlaze,
               ),
-            ),*/
-          ],
+            ),
+          ],*/
         ),
         SliverToBoxAdapter(
-          child: Container(
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
-            child: Card(
-              borderOnForeground: true,
-              color: orange200,
-              child: Container(
-                width: double.infinity,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Udah nemuin \nHoax?',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        ElevatedButton(
-                          onPressed: () =>
-                              Navigation.intent(ReportPage.ROUTE_NAME),
-                          child: Text('Lapor yuk!'),
-                        ),
-                      ],
-                    ),
-                    SvgPicture.asset(
-                      'assets/illustration/reporting_illust.svg',
-                      width: 120,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          child: _BannerCard(),
         ),
-        SliverToBoxAdapter(
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Card(
-              child: ListTile(
-                onTap: () => Navigation.intent(TutorialPage.ROUTE_NAME),
-                leading: Icon(Icons.menu_book_sharp),
-                title: Text(
-                  'Tutorial Penggunaan',
-                  style: Theme.of(context).textTheme.subtitle2,
-                ),
-                trailing: Icon(Icons.chevron_right),
-              ),
-            ),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              'Berita',
-              style: Theme.of(context).textTheme.headline6,
-            ),
-          ),
-        ),
-        Consumer<FeedNotifier>(
-          builder: (context, data, child) {
-            final state = data.feedState;
-            if (state == RequestState.Loading) {
+        BlocBuilder<FeedCubit, FeedState>(
+          builder: (context, state) {
+            if (state is FeedLoading) {
               return SliverToBoxAdapter(
+                key: Key('loading_widget'),
                 child: Container(
+                  padding: const EdgeInsets.only(top: 100),
                   child: Center(
                     child: CircularProgressIndicator(),
                   ),
                 ),
               );
-            } else if (state == RequestState.Loaded) {
-              return FeedList(data.feeds);
-            } else {
+            } else if (state is FeedHasData) {
+              return _FeedList(
+                state.data,
+                key: Key('home_feed_items'),
+              );
+            } else if (state is FeedError) {
               return SliverList(
+                key: Key('home_feed_error'),
                 delegate: SliverChildListDelegate([
+                  SizedBox(height: 100),
                   Icon(
                     Icons.error,
                     size: 30,
                     color: grey200,
                   ),
                   Text(
-                    'Something Went wrong',
-                    style: Theme.of(context).textTheme.bodyText2,
+                    '${state.message}',
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyText2,
+                    textAlign: TextAlign.center,
                   ),
-                  Text('${data.message}'),
                 ]),
+              );
+            } else {
+              return SliverToBoxAdapter(
+                child: Container(
+                  key: Key('news_page_init'),
+                ),
               );
             }
           },
@@ -154,22 +116,23 @@ class _NewsPageState extends State<NewsPage> {
   }
 }
 
-class FeedList extends StatelessWidget {
+class _FeedList extends StatelessWidget {
   final List<Feed> feeds;
 
-  FeedList(this.feeds);
+  _FeedList(this.feeds, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SliverGrid(
       gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       delegate: SliverChildBuilderDelegate(
-        (_, index) {
+            (_, index) {
           var feed = feeds[index];
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
+              key: Key('news_card'),
               onTap: () =>
                   Navigation.intentWithData(NewsWebView.ROUTE_NAME, feed.id),
               child: Card(
@@ -179,16 +142,20 @@ class FeedList extends StatelessWidget {
                 ),
                 elevation: 4,
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.5,
                   child: Stack(
                     alignment: Alignment.bottomLeft,
                     fit: StackFit.passthrough,
                     children: [
                       CachedNetworkImage(
                         imageUrl: feed.thumbnail!,
-                        placeholder: (_, url) => Center(
-                          child: CircularProgressIndicator(),
-                        ),
+                        placeholder: (_, url) =>
+                            Center(
+                              child: CircularProgressIndicator(),
+                            ),
                         errorWidget: (_, url, error) => Icon(Icons.error),
                         fit: BoxFit.fill,
                       ),
@@ -216,12 +183,17 @@ class FeedList extends StatelessWidget {
                         child: Text(
                           feed.title!,
                           softWrap: true,
-                          overflow: TextOverflow.clip,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
                           style:
-                              Theme.of(context).textTheme.bodyText2!.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          Theme
+                              .of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       Positioned(
@@ -237,12 +209,13 @@ class FeedList extends StatelessWidget {
                             SizedBox(width: 4),
                             Text(
                               DateTimeHelper.formattedDate(feed.date!),
-                              style: Theme.of(context)
+                              style: Theme
+                                  .of(context)
                                   .textTheme
                                   .overline!
                                   .copyWith(
-                                    color: Colors.white,
-                                  ),
+                                color: Colors.white,
+                              ),
                             ),
                           ],
                         ),
@@ -256,6 +229,96 @@ class FeedList extends StatelessWidget {
         },
         childCount: feeds.length,
       ),
+    );
+  }
+}
+
+class _BannerCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+          child: Card(
+            borderOnForeground: true,
+            color: orange200,
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Udah nemuin \nHoax?',
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headline6!
+                            .copyWith(color: Colors.black),
+                      ),
+                      SizedBox(height:20),
+                      ElevatedButton(
+                        key: Key('button_to_report'),
+                        onPressed: () =>
+                            Navigation.intent(ReportPage.ROUTE_NAME),
+                        child: Text(
+                          'Lapor yuk!',
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .button!
+                              .copyWith(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SvgPicture.asset(
+                    'assets/illustration/reporting_illust.svg',
+                    width: 120,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          child: Card(
+            elevation: 4,
+            clipBehavior: Clip.hardEdge,
+            child: ListTile(
+              key: Key('how_to_use'),
+              onTap: () => Navigation.intent(TutorialPage.ROUTE_NAME),
+              leading: Icon(Icons.menu_book_sharp),
+              title: Text(
+                'Tutorial Penggunaan',
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .subtitle2,
+              ),
+              trailing: Icon(Icons.chevron_right),
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            'Berita',
+            style: Theme
+                .of(context)
+                .textTheme
+                .headline6,
+          ),
+        ),
+      ],
     );
   }
 }

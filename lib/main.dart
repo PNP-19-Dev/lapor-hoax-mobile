@@ -1,12 +1,15 @@
-import 'package:firebase_app_check/firebase_app_check.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
+/*
+ * Created by andii on 16/11/21 01.03
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 16/11/21 00.14
+ */
+
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/domain/entities/user.dart';
+import 'package:laporhoax/firebase_impl.dart' as fire;
 import 'package:laporhoax/injection.dart' as di;
 import 'package:laporhoax/presentation/pages/account/account_page.dart';
 import 'package:laporhoax/presentation/pages/account/change_user_question.dart';
@@ -16,7 +19,6 @@ import 'package:laporhoax/presentation/pages/account/on_register_success.dart';
 import 'package:laporhoax/presentation/pages/account/password_change_page.dart';
 import 'package:laporhoax/presentation/pages/account/profile_page.dart';
 import 'package:laporhoax/presentation/pages/account/register_page.dart';
-import 'package:laporhoax/presentation/pages/account/tutorial_page.dart';
 import 'package:laporhoax/presentation/pages/account/user_challenge.dart';
 import 'package:laporhoax/presentation/pages/home_page.dart';
 import 'package:laporhoax/presentation/pages/news/news_web_view.dart';
@@ -25,57 +27,31 @@ import 'package:laporhoax/presentation/pages/report/detail_report_page.dart';
 import 'package:laporhoax/presentation/pages/report/history_page.dart';
 import 'package:laporhoax/presentation/pages/report/on_loading_report.dart';
 import 'package:laporhoax/presentation/pages/report/report_page.dart';
-import 'package:laporhoax/presentation/provider/feed_notifier.dart';
-import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
-import 'package:laporhoax/presentation/provider/question_notifier.dart';
-import 'package:laporhoax/presentation/provider/report_notifier.dart';
-import 'package:laporhoax/presentation/provider/saved_news_notifier.dart';
-import 'package:laporhoax/presentation/provider/user_notifier.dart';
+import 'package:laporhoax/presentation/pages/static/about_page.dart';
+import 'package:laporhoax/presentation/pages/static/static_page_viewer.dart';
+import 'package:laporhoax/presentation/pages/static/tutorial_page.dart';
+import 'package:laporhoax/presentation/provider/about_cubit.dart';
+import 'package:laporhoax/presentation/provider/account_cubit.dart';
+import 'package:laporhoax/presentation/provider/detail_cubit.dart';
+import 'package:laporhoax/presentation/provider/feed_cubit.dart';
+import 'package:laporhoax/presentation/provider/history_cubit.dart';
+import 'package:laporhoax/presentation/provider/item_cubit.dart';
+import 'package:laporhoax/presentation/provider/login_cubit.dart';
+import 'package:laporhoax/presentation/provider/password_cubit.dart';
+import 'package:laporhoax/presentation/provider/profile_cubit.dart';
+import 'package:laporhoax/presentation/provider/question_cubit.dart';
+import 'package:laporhoax/presentation/provider/register_cubit.dart';
+import 'package:laporhoax/presentation/provider/report_cubit.dart';
+import 'package:laporhoax/presentation/provider/saved_feed_cubit.dart';
 import 'package:laporhoax/styles/theme.dart';
 import 'package:laporhoax/utils/navigation.dart';
 import 'package:laporhoax/utils/route_observer.dart';
-import 'package:laporhoax/utils/static_page_viewer.dart';
 import 'package:provider/provider.dart';
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  print('Handling a background message ${message.messageId}');
-  print('MESSAGE: ${message.data}');
-}
-
-late AndroidNotificationChannel channel;
-late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  fire.init();
   di.init();
-  await Firebase.initializeApp();
-  await FirebaseAppCheck.instance
-      .activate(webRecaptchaSiteKey: "312A80DA-78AF-4315-BF63-33DB9B315F4A");
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  if (!kIsWeb) {
-    channel = const AndroidNotificationChannel(
-      'high_importance_channel', // id
-      'High Importance Notifications', // title
-      importance: Importance.high,
-    );
-
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
-
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-  }
-
   runApp(MyApp());
 }
 
@@ -85,29 +61,51 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => di.locator<FeedNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<FeedCubit>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<NewsDetailNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<SavedFeedCubit>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<SavedNewsNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<ReportCubit>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<ReportNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<PasswordCubit>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<UserNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<QuestionCubit>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<QuestionNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<HistoryCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<DetailCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<ItemCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<LoginCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<AccountCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<RegisterCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<AboutCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<ProfileCubit>(),
         ),
       ],
       child: MaterialApp(
         title: 'Lapor Hoax',
         theme: mainTheme,
-        themeMode: ThemeMode.light,
+        darkTheme: darkTheme,
+        themeMode: ThemeMode.system,
         navigatorKey: navigatorKey,
         home: HomePage(),
         navigatorObservers: [routeObserver],
@@ -150,7 +148,8 @@ class MyApp extends StatelessWidget {
                 return HistoryPage(tokenId: tokenId);
               });
             case ReportPage.ROUTE_NAME:
-              return MaterialPageRoute(builder: (_) => ReportPage());
+              return MaterialPageRoute(
+                  builder: (_) => ReportPage(key: Key('report_page')));
             case OnSuccessReport.ROUTE_NAME:
               return MaterialPageRoute(builder: (_) {
                 final reportItem = settings.arguments as Report;
@@ -184,6 +183,8 @@ class MyApp extends StatelessWidget {
                   builder: (_) => OnRegisterSuccess(
                         settings.arguments as String,
                       ));
+            case About.routeName:
+              return MaterialPageRoute(builder: (_) => About());
             default:
               return MaterialPageRoute(builder: (_) {
                 return Scaffold(

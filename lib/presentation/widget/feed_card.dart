@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
@@ -93,8 +99,8 @@ class _Description extends StatelessWidget {
           Text(
             title,
             style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  color: Colors.black,
-                ),
+              color: Colors.black,
+            ),
           ),
           const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
           Row(
@@ -106,8 +112,8 @@ class _Description extends StatelessWidget {
               Text(
                 DateTimeHelper.formattedDate(date),
                 style: Theme.of(context).textTheme.overline!.copyWith(
-                      color: Color(0xFFBABABA),
-                    ),
+                  color: Color(0xFFBABABA),
+                ),
               ),
             ],
           ),

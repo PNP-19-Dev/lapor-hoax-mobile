@@ -1,8 +1,12 @@
-import 'dart:io';
+/*
+ * Created by andii on 14/11/21 14.07
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 14/11/21 12.38
+ */
 
 import 'package:data_connection_checker/data_connection_checker.dart';
-import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:laporhoax/data/datasources/api/dio_client.dart';
 import 'package:laporhoax/data/datasources/db/database_helper.dart';
 import 'package:laporhoax/data/datasources/local_data_source.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
@@ -29,12 +33,19 @@ import 'package:laporhoax/domain/usecases/post_user_challenge.dart';
 import 'package:laporhoax/domain/usecases/remove_session_data.dart';
 import 'package:laporhoax/domain/usecases/save_feed.dart';
 import 'package:laporhoax/domain/usecases/save_session_data.dart';
-import 'package:laporhoax/presentation/provider/feed_notifier.dart';
-import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
-import 'package:laporhoax/presentation/provider/question_notifier.dart';
-import 'package:laporhoax/presentation/provider/report_notifier.dart';
-import 'package:laporhoax/presentation/provider/saved_news_notifier.dart';
-import 'package:laporhoax/presentation/provider/user_notifier.dart';
+import 'package:laporhoax/presentation/provider/about_cubit.dart';
+import 'package:laporhoax/presentation/provider/account_cubit.dart';
+import 'package:laporhoax/presentation/provider/detail_cubit.dart';
+import 'package:laporhoax/presentation/provider/feed_cubit.dart';
+import 'package:laporhoax/presentation/provider/history_cubit.dart';
+import 'package:laporhoax/presentation/provider/item_cubit.dart';
+import 'package:laporhoax/presentation/provider/login_cubit.dart';
+import 'package:laporhoax/presentation/provider/password_cubit.dart';
+import 'package:laporhoax/presentation/provider/profile_cubit.dart';
+import 'package:laporhoax/presentation/provider/question_cubit.dart';
+import 'package:laporhoax/presentation/provider/register_cubit.dart';
+import 'package:laporhoax/presentation/provider/report_cubit.dart';
+import 'package:laporhoax/presentation/provider/saved_feed_cubit.dart';
 import 'package:laporhoax/utils/network_info_impl.dart';
 
 import 'data/datasources/preferences/preferences_helper.dart';
@@ -45,50 +56,78 @@ import 'domain/usecases/remove_feed.dart';
 final locator = GetIt.instance;
 
 void init() {
-  // provider
+  // bloc
   locator.registerFactory(
-    () => FeedNotifier(getFeeds: locator()),
+    () => AboutCubit(),
   );
   locator.registerFactory(
-    () => ReportNotifier(
-      getReports: locator(),
-      postReport: locator(),
-      deleteReport: locator(),
-      getCategories: locator(),
+    () => FeedCubit(locator()),
+  );
+  locator.registerFactory(
+    () => SavedFeedCubit(locator()),
+  );
+  locator.registerFactory(
+    () => HistoryCubit(
+      locator(),
+      locator(),
     ),
   );
   locator.registerFactory(
-    () => UserNotifier(
-      getUser: locator(),
-      getPasswordReset: locator(),
-      postFCMToken: locator(),
-      postChangePassword: locator(),
-      postUserChallenge: locator(),
-      removeSessionData: locator(),
-      saveSessionData: locator(),
-      getSessionData: locator(),
-      getSessionStatus: locator(),
-      postLogin: locator(),
-      postRegister: locator(),
-      putFCMToken: locator(),
+    () => LoginCubit(
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
     ),
   );
   locator.registerFactory(
-    () => QuestionNotifier(
-      getQuestions: locator(),
-      getUserChallenge: locator(),
+        () => AccountCubit(
+      locator(),
     ),
   );
   locator.registerFactory(
-    () => NewsDetailNotifier(
-      getFeedSaveStatus: locator(),
-      removeFeed: locator(),
-      saveFeed: locator(),
-      getFeedDetail: locator(),
+    () => RegisterCubit(
+      locator(),
+      locator(),
     ),
   );
   locator.registerFactory(
-    () => SavedNewsNotifier(getSavedFeeds: locator()),
+    () => PasswordCubit(
+      locator(),
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => QuestionCubit(
+      locator(),
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => ReportCubit(
+      locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => DetailCubit(
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+        () => ProfileCubit(
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => ItemCubit(
+      locator(),
+      locator(),
+      locator(),
+    ),
   );
 
   // use case
@@ -128,7 +167,7 @@ void init() {
 
   // data sources
   locator.registerLazySingleton<RemoteDataSource>(
-    () => RemoteDataSourceImpl(dio: locator()),
+    () => RemoteDataSourceImpl(client: locator()),
   );
   locator.registerLazySingleton<LocalDataSource>(
     () => LocalDataSourceImpl(
@@ -147,16 +186,6 @@ void init() {
   locator.registerLazySingleton<PreferencesHelper>(() => PreferencesHelper());
 
   // external
-  locator.registerLazySingleton(() {
-    return Dio()
-      ..options.headers.addAll({
-        HttpHeaders.acceptHeader: '*/*',
-        HttpHeaders.acceptEncodingHeader: 'gzip, deflate, br'
-      })
-      ..options.baseUrl = RemoteDataSourceImpl.baseUrl
-      ..options.sendTimeout = 60 * 1000
-      ..options.validateStatus = (int? status) => status != null && status > 0;
-    // ..interceptors.add(LogInterceptor())
-  });
+  locator.registerLazySingleton(() => DioClient(baseUrl));
   locator.registerLazySingleton(() => DataConnectionChecker());
 }

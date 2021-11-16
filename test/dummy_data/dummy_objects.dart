@@ -1,9 +1,16 @@
+/*
+ * Created by andii on 14/11/21 10.32
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 14/11/21 08.28
+ */
+
 import 'package:laporhoax/data/models/category_model.dart';
 import 'package:laporhoax/data/models/category_table.dart';
 import 'package:laporhoax/data/models/feed_model.dart';
 import 'package:laporhoax/data/models/feed_table.dart';
 import 'package:laporhoax/data/models/question_model.dart';
 import 'package:laporhoax/data/models/question_table.dart';
+import 'package:laporhoax/data/models/register.dart';
 import 'package:laporhoax/data/models/register_model.dart';
 import 'package:laporhoax/data/models/register_response.dart';
 import 'package:laporhoax/data/models/report_model.dart';
@@ -13,7 +20,6 @@ import 'package:laporhoax/data/models/user_token_model.dart';
 import 'package:laporhoax/domain/entities/category.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/domain/entities/question.dart';
-import 'package:laporhoax/domain/entities/register.dart';
 import 'package:laporhoax/domain/entities/register_data.dart';
 import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
@@ -90,7 +96,7 @@ final testSessionData = SessionData(
   expiry: "expiry",
   userid: 1,
   email: "email",
-  username: 'useranme',
+  username: 'username',
 );
 
 final testUserChallenge = UserQuestion(
@@ -113,11 +119,27 @@ final testUserChallengeModel = UserQuestionModel(
   ans3: "ans3",
 );
 
+final testUserChallengeFromJson = UserQuestionModel(
+  user: "AnonymousUser",
+  quest1: 1,
+  quest2: 2,
+  quest3: 3,
+  ans1: "a",
+  ans2: "a",
+  ans3: "a",
+);
+
 final testUser = User(
   id: 1,
   username: "username",
   email: "email",
 );
+
+final testUserMap = {
+  "id": 1,
+  "username": "username",
+  "email": "email",
+};
 
 final testUserModel = UserModel(
   id: 1,

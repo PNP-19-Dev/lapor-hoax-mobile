@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
@@ -30,15 +36,15 @@ void main() {
   group('PostReport Test', () {
     group('execute', () {
       test("should get report callback when execute function is called",
-          () async {
-        // arrange
-        when(mockRepository.postReport(tToken, reportRequestTest))
-            .thenAnswer((_) async => Right(testReport));
-        // act
-        final result = await usecase.execute(tToken, reportRequestTest);
-        // assert
-        expect(result, Right(testReport));
-      });
+              () async {
+            // arrange
+            when(mockRepository.postReport(tToken, reportRequestTest))
+                .thenAnswer((_) async => Right(testReport));
+            // act
+            final result = await usecase.execute(tToken, reportRequestTest);
+            // assert
+            expect(result, Right(testReport));
+          });
     });
   });
 }

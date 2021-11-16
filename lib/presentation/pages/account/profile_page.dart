@@ -1,10 +1,16 @@
+/*
+ * Created by andii on 14/11/21 14.07
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 14/11/21 14.05
+ */
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:laporhoax/presentation/pages/account/account_page.dart';
 import 'package:laporhoax/presentation/pages/account/change_user_question.dart';
 import 'package:laporhoax/presentation/pages/account/password_change_page.dart';
-import 'package:laporhoax/presentation/provider/user_notifier.dart';
-import 'package:laporhoax/styles/colors.dart';
+import 'package:laporhoax/presentation/provider/profile_cubit.dart';
 import 'package:laporhoax/utils/navigation.dart';
-import 'package:laporhoax/utils/state_enum.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -22,137 +28,101 @@ class _ProfilePageState extends State<ProfilePage> {
   final _formKey = GlobalKey<FormState>();
   var _usernameController = TextEditingController();
   var _emailController = TextEditingController();
+  int _id = 0;
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => Provider.of<UserNotifier>(context, listen: false)
-      ..getUserData(widget.email));
+    context.read<ProfileCubit>().getData(widget.email);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        title: Text('Profil'),
-      ),
-      body: Consumer<UserNotifier>(
-        builder: (_, data, child) {
-          if (data.userState == RequestState.Loading) {
-            return Center(child: CircularProgressIndicator());
-          } else if (data.userState == RequestState.Loaded) {
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 15),
-                      padding: const EdgeInsets.all(16.0),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        shape: BoxShape.circle,
+    return BlocListener<ProfileCubit, ProfileState>(
+      listener: (context, state) {
+        if (state is ProfileDataFetched) {
+          _usernameController.text = state.user.username;
+          _emailController.text = state.user.email;
+          _id = state.user.id;
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          title: Text('Profil'),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Username',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      BlocBuilder<ProfileCubit, ProfileState>(
+                        builder: (context, state) {
+                          return TextFormField(
+                            controller: _usernameController,
+                            keyboardType: TextInputType.text,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              hintText: state is ProfileGetData
+                                  ? 'Mendapatkan data'
+                                  : state is ProfileDataError
+                                      ? state.message
+                                      : '',
+                            ),
+                          );
+                        },
                       ),
-                      child: Icon(Icons.person, size: 100),
-                    ),
+                      SizedBox(height: 10),
+                      Text('Email',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      BlocBuilder<ProfileCubit, ProfileState>(
+                        builder: (context, state) {
+                          return TextFormField(
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              hintText: state is ProfileGetData
+                                  ? 'Mendapatkan data'
+                                  : state is ProfileDataError
+                                      ? state.message
+                                      : '',
+                            ),
+                          );
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      Divider(
+                        height: 10,
+                        color: Colors.blueGrey,
+                      ),
+                      SizedBox(height: 10),
+                      BuildCard(
+                        Icons.vpn_key_outlined,
+                        'Ubah Kata Sandi',
+                        () => Navigation.intent(PasswordChangePage.ROUTE_NAME),
+                      ),
+                      BuildCard(
+                        Icons.vpn_key_outlined,
+                        'Ubah Pertanyaan Keamanan',
+                        () => Navigation.intentWithData(
+                            ChangeUserQuestion.ROUTE_NAME, _id),
+                      ),
+                    ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Consumer<UserNotifier>(
-                      builder: (context, provider, widget) {
-                        var userData = provider.user;
-
-                        _usernameController.text = userData!.username;
-                        _emailController.text = userData.email;
-
-                        return Form(
-                          key: _formKey,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Username',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              TextFormField(
-                                controller: _usernameController,
-                                keyboardType: TextInputType.text,
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  hintText: 'Username',
-                                  icon: Icon(Icons.person_outline,
-                                      color: orangeBlaze),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Text('Email',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              TextFormField(
-                                controller: _emailController,
-                                keyboardType: TextInputType.emailAddress,
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  hintText: 'Email',
-                                  icon: Icon(Icons.email_outlined,
-                                      color: orangeBlaze),
-                                ),
-                              ),
-                              // TODO UBAH PERTANYAAN KEAMANAN
-                              SizedBox(
-                                width: double.infinity,
-                                child: ElevatedButton(
-                                  onPressed: () => Navigation.intentWithData(
-                                      ChangeUserQuestion.ROUTE_NAME,
-                                      userData.id),
-                                  child: Text('Ubah Pertanyaan Keamanan'),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              // TODO FIREBASE MESSAGING
-                              /* SizedBox(
-                                width: double.infinity,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    String? token = await FirebaseMessaging
-                                        .instance
-                                        .getToken();
-                                    print('FIREBASE token: $token');
-
-                                    if (token != null) {
-                                      provider.postToken(userData.id, token);
-                                    } else {
-                                      toast('error in firebase!');
-                                    }
-                                  },
-                                  child:
-                                      Text('Kirim Token Ke Server (DEV MODE)'),
-                                ),
-                              ),*/
-                              SizedBox(height: 10),
-                              SizedBox(
-                                width: double.infinity,
-                                child: ElevatedButton(
-                                  onPressed: () => Navigation.intent(
-                                      PasswordChangePage.ROUTE_NAME),
-                                  child: Text('Ganti Password'),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
+                ),
               ),
-            );
-          } else {
-            return Center(child: Icon(Icons.error));
-          }
-        },
+            ],
+          ),
+        ),
       ),
     );
   }

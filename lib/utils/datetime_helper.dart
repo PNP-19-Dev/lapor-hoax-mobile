@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:intl/intl.dart';
 
 class DateTimeHelper {
@@ -14,7 +20,7 @@ class DateTimeHelper {
   static DateTime formattedDateToken(String dateTime) {
     final input = dateTime.replaceAll('T', ' ');
     String data =
-        DateFormat('yyyy-MM-dd HH:mm:ss.SSS').format(DateTime.parse(input));
+    DateFormat('yyyy-MM-dd HH:mm:ss.SSS').format(DateTime.parse(input));
     return DateTime.parse(data);
   }
 }

@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.48
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.48
+ */
+
 import 'package:equatable/equatable.dart';
 import 'package:laporhoax/domain/entities/user.dart';
 
@@ -13,10 +19,10 @@ class UserModel extends Equatable {
   final String email;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: json["id"],
-        username: json["username"],
-        email: json["email"],
-      );
+    id: json["id"],
+    username: json["username"],
+    email: json["email"],
+  );
 
   User toEntity() => User(id: id, username: username, email: email);
 

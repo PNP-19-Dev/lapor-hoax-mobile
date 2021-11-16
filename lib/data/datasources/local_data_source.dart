@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 15/11/21 13.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 15/11/21 12.55
+ */
+
 import 'package:laporhoax/data/datasources/db/database_helper.dart';
 import 'package:laporhoax/data/datasources/preferences/preferences_helper.dart';
 import 'package:laporhoax/data/models/category_table.dart';
@@ -7,6 +13,12 @@ import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/utils/exception.dart';
 
 abstract class LocalDataSource {
+  static const String saveMessage = 'Feed Saved';
+  static const String removeMessage = 'Feed Removed';
+  static const String loginMessage = 'Session Saved';
+  static const String logoutMessage = 'Session Removed';
+  static const String cacheError = "Can't get the data :(";
+
   Future<String> insertFeed(FeedTable feed);
   Future<String> removeFeed(FeedTable feed);
   Future<FeedTable?> getFeedById(int id);
@@ -34,7 +46,7 @@ class LocalDataSourceImpl implements LocalDataSource {
   Future<String> insertFeed(FeedTable feed) async {
     try {
       await databaseHelper.insertNews(feed);
-      return 'Feed Saved';
+      return LocalDataSource.saveMessage;
     } catch (e) {
       throw DatabaseException(e.toString());
     }
@@ -44,7 +56,7 @@ class LocalDataSourceImpl implements LocalDataSource {
   Future<String> removeFeed(FeedTable feed) async {
     try {
       await databaseHelper.removeFeed(feed);
-      return 'Feed Removed';
+      return LocalDataSource.removeMessage;
     } catch (e) {
       throw DatabaseException(e.toString());
     }
@@ -101,7 +113,7 @@ class LocalDataSourceImpl implements LocalDataSource {
     preferencesHelper.setEmail(data.email);
     preferencesHelper.setUsername(data.username);
     preferencesHelper.setLogin(true);
-    return 'Session Saved';
+    return LocalDataSource.loginMessage;
   }
 
   @override
@@ -112,7 +124,7 @@ class LocalDataSourceImpl implements LocalDataSource {
     preferencesHelper.setEmail(null);
     preferencesHelper.setUsername(null);
     preferencesHelper.setLogin(false);
-    return 'Session Removed';
+    return LocalDataSource.logoutMessage;
   }
 
   @override
@@ -133,7 +145,7 @@ class LocalDataSourceImpl implements LocalDataSource {
     if (result.length > 0) {
       return result.map((data) => CategoryTable.fromMap(data)).toList();
     } else {
-      throw CacheException("Can't get the data :(");
+      throw CacheException(LocalDataSource.cacheError);
     }
   }
 
@@ -143,7 +155,7 @@ class LocalDataSourceImpl implements LocalDataSource {
     if (result.length > 0) {
       return result.map((data) => QuestionTable.fromMap(data)).toList();
     } else {
-      throw CacheException("Can't get the data :(");
+      throw CacheException(LocalDataSource.cacheError);
     }
   }
 }

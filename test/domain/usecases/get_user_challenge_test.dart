@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laporhoax/domain/usecases/get_user_challenge.dart';
@@ -19,15 +25,15 @@ void main() {
     group('execute', () {
       test(
           'should get user question answer list when execute function is called',
-          () async {
-        // arrange
-        when(mockRepository.getUserChallenge(1))
-            .thenAnswer((_) async => Right(testUserChallenge));
-        // act
-        final result = await usecase.execute(1);
-        // assert
-        expect(result, Right(testUserChallenge));
-      });
+              () async {
+            // arrange
+            when(mockRepository.getUserChallenge(1))
+                .thenAnswer((_) async => Right(testUserChallenge));
+            // act
+            final result = await usecase.execute(1);
+            // assert
+            expect(result, Right(testUserChallenge));
+          });
     });
   });
 }

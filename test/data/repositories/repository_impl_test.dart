@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 15/11/21 13.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 15/11/21 12.57
+ */
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,6 +18,7 @@ import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/utils/exception.dart';
 import 'package:laporhoax/utils/failure.dart';
+import 'package:laporhoax/utils/network_exceptions.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy_data/dummy_objects.dart';
@@ -61,12 +68,15 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.deleteReport(tToken, tId))
-          .thenThrow(ServerException('Cant Delete Report'));
+          .thenThrow(NetworkExceptions.defaultError(''));
       // act
       final result = await repository.deleteReport(tToken, tId);
       // assert
       verify(mockRemoteDataSource.deleteReport(tToken, tId));
-      expect(result, equals(Left(ServerFailure('Cant Delete Report'))));
+      expect(
+          result,
+          equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
+              NetworkExceptions.defaultError(''))))));
     });
   });
 
@@ -116,12 +126,16 @@ void main() {
 
       test('should return server failure', () async {
         // arrange
-        when(mockRemoteDataSource.getCategory()).thenThrow(ServerException('Cant Fetch Categories'));
+        when(mockRemoteDataSource.getCategory())
+            .thenThrow(NetworkExceptions.defaultError(''));
         // act
         final result = await repository.getCategories();
         // assert
         verify(mockRemoteDataSource.getCategory());
-        expect(result, equals(Left(ServerFailure('Cant Fetch Categories'))));
+        expect(
+            result,
+            equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
+                NetworkExceptions.defaultError(''))))));
       });
     });
 
@@ -173,12 +187,15 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getFeedDetail(tId))
-          .thenThrow(ServerException('Failed To Get Detail'));
+          .thenThrow(NetworkExceptions.defaultError(''));
       // act
       final result = await repository.getFeedDetail(tId);
       // assert
       verify(mockRemoteDataSource.getFeedDetail(tId));
-      expect(result, equals(Left(ServerFailure('Failed To Get Detail'))));
+      expect(
+          result,
+          equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
+              NetworkExceptions.defaultError(''))))));
     });
   });
 
@@ -213,12 +230,16 @@ void main() {
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-      when(mockRemoteDataSource.getFeeds()).thenThrow(ServerException('Cant Retrieve Feed Data'));
+      when(mockRemoteDataSource.getFeeds())
+          .thenThrow(NetworkExceptions.defaultError(''));
       // act
       final result = await repository.getFeeds();
       // assert
       verify(mockRemoteDataSource.getFeeds());
-      expect(result, equals(Left(ServerFailure('Cant Retrieve Feed Data'))));
+      expect(
+          result,
+          equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
+              NetworkExceptions.defaultError(''))))));
     });
   });
 
@@ -242,12 +263,15 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getPasswordReset(tEmail))
-          .thenThrow(ServerException('Cant Reset'));
+          .thenThrow(NetworkExceptions.defaultError(''));
       // act
       final result = await repository.getPasswordReset(tEmail);
       // assert
       verify(mockRemoteDataSource.getPasswordReset(tEmail));
-      expect(result, equals(Left(ServerFailure('Cant Reset'))));
+      expect(
+          result,
+          equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
+              NetworkExceptions.defaultError(''))))));
     });
   });
 
@@ -288,12 +312,16 @@ void main() {
           'should return server failure when the call to remote data source is unsuccessful',
           () async {
         // arrange
-        when(mockRemoteDataSource.getQuestions()).thenThrow(ServerException('Cant Retrieve Data'));
+        when(mockRemoteDataSource.getQuestions())
+            .thenThrow(NetworkExceptions.defaultError(''));
         // act
         final result = await repository.getQuestions();
         // assert
         verify(mockRemoteDataSource.getQuestions());
-        expect(result, equals(Left(ServerFailure('Cant Retrieve Data'))));
+        expect(
+            result,
+            equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
+                NetworkExceptions.defaultError(''))))));
       });
 
       test(
@@ -379,12 +407,15 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getReport(tToken, tId))
-          .thenThrow(ServerException('Cant Fetch Reports'));
+          .thenThrow(NetworkExceptions.defaultError(''));
       // act
       final result = await repository.getReports(tToken, tId);
       // assert
       verify(mockRemoteDataSource.getReport(tToken, tId));
-      expect(result, equals(Left(ServerFailure('Cant Fetch Reports'))));
+      expect(
+          result,
+          equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
+              NetworkExceptions.defaultError(''))))));
     });
   });
 
@@ -431,8 +462,7 @@ void main() {
 
     test('should error when result is null', () async {
       // arrange
-      when(mockLocalDataSource.getSession())
-          .thenAnswer((_) async => null);
+      when(mockLocalDataSource.getSession()).thenAnswer((_) async => null);
       // act
       final result = await repository.getSessionData();
       // assert
@@ -458,7 +488,7 @@ void main() {
       final tUserModel = UserModel(id: 1, username: "username", email: "email");
       // arrange
       when(mockRemoteDataSource.getUser(tEmail))
-          .thenAnswer((_) async => [tUserModel]);
+          .thenAnswer((_) async => tUserModel);
       // act
       final result = await repository.getUser(tEmail);
       // assert
@@ -469,12 +499,16 @@ void main() {
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-      when(mockRemoteDataSource.getUser(tEmail)).thenThrow(ServerException('Not Found'));
+      when(mockRemoteDataSource.getUser(tEmail))
+          .thenThrow(NetworkExceptions.defaultError(''));
       // act
       final result = await repository.getUser(tEmail);
       // assert
       verify(mockRemoteDataSource..getUser(tEmail));
-      expect(result, equals(Left(ServerFailure('Not Found'))));
+      expect(
+          result,
+          equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
+              NetworkExceptions.defaultError(''))))));
     });
   });
 
@@ -505,12 +539,15 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getUserQuestions(tId))
-          .thenThrow(ServerException('Failed to Get Data'));
+          .thenThrow(NetworkExceptions.defaultError(''));
       // act
       final result = await repository.getUserChallenge(tId);
       // assert
       verify(mockRemoteDataSource.getUserQuestions(tId));
-      expect(result, equals(Left(ServerFailure('Failed to Get Data'))));
+      expect(
+          result,
+          equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
+              NetworkExceptions.defaultError(''))))));
     });
   });
 
@@ -519,29 +556,32 @@ void main() {
         'should return remote data when the call to remote data source is successful',
         () async {
       // arrange
-      when(mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken))
+      when(mockRemoteDataSource.putPassword(tOldPass, tNewPass, tToken))
           .thenAnswer((_) async => 'Success');
       // act
       final result =
-          await repository.postChangePassword(tOldPass, tNewPass, tToken);
+          await repository.putPassword(tOldPass, tNewPass, tToken);
       // assert
       verify(
-          mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken));
+          mockRemoteDataSource.putPassword(tOldPass, tNewPass, tToken));
       expect(result, equals(Right('Success')));
     });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-      when(mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken))
-          .thenThrow(ServerException('Cant Change Password'));
+      when(mockRemoteDataSource.putPassword(tOldPass, tNewPass, tToken))
+          .thenThrow(NetworkExceptions.defaultError(''));
       // act
       final result =
-          await repository.postChangePassword(tOldPass, tNewPass, tToken);
+          await repository.putPassword(tOldPass, tNewPass, tToken);
       // assert
       verify(
-          mockRemoteDataSource.postChangePassword(tOldPass, tNewPass, tToken));
-      expect(result, equals(Left(ServerFailure('Cant Change Password'))));
+          mockRemoteDataSource.putPassword(tOldPass, tNewPass, tToken));
+      expect(
+          result,
+          equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
+              NetworkExceptions.defaultError(''))))));
     });
   });
 
@@ -563,12 +603,15 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.postFcmToken(tId.toString(), tToken))
-          .thenThrow(ServerException('Cant To Send'));
+          .thenThrow(NetworkExceptions.defaultError(''));
       // act
       final result = await repository.postFCMToken(tId, tToken);
       // assert
       verify(mockRemoteDataSource.postFcmToken(tId.toString(), tToken));
-      expect(result, equals(Left(ServerFailure('Cant To Send'))));
+      expect(
+          result,
+          equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
+              NetworkExceptions.defaultError(''))))));
     });
   });
 
@@ -577,25 +620,28 @@ void main() {
         'should return remote data when the call to remote data source is successful',
         () async {
       // arrange
-      when(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken))
+      when(mockRemoteDataSource.putFcmToken(tId.toString(), tToken))
           .thenAnswer((_) async => 'Success');
       // act
       final result = await repository.putFCMToken(tId, tToken);
       // assert
-      verify(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken));
+      verify(mockRemoteDataSource.putFcmToken(tId.toString(), tToken));
       expect(result, equals(Right('Success')));
     });
     test(
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
       // arrange
-      when(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken))
-          .thenThrow(ServerException('Cant To Send'));
+      when(mockRemoteDataSource.putFcmToken(tId.toString(), tToken))
+          .thenThrow(NetworkExceptions.defaultError(''));
       // act
       final result = await repository.putFCMToken(tId, tToken);
       // assert
-      verify(mockRemoteDataSource.updateFcmToken(tId.toString(), tToken));
-      expect(result, equals(Left(ServerFailure('Cant To Send'))));
+      verify(mockRemoteDataSource.putFcmToken(tId.toString(), tToken));
+      expect(
+          result,
+          equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
+              NetworkExceptions.defaultError(''))))));
     });
   });
 
@@ -617,13 +663,15 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.postLogin(tUsername, tOldPass))
-          .thenThrow(ServerException('UserName atau Password Salah!'));
+          .thenThrow(NetworkExceptions.defaultError(''));
       // act
       final result = await repository.postLogin(tUsername, tOldPass);
       // assert
       verify(mockRemoteDataSource.postLogin(tUsername, tOldPass));
       expect(
-          result, equals(Left(ServerFailure('UserName atau Password Salah!'))));
+          result,
+          equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
+              NetworkExceptions.defaultError(''))))));
     });
   });
 
@@ -645,12 +693,15 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.postRegister(testRegisterModel))
-          .thenThrow(ServerException('Invalid Data'));
+          .thenThrow(NetworkExceptions.defaultError(''));
       // act
       final result = await repository.postRegister(testRegister);
       // assert
       verify(mockRemoteDataSource.postRegister(testRegisterModel));
-      expect(result, equals(Left(ServerFailure('Invalid Data'))));
+      expect(
+          result,
+          equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
+              NetworkExceptions.defaultError(''))))));
     });
   });
 
@@ -680,12 +731,15 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.postReport(tToken, tReportCompose))
-          .thenThrow(ServerException('Invalid'));
+          .thenThrow(NetworkExceptions.defaultError(''));
       // act
       final result = await repository.postReport(tToken, tReportCompose);
       // assert
       verify(mockRemoteDataSource.postReport(tToken, tReportCompose));
-      expect(result, equals(Left(ServerFailure('Invalid'))));
+      expect(
+          result,
+          equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
+              NetworkExceptions.defaultError(''))))));
     });
   });
 
@@ -707,12 +761,15 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.postChallenge(testUserChallengeModel))
-          .thenThrow(ServerException('Invalid'));
+          .thenThrow(NetworkExceptions.defaultError(''));
       // act
       final result = await repository.postUserChallenge(testUserChallenge);
       // assert
       verify(mockRemoteDataSource.postChallenge(testUserChallengeModel));
-      expect(result, equals(Left(ServerFailure('Invalid'))));
+      expect(
+          result,
+          equals(Left(ServerFailure(NetworkExceptions.getErrorMessage(
+              NetworkExceptions.defaultError(''))))));
     });
   });
 

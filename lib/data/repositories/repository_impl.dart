@@ -1,16 +1,23 @@
+/*
+ * Created by andii on 15/11/21 13.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 15/11/21 12.55
+ */
+
 import 'package:dartz/dartz.dart';
+import 'package:laporhoax/utils/network_exceptions.dart';
 import 'package:laporhoax/data/datasources/local_data_source.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
 import 'package:laporhoax/data/models/category_table.dart';
 import 'package:laporhoax/data/models/feed_table.dart';
 import 'package:laporhoax/data/models/question_table.dart';
+import 'package:laporhoax/data/models/register.dart';
 import 'package:laporhoax/data/models/register_model.dart';
 import 'package:laporhoax/data/models/report_request.dart';
 import 'package:laporhoax/data/models/user_question_model.dart';
 import 'package:laporhoax/domain/entities/category.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/domain/entities/question.dart';
-import 'package:laporhoax/domain/entities/register.dart';
 import 'package:laporhoax/domain/entities/register_data.dart';
 import 'package:laporhoax/domain/entities/report.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
@@ -38,10 +45,8 @@ class RepositoryImpl implements Repository {
     try {
       final result = await remoteDataSource.getFeeds();
       return Right(result.map((data) => data.toEntity()).toList());
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -49,7 +54,7 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, String>> saveFeed(Feed feed) async {
     try {
       final result =
-          await localDataSource.insertFeed(FeedTable.fromEntity(feed));
+      await localDataSource.insertFeed(FeedTable.fromEntity(feed));
       return Right(result);
     } on DatabaseException catch (e) {
       return Left(DatabaseFailure(e.message));
@@ -79,7 +84,7 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, String>> removeFeed(Feed feed) async {
     try {
       final result =
-          await localDataSource.removeFeed(FeedTable.fromEntity(feed));
+      await localDataSource.removeFeed(FeedTable.fromEntity(feed));
       return Right(result);
     } on DatabaseException catch (e) {
       return Left(DatabaseFailure(e.message));
@@ -94,8 +99,8 @@ class RepositoryImpl implements Repository {
         localDataSource.cacheCategory(
             result.map((category) => CategoryTable.fromDTO(category)).toList());
         return Right(result.map((e) => e.toEntity()).toList());
-      } on ServerException catch (e) {
-        return Left(ServerFailure(e.message));
+      } on NetworkExceptions catch (e) {
+        return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
       }
     } else {
       try {
@@ -112,10 +117,8 @@ class RepositoryImpl implements Repository {
     try {
       final result = await remoteDataSource.getReport(token, id);
       return Right(result.map((data) => data.toEntity()).toList());
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -123,24 +126,19 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, User>> getUser(String email) async {
     try {
       final result = await remoteDataSource.getUser(email);
-      return Right(result.map((e) => e.toEntity()).first);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+      return Right(result.toEntity());
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
   @override
-  Future<Either<Failure, UserToken>> postLogin(
-      String username, String password) async {
+  Future<Either<Failure, UserToken>> postLogin(String username, String password) async {
     try {
       final result = await remoteDataSource.postLogin(username, password);
       return Right(result.toEntity());
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -148,40 +146,31 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, RegisterData>> postRegister(Register user) async {
     try {
       final result =
-          await remoteDataSource.postRegister(RegisterModel.fromDTO(user));
+      await remoteDataSource.postRegister(RegisterModel.fromDTO(user));
       return Right(result.toEntity());
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
   @override
-  Future<Either<Failure, Report>> postReport(
-      String token, ReportRequest report) async {
+  Future<Either<Failure, Report>> postReport(String token, ReportRequest report) async {
     try {
       final result = await remoteDataSource.postReport(token, report);
       return Right(result.toEntity());
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
   @override
-  Future<Either<Failure, String>> postUserChallenge(
-      UserQuestion challenge) async {
+  Future<Either<Failure, String>> postUserChallenge(UserQuestion challenge) async {
     try {
       final result = await remoteDataSource
           .postChallenge(UserQuestionModel.fromDTO(challenge));
-      print('Challenge Result $result');
       return Right(result);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -190,10 +179,8 @@ class RepositoryImpl implements Repository {
     try {
       final result = await remoteDataSource.deleteReport(token, id);
       return Right(result);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -202,10 +189,8 @@ class RepositoryImpl implements Repository {
     try {
       final result = await remoteDataSource.getPasswordReset(email);
       return Right(result);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -217,8 +202,8 @@ class RepositoryImpl implements Repository {
         localDataSource.cacheQuestions(
             result.map((question) => QuestionTable.fromDTO(question)).toList());
         return Right(result.map((e) => e.toEntity()).toList());
-      } on ServerException catch (e) {
-        return Left(ServerFailure(e.message));
+      } on NetworkExceptions catch (e) {
+        return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
       }
     } else {
       try {
@@ -231,30 +216,24 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, String>> postChangePassword(
-      String oldPass, String newPass, String token) async {
+  Future<Either<Failure, String>> putPassword(String oldPass, String newPass, String token) async {
     try {
       final result =
-          await remoteDataSource.postChangePassword(oldPass, newPass, token);
+      await remoteDataSource.putPassword(oldPass, newPass, token);
       return Right(result);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
   @override
-  Future<Either<Failure, String>> postFCMToken(
-      int user, String fcmToken) async {
+  Future<Either<Failure, String>> postFCMToken(int user, String fcmToken) async {
     try {
       final result =
-          await remoteDataSource.postFcmToken(user.toString(), fcmToken);
+      await remoteDataSource.postFcmToken(user.toString(), fcmToken);
       return Right(result);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -262,12 +241,10 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, String>> putFCMToken(int user, String fcmToken) async {
     try {
       final result =
-          await remoteDataSource.updateFcmToken(user.toString(), fcmToken);
+      await remoteDataSource.putFcmToken(user.toString(), fcmToken);
       return Right(result);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -298,10 +275,8 @@ class RepositoryImpl implements Repository {
     try {
       final result = await remoteDataSource.getUserQuestions(id);
       return Right(result.toEntity());
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 
@@ -310,10 +285,8 @@ class RepositoryImpl implements Repository {
     try {
       final result = await remoteDataSource.getFeedDetail(id);
       return Right(result.toEntity());
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } catch (e) {
-      throw e;
+    } on NetworkExceptions catch (e) {
+      return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
   }
 }

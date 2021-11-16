@@ -1,16 +1,22 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laporhoax/data/models/user_question_model.dart';
 import 'package:laporhoax/domain/entities/user_question.dart';
 
 void main() {
   final tQuestionModel = UserQuestionModel(
-      user: 'user',
-      quest1: 1,
-      quest2: 2,
-      quest3: 3,
-      ans1: 'ans1',
-      ans2: 'ans2',
-      ans3: 'ans3',
+    user: 'user',
+    quest1: 1,
+    quest2: 2,
+    quest3: 3,
+    ans1: 'ans1',
+    ans2: 'ans2',
+    ans3: 'ans3',
   );
 
   final tQuestion = UserQuestion(

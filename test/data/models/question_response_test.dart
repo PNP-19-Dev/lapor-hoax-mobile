@@ -1,19 +1,24 @@
+/*
+ * Created by andii on 14/11/21 01.40
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 14/11/21 01.27
+ */
+
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:laporhoax/data/models/question_model.dart';
 import 'package:laporhoax/data/models/question_response.dart';
 
+import '../../dummy_data/dummy_objects.dart';
 import '../../json_reader.dart';
 
 void main() {
-  final tQuestionModel = QuestionModel(id: 1, question: 'Dimana anda lahir?');
 
   final tQuestionResponseModel = QuestionResponse(
     count: 1,
     next: "null",
     previous: "null",
-    questionList: [tQuestionModel],
+    questionList: [testQuestionModel],
   );
 
   group('Question Response', () {

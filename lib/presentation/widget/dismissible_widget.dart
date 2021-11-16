@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.55
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -23,26 +29,26 @@ class DismissibleWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Slidable(
-        key: key,
-        dismissal: SlidableDismissal(
-          child: SlidableDrawerDismissal(),
-          onDismissed: (actionType) {
-            _showSnackBar(context, 'Deleted');
-          },
-          onWillDismiss: (actionType) {
-            return status;
-          },
-        ),
-        actionExtentRatio: 0.25,
-        actionPane: SlidableBehindActionPane(),
-        child: child,
-        secondaryActions: [
-          IconSlideAction(
-            caption: 'Hapus',
-            color: Colors.red,
-            icon: Icons.delete,
-            onTap: () => _showSnackBar(context, "Hello"),
-          ),
-        ],
-      );
+    key: key,
+    dismissal: SlidableDismissal(
+      child: SlidableDrawerDismissal(),
+      onDismissed: (actionType) {
+        _showSnackBar(context, 'Deleted');
+      },
+      onWillDismiss: (actionType) {
+        return status;
+      },
+    ),
+    actionExtentRatio: 0.25,
+    actionPane: SlidableBehindActionPane(),
+    child: child,
+    secondaryActions: [
+      IconSlideAction(
+        caption: 'Hapus',
+        color: Colors.red,
+        icon: Icons.delete,
+        onTap: () => _showSnackBar(context, "Hello"),
+      ),
+    ],
+  );
 }

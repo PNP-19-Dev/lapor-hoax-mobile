@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laporhoax/data/models/feed_table.dart';
 import 'package:laporhoax/domain/entities/feed.dart';
@@ -11,13 +17,13 @@ void main() {
   );
 
   final tFeed = Feed(
-      id: 1,
-      title: "title",
-      content: null,
-      thumbnail: "thumbnail",
-      date: "date",
-      view: null,
-      author: null,
+    id: 1,
+    title: "title",
+    content: null,
+    thumbnail: "thumbnail",
+    date: "date",
+    view: null,
+    author: null,
   );
 
   final feedMap = {

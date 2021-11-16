@@ -1,161 +1,104 @@
-import 'package:dartz/dartz.dart';
+/*
+ * Created by andii on 16/11/21 09.46
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 16/11/21 09.19
+ */
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:laporhoax/domain/usecases/get_feed_detail.dart';
-import 'package:laporhoax/domain/usecases/get_feed_save_status.dart';
-import 'package:laporhoax/domain/usecases/remove_feed.dart';
-import 'package:laporhoax/domain/usecases/save_feed.dart';
-import 'package:laporhoax/presentation/provider/news_detail_notifier.dart';
-import 'package:laporhoax/utils/failure.dart';
-import 'package:laporhoax/utils/state_enum.dart';
-import 'package:mockito/annotations.dart';
+import 'package:laporhoax/presentation/pages/news/news_web_view.dart';
+import 'package:laporhoax/presentation/provider/detail_cubit.dart';
+import 'package:laporhoax/presentation/provider/item_cubit.dart';
 import 'package:mockito/mockito.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../dummy_data/dummy_objects.dart';
-import 'news_web_view_test.mocks.dart';
+import '../../../helpers/test_helper.mocks.dart';
 
-@GenerateMocks([
-  GetFeedDetail,
-  SaveFeed,
-  RemoveFeed,
-  GetFeedSaveStatus,
-])
 void main() {
-  late NewsDetailNotifier provider;
-  late MockGetFeedDetail mockGetFeedDetail;
-  late MockSaveFeed mockSaveFeed;
-  late MockRemoveFeed mockRemoveFeed;
-  late MockGetFeedSaveStatus mockGetFeedSaveStatus;
-  late int listenerCallCount;
+  late MockDetailCubit detailBloc;
+  late MockItemCubit itemBloc;
 
   setUp(() {
-    listenerCallCount = 0;
-    mockGetFeedDetail = MockGetFeedDetail();
-    mockSaveFeed = MockSaveFeed();
-    mockRemoveFeed = MockRemoveFeed();
-    mockGetFeedSaveStatus = MockGetFeedSaveStatus();
-    provider = NewsDetailNotifier(
-      getFeedDetail: mockGetFeedDetail,
-      saveFeed: mockSaveFeed,
-      removeFeed: mockRemoveFeed,
-      getFeedSaveStatus: mockGetFeedSaveStatus,
-    )..addListener(() {
-        listenerCallCount += 1;
-      });
+    detailBloc = MockDetailCubit();
+    itemBloc = MockItemCubit();
   });
 
-  final tId = 1;
-
-  void _arrangeUsecase() {
-    when(mockGetFeedDetail.execute(tId))
-        .thenAnswer((_) async => Right(testFeed));
+  Widget _makeTestableWidget(Widget body) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<DetailCubit>.value(value: detailBloc),
+        BlocProvider<ItemCubit>.value(value: itemBloc),
+      ],
+      child: MaterialApp(
+        home: body,
+      ),
+    );
   }
 
-  group('Get Feed Detail', () {
-    test('should get data from the usecase', () async {
-      // arrange
-      _arrangeUsecase();
-      // act
-      await provider.fetchFeedDetail(tId);
-      // assert
-      verify(mockGetFeedDetail.execute(tId));
-    });
+  testWidgets('Page should display empty when initialization',
+          (WidgetTester tester) async {
+        when(detailBloc.state).thenReturn(DetailInitial());
+        when(detailBloc.stream).thenAnswer((_) => Stream.empty());
 
-    test('should change state to loading when usecase is called', () {
-      // arrange
-      _arrangeUsecase();
-      // act
-      provider.fetchFeedDetail(tId);
-      // assert
-      expect(provider.feedState, RequestState.Loading);
-      expect(listenerCallCount, 1);
-    });
+        when(itemBloc.state).thenReturn(ItemUnsaved());
+        when(itemBloc.stream).thenAnswer((_) => Stream.value(ItemUnsaved()));
 
-    test('should change feed when data is gotten successfully', () async {
-      // arrange
-      _arrangeUsecase();
-      // act
-      await provider.fetchFeedDetail(tId);
-      // assert
-      expect(provider.feedState, RequestState.Loaded);
-      expect(provider.feed, testFeed);
-      expect(listenerCallCount, 2);
-    });
-  });
+        await tester.pumpWidget(_makeTestableWidget(NewsWebView(id: 1)));
 
-  group('Saved List', () {
-    test('should get the save status', () async {
-      // arrange
-      when(mockGetFeedSaveStatus.execute(1)).thenAnswer((_) async => true);
-      // act
-      await provider.loadFeedStatus(1);
-      // assert
-      expect(provider.isAddedtoSavedFeed, true);
-    });
+        final empty = find.byKey(Key('empty_news_detail'));
+        expect(empty, findsOneWidget);
+      });
 
-    test('should execute save feed when function is called', () async {
-      // arrange
-      when(mockSaveFeed.execute(testFeed))
-          .thenAnswer((_) async => Right('Success'));
-      when(mockGetFeedSaveStatus.execute(testFeed.id))
-          .thenAnswer((_) async => true);
-      // act
-      await provider.storeFeed(testFeed);
-      // assert
-      verify(mockSaveFeed.execute(testFeed));
-    });
+  testWidgets('Page should display progress bar when loading',
+          (WidgetTester tester) async {
+        when(detailBloc.state).thenReturn(DetailLoading());
+        when(detailBloc.stream).thenAnswer((_) => const Stream.empty());
 
-    test('should execute remove feed when function is called', () async {
-      // arrange
-      when(mockRemoveFeed.execute(testFeed))
-          .thenAnswer((_) async => Right('Removed'));
-      when(mockGetFeedSaveStatus.execute(testFeed.id))
-          .thenAnswer((_) async => false);
-      // act
-      await provider.deleteFeed(testFeed);
-      // assert
-      verify(mockRemoveFeed.execute(testFeed));
-    });
+        when(itemBloc.state).thenReturn(ItemUnsaved());
+        when(itemBloc.stream).thenAnswer((_) => Stream.value(ItemUnsaved()));
 
-    test('should update feedlist message success', () async {
-      // arrange
-      when(mockSaveFeed.execute(testFeed))
-          .thenAnswer((_) async => Right('Berita Telah Disimpan'));
-      when(mockGetFeedSaveStatus.execute(testFeed.id))
-          .thenAnswer((_) async => true);
-      // act
-      await provider.storeFeed(testFeed);
-      // assert
-      verify(mockGetFeedSaveStatus.execute(testFeed.id));
-      expect(provider.isAddedtoSavedFeed, true);
-      expect(provider.saveMessage, 'Berita Telah Disimpan');
-      expect(listenerCallCount, 1);
-    });
+        await tester.pumpWidget(_makeTestableWidget(NewsWebView(id: 1)));
 
-    test('should update feedlist message failed', () async {
-      // arrange
-      when(mockSaveFeed.execute(testFeed))
-          .thenAnswer((_) async => Left(DatabaseFailure('Failed')));
-      when(mockGetFeedSaveStatus.execute(testFeed.id))
-          .thenAnswer((_) async => false);
-      // act
-      await provider.storeFeed(testFeed);
-      // assert
-      expect(provider.saveMessage, 'Failed');
-      expect(listenerCallCount, 1);
-    });
-  });
+        final centerFinder = find.byType(Center);
+        expect(centerFinder, findsOneWidget);
 
-  group('on Error', () {
-    test('should return error when data is unsuccessful', () async {
-      // arrange
-      when(mockGetFeedDetail.execute(tId))
-          .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
-      // act
-      await provider.fetchFeedDetail(tId);
-      // assert
-      expect(provider.feedState, RequestState.Error);
-      expect(provider.message, 'Server Failure');
-      expect(listenerCallCount, 2);
-    });
-  });
+        final progress = find.byType(CircularProgressIndicator);
+        expect(progress, findsOneWidget);
+      });
+
+  testWidgets('Page should display item when data fetched',
+          (WidgetTester tester) async {
+        when(detailBloc.state).thenReturn(DetailHasData(testFeed));
+        when(detailBloc.stream).thenAnswer((_) => Stream.value(DetailHasData(testFeed)));
+
+        when(itemBloc.state).thenReturn(ItemUnsaved());
+        when(itemBloc.stream).thenAnswer((_) => Stream.value(ItemUnsaved()));
+
+        await tester.pumpWidget(_makeTestableWidget(NewsWebView(id: 1)));
+
+        final safeArea = find.byType(SafeArea);
+        expect(safeArea, findsOneWidget);
+
+        final web = find.byType(WebView);
+        expect(web, findsOneWidget);
+      });
+
+  testWidgets('Page should error item when data failed to fetch',
+          (WidgetTester tester) async {
+        when(detailBloc.state).thenReturn(DetailError('Failure'));
+        when(detailBloc.stream).thenAnswer((_) => Stream.value(DetailError('Failure')));
+
+        when(itemBloc.state).thenReturn(ItemUnsaved());
+        when(itemBloc.stream).thenAnswer((_) => Stream.value(ItemUnsaved()));
+
+        await tester.pumpWidget(_makeTestableWidget(NewsWebView(id: 1)));
+
+        final center = find.byType(Center);
+        expect(center, findsOneWidget);
+
+        final error = find.text('Failure');
+        expect(error, findsOneWidget);
+      });
 }

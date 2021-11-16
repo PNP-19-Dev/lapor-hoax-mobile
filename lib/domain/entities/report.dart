@@ -1,3 +1,9 @@
+/*
+ * Created by andii on 12/11/21 22.48
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.48
+ */
+
 import 'package:equatable/equatable.dart';
 
 // ignore: must_be_immutable
@@ -36,19 +42,19 @@ class Report extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        url,
-        img,
-        category,
-        status,
-        isAnonym,
-        dateReported,
-        description,
-        prosesDate,
-        verdict,
-        verdictDesc,
-        verdictDate,
-        user,
-        verdictJudge
-      ];
+    id,
+    url,
+    img,
+    category,
+    status,
+    isAnonym,
+    dateReported,
+    description,
+    prosesDate,
+    verdict,
+    verdictDesc,
+    verdictDate,
+    user,
+    verdictJudge
+  ];
 }

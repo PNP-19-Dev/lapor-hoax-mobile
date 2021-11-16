@@ -1,13 +1,15 @@
-import 'dart:async';
+/*
+ * Created by andii on 12/11/21 22.55
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 22.49
+ */
 
 import 'package:flutter/material.dart';
-import 'package:laporhoax/domain/entities/feed.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:laporhoax/presentation/provider/saved_feed_cubit.dart';
 import 'package:laporhoax/presentation/widget/feed_card.dart';
 import 'package:laporhoax/utils/route_observer.dart';
-import 'package:laporhoax/utils/state_enum.dart';
 import 'package:provider/provider.dart';
-
-import '../../../presentation/provider/saved_news_notifier.dart';
 
 class SavedNews extends StatefulWidget {
   static const String ROUTE_NAME = '/saved_news';
@@ -19,9 +21,7 @@ class SavedNews extends StatefulWidget {
 class _SavedNewsState extends State<SavedNews> with RouteAware {
   @override
   void initState() {
-    Future.microtask(() =>
-        Provider.of<SavedNewsNotifier>(context, listen: false)
-            .fetchSavedFeeds());
+    context.read<SavedFeedCubit>().fetchSavedFeeds();
     super.initState();
   }
 
@@ -32,44 +32,41 @@ class _SavedNewsState extends State<SavedNews> with RouteAware {
   }
 
   void didPopNext() {
-    Provider.of<SavedNewsNotifier>(context, listen: false).fetchSavedFeeds();
+    context.read<SavedFeedCubit>().fetchSavedFeeds();
   }
-
-  List<Feed> news = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context)),
         title: Text('Berita yang tersimpan'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<SavedNewsNotifier>(
-          builder: (context, data, child) {
-            if (data.feedListState == RequestState.Loading) {
-              return Center(
+        child: BlocBuilder<SavedFeedCubit, SavedFeedState>(
+          builder: (context, state) {
+            if (state is SavedFeedLoading) {
+              return const Center(
+                key: Key('saved_news_loading'),
                 child: CircularProgressIndicator(),
               );
-            } else if (data.feedListState == RequestState.Loaded) {
+            } else if (state is SavedFeedHasData) {
               return ListView.builder(
+                key: Key('saved_feed_has_data'),
                 itemBuilder: (context, index) {
-                  news = data.saveListFeeds;
+                  final news = state.feeds;
                   return FeedCard(news[index]);
                 },
-                itemCount: data.saveListFeeds.length,
+                itemCount: state.feeds.length,
               );
-            } else if (data.feedListState == RequestState.Empty) {
+            } else if (state is SavedFeedEmpty) {
               return Center(
-                  key: Key('error_message'), child: Text(data.message));
+                  key: Key('error_message'), child: Text(state.message));
+            } else if (state is SavedFeedError){
+              return Center(
+                  key: Key('error_message'), child: Text(state.message));
             } else {
-              return Center(
-                  key: Key('error_message'), child: Text(data.message));
+              return Container();
             }
           },
         ),

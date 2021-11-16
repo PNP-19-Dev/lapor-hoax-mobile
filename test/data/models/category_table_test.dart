@@ -1,17 +1,20 @@
+/*
+ * Created by andii on 12/11/21 23.01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 12/11/21 23.01
+ */
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laporhoax/data/models/category_model.dart';
 import 'package:laporhoax/data/models/category_table.dart';
 import 'package:laporhoax/domain/entities/category.dart';
 
 void main() {
-  final tCategoryTable = CategoryTable(
-    id: 1,
-    name: "name"
-  );
+  final tCategoryTable = CategoryTable(id: 1, name: "name");
 
   final tCategoryModel = CategoryModel(
-      id: 1,
-      name: "name",
+    id: 1,
+    name: "name",
   );
 
   final tCategory = Category(
