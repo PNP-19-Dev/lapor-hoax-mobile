@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 23.01
+ * Created by andii on 16/11/21 09.46
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 23.01
+ * Last modified 16/11/21 09.35
  */
 
 import 'package:flutter/material.dart';
@@ -30,6 +30,17 @@ void main() {
     );
   }
 
+  /*testWidgets('Page should display blank when initialization',
+          (WidgetTester tester) async {
+        when(bloc.state).thenReturn(FeedInitial());
+        when(bloc.stream).thenAnswer((_) => Stream.value(FeedInitial()));
+
+        await tester.pumpWidget(_makeTestableWidget(NewsPage()));
+
+        final finder = find.byKey(Key('news_page_init'));
+        expect(finder, findsOneWidget);
+      });*/
+
   testWidgets('Page should display progress bar when loading',
           (WidgetTester tester) async {
         when(bloc.state).thenReturn(FeedLoading());
@@ -42,16 +53,53 @@ void main() {
         expect(finder, findsOneWidget);
       });
 
-  testWidgets('Page should display items when data success fetched',
+  testWidgets('Page should display items when data success fetched and tap the card item',
           (WidgetTester tester) async {
         when(bloc.state).thenReturn(FeedHasData([testFeed]));
         when(bloc.stream).thenAnswer((_) => Stream.value(FeedHasData([testFeed])));
 
         final finder = find.byKey(Key('home_feed_items'));
+        final card = find.byKey(Key('news_card'));
+        await tester.pumpWidget(_makeTestableWidget(NewsPage()));
+
+        expect(finder, findsOneWidget);
+        expect(card, findsOneWidget);
+
+        await tester.tap(card);
+        await tester.pump();
+      });
+
+  testWidgets('Page should display items when data success fetched and tap tutorial card',
+          (WidgetTester tester) async {
+        when(bloc.state).thenReturn(FeedHasData([testFeed]));
+        when(bloc.stream).thenAnswer((_) => Stream.value(FeedHasData([testFeed])));
+
+        final finder = find.byKey(Key('how_to_use'));
 
         await tester.pumpWidget(_makeTestableWidget(NewsPage()));
 
         expect(finder, findsOneWidget);
+
+        await tester.tap(finder);
+        await tester.pump();
+      });
+
+  testWidgets('Page should display items when data success fetched and tap lapor yuk button',
+          (WidgetTester tester) async {
+        when(bloc.state).thenReturn(FeedHasData([testFeed]));
+        when(bloc.stream).thenAnswer((_) => Stream.value(FeedHasData([testFeed])));
+
+
+        await tester.pumpWidget(_makeTestableWidget(NewsPage()));
+
+        final finder = find.byType(ElevatedButton);
+        expect(finder, findsOneWidget);
+
+        final text = find.text('Lapor yuk!');
+        expect(text, findsOneWidget);
+
+        await tester.tap(finder);
+        await tester.pump();
       });
 
   testWidgets('Page should display error when data failed fetched',

@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 23.01
+ * Created by andii on 16/11/21 09.46
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.59
+ * Last modified 16/11/21 08.33
  */
 
 import 'package:bloc_test/bloc_test.dart';
@@ -52,7 +52,19 @@ void main() {
     );
 
     blocTest<HistoryCubit, HistoryState>(
-      'Should return error callback when usecase is called',
+      'Should return error callback when item empty',
+      build: () {
+        when(_query.execute(token, id))
+            .thenAnswer((_) async => Right([]));
+        return bloc;
+      },
+      act: (cubit) => cubit.getHistory(tokenId),
+      verify: (cubit) => cubit.getHistory(tokenId),
+      expect: () => [HistoryLoading(), HistoryError('Tidak ada data Laporan')],
+    );
+
+    blocTest<HistoryCubit, HistoryState>(
+      'Should return error callback when server failure',
       build: () {
         when(_query.execute(token, id))
             .thenAnswer((_) async => Left(ServerFailure('Failure')));
@@ -83,6 +95,21 @@ void main() {
       expect: () => [
         HistoryLoading(),
         HistoryDeleteSomeData(reports, 'Success'),
+      ],
+    );
+
+    blocTest<HistoryCubit, HistoryState>(
+      'Should give an message error callback when usecases is called',
+      build: () {
+        when(_delete.execute(token, id))
+            .thenAnswer((_) async => Left(ServerFailure('Failure')));
+        return bloc;
+      },
+      act: (cubit) => cubit.removeReport(tokenId, status),
+      verify: (cubit) => cubit.removeReport(tokenId, status),
+      expect: () => [
+        HistoryLoading(),
+        HistoryDeleteSomeData(reports, 'Failure'),
       ],
     );
   });

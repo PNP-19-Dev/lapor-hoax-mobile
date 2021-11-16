@@ -1,7 +1,7 @@
 /*
- * Created by andii on 15/11/21 18.15
+ * Created by andii on 16/11/21 09.46
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 18.15
+ * Last modified 16/11/21 09.07
  */
 
 import 'dart:convert';
@@ -15,17 +15,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
 import 'package:laporhoax/data/models/report_request.dart';
 import 'package:laporhoax/utils/network_exceptions.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy_data/dummy_objects.dart';
 import '../../helpers/test_helper.mocks.dart';
 import '../../json_reader.dart';
 
-@GenerateMocks([
-  MultipartFile,
-  XFile,
-])
 void main() {
   late MockDioClient client;
   late RemoteDataSourceImpl datasource;

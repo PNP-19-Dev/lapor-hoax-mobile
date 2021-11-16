@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 23.01
+ * Created by andii on 16/11/21 09.46
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 23.01
+ * Last modified 16/11/21 09.19
  */
 
 import 'package:flutter/material.dart';
@@ -11,7 +11,9 @@ import 'package:laporhoax/presentation/pages/news/news_web_view.dart';
 import 'package:laporhoax/presentation/provider/detail_cubit.dart';
 import 'package:laporhoax/presentation/provider/item_cubit.dart';
 import 'package:mockito/mockito.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../dummy_data/dummy_objects.dart';
 import '../../../helpers/test_helper.mocks.dart';
 
 void main() {
@@ -35,6 +37,20 @@ void main() {
     );
   }
 
+  testWidgets('Page should display empty when initialization',
+          (WidgetTester tester) async {
+        when(detailBloc.state).thenReturn(DetailInitial());
+        when(detailBloc.stream).thenAnswer((_) => Stream.empty());
+
+        when(itemBloc.state).thenReturn(ItemUnsaved());
+        when(itemBloc.stream).thenAnswer((_) => Stream.value(ItemUnsaved()));
+
+        await tester.pumpWidget(_makeTestableWidget(NewsWebView(id: 1)));
+
+        final empty = find.byKey(Key('empty_news_detail'));
+        expect(empty, findsOneWidget);
+      });
+
   testWidgets('Page should display progress bar when loading',
           (WidgetTester tester) async {
         when(detailBloc.state).thenReturn(DetailLoading());
@@ -50,5 +66,39 @@ void main() {
 
         final progress = find.byType(CircularProgressIndicator);
         expect(progress, findsOneWidget);
+      });
+
+  testWidgets('Page should display item when data fetched',
+          (WidgetTester tester) async {
+        when(detailBloc.state).thenReturn(DetailHasData(testFeed));
+        when(detailBloc.stream).thenAnswer((_) => Stream.value(DetailHasData(testFeed)));
+
+        when(itemBloc.state).thenReturn(ItemUnsaved());
+        when(itemBloc.stream).thenAnswer((_) => Stream.value(ItemUnsaved()));
+
+        await tester.pumpWidget(_makeTestableWidget(NewsWebView(id: 1)));
+
+        final safeArea = find.byType(SafeArea);
+        expect(safeArea, findsOneWidget);
+
+        final web = find.byType(WebView);
+        expect(web, findsOneWidget);
+      });
+
+  testWidgets('Page should error item when data failed to fetch',
+          (WidgetTester tester) async {
+        when(detailBloc.state).thenReturn(DetailError('Failure'));
+        when(detailBloc.stream).thenAnswer((_) => Stream.value(DetailError('Failure')));
+
+        when(itemBloc.state).thenReturn(ItemUnsaved());
+        when(itemBloc.stream).thenAnswer((_) => Stream.value(ItemUnsaved()));
+
+        await tester.pumpWidget(_makeTestableWidget(NewsWebView(id: 1)));
+
+        final center = find.byType(Center);
+        expect(center, findsOneWidget);
+
+        final error = find.text('Failure');
+        expect(error, findsOneWidget);
       });
 }

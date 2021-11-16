@@ -1,7 +1,7 @@
 /*
- * Created by andii on 16/11/21 01.03
+ * Created by andii on 16/11/21 09.46
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 23.11
+ * Last modified 16/11/21 09.19
  */
 
 import 'package:flutter/material.dart';
@@ -28,8 +28,9 @@ class NewsWebView extends StatefulWidget {
 }
 
 class _NewsWebViewState extends State<NewsWebView> {
-  void showSnackBar(BuildContext context, String message) => ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+  void showSnackBar(BuildContext context, String message) =>
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
 
   @override
   void initState() {
@@ -40,6 +41,8 @@ class _NewsWebViewState extends State<NewsWebView> {
 
   final _key = UniqueKey();
   bool isLoading = true;
+  bool isError = false;
+  String message = '';
 
   Widget _buildShortAppBar(BuildContext context, Feed feed) {
     return Card(
@@ -132,12 +135,22 @@ class _NewsWebViewState extends State<NewsWebView> {
                           isLoading = false;
                         });
                       },
+                      onWebResourceError: ((error) {
+                        setState(() {
+                          isError = true;
+                          message = '${error.errorCode} ${error.description}';
+                        });
+                      }),
                     ),
                     isLoading
                         ? Center(
                             child: CircularProgressIndicator(),
                           )
-                        : Stack(),
+                        : isError
+                            ? Center(
+                                child: Text(message),
+                              )
+                            : Stack(),
                   ],
                 ),
                 _buildShortAppBar(context, state.data),
@@ -147,7 +160,7 @@ class _NewsWebViewState extends State<NewsWebView> {
         } else if (state is DetailError) {
           return Center(child: Text(state.message));
         } else
-          return Container();
+          return Container(key: Key('empty_news_detail'));
       }),
     );
   }

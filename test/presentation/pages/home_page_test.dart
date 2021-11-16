@@ -1,7 +1,7 @@
 /*
- * Created by andii on 16/11/21 01.03
+ * Created by andii on 16/11/21 09.46
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 16/11/21 00.36
+ * Last modified 16/11/21 08.26
  */
 
 import 'package:flutter/material.dart';
@@ -151,5 +151,29 @@ void main() {
     await tester.pump();
 
     expect(find.byType(NewsPage), findsOneWidget);
+  });
+
+  testWidgets('Page should display news feeds', (WidgetTester tester) async {
+    when(_feedCubit.state).thenReturn(FeedHasData([testFeed]));
+    when(_feedCubit.stream)
+        .thenAnswer((_) => Stream.value(FeedHasData([testFeed])));
+
+    when(_loginCubit.state).thenReturn(LoginSuccessWithData(testSessionData));
+    when(_loginCubit.stream)
+        .thenAnswer((_) => Stream.value(LoginSuccessWithData(testSessionData)));
+
+    when(_reportCubit.state).thenReturn(ReportInitial());
+    when(_reportCubit.stream)
+        .thenAnswer((_) => Stream.empty());
+
+
+    await tester.pumpWidget(_makeTestableWidget(HomePage()));
+
+    final fab = find.byKey(Key('fab_add_report'));
+
+    expect(fab, findsOneWidget);
+
+    await tester.tap(fab);
+    await tester.pump();
   });
 }

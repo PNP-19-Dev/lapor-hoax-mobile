@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 23.01
+ * Created by andii on 16/11/21 09.46
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 23.00
+ * Last modified 16/11/21 08.29
  */
 
 import 'package:bloc_test/bloc_test.dart';
@@ -56,11 +56,30 @@ void main() {
       RegisterSuccess(testRegisterData.user.id),
     ],
   );
+
   blocTest<RegisterCubit, RegisterState>(
     'should get error callback from server when post data',
     build: () {
       when(_register.execute(user))
           .thenAnswer((_) async => Left(ServerFailure('Failure')));
+      return bloc;
+    },
+    act: (cubit) => cubit.register(user),
+    verify: (cubit) => cubit.register(user),
+    expect: () => [
+      Registering(),
+      RegisterError('Failure'),
+    ],
+  );
+
+  blocTest<RegisterCubit, RegisterState>(
+    'should get error callback from server when get token data',
+    build: () {
+      when(_register.execute(user))
+          .thenAnswer((_) async => Right(testRegisterData));
+      when(_token.execute(testRegisterData.user.id, fcmToken))
+          .thenAnswer((_) async => Left(ServerFailure('Failure')));
+
       return bloc;
     },
     act: (cubit) => cubit.register(user),

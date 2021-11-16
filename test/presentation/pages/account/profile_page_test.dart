@@ -1,7 +1,7 @@
 /*
- * Created by andii on 15/11/21 13.01
+ * Created by andii on 16/11/21 09.46
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 12.55
+ * Last modified 16/11/21 09.44
  */
 
 import 'package:flutter/material.dart';
@@ -42,7 +42,7 @@ void main() {
     when(bloc.stream)
         .thenAnswer((_) => Stream.value(LoginSuccessWithData(testSessionData)));
 
-    when(profileCubit.state).thenReturn(ProfileDataFetched(testUser));;
+    when(profileCubit.state).thenReturn(ProfileDataFetched(testUser));
     when(profileCubit.stream)
         .thenAnswer((_) => Stream.value(ProfileDataFetched(testUser)));
 

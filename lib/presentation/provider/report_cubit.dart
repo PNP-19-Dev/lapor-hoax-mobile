@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 14.07
+ * Created by andii on 16/11/21 09.46
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 11.20
+ * Last modified 16/11/21 09.43
  */
 
 import 'package:bloc/bloc.dart';
@@ -11,9 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:laporhoax/data/models/report_request.dart';
 import 'package:laporhoax/domain/entities/category.dart';
 import 'package:laporhoax/domain/entities/report.dart';
-import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/domain/usecases/get_categories.dart';
-import 'package:laporhoax/domain/usecases/get_session_data.dart';
 import 'package:laporhoax/domain/usecases/post_report.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -28,7 +26,7 @@ class ReportCubit extends Cubit<ReportState> {
   Future<XFile> getImage(ImageSource source) async {
     final status = await Permission.camera.request();
     if (status == PermissionStatus.granted) {
-      print('Permission granted');
+      // print('Permission granted');
       XFile? image;
       try {
         image = await ImagePicker().pickImage(
@@ -45,11 +43,11 @@ class ReportCubit extends Cubit<ReportState> {
       }
       return image;
     } else if (status == PermissionStatus.denied) {
-      print(
-          'Permission denied. Show a dialog and again ask for the permission');
+      // print(
+      //     'Permission denied. Show a dialog and again ask for the permission');
       throw ('Kamera tidak diizinkan');
     } else if (status == PermissionStatus.permanentlyDenied) {
-      print('Take the user to the settings page.');
+      // print('Take the user to the settings page.');
       await openAppSettings();
     }
     throw ('Kamera tidak diizinkan');

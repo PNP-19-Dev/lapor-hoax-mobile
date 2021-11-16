@@ -1,7 +1,7 @@
 /*
- * Created by andii on 16/11/21 01.03
+ * Created by andii on 16/11/21 09.46
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 23.32
+ * Last modified 16/11/21 09.28
  */
 
 
@@ -13,7 +13,6 @@ import 'package:laporhoax/domain/entities/feed.dart';
 import 'package:laporhoax/presentation/pages/report/report_page.dart';
 import 'package:laporhoax/presentation/pages/static/tutorial_page.dart';
 import 'package:laporhoax/presentation/provider/feed_cubit.dart';
-import 'package:laporhoax/presentation/provider/item_cubit.dart';
 import 'package:laporhoax/styles/colors.dart';
 import 'package:laporhoax/utils/datetime_helper.dart';
 import 'package:laporhoax/utils/navigation.dart';
@@ -104,7 +103,11 @@ class _NewsPageState extends State<NewsPage> {
                 ]),
               );
             } else {
-              return Container();
+              return SliverToBoxAdapter(
+                child: Container(
+                  key: Key('news_page_init'),
+                ),
+              );
             }
           },
         ),
@@ -129,6 +132,7 @@ class _FeedList extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
+              key: Key('news_card'),
               onTap: () =>
                   Navigation.intentWithData(NewsWebView.ROUTE_NAME, feed.id),
               child: Card(
@@ -261,6 +265,7 @@ class _BannerCard extends StatelessWidget {
                       ),
                       SizedBox(height:20),
                       ElevatedButton(
+                        key: Key('button_to_report'),
                         onPressed: () =>
                             Navigation.intent(ReportPage.ROUTE_NAME),
                         child: Text(
@@ -289,6 +294,7 @@ class _BannerCard extends StatelessWidget {
             elevation: 4,
             clipBehavior: Clip.hardEdge,
             child: ListTile(
+              key: Key('how_to_use'),
               onTap: () => Navigation.intent(TutorialPage.ROUTE_NAME),
               leading: Icon(Icons.menu_book_sharp),
               title: Text(

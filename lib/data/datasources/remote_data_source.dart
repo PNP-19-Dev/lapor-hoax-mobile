@@ -1,7 +1,7 @@
 /*
- * Created by andii on 15/11/21 14.22
+ * Created by andii on 16/11/21 09.46
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 14.11
+ * Last modified 16/11/21 08.50
  */
 
 import 'dart:io';
@@ -37,35 +37,20 @@ const String feedsEndpoint = 'api/feeds';
 
 abstract class RemoteDataSource {
   Future<List<CategoryModel>> getCategory();
-
   Future<FeedModel> getFeedDetail(int id);
-
   Future<List<FeedModel>> getFeeds();
-
   Future<String> getPasswordReset(String email);
-
   Future<List<QuestionModel>> getQuestions();
-
   Future<List<ReportModel>> getReport(String token, int id);
-
   Future<UserModel> getUser(String email);
-
   Future<UserQuestionModel> getUserQuestions(int id);
-
   Future<UserTokenModel> postLogin(String username, String password);
-
   Future<RegisterResponse> postRegister(RegisterModel user);
-
   Future<String> postFcmToken(String user, String fcmToken);
-
   Future<ReportModel> postReport(String token, ReportRequest report);
-
   Future<String> postChallenge(UserQuestionModel challenge);
-
   Future<String> putPassword(String oldPass, String newPass, String token);
-
   Future<String> putFcmToken(String user, String fcmToken);
-
   Future<String> deleteReport(String token, int id);
 }
 
