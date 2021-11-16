@@ -1,7 +1,7 @@
 /*
- * Created by andii on 16/11/21 09.46
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 16/11/21 09.28
+ * Last modified 16/11/21 12.34
  */
 
 
@@ -205,6 +205,7 @@ class _FeedList extends StatelessWidget {
                             Icon(
                               Icons.access_time,
                               color: Colors.white,
+                              size: 14,
                             ),
                             SizedBox(width: 4),
                             Text(
@@ -212,7 +213,7 @@ class _FeedList extends StatelessWidget {
                               style: Theme
                                   .of(context)
                                   .textTheme
-                                  .overline!
+                                  .caption!
                                   .copyWith(
                                 color: Colors.white,
                               ),

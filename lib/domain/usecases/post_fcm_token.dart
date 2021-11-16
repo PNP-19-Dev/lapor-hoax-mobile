@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.48
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.47
+ * Last modified 16/11/21 18.16
  */
 
 import 'package:dartz/dartz.dart';
@@ -13,7 +13,7 @@ class PostFCMToken {
 
   PostFCMToken(this.repository);
 
-  Future<Either<Failure, String>> execute(int user, String fcmToken) {
+  Future<Either<Failure, String>> execute(int user, String? fcmToken) {
     return repository.postFCMToken(user, fcmToken);
   }
 }

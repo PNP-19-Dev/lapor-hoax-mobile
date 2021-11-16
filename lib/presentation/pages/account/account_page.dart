@@ -1,9 +1,10 @@
 /*
- * Created by andii on 16/11/21 01.03
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 22.49
+ * Last modified 16/11/21 21.54
  */
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,6 +16,7 @@ import 'package:laporhoax/presentation/pages/report/history_page.dart';
 import 'package:laporhoax/presentation/pages/static/about_page.dart';
 import 'package:laporhoax/presentation/pages/static/static_page_viewer.dart';
 import 'package:laporhoax/presentation/provider/account_cubit.dart';
+import 'package:laporhoax/presentation/provider/dark_provider.dart';
 import 'package:laporhoax/presentation/provider/login_cubit.dart';
 import 'package:laporhoax/presentation/widget/toast.dart';
 import 'package:laporhoax/styles/colors.dart';
@@ -105,14 +107,29 @@ class _OnAccountLogin extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  child: Text(
-                    'Hi, \n${sessionData.username}',
-                    textAlign: TextAlign.start,
-                    style: GoogleFonts.inter(
-                        fontWeight: FontWeight.w700, fontSize: 20),
-                  ),
+                Text(
+                  'Hi, \n${sessionData.username}',
+                  textAlign: TextAlign.start,
+                  style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w700, fontSize: 20),
+                ),
+                Consumer<DarkProvider>(
+                  builder: (context, provider, child) {
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Mode Gelap',
+                            style: Theme.of(context).textTheme.caption),
+                        CupertinoSwitch(
+                            activeColor: orangeBlaze,
+                            value: provider.isDarkTheme,
+                            onChanged: (value) =>
+                                provider.enableDarkTheme(value)),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),
@@ -185,17 +202,19 @@ class _OnAccountLogin extends StatelessWidget {
                           children: [
                             Text(
                               'Apakah yakin mau keluar ? ',
-                              style: Theme.of(context).textTheme.headline5!.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5!
+                                  .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
                             SizedBox(height: 30),
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
-                                onPressed: () => context
-                                    .read<LoginCubit>()
-                                    .logout(sessionData),
+                                onPressed: () =>
+                                    context.read<LoginCubit>().logout(),
                                 child: Text('Ya'),
                               ),
                             ),

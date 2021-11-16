@@ -1,7 +1,7 @@
 /*
- * Created by andii on 15/11/21 13.01
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 12.55
+ * Last modified 16/11/21 21.07
  */
 
 import 'package:laporhoax/data/datasources/db/database_helper.dart';
@@ -15,22 +15,20 @@ import 'package:laporhoax/utils/exception.dart';
 abstract class LocalDataSource {
   static const String saveMessage = 'Feed Saved';
   static const String removeMessage = 'Feed Removed';
-  static const String loginMessage = 'Session Saved';
-  static const String logoutMessage = 'Session Removed';
   static const String cacheError = "Can't get the data :(";
 
   Future<String> insertFeed(FeedTable feed);
   Future<String> removeFeed(FeedTable feed);
   Future<FeedTable?> getFeedById(int id);
   Future<List<FeedTable>> getFeeds();
-  Future<bool> isLoggedIn();
   Future<SessionData?> getSession();
-  Future<String> insertSession(SessionData data);
-  Future<String> removeSession(SessionData data);
+  Future<bool> setSession({SessionData? data});
   Future<void> cacheQuestions(List<QuestionTable> questions);
   Future<List<QuestionTable>> getCachedQuestion();
   Future<void> cacheCategory(List<CategoryTable> category);
   Future<List<CategoryTable>> getCachedCategory();
+  Future<bool> isDark();
+  Future<bool> setDark(bool value);
 }
 
 class LocalDataSourceImpl implements LocalDataSource {
@@ -79,11 +77,6 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  Future<bool> isLoggedIn() async {
-    return await preferencesHelper.isLogin;
-  }
-
-  @override
   Future<SessionData?> getSession() async {
     final status = await preferencesHelper.isLogin;
     final id = await preferencesHelper.id;
@@ -103,28 +96,6 @@ class LocalDataSourceImpl implements LocalDataSource {
     } else {
       return null;
     }
-  }
-
-  @override
-  Future<String> insertSession(SessionData data) async {
-    preferencesHelper.setId(data.userid);
-    preferencesHelper.setExpire(data.expiry);
-    preferencesHelper.setToken(data.token);
-    preferencesHelper.setEmail(data.email);
-    preferencesHelper.setUsername(data.username);
-    preferencesHelper.setLogin(true);
-    return LocalDataSource.loginMessage;
-  }
-
-  @override
-  Future<String> removeSession(SessionData data) async {
-    preferencesHelper.setId(-1);
-    preferencesHelper.setExpire(null);
-    preferencesHelper.setToken(null);
-    preferencesHelper.setEmail(null);
-    preferencesHelper.setUsername(null);
-    preferencesHelper.setLogin(false);
-    return LocalDataSource.logoutMessage;
   }
 
   @override
@@ -157,5 +128,41 @@ class LocalDataSourceImpl implements LocalDataSource {
     } else {
       throw CacheException(LocalDataSource.cacheError);
     }
+  }
+
+  @override
+  Future<bool> isDark() async {
+    final result = await preferencesHelper.isDark;
+    return result;
+  }
+
+  @override
+  Future<bool> setDark(bool value) async {
+    preferencesHelper.setDark(value);
+
+    final result = await preferencesHelper.isDark;
+    return result;
+  }
+
+  @override
+  Future<bool> setSession({SessionData? data}) async {
+    if (data != null) {
+      preferencesHelper.setId(value: data.userid);
+      preferencesHelper.setExpire(value: data.expiry);
+      preferencesHelper.setToken(value: data.token);
+      preferencesHelper.setEmail(value: data.email);
+      preferencesHelper.setUsername(value: data.username);
+      preferencesHelper.setLogin(true);
+    } else {
+      preferencesHelper.setId();
+      preferencesHelper.setExpire();
+      preferencesHelper.setToken();
+      preferencesHelper.setEmail();
+      preferencesHelper.setUsername();
+      preferencesHelper.setLogin(false);
+    }
+
+    final result = await preferencesHelper.isLogin;
+    return result;
   }
 }

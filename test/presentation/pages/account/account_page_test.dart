@@ -1,7 +1,7 @@
 /*
- * Created by andii on 15/11/21 13.01
+ * Created by andii on 17/11/21 00.28
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 12.55
+ * Last modified 16/11/21 23.11
  */
 
 import 'package:flutter/material.dart';
@@ -9,8 +9,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:laporhoax/presentation/pages/account/account_page.dart';
 import 'package:laporhoax/presentation/provider/account_cubit.dart';
+import 'package:laporhoax/presentation/provider/dark_provider.dart';
 import 'package:laporhoax/presentation/provider/login_cubit.dart';
 import 'package:mockito/mockito.dart';
+import 'package:provider/provider.dart';
 
 import '../../../dummy_data/dummy_objects.dart';
 import '../../../helpers/test_helper.mocks.dart';
@@ -18,17 +20,20 @@ import '../../../helpers/test_helper.mocks.dart';
 void main() {
   late MockAccountCubit bloc;
   late MockLoginCubit loginBloc;
+  late MockDarkProvider darkProvider;
 
   setUp(() {
     bloc = MockAccountCubit();
     loginBloc = MockLoginCubit();
+    darkProvider = MockDarkProvider();
   });
 
   Widget _makeTestableWidget(Widget body) {
-    return MultiBlocProvider(
+    return MultiProvider(
       providers: [
         BlocProvider<AccountCubit>.value(value: bloc),
         BlocProvider<LoginCubit>.value(value: loginBloc),
+        ChangeNotifierProvider<DarkProvider>.value(value: darkProvider),
       ],
       child: MaterialApp(
         home: body,
@@ -56,6 +61,8 @@ void main() {
     when(loginBloc.state).thenReturn(LoginSuccessWithData(testSessionData));
     when(loginBloc.stream)
         .thenAnswer((_) => Stream.value(LoginSuccessWithData(testSessionData)));
+
+    when(darkProvider.isDarkTheme).thenReturn(false);
 
     await tester.pumpWidget(_makeTestableWidget(AccountPage()));
 

@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 14.58
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 14.57
+ * Last modified 16/11/21 22.14
  */
 
 import 'package:flutter/material.dart';
@@ -43,7 +43,6 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         title: Text('Atur Pertanyaan Rahasia'),
@@ -233,20 +232,20 @@ class _ChangeUserQuestionState extends State<ChangeUserQuestion> {
                             progress!.showWithText('Memeriksa pertanyaan');
                           }
 
-                          if (state is ChallengeSuccess) {
+                          if (state is ChallengeError) {
+                            progress!.dismiss();
+                            showDialog(
+                                context: context,
+                                builder: (_) => AlertDialog(
+                                  content: Text('Error ${state.message}'),
+                                ));
+                          } else if (state is ChallengeSuccess) {
                             progress!.dismiss();
                             _ans1.clear();
                             _ans2.clear();
                             _ans3.clear();
                             ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text('Data Diperbarui!')));
-                          } else if (state is ChallengeError) {
-                            progress!.dismiss();
-                            showDialog(
-                                context: context,
-                                builder: (_) => AlertDialog(
-                                      content: Text('Error ${state.message}'),
-                                    ));
                           }
                         },
                         child: ElevatedButton(

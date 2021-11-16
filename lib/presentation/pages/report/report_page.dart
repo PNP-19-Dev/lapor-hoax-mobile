@@ -1,7 +1,7 @@
 /*
- * Created by andii on 16/11/21 01.03
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 16/11/21 00.12
+ * Last modified 16/11/21 12.49
  */
 
 import 'package:flutter/material.dart';
@@ -376,7 +376,7 @@ class _OnLaporState extends State<_OnLapor> {
                                     SnackBar(content: Text(state.message)));
                               } else if (state is ReportUploaded) {
                                 progress!.dismiss();
-                                Navigation.intent(OnSuccessReport.ROUTE_NAME);
+                                Navigation.intentWithData(OnSuccessReport.ROUTE_NAME, state.report);
                               }
                             },
                             child: ElevatedButton(

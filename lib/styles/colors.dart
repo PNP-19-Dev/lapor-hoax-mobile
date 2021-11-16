@@ -1,7 +1,7 @@
 /*
- * Created by andii on 16/11/21 01.03
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 22.43
+ * Last modified 16/11/21 21.34
  */
 
 import 'package:flutter/material.dart';
@@ -68,7 +68,7 @@ const kColorDarkScheme = ColorScheme.dark(
   // color for input validation error
   error: failure,
   // color drawn on primary
-  onPrimary: Colors.black,
+  onPrimary: Colors.white,
   // color drawn on secondary
   onSecondary: Colors.black,
   // color drawn on surface

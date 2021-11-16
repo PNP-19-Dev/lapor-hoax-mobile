@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 14.07
+ * Created by andii on 17/11/21 00.28
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 12.38
+ * Last modified 16/11/21 23.41
  */
 
 import 'package:data_connection_checker/data_connection_checker.dart';
@@ -21,7 +21,6 @@ import 'package:laporhoax/domain/usecases/get_password_reset.dart';
 import 'package:laporhoax/domain/usecases/get_questions.dart';
 import 'package:laporhoax/domain/usecases/get_reports.dart';
 import 'package:laporhoax/domain/usecases/get_session_data.dart';
-import 'package:laporhoax/domain/usecases/get_session_status.dart';
 import 'package:laporhoax/domain/usecases/get_user.dart';
 import 'package:laporhoax/domain/usecases/get_user_challenge.dart';
 import 'package:laporhoax/domain/usecases/post_change_password.dart';
@@ -30,11 +29,11 @@ import 'package:laporhoax/domain/usecases/post_login.dart';
 import 'package:laporhoax/domain/usecases/post_register.dart';
 import 'package:laporhoax/domain/usecases/post_report.dart';
 import 'package:laporhoax/domain/usecases/post_user_challenge.dart';
-import 'package:laporhoax/domain/usecases/remove_session_data.dart';
 import 'package:laporhoax/domain/usecases/save_feed.dart';
-import 'package:laporhoax/domain/usecases/save_session_data.dart';
+import 'package:laporhoax/domain/usecases/set_session.dart';
 import 'package:laporhoax/presentation/provider/about_cubit.dart';
 import 'package:laporhoax/presentation/provider/account_cubit.dart';
+import 'package:laporhoax/presentation/provider/dark_provider.dart';
 import 'package:laporhoax/presentation/provider/detail_cubit.dart';
 import 'package:laporhoax/presentation/provider/feed_cubit.dart';
 import 'package:laporhoax/presentation/provider/history_cubit.dart';
@@ -78,11 +77,10 @@ void init() {
       locator(),
       locator(),
       locator(),
-      locator(),
     ),
   );
   locator.registerFactory(
-        () => AccountCubit(
+    () => AccountCubit(
       locator(),
     ),
   );
@@ -118,7 +116,7 @@ void init() {
     ),
   );
   locator.registerFactory(
-        () => ProfileCubit(
+    () => ProfileCubit(
       locator(),
     ),
   );
@@ -126,6 +124,11 @@ void init() {
     () => ItemCubit(
       locator(),
       locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => DarkProvider(
       locator(),
     ),
   );
@@ -141,7 +144,6 @@ void init() {
   locator.registerLazySingleton(() => GetReports(locator()));
   locator.registerLazySingleton(() => GetSavedFeeds(locator()));
   locator.registerLazySingleton(() => GetSessionData(locator()));
-  locator.registerLazySingleton(() => GetSessionStatus(locator()));
   locator.registerLazySingleton(() => GetUser(locator()));
   locator.registerLazySingleton(() => GetUserChallenge(locator()));
   locator.registerLazySingleton(() => PostChangePassword(locator()));
@@ -152,9 +154,8 @@ void init() {
   locator.registerLazySingleton(() => PostReport(locator()));
   locator.registerLazySingleton(() => PostUserChallenge(locator()));
   locator.registerLazySingleton(() => RemoveFeed(locator()));
-  locator.registerLazySingleton(() => RemoveSessionData(locator()));
   locator.registerLazySingleton(() => SaveFeed(locator()));
-  locator.registerLazySingleton(() => SaveSessionData(locator()));
+  locator.registerLazySingleton(() => SetSession(locator()));
 
   // repository
   locator.registerLazySingleton<Repository>(

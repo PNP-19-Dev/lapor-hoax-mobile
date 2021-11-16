@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 23.01
+ * Created by andii on 17/11/21 00.28
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 23.01
+ * Last modified 16/11/21 23.58
  */
 
 import 'package:flutter_test/flutter_test.dart';
@@ -27,50 +27,50 @@ void main() {
     );
   });
 
-  group('Save Feed', () {
+  group('Insert Feed', () {
     test('should return success message when insert to database is success',
-            () async {
-          // arrange
-          when(mockDatabaseHelper.insertNews(testFeedTable))
-              .thenAnswer((_) async => 1);
-          // act
-          final result = await dataSource.insertFeed(testFeedTable);
-          // assert
-          expect(result, 'Feed Saved');
-        });
+        () async {
+      // arrange
+      when(mockDatabaseHelper.insertNews(testFeedTable))
+          .thenAnswer((_) async => 1);
+      // act
+      final result = await dataSource.insertFeed(testFeedTable);
+      // assert
+      expect(result, 'Feed Saved');
+    });
 
     test('should throw DatabaseException when insert to database is failed',
-            () {
-          // arrange
-          when(mockDatabaseHelper.insertNews(testFeedTable)).thenThrow(Exception());
-          // act
-          final call = dataSource.insertFeed(testFeedTable);
-          // assert
-          expect(call, throwsA(isA<DatabaseException>()));
-        });
+        () {
+      // arrange
+      when(mockDatabaseHelper.insertNews(testFeedTable)).thenThrow(Exception());
+      // act
+      final call = dataSource.insertFeed(testFeedTable);
+      // assert
+      expect(call, throwsA(isA<DatabaseException>()));
+    });
   });
 
   group('Remove Feed', () {
     test('should return success message when remove to database is success',
-            () async {
-          // arrange
-          when(mockDatabaseHelper.removeFeed(testFeedTable))
-              .thenAnswer((_) async => 1);
-          // act
-          final result = await dataSource.removeFeed(testFeedTable);
-          // assert
-          expect(result, 'Feed Removed');
-        });
+        () async {
+      // arrange
+      when(mockDatabaseHelper.removeFeed(testFeedTable))
+          .thenAnswer((_) async => 1);
+      // act
+      final result = await dataSource.removeFeed(testFeedTable);
+      // assert
+      expect(result, 'Feed Removed');
+    });
 
     test('should throw DatabaseException when insert to database is failed',
-            () {
-          // arrange
-          when(mockDatabaseHelper.removeFeed(testFeedTable)).thenThrow(Exception());
-          // act
-          final call = dataSource.removeFeed(testFeedTable);
-          // assert
-          expect(call, throwsA(isA<DatabaseException>()));
-        });
+        () {
+      // arrange
+      when(mockDatabaseHelper.removeFeed(testFeedTable)).thenThrow(Exception());
+      // act
+      final call = dataSource.removeFeed(testFeedTable);
+      // assert
+      expect(call, throwsA(isA<DatabaseException>()));
+    });
   });
 
   group('Get Feed Detail By Id', () {
@@ -105,17 +105,6 @@ void main() {
       final result = await dataSource.getFeeds();
       // assert
       expect(result, [testFeedTable]);
-    });
-  });
-
-  group('Is Log in', () {
-    test('should return login status', () async {
-      // arrange
-      when(mockPreferencesHelper.isLogin).thenAnswer((_) async => true);
-      // act
-      final result = await dataSource.isLoggedIn();
-      // assert
-      expect(result, true);
     });
   });
 
@@ -181,7 +170,7 @@ void main() {
     });
   });
 
-  group('Get Session', (){
+  group('Get Session', () {
     final data = SessionData(
       token: 'token',
       userid: 1,
@@ -216,6 +205,65 @@ void main() {
       final result = await dataSource.getSession();
       // assert
       expect(result, null);
+    });
+  });
+
+  group('Set Session', () {
+    test('should return TRUE when session added', () async {
+      // arrange
+      when(mockPreferencesHelper.isLogin)
+          .thenAnswer((realInvocation) async => true);
+      // act
+      final result = await dataSource.setSession(data: testSessionData);
+      // assert
+      expect(result, true);
+    });
+    test('should return FALSE when session removed', () async {
+      // arrange
+      when(mockPreferencesHelper.isLogin)
+          .thenAnswer((realInvocation) async => false);
+      // act
+      final result = await dataSource.setSession();
+      // assert
+      expect(result, false);
+    });
+  });
+
+  group('Is Dark',(){
+    test('should return TRUE when darkMode activated',() async {
+      // arrange
+      when(mockPreferencesHelper.isDark).thenAnswer((_) async => true);
+      // act
+      final result = await dataSource.isDark();
+      // assert
+      expect(result, true);
+    });
+    test('should return FALSE when darkMode deactivated',() async {
+      // arrange
+      when(mockPreferencesHelper.isDark).thenAnswer((_) async => false);
+      // act
+      final result = await dataSource.isDark();
+      // assert
+      expect(result, false);
+    });
+  });
+
+  group('Set Dark',(){
+    test('should return TRUE when darkMode set on',() async {
+      // arrange
+      when(mockPreferencesHelper.isDark).thenAnswer((_) async => true);
+      // act
+      final result = await dataSource.setDark(true);
+      // assert
+      expect(result, true);
+    });
+    test('should return FALSE when darkMode set off',() async {
+      // arrange
+      when(mockPreferencesHelper.isDark).thenAnswer((_) async => false);
+      // act
+      final result = await dataSource.setDark(false);
+      // assert
+      expect(result, false);
     });
   });
 }

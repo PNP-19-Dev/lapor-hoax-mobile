@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 14.58
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 14.48
+ * Last modified 16/11/21 22.13
  */
 
 import 'package:bloc/bloc.dart';
@@ -80,9 +80,9 @@ class QuestionCubit extends Cubit<QuestionState> {
   }
 
   Future<void> sendQuestions(UserQuestion question) async {
+    final result = await _send.execute(question);
     emit(ChallengeSending());
 
-    final result = await _send.execute(question);
     result.fold(
           (failure) => emit(ChallengeError(failure.message)),
           (success) => emit(ChallengeSuccess()),

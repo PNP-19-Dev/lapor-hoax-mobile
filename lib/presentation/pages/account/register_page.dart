@@ -1,9 +1,10 @@
 /*
- * Created by andii on 14/11/21 14.58
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 14.29
+ * Last modified 16/11/21 18.16
  */
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -66,9 +67,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           "Daftar",
                           style: Theme.of(context)
                               .textTheme
-                              .headline5!.copyWith(
-                            fontWeight: FontWeight.bold
-                          ),
+                              .headline5!
+                              .copyWith(fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 30),
@@ -239,9 +239,13 @@ class _RegisterPageState extends State<RegisterPage> {
                                               .toString(),
                                         );
 
+                                        String? token = await FirebaseMessaging
+                                            .instance
+                                            .getToken();
+
                                         context
                                             .read<RegisterCubit>()
-                                            .register(userData);
+                                            .register(userData, token);
                                       }
                                     },
                                     child: Text('Selanjutnya'),

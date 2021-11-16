@@ -1,7 +1,7 @@
 /*
- * Created by andii on 15/11/21 13.01
+ * Created by andii on 17/11/21 00.28
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 12.57
+ * Last modified 16/11/21 22.50
  */
 
 import 'package:dartz/dartz.dart';
@@ -470,17 +470,6 @@ void main() {
     });
   });
 
-  group('Get Session Status', () {
-    test('should return true whether data is found', () async {
-      // arrange
-      when(mockLocalDataSource.isLoggedIn()).thenAnswer((_) async => true);
-      // act
-      final result = await repository.isSessionActivated();
-      // assert
-      expect(result, true);
-    });
-  });
-
   group('Get User', () {
     test(
         'should return remote data when the call to remote data source is successful',
@@ -795,7 +784,7 @@ void main() {
     });
   });
 
-  group('Remove Session Data', () {
+  /*group('Remove Session Data', () {
     test('should return success message when remove successful', () async {
       // arrange
       when(mockLocalDataSource.removeSession(testSessionData))
@@ -805,7 +794,7 @@ void main() {
       // assert
       expect(result, 'Session Removed');
     });
-  });
+  });*/
 
   group('Save Feed', () {
     test('should return success message when saving successful', () async {
@@ -828,7 +817,7 @@ void main() {
     });
   });
 
-  group('Save Session Data', () {
+/*  group('Save Session Data', () {
     test('should return success message when saving successful', () async {
       // arrange
       when(mockLocalDataSource.insertSession(testSessionData))
@@ -838,5 +827,5 @@ void main() {
       // assert
       expect(result, 'Session Saved');
     });
-  });
+  });*/
 }

@@ -1,7 +1,7 @@
 /*
- * Created by andii on 14/11/21 14.07
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 14/11/21 12.20
+ * Last modified 16/11/21 17.56
  */
 
 import 'package:flutter/material.dart';
@@ -26,6 +26,9 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
+  var reports = <Report>[];
+  var canClose = false;
+
   @override
   void initState() {
     super.initState();
@@ -38,90 +41,103 @@ class _HistoryPageState extends State<HistoryPage> {
       ..showSnackBar(SnackBar(content: Text(text)));
   }
 
-  Widget _getSlidable(BuildContext context, Report report) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      elevation: 4,
-      child: Slidable(
-        key: Key(report.id.toString()),
-        direction: Axis.horizontal,
-        dismissal: SlidableDismissal(
-          child: SlidableDrawerDismissal(),
-          onDismissed: (actionType) async {
-            setState(() {
-              // remove item pada report
-              context.read<HistoryCubit>().removeReport(widget.tokenId, report.status!);
-            });
+  Widget _getList(BuildContext context, List<Report> items) {
+    List<Report> reports = items;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return ListView.builder(
+          itemCount: reports.length,
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          itemBuilder: (context, index) {
+            final report = reports[index];
+            return Card(
+              margin: const EdgeInsets.symmetric(vertical: 4),
+              elevation: 4,
+              child: Slidable(
+                key: Key(reports[index].toString()),
+                direction: Axis.horizontal,
+                endActionPane: ActionPane(
+                  motion: BehindMotion(),
+                  extentRatio: 0.25,
+                  dismissible: DismissiblePane(
+                    onDismissed: () {
+                      setState(() {
+                        // remove item pada report
+                        reports.removeAt(index);
+                      });
+                    },
+                    confirmDismiss: () {
+
+                      return context.read<HistoryCubit>().removeReport(
+                              widget.tokenId,
+                              report.id,
+                              report.status!,
+                            );
+                    },
+                    dismissalDuration: Duration(milliseconds: 500),
+                    closeOnCancel: true,
+                  ),
+                  closeThreshold: 0.75,
+                  children: [
+                    SlidableAction(
+                      onPressed: (context) {
+                        _showSnackBar(context, "Geser untuk ke kiri menghapus");
+                      },
+                      icon: Icons.delete,
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                      label: 'Hapus',
+                    ),
+                  ],
+                ),
+                child: ReportListItem(report: report),
+              ),
+            );
           },
-          onWillDismiss: (actionType) {
-            return context.read<HistoryCubit>().removeReport(widget.tokenId, report.status!);
-          },
-        ),
-        actionPane: SlidableBehindActionPane(),
-        actionExtentRatio: 0.25,
-        child: ReportListItem(report: report),
-        secondaryActions: [
-          IconSlideAction(
-            caption: 'Hapus',
-            color: Colors.red,
-            icon: Icons.delete,
-            onTap: () {
-              _showSnackBar(context, "Geser untuk ke kiri menghapus");
-            },
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
   Widget _buildReportItem() {
-    var reports = <Report>[];
-    return BlocConsumer<HistoryCubit, HistoryState>(listener: (context, state) {
-      if (state is HistoryDeleteSomeData){
-        reports = state.reports;
-        _showSnackBar(context, state.message);
-      }
-    }, builder: (_, state) {
-      if (state is HistoryLoading) {
-        return const Center(child: CircularProgressIndicator());
-      } else if (state is HistoryHasData) {
-        reports = state.reports;
-        return LayoutBuilder(
-          builder: (context, constraints) {
-            return ListView.builder(
-              itemCount: reports.length,
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) {
-                final report = reports[index];
-                return _getSlidable(context, report);
-              },
-            );
-          },
-        );
-      } else if (state is HistoryError) {
-        return Center(
-          key: Key('history_page_item_error'),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.error,
-                size: 30,
-                color: Color(0xFFBDBDBD),
-              ),
-              Text(
-                '${state.message}',
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
-            ],
-          ),
-        );
-      } else {
-        return Container();
-      }
-    });
+    return BlocConsumer<HistoryCubit, HistoryState>(
+      listener: (context, state) {
+        if (state is HistoryDeleteSomeData) {
+          _showSnackBar(context, state.message);
+        }
+      },
+      builder: (_, state) {
+        print(state);
+        if (state is HistoryLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is HistoryHasData) {
+          return _getList(context, state.reports);
+        } else if (state is HistoryError) {
+          return Center(
+            key: Key('history_page_item_error'),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error,
+                  size: 30,
+                  color: Color(0xFFBDBDBD),
+                ),
+                Text(
+                  '${state.message}',
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
+              ],
+            ),
+          );
+        } else {
+          return Container();
+        }
+      },
+    );
   }
 
   @override

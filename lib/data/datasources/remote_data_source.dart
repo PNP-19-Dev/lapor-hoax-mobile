@@ -1,7 +1,7 @@
 /*
- * Created by andii on 16/11/21 09.46
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 16/11/21 08.50
+ * Last modified 16/11/21 22.23
  */
 
 import 'dart:io';
@@ -46,7 +46,7 @@ abstract class RemoteDataSource {
   Future<UserQuestionModel> getUserQuestions(int id);
   Future<UserTokenModel> postLogin(String username, String password);
   Future<RegisterResponse> postRegister(RegisterModel user);
-  Future<String> postFcmToken(String user, String fcmToken);
+  Future<String> postFcmToken(String user, String? fcmToken);
   Future<ReportModel> postReport(String token, ReportRequest report);
   Future<String> postChallenge(UserQuestionModel challenge);
   Future<String> putPassword(String oldPass, String newPass, String token);
@@ -198,19 +198,19 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<String> postChallenge(UserQuestionModel challenge) async {
     try {
-      final response = await client.post('/$questionEndpoint/user/',
+      await client.post('/$questionEndpoint/user/',
           data: challenge.toJson());
-      return response;
+      return 'Success';
     } catch (e) {
       throw NetworkExceptions.getDioException(e);
     }
   }
 
   @override
-  Future<String> postFcmToken(String user, String fcmToken) async {
+  Future<String> postFcmToken(String user, String? fcmToken) async {
     try {
       await client.post('/$firebaseTokenEndpoint',
-          data: {'user': user, 'token': fcmToken});
+          data: {'user': user, 'token': fcmToken!});
       return 'Success';
     } catch (e) {
       throw NetworkExceptions.getDioException(e);

@@ -1,7 +1,7 @@
 /*
- * Created by andii on 16/11/21 01.03
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 22.46
+ * Last modified 16/11/21 20.13
  */
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -95,9 +95,10 @@ class DetailReportPage extends StatelessWidget {
                       textAlign: TextAlign.justify,
                     ),
                   ),
-                  Divider(thickness: 2, indent: 30, endIndent: 30),
+                  const SizedBox(height: 20),
+                  const Divider(thickness: 2, indent: 30, endIndent: 30),
                   Padding(
-                    padding: const EdgeInsets.only(top: 8.0,bottom: 16.0),
+                    padding: const EdgeInsets.only(top: 20.0,bottom: 8.0),
                     child: Text(
                       'Informasi Laporanmu',
                       style: Theme.of(context)
@@ -199,6 +200,7 @@ class DetailReportPage extends StatelessWidget {
                       textAlign: TextAlign.justify,
                     ),
                   ),
+                  SizedBox(height: 10.0),
                 ],
               ),
             ),

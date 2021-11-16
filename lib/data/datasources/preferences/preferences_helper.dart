@@ -1,7 +1,7 @@
 /*
- * Created by andii on 13/11/21 08.11
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 23.51
+ * Last modified 16/11/21 21.07
  */
 
 import 'package:laporhoax/utils/datetime_helper.dart';
@@ -24,13 +24,14 @@ class PreferencesHelper {
   static const ID = 'ID';
   static const EMAIL = 'EMAIL';
   static const USERNAME = 'USERNAME';
+  static const DARK_MODE = 'DARK_MODE';
 
   Future<String> get expireDate async {
     final prefs = await sharedPreferences;
     return prefs.getString(EXPIRE) ?? '';
   }
 
-  void setExpire(String? value) async {
+  void setExpire({String? value}) async {
     final prefs = await sharedPreferences;
     prefs.setString(EXPIRE, value ?? '');
   }
@@ -40,7 +41,7 @@ class PreferencesHelper {
     return prefs.getString(TOKEN) ?? '';
   }
 
-  void setToken(String? value) async {
+  void setToken({String? value}) async {
     final prefs = await sharedPreferences;
     prefs.setString(TOKEN, value ?? '');
   }
@@ -50,7 +51,7 @@ class PreferencesHelper {
     return prefs.getString(EMAIL) ?? '';
   }
 
-  void setEmail(String? value) async {
+  void setEmail({String? value}) async {
     final prefs = await sharedPreferences;
     prefs.setString(EMAIL, value ?? '');
   }
@@ -60,9 +61,9 @@ class PreferencesHelper {
     return prefs.getInt(ID) ?? -1;
   }
 
-  void setId(int value) async {
+  void setId({int? value}) async {
     final prefs = await sharedPreferences;
-    prefs.setInt(ID, value);
+    prefs.setInt(ID, value ?? -1);
   }
 
   get username async {
@@ -70,7 +71,7 @@ class PreferencesHelper {
     return prefs.getString(USERNAME) ?? '';
   }
 
-  void setUsername(String? value) async {
+  void setUsername({String? value}) async {
     final prefs = await sharedPreferences;
     prefs.setString(USERNAME, value ?? '');
   }
@@ -81,7 +82,7 @@ class PreferencesHelper {
     final expire = prefs.getString(EXPIRE) ?? '';
     if (expire.isNotEmpty &&
         DateTime.now().isAfter(DateTimeHelper.formattedDateToken(expire))) {
-      setExpire(null);
+      setExpire();
       setLogin(false);
       return false;
     }
@@ -92,5 +93,15 @@ class PreferencesHelper {
   void setLogin(bool value) async {
     final prefs = await sharedPreferences;
     prefs.setBool(LOGIN, value);
+  }
+
+  Future<bool> get isDark async {
+    final prefs = await sharedPreferences;
+    return prefs.getBool(DARK_MODE) ?? false;
+  }
+
+  void setDark(bool value) async {
+    final prefs = await sharedPreferences;
+    prefs.setBool(DARK_MODE, value);
   }
 }

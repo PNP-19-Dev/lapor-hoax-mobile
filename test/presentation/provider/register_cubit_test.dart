@@ -1,7 +1,7 @@
 /*
- * Created by andii on 16/11/21 09.46
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 16/11/21 08.29
+ * Last modified 16/11/21 18.18
  */
 
 import 'package:bloc_test/bloc_test.dart';
@@ -49,8 +49,8 @@ void main() {
           .thenAnswer((_) async => Right('Success'));
       return bloc;
     },
-    act: (cubit) => cubit.register(user),
-    verify: (cubit) => cubit.register(user),
+    act: (cubit) => cubit.register(user, fcmToken),
+    verify: (cubit) => cubit.register(user, fcmToken),
     expect: () => [
       Registering(),
       RegisterSuccess(testRegisterData.user.id),
@@ -64,8 +64,8 @@ void main() {
           .thenAnswer((_) async => Left(ServerFailure('Failure')));
       return bloc;
     },
-    act: (cubit) => cubit.register(user),
-    verify: (cubit) => cubit.register(user),
+    act: (cubit) => cubit.register(user, fcmToken),
+    verify: (cubit) => cubit.register(user, fcmToken),
     expect: () => [
       Registering(),
       RegisterError('Failure'),
@@ -82,8 +82,8 @@ void main() {
 
       return bloc;
     },
-    act: (cubit) => cubit.register(user),
-    verify: (cubit) => cubit.register(user),
+    act: (cubit) => cubit.register(user, fcmToken),
+    verify: (cubit) => cubit.register(user, fcmToken),
     expect: () => [
       Registering(),
       RegisterError('Failure'),

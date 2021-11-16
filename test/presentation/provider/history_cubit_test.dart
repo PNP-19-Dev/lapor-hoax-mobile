@@ -1,7 +1,7 @@
 /*
- * Created by andii on 16/11/21 09.46
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 16/11/21 08.33
+ * Last modified 16/11/21 18.06
  */
 
 import 'package:bloc_test/bloc_test.dart';
@@ -54,8 +54,7 @@ void main() {
     blocTest<HistoryCubit, HistoryState>(
       'Should return error callback when item empty',
       build: () {
-        when(_query.execute(token, id))
-            .thenAnswer((_) async => Right([]));
+        when(_query.execute(token, id)).thenAnswer((_) async => Right([]));
         return bloc;
       },
       act: (cubit) => cubit.getHistory(tokenId),
@@ -90,8 +89,8 @@ void main() {
             .thenAnswer((_) async => Right('Success'));
         return bloc;
       },
-      act: (cubit) => cubit.removeReport(tokenId, status),
-      verify: (cubit) => cubit.removeReport(tokenId, status),
+      act: (cubit) => cubit.removeReport(tokenId, 1, status),
+      verify: (cubit) => cubit.removeReport(tokenId, 1, status),
       expect: () => [
         HistoryLoading(),
         HistoryDeleteSomeData(reports, 'Success'),
@@ -105,8 +104,8 @@ void main() {
             .thenAnswer((_) async => Left(ServerFailure('Failure')));
         return bloc;
       },
-      act: (cubit) => cubit.removeReport(tokenId, status),
-      verify: (cubit) => cubit.removeReport(tokenId, status),
+      act: (cubit) => cubit.removeReport(tokenId, 1, status),
+      verify: (cubit) => cubit.removeReport(tokenId, 1, status),
       expect: () => [
         HistoryLoading(),
         HistoryDeleteSomeData(reports, 'Failure'),

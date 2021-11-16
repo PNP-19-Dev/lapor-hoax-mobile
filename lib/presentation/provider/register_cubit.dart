@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.51
+ * Last modified 16/11/21 18.16
  */
 
 import 'package:bloc/bloc.dart';
@@ -18,7 +18,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   RegisterCubit(this._register, this._token) : super(RegisterInitial());
 
-  Future<void> register(Register user) async {
+  Future<void> register(Register user, String? fcm) async {
     emit(Registering());
 
     final result = await _register.execute(user);
@@ -26,7 +26,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     result.fold(
       (failure) => emit(RegisterError(failure.message)),
       (data) async {
-        final token = await _token.execute(data.user.id, data.token);
+        final token = await _token.execute(data.user.id, fcm);
         token.fold(
           (failure) => emit(RegisterError(failure.message)),
           (success) => emit(RegisterSuccess(data.user.id)),

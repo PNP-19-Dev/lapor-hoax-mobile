@@ -1,32 +1,28 @@
 /*
- * Created by andii on 16/11/21 01.03
+ * Created by andii on 17/11/21 00.28
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 16/11/21 00.58
+ * Last modified 16/11/21 22.57
  */
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:laporhoax/data/datasources/local_data_source.dart';
 import 'package:laporhoax/domain/entities/session_data.dart';
 import 'package:laporhoax/domain/usecases/get_session_data.dart';
 import 'package:laporhoax/domain/usecases/get_user.dart';
 import 'package:laporhoax/domain/usecases/post_login.dart';
-import 'package:laporhoax/domain/usecases/remove_session_data.dart';
-import 'package:laporhoax/domain/usecases/save_session_data.dart';
+import 'package:laporhoax/domain/usecases/set_session.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   final PostLogin _login;
   final GetUser _user;
-  final SaveSessionData _save;
   final GetSessionData _data;
-  final RemoveSessionData _logout;
+  final SetSession _setSession;
 
   LoginCubit(
     this._login,
     this._user,
-    this._save,
     this._data,
-    this._logout,
+    this._setSession,
   ) : super(LoginInitial());
 
   /*TODO UPDATE THE FCM TOKEN
@@ -53,8 +49,8 @@ class LoginCubit extends Cubit<LoginState> {
       (token) {
         user.fold(
           (failure) => emit(LoginFailure(failure.message)),
-          (user) async {
-            await _save.execute(SessionData(
+          (user) {
+            _setSession.execute(data: SessionData(
               username: user.username,
               token: token.token!,
               expiry: token.expiry!,
@@ -82,9 +78,9 @@ class LoginCubit extends Cubit<LoginState> {
     );
   }
 
-  Future<void> logout(SessionData data) async {
-    final result = await _logout.execute(data);
-    if (result == LocalDataSource.logoutMessage) {
+  Future<void> logout() async {
+    final result = await _setSession.execute();
+    if (!result){
       emit(LoginEnded());
     }
   }

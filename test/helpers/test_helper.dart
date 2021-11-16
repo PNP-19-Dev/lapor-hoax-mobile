@@ -1,7 +1,7 @@
 /*
- * Created by andii on 15/11/21 14.37
+ * Created by andii on 17/11/21 00.28
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 14.36
+ * Last modified 16/11/21 23.03
  */
 
 import 'package:data_connection_checker/data_connection_checker.dart';
@@ -13,6 +13,7 @@ import 'package:laporhoax/data/datasources/remote_data_source.dart';
 import 'package:laporhoax/domain/repositories/repository.dart';
 import 'package:laporhoax/presentation/provider/about_cubit.dart';
 import 'package:laporhoax/presentation/provider/account_cubit.dart';
+import 'package:laporhoax/presentation/provider/dark_provider.dart';
 import 'package:laporhoax/presentation/provider/detail_cubit.dart';
 import 'package:laporhoax/presentation/provider/feed_cubit.dart';
 import 'package:laporhoax/presentation/provider/history_cubit.dart';
@@ -36,6 +37,7 @@ import 'package:mockito/annotations.dart';
   PreferencesHelper,
   DataConnectionChecker,
   NetworkInfo,
+  DarkProvider,
   DetailCubit,
   AccountCubit,
   ProfileCubit,

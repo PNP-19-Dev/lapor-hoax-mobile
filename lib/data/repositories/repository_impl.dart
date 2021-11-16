@@ -1,11 +1,10 @@
 /*
- * Created by andii on 15/11/21 13.01
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 15/11/21 12.55
+ * Last modified 16/11/21 22.37
  */
 
 import 'package:dartz/dartz.dart';
-import 'package:laporhoax/utils/network_exceptions.dart';
 import 'package:laporhoax/data/datasources/local_data_source.dart';
 import 'package:laporhoax/data/datasources/remote_data_source.dart';
 import 'package:laporhoax/data/models/category_table.dart';
@@ -27,6 +26,7 @@ import 'package:laporhoax/domain/entities/user_token.dart';
 import 'package:laporhoax/domain/repositories/repository.dart';
 import 'package:laporhoax/utils/exception.dart';
 import 'package:laporhoax/utils/failure.dart';
+import 'package:laporhoax/utils/network_exceptions.dart';
 import 'package:laporhoax/utils/network_info_impl.dart';
 
 class RepositoryImpl implements Repository {
@@ -67,11 +67,6 @@ class RepositoryImpl implements Repository {
   Future<bool> isAddedToSavedFeed(int id) async {
     final result = await localDataSource.getFeedById(id);
     return result != null;
-  }
-
-  @override
-  Future<bool> isSessionActivated() async {
-    return await localDataSource.isLoggedIn();
   }
 
   @override
@@ -227,7 +222,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, String>> postFCMToken(int user, String fcmToken) async {
+  Future<Either<Failure, String>> postFCMToken(int user, String? fcmToken) async {
     try {
       final result =
       await remoteDataSource.postFcmToken(user.toString(), fcmToken);
@@ -259,18 +254,6 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<String> removeSessionData(SessionData data) async {
-    final result = await localDataSource.removeSession(data);
-    return result;
-  }
-
-  @override
-  Future<String> saveSessionData(SessionData data) async {
-    final result = await localDataSource.insertSession(data);
-    return result;
-  }
-
-  @override
   Future<Either<Failure, UserQuestion>> getUserChallenge(int id) async {
     try {
       final result = await remoteDataSource.getUserQuestions(id);
@@ -288,5 +271,23 @@ class RepositoryImpl implements Repository {
     } on NetworkExceptions catch (e) {
       return Left(ServerFailure(NetworkExceptions.getErrorMessage(e)));
     }
+  }
+
+  @override
+  Future<bool> isDark() async {
+    return localDataSource.isDark();
+  }
+
+  @override
+  Future<bool> setDarkMode(bool value) {
+    localDataSource.setDark(value);
+    final result = localDataSource.isDark();
+    return result;
+  }
+
+  @override
+  Future<bool> setSession({SessionData? data}) async {
+    final result = await localDataSource.setSession(data: data);
+    return result;
   }
 }

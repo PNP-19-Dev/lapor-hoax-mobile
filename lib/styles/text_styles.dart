@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.53
+ * Last modified 16/11/21 18.19
  */
 
 import 'package:flutter/material.dart';
@@ -46,7 +46,7 @@ final TextTheme myTextTheme = TextTheme(
       fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.25),
   button: GoogleFonts.inter(
     fontSize: 14,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w700,
     letterSpacing: 1.25,
   ),
   caption: GoogleFonts.inter(

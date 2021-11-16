@@ -1,7 +1,7 @@
 /*
- * Created by andii on 16/11/21 01.03
+ * Created by andii on 16/11/21 22.37
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 16/11/21 01.03
+ * Last modified 16/11/21 15.00
  */
 
 import 'package:bloc/bloc.dart';
@@ -20,15 +20,13 @@ class HistoryCubit extends Cubit<HistoryState> {
   HistoryCubit(this._query, this._delete) : super(HistoryInitial());
 
   List<Report> _reports = [];
-  List<Report> get reports => _reports;
-
   Future<void> getHistory(TokenId tokenId) async {
     emit(HistoryLoading());
 
     final result = await _query.execute(tokenId.token, tokenId.id);
     result.fold(
-          (failure) => emit(HistoryError(failure.message)),
-          (data) {
+      (failure) => emit(HistoryError(failure.message)),
+      (data) {
         _reports = data;
         return data.isEmpty
             ? emit(HistoryError('Tidak ada data Laporan'))
@@ -37,19 +35,23 @@ class HistoryCubit extends Cubit<HistoryState> {
     );
   }
 
-  Future<bool> removeReport(TokenId tokenId, String status) async {
+  Future<bool> removeReport(TokenId tokenId, int reportId, String status) async {
     if (status.toLowerCase() == 'belum diproses') {
-      final result = await _delete.execute(tokenId.token, tokenId.id);
+      final result = await _delete.execute(tokenId.token, reportId);
       emit(HistoryLoading());
       result.fold(
-            (failure) => emit(HistoryDeleteSomeData(_reports, failure.message)),
-            (success) {
-          _reports.removeWhere((element) => element.id == tokenId.id);
-          emit(HistoryDeleteSomeData(_reports, success));
+        (failure) {
+          emit(HistoryDeleteSomeData(_reports, failure.message));
+          return false;
+        },
+        (success) {
+          _reports.removeWhere((element) => element.id == reportId);
+          emit(HistoryDeleteSomeData(_reports, "Laporan telah dihapus!"));
+          return true;
         },
       );
-      return true;
     }
+    emit(HistoryDeleteSomeData(_reports, "Laporan tidak dapat dihapus!"));
     return false;
   }
 }
