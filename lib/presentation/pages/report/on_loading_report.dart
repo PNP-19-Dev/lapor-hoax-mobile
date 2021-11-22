@@ -1,7 +1,7 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 22/11/21 14.56
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.50
+ * Last modified 17/11/21 19.12
  */
 
 import 'package:flutter/material.dart';
@@ -52,7 +52,7 @@ class OnSuccessReport extends StatelessWidget {
               Text(
                 'Laporanmu akan segera diproses oleh ahli yang bersangkutan, jadi tunggu ya !',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.caption,
               ),
               SizedBox(height: 25),
               ElevatedButton(
@@ -60,16 +60,14 @@ class OnSuccessReport extends StatelessWidget {
                 child: Text('Lapor lagi yuk !'),
               ),
               SizedBox(height: 20),
-              InkWell(
-                onTap: () => Navigation.intentWithData(
+              TextButton(
+                onPressed: () => Navigation.intentWithData(
                     DetailReportPage.ROUTE_NAME, reportItem),
-                child: Text(
-                  'Lihat laporan yang barusan',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2!
-                      .copyWith(color: orangeBlaze),
-                ),
+                child: Text('Lihat laporan yang barusan',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(color: orangeBlaze)),
               ),
             ],
           ),

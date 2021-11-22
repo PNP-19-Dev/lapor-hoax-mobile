@@ -1,7 +1,7 @@
 /*
- * Created by andii on 17/11/21 00.28
+ * Created by andii on 22/11/21 14.56
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 16/11/21 23.41
+ * Last modified 17/11/21 18.26
  */
 
 import 'package:dartz/dartz.dart';
@@ -44,4 +44,6 @@ abstract class Repository {
   Future<Either<Failure, String>> removeFeed(Feed feed);
   Future<Either<Failure, String>> saveFeed(Feed feed);
   Future<bool> setSession({SessionData? data});
+  Future<bool> isDark();
+  Future<bool> setDark(bool value);
 }

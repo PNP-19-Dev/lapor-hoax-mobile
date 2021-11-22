@@ -1,11 +1,10 @@
 /*
- * Created by andii on 12/11/21 22.55
+ * Created by andii on 22/11/21 14.56
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 12/11/21 22.52
+ * Last modified 22/11/21 14.56
  */
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AboutCubit extends Cubit<AboutState> {
@@ -17,12 +16,9 @@ class AboutCubit extends Cubit<AboutState> {
   }
 }
 
-class AboutState extends Equatable {
+class AboutState {
   final String data;
 
   AboutState(this.data);
-
-  @override
-  List<Object?> get props => [data];
 }
 

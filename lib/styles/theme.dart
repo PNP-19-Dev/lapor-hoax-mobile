@@ -1,7 +1,7 @@
 /*
- * Created by andii on 16/11/21 22.37
+ * Created by andii on 22/11/21 14.56
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 16/11/21 22.01
+ * Last modified 17/11/21 19.41
  */
 
 import 'package:flutter/material.dart';
@@ -49,7 +49,6 @@ final darkTheme = ThemeData(
   appBarTheme: AppBarTheme(
     foregroundColor: Colors.white,
     backgroundColor: Colors.black, // status bar color
-    systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.white),
   ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     foregroundColor: Colors.black,

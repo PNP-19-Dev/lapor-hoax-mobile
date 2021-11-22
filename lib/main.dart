@@ -1,10 +1,11 @@
 /*
- * Created by andii on 16/11/21 22.37
+ * Created by andii on 22/11/21 14.56
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 16/11/21 22.05
+ * Last modified 17/11/21 19.50
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laporhoax/data/models/token_id.dart';
 import 'package:laporhoax/domain/entities/report.dart';
@@ -106,7 +107,14 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: Consumer<DarkProvider>(
-        builder: (context, provider, child) => MaterialApp(
+        builder: (context, provider, child) {
+          SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarBrightness: provider.isDarkTheme ? Brightness.light : Brightness.dark,
+            statusBarIconBrightness: provider.isDarkTheme ? Brightness.light : Brightness.dark,
+          ));
+
+          return MaterialApp(
           title: 'Lapor Hoax',
           theme: mainTheme,
           darkTheme: darkTheme,
@@ -201,7 +209,8 @@ class MyApp extends StatelessWidget {
                 });
             }
           },
-        ),
+        );
+        },
       ),
     );
   }

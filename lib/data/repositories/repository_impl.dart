@@ -1,7 +1,7 @@
 /*
- * Created by andii on 16/11/21 22.37
+ * Created by andii on 22/11/21 14.56
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 16/11/21 22.37
+ * Last modified 17/11/21 18.26
  */
 
 import 'package:dartz/dartz.dart';
@@ -279,7 +279,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<bool> setDarkMode(bool value) {
+  Future<bool> setDark(bool value) {
     localDataSource.setDark(value);
     final result = localDataSource.isDark();
     return result;

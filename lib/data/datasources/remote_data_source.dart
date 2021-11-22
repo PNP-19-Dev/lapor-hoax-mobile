@@ -1,7 +1,7 @@
 /*
- * Created by andii on 16/11/21 22.37
+ * Created by andii on 22/11/21 14.56
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 16/11/21 22.23
+ * Last modified 22/11/21 14.55
  */
 
 import 'dart:io';
@@ -86,7 +86,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<List<CategoryModel>> getCategory() async {
     try {
-      final response = await client.get('/$reportCatEndpoint');
+      final response = await client.get('/$reportCatEndpoint/');
 
       return List<CategoryModel>.from(
           (response).map((x) => CategoryModel.fromJson(x)));
@@ -178,7 +178,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<List<QuestionModel>> getQuestions() async {
     try {
-      final response = await client.get('/$questionEndpoint');
+      final response = await client.get('/$questionEndpoint/');
       return QuestionResponse.fromJson(response).questionList;
     } catch (e) {
       throw NetworkExceptions.getDioException(e);
@@ -188,7 +188,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<UserQuestionModel> getUserQuestions(int id) async {
     try {
-      final response = await client.get('/$questionEndpoint/user/$id');
+      final response = await client.get('/$questionEndpoint/user/$id/');
       return UserQuestionModel.fromJson(response);
     } catch (e) {
       throw NetworkExceptions.getDioException(e);
@@ -209,7 +209,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<String> postFcmToken(String user, String? fcmToken) async {
     try {
-      await client.post('/$firebaseTokenEndpoint',
+      await client.post('/$firebaseTokenEndpoint/',
           data: {'user': user, 'token': fcmToken!});
       return 'Success';
     } catch (e) {
@@ -220,7 +220,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<String> putFcmToken(String user, String fcmToken) async {
     try {
-      await client.put('/$firebaseTokenEndpoint', data: {
+      await client.put('/$firebaseTokenEndpoint/', data: {
         'user': user,
         'token': fcmToken,
       });
@@ -246,7 +246,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<String> getPasswordReset(String email) async {
     try {
-      await client.get('/$passwordResetEndpoint/$email');
+      await client.get('/$passwordResetEndpoint/$email/');
       return 'Success';
     } catch (e) {
       throw NetworkExceptions.getDioException(e);
@@ -256,7 +256,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<FeedModel> getFeedDetail(int id) async {
     try {
-      final response = await client.get('/$feedsEndpoint/$id');
+      final response = await client.get('/$feedsEndpoint/$id/');
 
       return FeedModel.fromJson(response);
     } catch (e) {

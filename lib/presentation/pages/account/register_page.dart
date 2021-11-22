@@ -1,7 +1,7 @@
 /*
- * Created by andii on 16/11/21 22.37
+ * Created by andii on 22/11/21 14.56
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 16/11/21 18.16
+ * Last modified 22/11/21 14.44
  */
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -97,7 +97,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               return null;
                             },
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 20),
                           Text('Email',
                               style: TextStyle(fontWeight: FontWeight.bold)),
                           SizedBox(height: 5),
@@ -113,7 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               return null;
                             },
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 20),
                           Text('Kata Sandi',
                               style: TextStyle(fontWeight: FontWeight.bold)),
                           SizedBox(height: 5),
@@ -148,7 +148,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               return null;
                             },
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 20),
                           Text('Masukkan ulang Kata Sandi',
                               style: TextStyle(fontWeight: FontWeight.bold)),
                           SizedBox(height: 5),
@@ -210,10 +210,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                   listener: (context, state) {
                                     final progress = ProgressHUD.of(context);
                                     if (state is Registering) {
-                                      progress!.showWithText('Loading...');
+                                      progress?.showWithText('Loading...');
                                     }
 
                                     if (state is RegisterError) {
+                                      progress!.dismiss();
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
@@ -221,6 +222,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         ),
                                       );
                                     } else if (state is RegisterSuccess) {
+                                      progress!.dismiss();
                                       Navigation.intentWithData(
                                         UserChallenge.ROUTE_NAME,
                                         state.id,
@@ -254,6 +256,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ],
                             ),
                           ),
+                          SizedBox(height: 20),
                         ],
                       ),
                     ),

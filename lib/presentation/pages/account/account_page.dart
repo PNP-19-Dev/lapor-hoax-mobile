@@ -1,7 +1,7 @@
 /*
- * Created by andii on 16/11/21 22.37
+ * Created by andii on 22/11/21 14.56
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 16/11/21 21.54
+ * Last modified 17/11/21 19.47
  */
 
 import 'package:flutter/cupertino.dart';
@@ -101,6 +101,7 @@ class _OnAccountLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<DarkProvider>(context);
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -115,21 +116,16 @@ class _OnAccountLogin extends StatelessWidget {
                   style: GoogleFonts.inter(
                       fontWeight: FontWeight.w700, fontSize: 20),
                 ),
-                Consumer<DarkProvider>(
-                  builder: (context, provider, child) {
-                    return Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Mode Gelap',
-                            style: Theme.of(context).textTheme.caption),
-                        CupertinoSwitch(
-                            activeColor: orangeBlaze,
-                            value: provider.isDarkTheme,
-                            onChanged: (value) =>
-                                provider.enableDarkTheme(value)),
-                      ],
-                    );
-                  },
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Mode Gelap',
+                        style: Theme.of(context).textTheme.caption),
+                    CupertinoSwitch(
+                        activeColor: orangeBlaze,
+                        value: provider.isDarkTheme,
+                        onChanged: (value) => provider.enableDarkTheme(value)),
+                  ],
                 ),
               ],
             ),

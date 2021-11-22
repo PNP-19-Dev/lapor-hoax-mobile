@@ -1,7 +1,7 @@
 /*
- * Created by andii on 17/11/21 00.28
+ * Created by andii on 22/11/21 14.56
  * Copyright (c) 2021 . All rights reserved.
- * Last modified 16/11/21 22.50
+ * Last modified 17/11/21 18.57
  */
 
 import 'package:dartz/dartz.dart';
@@ -470,6 +470,27 @@ void main() {
     });
   });
 
+  group('Set Session Data', (){
+    test('should return TRUE when data is exist / added',() async {
+      // arrange
+      when(mockLocalDataSource.setSession(data: testSessionData))
+          .thenAnswer((_) async => true);
+      // act
+      final result = await repository.setSession(data: testSessionData);
+      // assert
+      expect(result, true);
+    });
+    test('should return FALSE when data is gone / removed',() async {
+      // arrange
+      when(mockLocalDataSource.setSession())
+          .thenAnswer((_) async => false);
+      // act
+      final result = await repository.setSession();
+      // assert
+      expect(result, false);
+    });
+  });
+
   group('Get User', () {
     test(
         'should return remote data when the call to remote data source is successful',
@@ -784,18 +805,6 @@ void main() {
     });
   });
 
-  /*group('Remove Session Data', () {
-    test('should return success message when remove successful', () async {
-      // arrange
-      when(mockLocalDataSource.removeSession(testSessionData))
-          .thenAnswer((_) async => 'Session Removed');
-      // act
-      final result = await repository.removeSessionData(testSessionData);
-      // assert
-      expect(result, 'Session Removed');
-    });
-  });*/
-
   group('Save Feed', () {
     test('should return success message when saving successful', () async {
       // arrange
@@ -817,15 +826,26 @@ void main() {
     });
   });
 
-/*  group('Save Session Data', () {
-    test('should return success message when saving successful', () async {
+  group('Is Dark', (){
+    test('should return TRUE when darkmode is activated',()async{
       // arrange
-      when(mockLocalDataSource.insertSession(testSessionData))
-          .thenAnswer((_) async => 'Session Saved');
+      when(mockLocalDataSource.isDark()).thenAnswer((_) async => true);
       // act
-      final result = await repository.saveSessionData(testSessionData);
+      final result = await repository.isDark();
       // assert
-      expect(result, 'Session Saved');
+      expect(result, true);
     });
-  });*/
+  });
+
+  group('Set Dark', (){
+    test('should return TRUE when darkmode has set',()async{
+      // arrange
+      when(mockLocalDataSource.isDark()).thenAnswer((_) async => true);
+      when(mockLocalDataSource.setDark(true)).thenAnswer((_) async => true);
+      // act
+      final result = await repository.setDark(true);
+      // assert
+      expect(result, true);
+    });
+  });
 }
